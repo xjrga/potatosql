@@ -276,6 +276,10 @@ public class Main
         tableModelRelationshipKeyPair = new TableModelRelationshipKeyPair(dbLink);
         tableRelationshipPairKeys.setModel(tableModelRelationshipKeyPair);
         frame = this.getFrame();
+        //needed this code for gui to show properly on windows
+        Dimension size = frame.getSize();
+        Dimension newsize = new Dimension(size.width+1,size.height+1);
+        frame.setSize(newsize);
     }
 
 
