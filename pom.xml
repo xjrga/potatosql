@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.xjrga.potatosql</groupId>
+  <artifactId>PotatoSQL</artifactId>
+  <version>02</version>
+
+  <name>PotatoSql</name>
+  <url>https://x-jrga.github.io/potatosql</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+
+    <!-- https://mvnrepository.com/artifact/org.hsqldb/hsqldb -->
+    <dependency>
+      <groupId>org.hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>RELEASE</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.jgoodies/jgoodies-common -->
+    <dependency>
+      <groupId>com.jgoodies</groupId>
+      <artifactId>jgoodies-common</artifactId>
+      <version>1.8.1</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.jgoodies/jgoodies-forms -->
+    <dependency>
+      <groupId>com.jgoodies</groupId>
+      <artifactId>jgoodies-forms</artifactId>
+      <version>1.8.0</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.testng/testng -->
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>6.14.3</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/de.sciss/weblaf -->
+    <dependency>
+      <groupId>de.sciss</groupId>
+      <artifactId>weblaf</artifactId>
+      <version>2.1.4</version>
+      <type>pom</type>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.seaglasslookandfeel/seaglasslookandfeel -->
+    <dependency>
+      <groupId>com.seaglasslookandfeel</groupId>
+      <artifactId>seaglasslookandfeel</artifactId>
+      <version>0.2.1</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.jgoodies/jgoodies-looks -->
+    <dependency>
+      <groupId>com.jgoodies</groupId>
+      <artifactId>jgoodies-looks</artifactId>
+      <version>2.7.0</version>
+    </dependency>
+
+
+  </dependencies>
+
+  <build>
+    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+      <plugins>
+        <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.1.0</version>
+        </plugin>
+        <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.0.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.8.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.0.0-M1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.0.2</version>
+          <configuration>
+            <archive>
+              <manifest>
+                <classpathLayoutType>simple</classpathLayoutType>
+                <classpathPrefix>lib/</classpathPrefix>
+                <addClasspath>true</addClasspath>
+                <mainClass>org.xjrga.potatosql.gui.Main</mainClass>
+              </manifest>
+            </archive>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>2.5.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>2.8.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.7.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <configuration>
+              <target>
+                <!-- copy data to tmp -->
+                <delete dir="${project.basedir}/tmp"/>
+                <copy todir="${project.basedir}/tmp/${project.artifactId}-${project.version}/data">
+                  <fileset dir="${project.basedir}/data"/>
+                </copy>
+                <!-- copy lib to tmp -->
+                <copy todir="${project.basedir}/tmp/${project.artifactId}-${project.version}/lib">
+                  <fileset dir="${project.basedir}/lib"/>
+                </copy>
+                <!-- copy resources to tmp -->
+                <copy todir="${project.basedir}/tmp/${project.artifactId}-${project.version}/resources">
+                  <fileset dir="${project.basedir}/resources"/>
+                </copy>
+                <!-- copy scripts to tmp -->
+                <copy todir="${project.basedir}/tmp/${project.artifactId}-${project.version}/scripts">
+                  <fileset dir="${project.basedir}/scripts"/>
+                </copy>
+                <!-- copy src to tmp -->
+                <copy todir="${project.basedir}/tmp/${project.artifactId}-${project.version}/src">
+                  <fileset dir="${project.basedir}/src"/>
+                </copy>
+                <!-- copy pom.xml to tmp -->
+                <copy file="${project.basedir}/pom.xml" tofile="${project.basedir}/tmp/${project.artifactId}-${project.version}/pom.bak"/>
+                <!-- copy executable jar to tmp -->
+                <copy file="target/${project.artifactId}-${project.version}.jar"
+                      todir="${project.basedir}/tmp/${project.artifactId}-${project.version}"/>
+                <!-- zip files up -->
+                <zip destfile="/opt/repo/Test/${project.artifactId}-${project.version}.zip"
+                     basedir="${project.basedir}/tmp"/>
+                <!-- unzip files-->
+                <unzip src="/opt/repo/Test/${project.artifactId}-${project.version}.zip"
+                       dest="/opt/repo/Test" overwrite="true"/>
+                <!-- run app -->
+                <java jar="/opt/repo/Test/${project.artifactId}-${project.version}/${project.artifactId}-${project.version}.jar" fork="true" failonerror="true"/>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+
