@@ -1601,6 +1601,7 @@ public class Main
                 dbLink.DatabaseTable_Update(schemaId, tableId, s);
                 listModelTable.reload(schemaId);
                 tableModelRelationship.reload(schemaId);
+                hideTableRelationshipColumns();
             }
         }
     }
@@ -1619,6 +1620,9 @@ public class Main
             tableModelKeys.clear();
             hideTableKeysColumns();
             tableModelRelationship.reload(schemaId);
+            hideTableRelationshipColumns();
+            tableModelRelationshipKeyPair.clear();
+            hideTableRelationshipKeyPairColumns();
         }
     }
 
