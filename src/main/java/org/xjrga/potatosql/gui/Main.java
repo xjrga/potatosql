@@ -22,6 +22,7 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
+import java.io.*;
 
 public class Main
 {
@@ -143,7 +144,7 @@ public class Main
         {
             try
             {
-                UIManager.setLookAndFeel ("com.jgoodies.looks.plastic.PlasticLookAndFeel");
+                UIManager.setLookAndFeel("com.jgoodies.looks.plastic.PlasticLookAndFeel");
             }
             catch (ClassNotFoundException ex)
             {
@@ -278,7 +279,7 @@ public class Main
         frame = this.getFrame();
         //needed this code for gui to show properly on windows
         Dimension size = frame.getSize();
-        Dimension newsize = new Dimension(size.width+1,size.height+1);
+        Dimension newsize = new Dimension(size.width + 1, size.height + 1);
         frame.setSize(newsize);
     }
 
@@ -426,6 +427,12 @@ public class Main
         return !listSchema.isSelectionEmpty();
     }
 
+    private boolean isTableSelected()
+    {
+        return !listTable.isSelectionEmpty();
+    }
+
+
     private boolean isTableKeySelected()
     {
         boolean flag = false;
@@ -442,7 +449,6 @@ public class Main
     }
 
 
-
     private JMenuBar getMenuBar()
     {
         JMenuBar menuBar = new JMenuBar();
@@ -455,6 +461,7 @@ public class Main
         JMenuItem mnuiExit = new JMenuItem();
         JMenuItem mnuiSchemaCopy = new JMenuItem();
         JMenuItem mnuiTableCopy = new JMenuItem();
+        JMenuItem mnuiTableImportData = new JMenuItem();
         JMenuItem mnuiKeyCopy = new JMenuItem();
         ButtonGroup dialectGroup = new ButtonGroup();
 
@@ -471,6 +478,7 @@ public class Main
         mnuProgram.add(mnuiExit);
         mnuSchema.add(mnuiSchemaCopy);
         mnuTable.add(mnuiTableCopy);
+        mnuTable.add(mnuiTableImportData);
         mnuKey.add(mnuiKeyCopy);
         mnuOutput.add(mnuiOptions);
         mnuDialect.add(mnuiDialectHsqldb);
@@ -485,6 +493,7 @@ public class Main
         mnuiExit.setText("Exit");
         mnuiSchemaCopy.setText("Duplicate");
         mnuiTableCopy.setText("Duplicate");
+        mnuiTableImportData.setText("Import Data");
         mnuiKeyCopy.setText("Duplicate");
         mnuiOptions.setText("Options");
         mnuiDialectHsqldb.setText("Hsqldb");
@@ -524,6 +533,14 @@ public class Main
             }
         });
 
+        mnuiTableImportData.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                eventActionPerformed_mnuiTableImportData(e);
+            }
+        });
+
         mnuiKeyCopy.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -535,9 +552,69 @@ public class Main
         return menuBar;
     }
 
+    private void eventActionPerformed_mnuiTableImportData(ActionEvent e)
+    {
+        if (isTableSelected())
+        {
+            JFileChooser fileChooser = new JFileChooser();
+            int returnval = fileChooser.showOpenDialog((JMenuItem) e.getSource());
+
+            if(returnval == JFileChooser.APPROVE_OPTION){
+                File file = fileChooser.getSelectedFile();
+                if(equalFields(file)){
+                    readFile(file);
+                }
+            }
+
+        }
+    }
+
+    private boolean equalFields(File file)
+    {
+        try
+        {
+            String filename = file.getName();
+            BufferedReader in = new BufferedReader(new FileReader(file));
+            String str = "";
+            while((str = in.readLine())!= null){
+                process(str);
+            }
+            in.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
+    private void readFile(File file)
+    {
+        try
+        {
+            String filename = file.getName();
+            BufferedReader in = new BufferedReader(new FileReader(file));
+            String str = "";
+            while((str = in.readLine())!= null){
+                process(str);
+            }
+            in.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private void process(String str){
+        System.out.println(str);
+    }
+
     private void eventActionPerformed_mnuiKeyCopy(ActionEvent e)
     {
-        if(isTableKeySelected()){
+        if (isTableKeySelected())
+        {
 
             int selectedRow = tableKeys.getSelectedRow();
 
@@ -550,8 +627,8 @@ public class Main
 
             if (containsText(s))
             {
-                dbLink.PotatoSql_TableKey_Copy(schemaid,tableid,keyid,s);
-                tableModelKeys.reload(schemaid,tableid);
+                dbLink.PotatoSql_TableKey_Copy(schemaid, tableid, keyid, s);
+                tableModelKeys.reload(schemaid, tableid);
                 hideTableKeysColumns();
             }
 
@@ -1185,8 +1262,9 @@ public class Main
                     relationshiptypeid_new = 1;
                 }
 
-                if(relationshiptypeid!=relationshiptypeid_new){
-                   dbLink.RelationshipKeyPair_Delete(schemaid,parent_tableid,child_tableid,relationshipid);
+                if (relationshiptypeid != relationshiptypeid_new)
+                {
+                    dbLink.RelationshipKeyPair_Delete(schemaid, parent_tableid, child_tableid, relationshipid);
                 }
 
                 dbLink.Relationship_Update(schemaid, parent_tableid, child_tableid, relationshipid, relationshiptypeid_new, relationshipname, forwardVerbPhrase, reverseVerbPhrase);
