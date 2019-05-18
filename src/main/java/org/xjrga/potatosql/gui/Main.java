@@ -7,7 +7,7 @@ import org.xjrga.potatosql.dataobject.KeyDataObject;
 import org.xjrga.potatosql.dataobject.KeyTypeDataObject;
 import org.xjrga.potatosql.dataobject.SchemaDataObject;
 import org.xjrga.potatosql.dataobject.TableDataObject;
-import org.xjrga.potatosql.generator.DialectBuilder;
+import org.xjrga.potatosql.generator.*;
 import org.xjrga.potatosql.model.*;
 import org.xjrga.potatosql.other.Write;
 
@@ -106,6 +106,7 @@ public class Main
     private JRadioButtonMenuItem mnuiDialectHsqldb;
     private JRadioButtonMenuItem mnuiDialectMysql;
     private ListModelKeyTypes listModelKeyTypes;
+    private PrintProcedureInsertCall printProcedureInsertCall;
 
     public Main()
     {
@@ -574,15 +575,31 @@ public class Main
             String filename = file.getName();
             BufferedReader in = new BufferedReader(new FileReader(file));
             String str = "";
-            while((str = in.readLine())!= null){
-                if(equalFields(str)){
-                    process(str);
-                }else{
-                    System.out.println("Number of fields is not equal.");
-                    break;
-                }
+            int keyCount = tableModelKeys.getRowCount();
+            int linenumber = 1;
 
+            StringBuilder sb = new StringBuilder();
+            TableMaker tableMaker = new TableMaker(dbLink);
+            TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
+            int schemaId = tableDataObject.getSchemaId();
+            int tableId = tableDataObject.getTableId();
+            Table table = tableMaker.getTable(schemaId, tableId);
+            printProcedureInsertCall = new PrintProcedureInsertCall(table);
+
+            while((str = in.readLine())!= null){
+                if(equalFields(keyCount,str)){
+                    printProcedureInsertCall.setStr(process(str));
+                    sb.append(printProcedureInsertCall.getCode());
+                    sb.append("\n");
+                }else{
+                    sb.append("Number of fields is not equal on line ");
+                    sb.append(linenumber);
+                    sb.append(".\n");
+                }
+              linenumber++;
             }
+
+            textArea.setText(sb.toString());
             in.close();
         }
         catch (IOException e)
@@ -591,26 +608,33 @@ public class Main
         }
     }
 
-    private void process(String str){
+    private String process(String str){
 
         String[] fields = str.split(",");
         int size = fields.length;
+        StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < size; i++)
         {
             String field = fields[i];
-            System.out.println(field);
+            sb.append(field);
+            sb.append(",");
         }
+
+        if(sb.length()>0){
+            sb.setLength(sb.length()-1);
+        }
+
+        return sb.toString();
     }
 
-    private boolean equalFields(String str){
+    private boolean equalFields(int keyCount, String str){
 
         boolean flag = false;
         String[] fields = str.split(",");
         int size = fields.length;
-        int rowcount = tableModelKeys.getRowCount();
 
-        if(size==rowcount){
+        if(size==keyCount){
             flag = true;
         }
 
