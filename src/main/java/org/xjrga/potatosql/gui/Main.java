@@ -561,32 +561,10 @@ public class Main
 
             if(returnval == JFileChooser.APPROVE_OPTION){
                 File file = fileChooser.getSelectedFile();
-                if(equalFields(file)){
                     readFile(file);
-                }
             }
 
         }
-    }
-
-    private boolean equalFields(File file)
-    {
-        try
-        {
-            String filename = file.getName();
-            BufferedReader in = new BufferedReader(new FileReader(file));
-            String str = "";
-            while((str = in.readLine())!= null){
-                process(str);
-            }
-            in.close();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-
-        return true;
     }
 
     private void readFile(File file)
@@ -597,7 +575,13 @@ public class Main
             BufferedReader in = new BufferedReader(new FileReader(file));
             String str = "";
             while((str = in.readLine())!= null){
-                process(str);
+                if(equalFields(str)){
+                    process(str);
+                }else{
+                    System.out.println("Number of fields is not equal.");
+                    break;
+                }
+
             }
             in.close();
         }
@@ -617,6 +601,20 @@ public class Main
             String field = fields[i];
             System.out.println(field);
         }
+    }
+
+    private boolean equalFields(String str){
+
+        boolean flag = false;
+        String[] fields = str.split(",");
+        int size = fields.length;
+        int rowcount = tableModelKeys.getRowCount();
+
+        if(size==rowcount){
+            flag = true;
+        }
+
+        return flag;
     }
 
     private void eventActionPerformed_mnuiKeyCopy(ActionEvent e)
