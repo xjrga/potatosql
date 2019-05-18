@@ -587,6 +587,7 @@ public class Main
             printProcedureInsertCall = new PrintProcedureInsertCall(table);
 
             while((str = in.readLine())!= null){
+
                 if(equalFields(keyCount,str)){
                     printProcedureInsertCall.setStr(process(str));
                     sb.append(printProcedureInsertCall.getCode());
@@ -596,6 +597,7 @@ public class Main
                     sb.append(linenumber);
                     sb.append(".\n");
                 }
+
               linenumber++;
             }
 
@@ -610,15 +612,22 @@ public class Main
 
     private String process(String str){
 
-        String[] fields = str.split(",");
+        String[] fields = str.split("\\;");
         int size = fields.length;
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < size; i++)
         {
             String field = fields[i];
-            sb.append(field);
+
+            if(!field.isEmpty()){
+                field = field.replace('"','\'');
+                sb.append(field);
+            }else{
+                sb.append("''");
+            }
             sb.append(",");
+
         }
 
         if(sb.length()>0){
@@ -626,12 +635,13 @@ public class Main
         }
 
         return sb.toString();
+
     }
 
     private boolean equalFields(int keyCount, String str){
 
         boolean flag = false;
-        String[] fields = str.split(",");
+        String[] fields = str.split("\\;");
         int size = fields.length;
 
         if(size==keyCount){
