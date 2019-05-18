@@ -578,7 +578,6 @@ public class Main
             int keyCount = tableModelKeys.getRowCount();
             int linenumber = 1;
 
-            StringBuilder sb = new StringBuilder();
             TableMaker tableMaker = new TableMaker(dbLink);
             TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
             int schemaId = tableDataObject.getSchemaId();
@@ -590,18 +589,17 @@ public class Main
 
                 if(equalFields(keyCount,str)){
                     printProcedureInsertCall.setStr(process(str));
-                    sb.append(printProcedureInsertCall.getCode());
-                    sb.append("\n");
+                    textArea.append(printProcedureInsertCall.getCode());
+                    textArea.append("");
                 }else{
-                    sb.append("Number of fields is not equal on line ");
-                    sb.append(linenumber);
-                    sb.append(".\n");
+                    textArea.append("Number of fields is not equal on line ");
+                    textArea.append(String.valueOf(linenumber));
+                    textArea.append(".\n");
                 }
 
               linenumber++;
             }
 
-            textArea.setText(sb.toString());
             in.close();
         }
         catch (IOException e)

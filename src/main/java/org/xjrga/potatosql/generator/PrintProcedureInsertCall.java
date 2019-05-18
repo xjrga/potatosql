@@ -27,6 +27,7 @@ public class PrintProcedureInsertCall implements Code
             sqlbuild.append(str);
             sqlbuild.append(" ");
             sqlbuild.append(");\n");
+            sqlbuild.append("/\n");
         }
         return sqlbuild.toString();
     }
