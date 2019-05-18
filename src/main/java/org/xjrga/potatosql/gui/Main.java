@@ -608,7 +608,15 @@ public class Main
     }
 
     private void process(String str){
-        System.out.println(str);
+
+        String[] fields = str.split(",");
+        int size = fields.length;
+
+        for (int i = 0; i < size; i++)
+        {
+            String field = fields[i];
+            System.out.println(field);
+        }
     }
 
     private void eventActionPerformed_mnuiKeyCopy(ActionEvent e)
