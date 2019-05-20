@@ -30,18 +30,20 @@ public class CreateTable implements Code
             sqlbuild.append("(");
             sqlbuild.append("\n");
             sqlbuild.append(sqlStuff.getSqlColumnDefinitionsForTable());
-            sqlbuild.append(",");
-            sqlbuild.append("\n");
-            sqlbuild.append("CONSTRAINT");
-            sqlbuild.append(" ");
-            sqlbuild.append(table.getName());
-            sqlbuild.append("_primaryKey");
-            sqlbuild.append(" ");
-            sqlbuild.append("PRIMARY KEY");
-            sqlbuild.append(" ");
-            sqlbuild.append("(");
-            sqlbuild.append(sqlStuff.getSqlParametersPrimary());
-            sqlbuild.append(")");
+            if(table.containsPrimaryKeys()){
+                sqlbuild.append(",");
+                sqlbuild.append("\n");
+                sqlbuild.append("CONSTRAINT");
+                sqlbuild.append(" ");
+                sqlbuild.append(table.getName());
+                sqlbuild.append("_primaryKey");
+                sqlbuild.append(" ");
+                sqlbuild.append("PRIMARY KEY");
+                sqlbuild.append(" ");
+                sqlbuild.append("(");
+                sqlbuild.append(sqlStuff.getSqlParametersPrimary());
+                sqlbuild.append(")");
+            }
             sqlbuild.append("\n");
             sqlbuild.append(")");
             sqlbuild.append(";");

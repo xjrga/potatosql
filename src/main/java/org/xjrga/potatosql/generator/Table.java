@@ -181,4 +181,15 @@ public class Table
         return flag;
     }
 
+    public boolean containsPrimaryKeys()
+    {
+        Boolean flag = false;
+
+        if (getCountPrimaryKey() > 0)
+        {
+            flag = true;
+        }
+
+        return flag;
+    }
 }
