@@ -637,11 +637,20 @@ public class Main
     private boolean equalFields(int keyCount, String str){
 
         boolean flag = false;
-        String[] fields = str.split("\\;");
+        String[] fields = str.split(";");
         int size = fields.length;
 
         if(size==keyCount){
             flag = true;
+        }else{
+
+            System.out.println(keyCount+"!="+size+" -> ");
+
+            for (int i = 0; i < fields.length; i++)
+            {
+                String field = fields[i];
+                System.out.println(i+":"+field);
+            }
         }
 
         return flag;
