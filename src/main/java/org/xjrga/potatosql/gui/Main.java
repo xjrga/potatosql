@@ -571,7 +571,6 @@ public class Main
     {
         try
         {
-            String filename = file.getName();
             BufferedReader in = new BufferedReader(new FileReader(file));
             String str = "";
             int keyCount = tableModelKeys.getRowCount();
