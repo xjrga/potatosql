@@ -106,7 +106,6 @@ public class Main
     private JRadioButtonMenuItem mnuiDialectHsqldb;
     private JRadioButtonMenuItem mnuiDialectMysql;
     private ListModelKeyTypes listModelKeyTypes;
-    private PrintProcedureInsertCall printProcedureInsertCall;
 
     public Main()
     {
@@ -583,11 +582,11 @@ public class Main
             int schemaId = tableDataObject.getSchemaId();
             int tableId = tableDataObject.getTableId();
             Table table = tableMaker.getTable(schemaId, tableId);
-            printProcedureInsertCall = new PrintProcedureInsertCall(table);
 
             while((str = in.readLine())!= null){
 
                 if(equalFields(keyCount,str)){
+                    PrintProcedureInsertCall printProcedureInsertCall = new PrintProcedureInsertCall(table);
                     printProcedureInsertCall.setStr(process(str));
                     textArea.append(printProcedureInsertCall.getCode());
                     textArea.append("");
