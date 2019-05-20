@@ -584,18 +584,18 @@ public class Main
 
             while((str = in.readLine())!= null){
 
-                if(equalFields(keyCount,str)){
-                    PrintProcedureInsertCall printProcedureInsertCall = new PrintProcedureInsertCall(table);
-                    printProcedureInsertCall.setStr(process(str));
-                    textArea.append(printProcedureInsertCall.getCode());
-                    textArea.append("");
-                }else{
+                if(!equalFields(keyCount,str)){
                     textArea.append("Number of fields is not equal on line ");
                     textArea.append(String.valueOf(linenumber));
-                    textArea.append(".\n");
+                    textArea.append(" -> ");
                 }
 
+                PrintProcedureInsertCall printProcedureInsertCall = new PrintProcedureInsertCall(table);
+                printProcedureInsertCall.setStr(process(str));
+                textArea.append(printProcedureInsertCall.getCode());
+
               linenumber++;
+
             }
 
             in.close();
