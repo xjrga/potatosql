@@ -2,12 +2,16 @@ package org.xjrga.potatosql.gui;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
+import org.apache.poi.ss.usermodel.*;
 import org.xjrga.potatosql.data.DbLink;
 import org.xjrga.potatosql.dataobject.KeyDataObject;
 import org.xjrga.potatosql.dataobject.KeyTypeDataObject;
 import org.xjrga.potatosql.dataobject.SchemaDataObject;
 import org.xjrga.potatosql.dataobject.TableDataObject;
-import org.xjrga.potatosql.generator.*;
+import org.xjrga.potatosql.generator.DialectBuilder;
+import org.xjrga.potatosql.generator.PrintProcedureInsertCall;
+import org.xjrga.potatosql.generator.Table;
+import org.xjrga.potatosql.generator.TableMaker;
 import org.xjrga.potatosql.model.*;
 import org.xjrga.potatosql.other.Write;
 
@@ -18,11 +22,15 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.BadLocationException;
+import java.awt.Color;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Main
 {
@@ -559,9 +567,11 @@ public class Main
             JFileChooser fileChooser = new JFileChooser();
             int returnval = fileChooser.showOpenDialog((JMenuItem) e.getSource());
 
-            if(returnval == JFileChooser.APPROVE_OPTION){
+            if (returnval == JFileChooser.APPROVE_OPTION)
+            {
                 File file = fileChooser.getSelectedFile();
-                    readFile(file);
+                //readFile(file);
+                readFile2(file);
             }
 
         }
@@ -582,9 +592,11 @@ public class Main
             int tableId = tableDataObject.getTableId();
             Table table = tableMaker.getTable(schemaId, tableId);
 
-            while((str = in.readLine())!= null){
+            while ((str = in.readLine()) != null)
+            {
 
-                if(!equalFields(keyCount,str)){
+                if (!equalFields(keyCount, str))
+                {
                     textArea.append("Number of fields is not equal on line ");
                     textArea.append(String.valueOf(linenumber));
                     textArea.append(" -> ");
@@ -594,7 +606,7 @@ public class Main
                 printProcedureInsertCall.setStr(process(str));
                 textArea.append(printProcedureInsertCall.getCode());
 
-              linenumber++;
+                linenumber++;
 
             }
 
@@ -606,7 +618,89 @@ public class Main
         }
     }
 
-    private String process(String str){
+    private void readFile2(File file)
+    {
+        try
+        {
+            int keyCount = tableModelKeys.getRowCount();
+            TableMaker tableMaker = new TableMaker(dbLink);
+            TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
+            int schemaId = tableDataObject.getSchemaId();
+            int tableId = tableDataObject.getTableId();
+            Table table = tableMaker.getTable(schemaId, tableId);
+            Workbook workbook = null;
+            workbook = WorkbookFactory.create(file);
+            Sheet sheet = workbook.getSheetAt(0);
+
+            sheet.forEach(row ->
+            {
+                if (row.getRowNum() > 0)
+                {
+                    PrintProcedureInsertCall printProcedureInsertCall = new PrintProcedureInsertCall(table);
+                    StringBuilder sb = new StringBuilder();
+
+                    for (int i = 0; i < keyCount; i++)
+                    {
+                        Cell cell = row.getCell(i);
+
+                        if (cell != null)
+                        {
+                            if (cell.getCellType() == CellType.BLANK)
+                            {
+                                sb.append("NULL");
+                                sb.append(",");
+                            } else
+                            {
+                                switch (cell.getCellType())
+                                {
+                                    case STRING:
+                                        sb.append("'");
+                                        sb.append(cell.getStringCellValue());
+                                        sb.append("'");
+                                        break;
+                                    case NUMERIC:
+                                        sb.append(cell.getNumericCellValue());
+                                        break;
+                                    case BOOLEAN:
+                                        sb.append(cell.getBooleanCellValue());
+                                        break;
+                                    case ERROR:
+                                        sb.append(cell.getErrorCellValue());
+                                        break;
+                                    case FORMULA:
+                                        sb.append(cell.getCellFormula());
+                                        break;
+                                    case BLANK:
+                                        sb.append("BLANK");
+                                    case _NONE:
+                                        sb.append("NONE");
+                                        break;
+                                }
+
+                                sb.append(",");
+                            }
+                        } else
+                        {
+                            sb.append("NULL");
+                            sb.append(",");
+                        }
+                    }
+
+                    sb.setLength(sb.length() - 1);
+                    printProcedureInsertCall.setStr(sb.toString());
+                    textArea.append(printProcedureInsertCall.getCode());
+                }
+            });
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
+    private String process(String str)
+    {
 
         String[] fields = str.split(";{1}");
         int size = fields.length;
@@ -616,40 +710,46 @@ public class Main
         {
             String field = fields[i];
 
-            if(!field.isEmpty()){
-                field = field.replace('"','\'');
+            if (!field.isEmpty())
+            {
+                field = field.replace('"', '\'');
                 sb.append(field);
-            }else{
+            } else
+            {
                 sb.append("''");
             }
             sb.append(",");
 
         }
 
-        if(sb.length()>0){
-            sb.setLength(sb.length()-1);
+        if (sb.length() > 0)
+        {
+            sb.setLength(sb.length() - 1);
         }
 
         return sb.toString();
 
     }
 
-    private boolean equalFields(int keyCount, String str){
+    private boolean equalFields(int keyCount, String str)
+    {
 
         boolean flag = false;
         String[] fields = str.split(";");
         int size = fields.length;
 
-        if(size==keyCount){
+        if (size == keyCount)
+        {
             flag = true;
-        }else{
+        } else
+        {
 
-            System.out.println(keyCount+"!="+size+" -> ");
+            System.out.println(keyCount + "!=" + size + " -> ");
 
             for (int i = 0; i < fields.length; i++)
             {
                 String field = fields[i];
-                System.out.println(i+":"+field);
+                System.out.println(i + ":" + field);
             }
         }
 

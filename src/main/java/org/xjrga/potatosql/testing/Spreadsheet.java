@@ -31,7 +31,8 @@ public class Spreadsheet
 
         try
         {
-            spreadsheet.read();
+            //spreadsheet.read();
+            spreadsheet.read2();
         }
         catch (IOException e)
         {
@@ -233,6 +234,74 @@ public class Spreadsheet
                         sb.append("\n");
                     }
                 }
+
+                System.out.println(sb.toString());
+            }
+        });
+    }
+
+    private void read2() throws IOException
+    {
+
+        Workbook workbook = WorkbookFactory.create(new File(SAMPLE_XLSX_FILE_PATH));
+        Sheet sheet = workbook.getSheetAt(0);
+        DataFormatter dataFormatter = new DataFormatter();
+
+        int columns = 18;
+
+        sheet.forEach(row ->
+        {
+            if (row.getRowNum() > 0)
+            {
+                StringBuilder sb = new StringBuilder();
+
+                for (int i = 0; i < columns; i++)
+                {
+                    Cell cell = row.getCell(i);
+
+                    if (cell != null)
+                    {
+                        if (cell.getCellType() == CellType.BLANK)
+                        {
+                            sb.append("NULL");
+                            sb.append(",");
+                        } else
+                        {
+                            switch(cell.getCellType()){
+                                case STRING:
+                                    sb.append("'");
+                                    sb.append(cell.getStringCellValue());
+                                    sb.append("'");
+                                    break;
+                                case NUMERIC:
+                                    sb.append(cell.getNumericCellValue());
+                                    break;
+                                case BOOLEAN:
+                                    sb.append(cell.getBooleanCellValue());
+                                    break;
+                                case ERROR:
+                                    sb.append(cell.getErrorCellValue());
+                                    break;
+                                case FORMULA:
+                                    sb.append(cell.getCellFormula());
+                                    break;
+                                case BLANK:
+                                    sb.append("BLANK");
+                                case _NONE:
+                                    sb.append("NONE");
+                                    break;
+                            }
+
+                            sb.append(",");
+                        }
+                    } else
+                    {
+                        sb.append("NULL");
+                        sb.append(",");
+                    }
+                }
+
+                sb.setLength(sb.length()-1);
 
                 System.out.println(sb.toString());
             }
