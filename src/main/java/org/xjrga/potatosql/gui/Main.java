@@ -570,16 +570,23 @@ public class Main
             if (returnval == JFileChooser.APPROVE_OPTION)
             {
                 File file = fileChooser.getSelectedFile();
-                readFile(file);
+                new Thread(){
+                    public void run(){
+                        try{
+                            readFile(file);
+                        }catch(IOException e){
+
+                        }
+                    }
+                }.start();
+
             }
 
         }
     }
 
-    private void readFile(File file)
+    private void readFile(File file) throws IOException
     {
-        try
-        {
             int keyCount = tableModelKeys.getRowCount();
             TableMaker tableMaker = new TableMaker(dbLink);
             TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
@@ -649,12 +656,6 @@ public class Main
                     textArea.append(printProcedureInsertCall.getCode());
                 }
             });
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-
     }
 
     private String process(String str)
