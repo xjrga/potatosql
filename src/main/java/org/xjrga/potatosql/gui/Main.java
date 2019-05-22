@@ -573,9 +573,15 @@ public class Main
                 new Thread(){
                     public void run(){
                         try{
+                            long startTime = System.nanoTime();
                             readFile(file);
-                        }catch(IOException e){
+                            long endTime = System.nanoTime();
+                            long duration = (endTime - startTime);
+                            System.out.println("miliseconds: "+duration/1000000);
 
+                            System.out.println();
+                        }catch(IOException e){
+                            e.printStackTrace();
                         }
                     }
                 }.start();
