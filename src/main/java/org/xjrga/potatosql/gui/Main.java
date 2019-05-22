@@ -608,7 +608,7 @@ public class Main
 
     private String process(String str){
 
-        String[] fields = str.split("\\;");
+        String[] fields = str.split(";{1}");
         int size = fields.length;
         StringBuilder sb = new StringBuilder();
 
