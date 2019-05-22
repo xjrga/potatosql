@@ -236,6 +236,7 @@ public class Spreadsheet
                 }
 
                 System.out.println(sb.toString());
+
             }
         });
     }

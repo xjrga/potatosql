@@ -570,55 +570,13 @@ public class Main
             if (returnval == JFileChooser.APPROVE_OPTION)
             {
                 File file = fileChooser.getSelectedFile();
-                //readFile(file);
-                readFile2(file);
+                readFile(file);
             }
 
         }
     }
 
     private void readFile(File file)
-    {
-        try
-        {
-            BufferedReader in = new BufferedReader(new FileReader(file));
-            String str = "";
-            int keyCount = tableModelKeys.getRowCount();
-            int linenumber = 1;
-
-            TableMaker tableMaker = new TableMaker(dbLink);
-            TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
-            int schemaId = tableDataObject.getSchemaId();
-            int tableId = tableDataObject.getTableId();
-            Table table = tableMaker.getTable(schemaId, tableId);
-
-            while ((str = in.readLine()) != null)
-            {
-
-                if (!equalFields(keyCount, str))
-                {
-                    textArea.append("Number of fields is not equal on line ");
-                    textArea.append(String.valueOf(linenumber));
-                    textArea.append(" -> ");
-                }
-
-                PrintProcedureInsertCall printProcedureInsertCall = new PrintProcedureInsertCall(table);
-                printProcedureInsertCall.setStr(process(str));
-                textArea.append(printProcedureInsertCall.getCode());
-
-                linenumber++;
-
-            }
-
-            in.close();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    private void readFile2(File file)
     {
         try
         {
