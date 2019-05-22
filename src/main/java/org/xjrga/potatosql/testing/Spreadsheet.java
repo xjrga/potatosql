@@ -1,13 +1,11 @@
 package org.xjrga.potatosql.testing;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
+import org.xjrga.potatosql.generator.PrintProcedureInsertCall;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,16 +18,29 @@ import java.util.LinkedList;
 public class Spreadsheet
 {
 
-    public Spreadsheet(){
+    public static final String SAMPLE_XLSX_FILE_PATH = "/opt/data/tables/FLAV_IND.xlsx";
+
+    public Spreadsheet()
+    {
 
     }
 
     public static void main(String[] args)
     {
+        Spreadsheet spreadsheet = new Spreadsheet();
 
+        try
+        {
+            spreadsheet.read();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
-    private void eventActionPerformed_mnuiExportFoodList(ActionEvent e) {
+    private void write()
+    {
 
         StringBuilder sb = new StringBuilder();
         String pattern = "yyyy-MMMMM-dd'_at_'HH-mma";
@@ -42,7 +53,8 @@ public class Spreadsheet
 
         String filename = sb.toString();
 
-        try {
+        try
+        {
 
             FileOutputStream out = new FileOutputStream(filename);
             Workbook wb = new HSSFWorkbook();
@@ -97,7 +109,8 @@ public class Spreadsheet
 
             Iterator it = list.iterator();
 
-            while (it.hasNext()) {
+            while (it.hasNext())
+            {
 
                 HashMap rowm = (HashMap) it.next();
 
@@ -166,12 +179,63 @@ public class Spreadsheet
 
             JOptionPane.showMessageDialog(null, "Spreadsheet is ready (Food List).");
 
-        } catch (FileNotFoundException fnfe) {
+        }
+        catch (FileNotFoundException fnfe)
+        {
             fnfe.printStackTrace();
-        } catch (IOException ioe) {
+        }
+        catch (IOException ioe)
+        {
             ioe.printStackTrace();
         }
 
 
+    }
+
+    private void read() throws IOException
+    {
+
+        Workbook workbook = WorkbookFactory.create(new File(SAMPLE_XLSX_FILE_PATH));
+        Sheet sheet = workbook.getSheetAt(0);
+        DataFormatter dataFormatter = new DataFormatter();
+
+        System.out.println("Sheets Count:  " + workbook.getNumberOfSheets());
+        System.out.println("Sheet Name: " + sheet.getSheetName());
+        System.out.println("Sheet Rows: " + sheet.getPhysicalNumberOfRows());
+
+        int columns = 18;
+
+        sheet.forEach(row ->
+        {
+            if (row.getRowNum() > 0)
+            {
+                StringBuilder sb = new StringBuilder();
+
+                for (int i = 0; i < columns; i++)
+                {
+                    Cell cell = row.getCell(i);
+
+                    if (cell != null)
+                    {
+                        if (cell.getCellType() == CellType.BLANK)
+                        {
+                            sb.append(cell.getColumnIndex() + ":" + cell.getRowIndex() + " -> NULL");
+                            sb.append("\n");
+                        } else
+                        {
+                            String cellValue = dataFormatter.formatCellValue(cell);
+                            sb.append(cell.getColumnIndex() + ":" + cell.getRowIndex() + " -> " + cellValue);
+                            sb.append("\n");
+                        }
+                    } else
+                    {
+                        sb.append(i + ":" + row.getRowNum() + " -> NULL");
+                        sb.append("\n");
+                    }
+                }
+
+                System.out.println(sb.toString());
+            }
+        });
     }
 }
