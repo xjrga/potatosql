@@ -28,8 +28,6 @@ public class Replacer
         String fields[] = matcher_two.replaceAll(second_replacement_string).split(";",-1);
         StringBuilder sb = new StringBuilder();
 
-        System.out.println("Number of fields: "+fields.length);
-
         for (int i = 0; i < fields.length; i++)
         {
             if(fields[i].isEmpty()){

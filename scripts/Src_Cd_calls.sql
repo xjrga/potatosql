@@ -1,0 +1,10 @@
+CALL public.Src_Cd_Insert( '1','Analytical or derived from analytical' );
+CALL public.Src_Cd_Insert( '11','Aggregated data involving comb. of codes other then 1,12 or6' );
+CALL public.Src_Cd_Insert( '12','Manufacturer''s analytical, partial documentation' );
+CALL public.Src_Cd_Insert( '13','Analytical data from the literature, partial documentation' );
+CALL public.Src_Cd_Insert( '4','Calculated or imputed' );
+CALL public.Src_Cd_Insert( '5','Value manufacturer based label claim for added nutrients' );
+CALL public.Src_Cd_Insert( '6','Aggregated data involving combinations of source codes 1 &12' );
+CALL public.Src_Cd_Insert( '7','Assumed zero' );
+CALL public.Src_Cd_Insert( '8','Calculated from nutrient label by NDL' );
+CALL public.Src_Cd_Insert( '9','Calculated by manufacturer, not adjusted or rounded for NLEA' );

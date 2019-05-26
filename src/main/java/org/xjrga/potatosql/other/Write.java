@@ -13,12 +13,12 @@ public class Write
     }
 
 
-    public static void writeToFile(String txt)
+    public static void writeToFile(String txt,String filename)
     {
 
         try
         {
-            BufferedWriter out = new BufferedWriter(new FileWriter("script.sql"));
+            BufferedWriter out = new BufferedWriter(new FileWriter("scripts/"+filename));
             out.write(txt);
             out.close();
         }

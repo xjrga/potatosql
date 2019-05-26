@@ -424,7 +424,7 @@ public class Main
 
             String toString = sb.toString();
             textArea.setText(toString);
-            Write.writeToFile(toString);
+            Write.writeToFile(toString,"script.sql");
         }
     }
 
@@ -606,16 +606,24 @@ public class Main
             int tableId = tableDataObject.getTableId();
             Table table = tableMaker.getTable(schemaId, tableId);
             Replacer replacer = new Replacer();
+            StringBuilder sb = new StringBuilder();
 
             while ((str = in.readLine()) != null)
             {
                 replacer.replace(str);
 
                 PrintProcedureInsertCall printProcedureInsertCall = new PrintProcedureInsertCall(table);
-                //printProcedureInsertCall.setStr(replacer.replace(str));
                 printProcedureInsertCall.setStr(replacer.replace(str));
-                textArea.append(printProcedureInsertCall.getCode());
+                String code = printProcedureInsertCall.getCode();
+                sb.append(code);
+
             }
+
+            StringBuilder sbFilename = new StringBuilder();
+            sbFilename.append(table.getName());
+            sbFilename.append("_calls.sql");
+            Write.writeToFile(sb.toString(), sbFilename.toString());
+            textArea.append(sb.toString());
 
             in.close();
         }
