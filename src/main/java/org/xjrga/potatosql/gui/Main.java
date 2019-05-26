@@ -7,7 +7,10 @@ import org.xjrga.potatosql.dataobject.KeyDataObject;
 import org.xjrga.potatosql.dataobject.KeyTypeDataObject;
 import org.xjrga.potatosql.dataobject.SchemaDataObject;
 import org.xjrga.potatosql.dataobject.TableDataObject;
-import org.xjrga.potatosql.generator.*;
+import org.xjrga.potatosql.generator.DialectBuilder;
+import org.xjrga.potatosql.generator.PrintProcedureInsertCall;
+import org.xjrga.potatosql.generator.Table;
+import org.xjrga.potatosql.generator.TableMaker;
 import org.xjrga.potatosql.model.*;
 import org.xjrga.potatosql.other.Write;
 
@@ -22,7 +25,10 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Main
 {
@@ -559,10 +565,29 @@ public class Main
             JFileChooser fileChooser = new JFileChooser();
             int returnval = fileChooser.showOpenDialog((JMenuItem) e.getSource());
 
-            if(returnval == JFileChooser.APPROVE_OPTION){
+            if (returnval == JFileChooser.APPROVE_OPTION)
+            {
                 File file = fileChooser.getSelectedFile();
-                   
-                   readFile(file);
+
+                new Thread()
+                {
+                    public void run()
+                    {
+                        try
+                        {
+                            long startTime = System.nanoTime();
+                            readFile(file);
+                            long endTime = System.nanoTime();
+                            long duration = (endTime - startTime);
+                            System.out.println("miliseconds: " + duration / 1000000);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+
             }
 
         }
@@ -583,7 +608,8 @@ public class Main
             int tableId = tableDataObject.getTableId();
             Table table = tableMaker.getTable(schemaId, tableId);
 
-            while((str = in.readLine())!= null){
+            while ((str = in.readLine()) != null)
+            {
 
                 /*if(!equalFields(keyCount,str)){
                     textArea.append("Number of fields is not equal on line ");
@@ -595,7 +621,7 @@ public class Main
                 printProcedureInsertCall.setStr(process(str));
                 textArea.append(printProcedureInsertCall.getCode());
 
-              linenumber++;
+                linenumber++;
 
             }
 
@@ -607,7 +633,8 @@ public class Main
         }
     }
 
-    private String process(String str){
+    private String process(String str)
+    {
 
         str.replace("'", "''");
 
@@ -619,40 +646,46 @@ public class Main
         {
             String field = fields[i];
 
-            if(!field.isEmpty()){
-                field = field.replace('"','\'');
+            if (!field.isEmpty())
+            {
+                field = field.replace('"', '\'');
                 sb.append(field);
-            }else{
+            } else
+            {
                 sb.append("''");
             }
             sb.append(",");
 
         }
 
-        if(sb.length()>0){
-            sb.setLength(sb.length()-1);
+        if (sb.length() > 0)
+        {
+            sb.setLength(sb.length() - 1);
         }
 
         return sb.toString();
 
     }
 
-    private boolean equalFields(int keyCount, String str){
+    private boolean equalFields(int keyCount, String str)
+    {
 
         boolean flag = false;
         String[] fields = str.split(";");
         int size = fields.length;
 
-        if(size==keyCount){
+        if (size == keyCount)
+        {
             flag = true;
-        }else{
+        } else
+        {
 
-            System.out.println(keyCount+"!="+size+" -> ");
+            System.out.println(keyCount + "!=" + size + " -> ");
 
             for (int i = 0; i < fields.length; i++)
             {
                 String field = fields[i];
-                System.out.println(i+":"+field);
+                System.out.println(i + ":" + field);
             }
         }
 
