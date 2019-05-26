@@ -177,7 +177,7 @@
                 <unzip src="/opt/repo/Test/${project.artifactId}-${project.version}.zip"
                        dest="/opt/repo/Test" overwrite="true"/>
                 <!-- run app -->
-                <java jar="/opt/repo/Test/${project.artifactId}-${project.version}/${project.artifactId}-${project.version}.jar" fork="true" failonerror="true"/>
+                <!--java jar="/opt/repo/Test/${project.artifactId}-${project.version}/${project.artifactId}-${project.version}.jar" fork="true" failonerror="true"/-->
               </target>
             </configuration>
             <goals>
