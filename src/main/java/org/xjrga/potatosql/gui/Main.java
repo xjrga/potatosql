@@ -633,54 +633,6 @@ public class Main
         }
     }
 
-    private String process(String str, int keyCount)
-    {
-
-        str.replace("'", "''");
-        str.replace("\"","'");
-        String[] fields = str.split("\\;{1}");
-        int size = fields.length;
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < size; i++)
-        {
-            String field = fields[i];
-        }
-        sb.append(",");
-
-        if (sb.length() > 0)
-        {
-            sb.setLength(sb.length() - 1);
-        }
-
-        return sb.toString();
-    }
-
-    private boolean equalFields(int keyCount, String str)
-    {
-
-        boolean flag = false;
-        String[] fields = str.split(";");
-        int size = fields.length;
-
-        if (size == keyCount)
-        {
-            flag = true;
-        } else
-        {
-
-            System.out.println(keyCount + "!=" + size + " -> ");
-
-            for (int i = 0; i < fields.length; i++)
-            {
-                String field = fields[i];
-                System.out.println(i + ":" + field);
-            }
-        }
-
-        return flag;
-    }
-
     private void eventActionPerformed_mnuiKeyCopy(ActionEvent e)
     {
         if (isTableKeySelected())
