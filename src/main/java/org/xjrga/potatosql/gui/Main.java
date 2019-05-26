@@ -30,8 +30,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Main
 {
@@ -614,6 +612,7 @@ public class Main
                 replacer.replace(str);
 
                 PrintProcedureInsertCall printProcedureInsertCall = new PrintProcedureInsertCall(table);
+                //printProcedureInsertCall.setStr(replacer.replace(str));
                 printProcedureInsertCall.setStr(replacer.replace(str));
                 textArea.append(printProcedureInsertCall.getCode());
             }

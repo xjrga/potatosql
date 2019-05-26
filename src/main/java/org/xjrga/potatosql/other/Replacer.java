@@ -25,7 +25,23 @@ public class Replacer
 
         matcher_one = pattern_one.matcher(input0);
         matcher_two = pattern_two.matcher(matcher_one.replaceAll(first_replacement_string));
+        String fields[] = matcher_two.replaceAll(second_replacement_string).split(";",-1);
+        StringBuilder sb = new StringBuilder();
 
-        return matcher_two.replaceAll(second_replacement_string);
+        System.out.println("Number of fields: "+fields.length);
+
+        for (int i = 0; i < fields.length; i++)
+        {
+            if(fields[i].isEmpty()){
+                sb.append("NULL");
+            }else{
+                sb.append(fields[i]);
+            }
+            sb.append(",");
+        }
+
+        sb.setLength(sb.length()-1);
+
+        return sb.toString();
     }
 }
