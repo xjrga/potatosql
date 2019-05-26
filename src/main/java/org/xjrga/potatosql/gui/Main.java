@@ -561,7 +561,8 @@ public class Main
 
             if(returnval == JFileChooser.APPROVE_OPTION){
                 File file = fileChooser.getSelectedFile();
-                    readFile(file);
+                   
+                   readFile(file);
             }
 
         }
@@ -584,11 +585,11 @@ public class Main
 
             while((str = in.readLine())!= null){
 
-                if(!equalFields(keyCount,str)){
+                /*if(!equalFields(keyCount,str)){
                     textArea.append("Number of fields is not equal on line ");
                     textArea.append(String.valueOf(linenumber));
                     textArea.append(" -> ");
-                }
+                }*/
 
                 PrintProcedureInsertCall printProcedureInsertCall = new PrintProcedureInsertCall(table);
                 printProcedureInsertCall.setStr(process(str));
@@ -608,7 +609,9 @@ public class Main
 
     private String process(String str){
 
-        String[] fields = str.split("\\;");
+        str.replace("'", "''");
+
+        String[] fields = str.split(";");
         int size = fields.length;
         StringBuilder sb = new StringBuilder();
 
