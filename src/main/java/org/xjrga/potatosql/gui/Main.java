@@ -12,6 +12,7 @@ import org.xjrga.potatosql.generator.PrintProcedureInsertCall;
 import org.xjrga.potatosql.generator.Table;
 import org.xjrga.potatosql.generator.TableMaker;
 import org.xjrga.potatosql.model.*;
+import org.xjrga.potatosql.other.Replacer;
 import org.xjrga.potatosql.other.Write;
 
 import javax.swing.*;
@@ -29,6 +30,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main
 {
@@ -599,30 +602,20 @@ public class Main
         {
             BufferedReader in = new BufferedReader(new FileReader(file));
             String str = "";
-            int keyCount = tableModelKeys.getRowCount();
-            int linenumber = 1;
-
             TableMaker tableMaker = new TableMaker(dbLink);
             TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
             int schemaId = tableDataObject.getSchemaId();
             int tableId = tableDataObject.getTableId();
             Table table = tableMaker.getTable(schemaId, tableId);
+            Replacer replacer = new Replacer();
 
             while ((str = in.readLine()) != null)
             {
-
-                /*if(!equalFields(keyCount,str)){
-                    textArea.append("Number of fields is not equal on line ");
-                    textArea.append(String.valueOf(linenumber));
-                    textArea.append(" -> ");
-                }*/
+                replacer.replace(str);
 
                 PrintProcedureInsertCall printProcedureInsertCall = new PrintProcedureInsertCall(table);
-                printProcedureInsertCall.setStr(process(str));
+                printProcedureInsertCall.setStr(replacer.replace(str));
                 textArea.append(printProcedureInsertCall.getCode());
-
-                linenumber++;
-
             }
 
             in.close();
@@ -633,30 +626,20 @@ public class Main
         }
     }
 
-    private String process(String str)
+    private String process(String str, int keyCount)
     {
 
         str.replace("'", "''");
-
-        String[] fields = str.split(";");
+        str.replace("\"","'");
+        String[] fields = str.split("\\;{1}");
         int size = fields.length;
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < size; i++)
         {
             String field = fields[i];
-
-            if (!field.isEmpty())
-            {
-                field = field.replace('"', '\'');
-                sb.append(field);
-            } else
-            {
-                sb.append("''");
-            }
-            sb.append(",");
-
         }
+        sb.append(",");
 
         if (sb.length() > 0)
         {
@@ -664,7 +647,6 @@ public class Main
         }
 
         return sb.toString();
-
     }
 
     private boolean equalFields(int keyCount, String str)
