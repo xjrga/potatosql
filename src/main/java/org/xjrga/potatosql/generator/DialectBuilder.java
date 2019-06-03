@@ -28,6 +28,7 @@ public class DialectBuilder implements Code
     private boolean StmtSelectAll;
     private boolean StmtCount;
     private boolean StmtCreateSelect;
+    private boolean StmtInsertSelect;
     private boolean ProcInsert;
     private boolean ProcUpdate;
     private boolean ProcDelete;
@@ -428,6 +429,14 @@ public class DialectBuilder implements Code
                 sb.append("\n");
             }
 
+            if (StmtInsertSelect)
+            {
+                StatementInsertUsingSelect statementInsertUsingSelect = new StatementInsertUsingSelect(table, sqlStuff);
+                sb.append(statementInsertUsingSelect.getCode());
+                sb.append("\n");
+                sb.append("\n");
+            }
+
             if (ProcInsert)
             {
                 ProcedureInsert procedureInsert = new ProcedureInsert(table, sqlStuff);
@@ -748,5 +757,10 @@ public class DialectBuilder implements Code
     public void setMethodSelectPrint(boolean selected)
     {
         MethodSelectPrint = selected;
+    }
+
+    public void setStmtInsertSelect(boolean stmtInsertSelect)
+    {
+        this.StmtInsertSelect = stmtInsertSelect;
     }
 }

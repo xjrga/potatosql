@@ -38,6 +38,7 @@ public class Main
     private JButton clear;
     private JCheckBox cboxTablesDup;
     private JCheckBox cboxStmtCreateSelect;
+    private JCheckBox cboxStmtInsertSelect;
     private JCheckBox cboxStmtCount;
     private JCheckBox cboxFunctionCount;
     private JCheckBox cboxMethodFunctionCount;
@@ -190,6 +191,7 @@ public class Main
     {
         cboxTablesDup = new JCheckBox("Duplicate Tables For Testing Triggers");
         cboxStmtCreateSelect = new JCheckBox("Create Table As Select");
+        cboxStmtInsertSelect = new JCheckBox("Insert Using Select");
         cboxStmtCount = new JCheckBox("");
         cboxFunctionCount = new JCheckBox("");
         cboxMethodFunctionCount = new JCheckBox("");
@@ -379,6 +381,7 @@ public class Main
             dialectBuilder.setHsqldb(mnuiDialectHsqldb.isSelected());
             dialectBuilder.setMysql(mnuiDialectMysql.isSelected());
             dialectBuilder.setStmtCreateSelect(cboxStmtCreateSelect.isSelected());
+            dialectBuilder.setStmtInsertSelect(cboxStmtInsertSelect.isSelected());
             dialectBuilder.setStmtCount(cboxStmtCount.isSelected());
             dialectBuilder.setFunctionCount(cboxFunctionCount.isSelected());
             dialectBuilder.setMethodFunctionCount(cboxMethodFunctionCount.isSelected());
@@ -2060,7 +2063,7 @@ public class Main
         );
 
         FormLayout layoutSql01 = new FormLayout("min", //columns
-                "min,10dlu,min,10dlu,min,10dlu,min,10dlu" //rows
+                "min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu" //rows
         );
 
         FormLayout layoutSql02 = new FormLayout("min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu", //columns
@@ -2150,6 +2153,7 @@ public class Main
         paneSql01.add(cboxTablesDup, cc.xy(1, 3));
         paneSql01.add(cboxViews, cc.xy(1, 5));
         paneSql01.add(cboxStmtCreateSelect, cc.xy(1, 7));
+        paneSql01.add(cboxStmtInsertSelect, cc.xy(1, 9));
 
         paneSql02.add(label_Insert, cc.xy(3, 1));
         paneSql02.add(label_Update, cc.xy(5, 1));
@@ -2249,6 +2253,7 @@ public class Main
                 cboxStmtSelectAll.setSelected(flag);
                 cboxStmtCount.setSelected(flag);
                 cboxStmtCreateSelect.setSelected(flag);
+                cboxStmtInsertSelect.setSelected(flag);
                 cboxProcInsert.setSelected(flag);
                 cboxProcUpdate.setSelected(flag);
                 cboxProcDelete.setSelected(flag);
