@@ -1,3 +1,3 @@
 #!/bin/bash
 
-java -classpath ../lib/hsqldb-2.4.1.jar org.hsqldb.util.DatabaseManagerSwing
+java -cp ../lib/hsqldb-2.5.0.jar org.hsqldb.util.DatabaseManagerSwing
