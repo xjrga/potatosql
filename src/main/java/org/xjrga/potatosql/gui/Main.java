@@ -567,6 +567,7 @@ public class Main
         if (isTableSelected())
         {
             JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new File("."));
             int returnval = fileChooser.showOpenDialog((JMenuItem) e.getSource());
 
             if (returnval == JFileChooser.APPROVE_OPTION)
