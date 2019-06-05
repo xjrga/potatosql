@@ -59,7 +59,7 @@ public class TableModelRelationship extends DefaultTableModel
         columns.add("Type");
         columns.add("Name");
         columns.add("ForwardVerbPhrase");
-        columns.add("ReverseVerbPhrase");
+        columns.add("InverseVerbPhrase");
 
         this.setColumnIdentifiers(columns);
     }

@@ -782,24 +782,24 @@ public class Main
         JPanel panel = new JPanel();
         JPanel panelName = new JPanel();
         JPanel panelForwardVerb = new JPanel();
-        JPanel panelReverseVerb = new JPanel();
+        JPanel panelInverseVerb = new JPanel();
 
         panel.setLayout(layout);
         panelName.setLayout(layout1);
         panelForwardVerb.setLayout(layout1);
-        panelReverseVerb.setLayout(layout1);
+        panelInverseVerb.setLayout(layout1);
 
         JLabel labelRelationshipName = new JLabel("Name:");
         JLabel labelForwardVerbPhrase = new JLabel("Forward:");
-        JLabel labelReverseVerbPhrase = new JLabel("Inverse:");
+        JLabel labelInverseVerbPhrase = new JLabel("Inverse:");
 
         labelRelationshipName.setHorizontalAlignment(JLabel.RIGHT);
         labelForwardVerbPhrase.setHorizontalAlignment(JLabel.RIGHT);
-        labelReverseVerbPhrase.setHorizontalAlignment(JLabel.RIGHT);
+        labelInverseVerbPhrase.setHorizontalAlignment(JLabel.RIGHT);
 
         panel.setToolTipText("Verb phrases explain how tables relate to each other");
         labelForwardVerbPhrase.setToolTipText("Read relationship from parent table to child table using an active verb phrase");
-        labelReverseVerbPhrase.setToolTipText("Read relationship from child table to parent table using a passive verb phrase");
+        labelInverseVerbPhrase.setToolTipText("Read relationship from child table to parent table using a passive verb phrase");
 
         panel.setBorder(new TitledBorder("Description"));
 
@@ -809,12 +809,12 @@ public class Main
         panelForwardVerb.add(labelForwardVerbPhrase, cc.xy(1, 1));
         panelForwardVerb.add(txtForward, cc.xy(2, 1));
 
-        panelReverseVerb.add(labelReverseVerbPhrase, cc.xy(1, 1));
-        panelReverseVerb.add(txtReverse, cc.xy(2, 1));
+        panelInverseVerb.add(labelInverseVerbPhrase, cc.xy(1, 1));
+        panelInverseVerb.add(txtReverse, cc.xy(2, 1));
 
         panel.add(panelName, cc.xy(1, 1));
         panel.add(panelForwardVerb, cc.xy(1, 2));
-        panel.add(panelReverseVerb, cc.xy(1, 3));
+        panel.add(panelInverseVerb, cc.xy(1, 3));
 
         return panel;
     }
