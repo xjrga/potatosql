@@ -21,7 +21,7 @@ public class MethodProcedureInsert implements Code
         String procedureKind = "Insert";
         String methodName = table.getName() + "_" + procedureKind;
         String methodParameters = "";
-        String sql = "";
+        String sql = procedureStuff.getProcedureSqlStringAll(procedureKind);
         String setParameters = "";
         String ident = "";
         String method = "";
@@ -29,7 +29,6 @@ public class MethodProcedureInsert implements Code
         //todo double check method works properly
         if(table.identityExists()){
             methodParameters = javaStuff.getMethodParametersAllMinusIdent();
-            sql = procedureStuff.getProcedureSqlStringAllMinusIdent(procedureKind);
             setParameters = procedureStuff.getSetParametersAllMinusIdentity();
             ident = procedureStuff.getIdent();
             method = "public Integer " + methodName + "(" + methodParameters + ") throws SQLException\n" +
@@ -43,7 +42,6 @@ public class MethodProcedureInsert implements Code
                     "    }";
         }else{
             methodParameters = javaStuff.getMethodParametersAll();
-            sql = procedureStuff.getProcedureSqlStringAll(procedureKind);
             setParameters = procedureStuff.getSetParametersAll();
             method = "public void " + methodName + "(" + methodParameters + ") throws SQLException\n" +
                     "    {\n" +
