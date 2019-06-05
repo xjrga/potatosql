@@ -503,7 +503,7 @@ public class Main
         mnuiExit.setText("Exit");
         mnuiSchemaCopy.setText("Duplicate");
         mnuiTableCopy.setText("Duplicate");
-        mnuiTableImportData.setText("Import Data");
+        mnuiTableImportData.setText("Create Insert Calls");
         mnuiKeyCopy.setText("Duplicate");
         mnuiOptions.setText("Options");
         mnuiDialectHsqldb.setText("Hsqldb");
