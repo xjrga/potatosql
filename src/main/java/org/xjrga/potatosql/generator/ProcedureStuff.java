@@ -267,6 +267,20 @@ public class ProcedureStuff
         return sb.toString();
     }
 
+    public String getProcedureSqlStringAllMinusIdent(String addName)
+    {
+
+        StringBuilder sqlb = new StringBuilder();
+        sqlb.append("\"{CALL public.");
+        sqlb.append(table.getName());
+        sqlb.append("_" + addName + "(");
+        sqlb.append(" ");
+        sqlb.append(getSqlProcedureMarksAllMinusIdent());
+        sqlb.append(" ");
+        sqlb.append(")}\"");
+        return sqlb.toString();
+    }
+
     public String getProcedureSqlStringAll(String addName)
     {
 
