@@ -623,8 +623,8 @@ public class Main
             }
 
             StringBuilder sbFilename = new StringBuilder();
-            sbFilename.append(table.getName());
-            sbFilename.append("_calls.sql");
+            sbFilename.append(table.getName().toLowerCase());
+            sbFilename.append("_insert_calls.sql");
             Write.writeToFile(sb.toString(), sbFilename.toString());
             textArea.append(sb.toString());
 
