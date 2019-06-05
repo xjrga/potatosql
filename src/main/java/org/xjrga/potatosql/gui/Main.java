@@ -2,7 +2,6 @@ package org.xjrga.potatosql.gui;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
-import org.apache.poi.ss.usermodel.*;
 import org.xjrga.potatosql.data.DbLink;
 import org.xjrga.potatosql.dataobject.KeyDataObject;
 import org.xjrga.potatosql.dataobject.KeyTypeDataObject;
@@ -13,6 +12,7 @@ import org.xjrga.potatosql.generator.PrintProcedureInsertCall;
 import org.xjrga.potatosql.generator.Table;
 import org.xjrga.potatosql.generator.TableMaker;
 import org.xjrga.potatosql.model.*;
+import org.xjrga.potatosql.other.Replacer;
 import org.xjrga.potatosql.other.Write;
 
 import javax.swing.*;
@@ -22,7 +22,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.BadLocationException;
-import java.awt.Color;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -39,6 +38,7 @@ public class Main
     private JButton clear;
     private JCheckBox cboxTablesDup;
     private JCheckBox cboxStmtCreateSelect;
+    private JCheckBox cboxStmtInsertSelect;
     private JCheckBox cboxStmtCount;
     private JCheckBox cboxFunctionCount;
     private JCheckBox cboxMethodFunctionCount;
@@ -191,6 +191,7 @@ public class Main
     {
         cboxTablesDup = new JCheckBox("Duplicate Tables For Testing Triggers");
         cboxStmtCreateSelect = new JCheckBox("Create Table As Select");
+        cboxStmtInsertSelect = new JCheckBox("Insert Using Select");
         cboxStmtCount = new JCheckBox("");
         cboxFunctionCount = new JCheckBox("");
         cboxMethodFunctionCount = new JCheckBox("");
@@ -380,6 +381,7 @@ public class Main
             dialectBuilder.setHsqldb(mnuiDialectHsqldb.isSelected());
             dialectBuilder.setMysql(mnuiDialectMysql.isSelected());
             dialectBuilder.setStmtCreateSelect(cboxStmtCreateSelect.isSelected());
+            dialectBuilder.setStmtInsertSelect(cboxStmtInsertSelect.isSelected());
             dialectBuilder.setStmtCount(cboxStmtCount.isSelected());
             dialectBuilder.setFunctionCount(cboxFunctionCount.isSelected());
             dialectBuilder.setMethodFunctionCount(cboxMethodFunctionCount.isSelected());
@@ -425,7 +427,7 @@ public class Main
 
             String toString = sb.toString();
             textArea.setText(toString);
-            Write.writeToFile(toString);
+            Write.writeToFile(toString,"script.sql");
         }
     }
 
@@ -501,7 +503,7 @@ public class Main
         mnuiExit.setText("Exit");
         mnuiSchemaCopy.setText("Duplicate");
         mnuiTableCopy.setText("Duplicate");
-        mnuiTableImportData.setText("Import Data");
+        mnuiTableImportData.setText("Create Insert Calls");
         mnuiKeyCopy.setText("Duplicate");
         mnuiOptions.setText("Options");
         mnuiDialectHsqldb.setText("Hsqldb");
@@ -570,17 +572,21 @@ public class Main
             if (returnval == JFileChooser.APPROVE_OPTION)
             {
                 File file = fileChooser.getSelectedFile();
-                new Thread(){
-                    public void run(){
-                        try{
+
+                new Thread()
+                {
+                    public void run()
+                    {
+                        try
+                        {
                             long startTime = System.nanoTime();
                             readFile(file);
                             long endTime = System.nanoTime();
                             long duration = (endTime - startTime);
-                            System.out.println("miliseconds: "+duration/1000000);
-
-                            System.out.println();
-                        }catch(IOException e){
+                            System.out.println("miliseconds: " + duration / 1000000);
+                        }
+                        catch (Exception e)
+                        {
                             e.printStackTrace();
                         }
                     }
@@ -591,134 +597,43 @@ public class Main
         }
     }
 
-    private void readFile(File file) throws IOException
+    private void readFile(File file)
     {
-            int keyCount = tableModelKeys.getRowCount();
+        try
+        {
+            BufferedReader in = new BufferedReader(new FileReader(file));
+            String str = "";
             TableMaker tableMaker = new TableMaker(dbLink);
             TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
             int schemaId = tableDataObject.getSchemaId();
             int tableId = tableDataObject.getTableId();
             Table table = tableMaker.getTable(schemaId, tableId);
-            Workbook workbook = null;
-            workbook = WorkbookFactory.create(file);
-            Sheet sheet = workbook.getSheetAt(0);
+            Replacer replacer = new Replacer();
+            StringBuilder sb = new StringBuilder();
 
-            sheet.forEach(row ->
+            while ((str = in.readLine()) != null)
             {
-                if (row.getRowNum() > 0)
-                {
-                    PrintProcedureInsertCall printProcedureInsertCall = new PrintProcedureInsertCall(table);
-                    StringBuilder sb = new StringBuilder();
+                replacer.replace(str);
 
-                    for (int i = 0; i < keyCount; i++)
-                    {
-                        Cell cell = row.getCell(i);
+                PrintProcedureInsertCall printProcedureInsertCall = new PrintProcedureInsertCall(table);
+                printProcedureInsertCall.setStr(replacer.replace(str));
+                String code = printProcedureInsertCall.getCode();
+                sb.append(code);
 
-                        if (cell != null)
-                        {
-                            if (cell.getCellType() == CellType.BLANK)
-                            {
-                                sb.append("NULL");
-                                sb.append(",");
-                            } else
-                            {
-                                switch (cell.getCellType())
-                                {
-                                    case STRING:
-                                        sb.append("'");
-                                        sb.append(cell.getStringCellValue());
-                                        sb.append("'");
-                                        break;
-                                    case NUMERIC:
-                                        sb.append(cell.getNumericCellValue());
-                                        break;
-                                    case BOOLEAN:
-                                        sb.append(cell.getBooleanCellValue());
-                                        break;
-                                    case ERROR:
-                                        sb.append(cell.getErrorCellValue());
-                                        break;
-                                    case FORMULA:
-                                        sb.append(cell.getCellFormula());
-                                        break;
-                                    case BLANK:
-                                        sb.append("BLANK");
-                                    case _NONE:
-                                        sb.append("NONE");
-                                        break;
-                                }
-
-                                sb.append(",");
-                            }
-                        } else
-                        {
-                            sb.append("NULL");
-                            sb.append(",");
-                        }
-                    }
-
-                    sb.setLength(sb.length() - 1);
-                    printProcedureInsertCall.setStr(sb.toString());
-                    textArea.append(printProcedureInsertCall.getCode());
-                }
-            });
-    }
-
-    private String process(String str)
-    {
-
-        String[] fields = str.split(";{1}");
-        int size = fields.length;
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < size; i++)
-        {
-            String field = fields[i];
-
-            if (!field.isEmpty())
-            {
-                field = field.replace('"', '\'');
-                sb.append(field);
-            } else
-            {
-                sb.append("''");
             }
-            sb.append(",");
 
+            StringBuilder sbFilename = new StringBuilder();
+            sbFilename.append(table.getName());
+            sbFilename.append("_calls.sql");
+            Write.writeToFile(sb.toString(), sbFilename.toString());
+            textArea.append(sb.toString());
+
+            in.close();
         }
-
-        if (sb.length() > 0)
+        catch (IOException e)
         {
-            sb.setLength(sb.length() - 1);
+            e.printStackTrace();
         }
-
-        return sb.toString();
-
-    }
-
-    private boolean equalFields(int keyCount, String str)
-    {
-
-        boolean flag = false;
-        String[] fields = str.split(";");
-        int size = fields.length;
-
-        if (size == keyCount)
-        {
-            flag = true;
-        } else
-        {
-
-            System.out.println(keyCount + "!=" + size + " -> ");
-
-            for (int i = 0; i < fields.length; i++)
-            {
-                String field = fields[i];
-                System.out.println(i + ":" + field);
-            }
-        }
-
-        return flag;
     }
 
     private void eventActionPerformed_mnuiKeyCopy(ActionEvent e)
@@ -2148,7 +2063,7 @@ public class Main
         );
 
         FormLayout layoutSql01 = new FormLayout("min", //columns
-                "min,10dlu,min,10dlu,min,10dlu,min,10dlu" //rows
+                "min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu" //rows
         );
 
         FormLayout layoutSql02 = new FormLayout("min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu", //columns
@@ -2238,6 +2153,7 @@ public class Main
         paneSql01.add(cboxTablesDup, cc.xy(1, 3));
         paneSql01.add(cboxViews, cc.xy(1, 5));
         paneSql01.add(cboxStmtCreateSelect, cc.xy(1, 7));
+        paneSql01.add(cboxStmtInsertSelect, cc.xy(1, 9));
 
         paneSql02.add(label_Insert, cc.xy(3, 1));
         paneSql02.add(label_Update, cc.xy(5, 1));
@@ -2337,6 +2253,7 @@ public class Main
                 cboxStmtSelectAll.setSelected(flag);
                 cboxStmtCount.setSelected(flag);
                 cboxStmtCreateSelect.setSelected(flag);
+                cboxStmtInsertSelect.setSelected(flag);
                 cboxProcInsert.setSelected(flag);
                 cboxProcUpdate.setSelected(flag);
                 cboxProcDelete.setSelected(flag);

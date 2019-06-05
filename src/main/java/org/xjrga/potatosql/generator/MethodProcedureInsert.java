@@ -20,20 +20,40 @@ public class MethodProcedureInsert implements Code
     {
         String procedureKind = "Insert";
         String methodName = table.getName() + "_" + procedureKind;
-        String methodParameters = javaStuff.getMethodParametersAllMinusIdent();
-        String sql = procedureStuff.getProcedureSqlStringAll(procedureKind);
-        String setParameters = procedureStuff.getSetParametersAllMinusIdentity();
-        String ident = procedureStuff.getIdent();
+        String methodParameters = "";
+        String sql = "";
+        String setParameters = "";
+        String ident = "";
+        String method = "";
+
+        //todo double check method works properly
+        if(table.identityExists()){
+            methodParameters = javaStuff.getMethodParametersAllMinusIdent();
+            sql = procedureStuff.getProcedureSqlStringAllMinusIdent(procedureKind);
+            setParameters = procedureStuff.getSetParametersAllMinusIdentity();
+            ident = procedureStuff.getIdent();
+            method = "public Integer " + methodName + "(" + methodParameters + ") throws SQLException\n" +
+                    "    {\n" +
+                    "        Integer ident = null;\n" +
+                    "        CallableStatement proc = connection.prepareCall(" + sql + ");\n" +
+                    "        " + setParameters + "\n" +
+                    "        proc.execute();\n" +
+                    "            " + ident + "\n" +
+                    "        return ident;\n" +
+                    "    }";
+        }else{
+            methodParameters = javaStuff.getMethodParametersAll();
+            sql = procedureStuff.getProcedureSqlStringAll(procedureKind);
+            setParameters = procedureStuff.getSetParametersAll();
+            method = "public void " + methodName + "(" + methodParameters + ") throws SQLException\n" +
+                    "    {\n" +
+                    "        CallableStatement proc = connection.prepareCall(" + sql + ");\n" +
+                    "        " + setParameters + "\n" +
+                    "        proc.execute();\n" +
+                    "    }";
+        }
+
         StringBuilder sqlbuild = new StringBuilder();
-        String method = "public Integer " + methodName + "(" + methodParameters + ") throws SQLException\n" +
-                "    {\n" +
-                "        Integer ident = null;\n" +
-                "        CallableStatement proc = connection.prepareCall(" + sql + ");\n" +
-                "        " + setParameters + "\n" +
-                "        proc.execute();\n" +
-                "            " + ident + "\n" +
-                "        return ident;\n" +
-                "    }";
         sqlbuild.append(method);
         return sqlbuild.toString();
     }
