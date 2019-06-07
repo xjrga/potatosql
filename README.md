@@ -16,10 +16,10 @@ Requirements
 
 Installing
 
-    1. Download PotatoSQL-02.zip from https://sourceforge.net/projects/potatosql
-    2. unzip PotatoSQL-02.zip
-    3. cd PotatoSQL-02
-    4. java -jar PotatoSQL-02.jar (if you are on windows double click on jar file)
+    1. Download PotatoSQL-03.zip from https://sourceforge.net/projects/potatosql
+    2. unzip PotatoSQL-03.zip
+    3. cd PotatoSQL-03
+    4. java -jar PotatoSQL-03.jar (if you are on windows double click on jar file)
     
 [Download](https://sourceforge.net/projects/potatosql "PotatoSql: Database Design and Code Generation Software")
 
@@ -27,7 +27,7 @@ Installing
 
 Version
  
-    v0.02
+    v0.03
 
 Authors
 
@@ -41,7 +41,7 @@ Acknowledgments
 
 Snack uses the following libraries:
 
-    hsqldb.jar (v2.4.1)
+    hsqldb.jar (v2.5.0)
     jgoodies-common-1.8.0.jar
     jgoodies-forms-1.8.0.jar
     jgoodies-looks-2.7.0.jar   
