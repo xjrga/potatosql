@@ -23,6 +23,7 @@ public class MethodProcedureSelect implements Code
         String sql = procedureStuff.getProcedureSqlStringPrimaryKeyOnly(procedureKind);
         String setParameters = procedureStuff.getSetParametersPrimaryKeyOnly();
         StringBuilder sqlbuild = new StringBuilder();
+        String rowput = javaStuff.getResultSetObjectString();
         String method = "    public List<Map<String, Object>> " + methodName + "(" + methodParameters + ") throws SQLException\n" +
                 "    {\n" +
                 "        LinkedList<Map<String, Object>> list = new LinkedList<>();\n" +
@@ -31,21 +32,10 @@ public class MethodProcedureSelect implements Code
                 "            proc = connection.prepareCall(" + sql + ");\n" +
                 "            " + setParameters + "\n" +
                 "            ResultSet rs = proc.executeQuery();\n" +
-                "            ResultSetMetaData metaData = rs.getMetaData();\n" +
-                "            int columnCount = metaData.getColumnCount();\n" +
-                "            for (int columnPos = 0; columnPos < columnCount; columnPos++)\n" +
-                "            {\n" +
-                "                String columnName = metaData.getColumnLabel(columnPos + 1);\n" +
-                "                columnLabelList.add(columnName);\n" +
-                "            }\n" +
                 "            while (rs.next())\n" +
                 "            {\n" +
                 "                Map<String, Object> row = new HashMap<>();\n" +
-                "                for (int columnPos = 0; columnPos < columnCount; columnPos++)\n" +
-                "                {\n" +
-                "                    Object columnValue = rs.getObject(columnPos + 1);\n" +
-                "                    row.put(columnLabelList.get(columnPos), columnValue);\n" +
-                "                }\n" +
+                rowput +
                 "                list.add(row);\n" +
                 "            }\n" +
                 "            proc.close();\n" +

@@ -26,8 +26,8 @@ public class Test
             connection.setAutoCommit(false);
 
             //call insert, update, delete or merge methodNames here
-            this.Project_Select_All_Print();
-
+            //this.Project_Select_All_Print();
+            this.Project_Select_Print(0);
             connection.commit();
 
         }
@@ -42,7 +42,8 @@ public class Test
             {
                 ex.printStackTrace();
             }
-        }finally
+        }
+        finally
         {
             try
             {
@@ -87,11 +88,47 @@ public class Test
     {
         LinkedList list = (LinkedList) this.Project_Select_All();
         Iterator it = list.listIterator();
-        while(it.hasNext()){
+        while (it.hasNext())
+        {
             HashMap row = (HashMap) it.next();
-            Integer ProjectId = (Integer)row.get("PROJECTID");
-            String ProjectName = (String)row.get("PROJECTNAME");
-            System.out.println(ProjectId+","+ProjectName);
+            Integer ProjectId = (Integer) row.get("PROJECTID");
+            String ProjectName = (String) row.get("PROJECTNAME");
+            System.out.println(ProjectId + "," + ProjectName);
+        }
+    }
+
+    public List<Map<String, Object>> Project_Select(Integer ProjectId) throws SQLException
+    {
+        LinkedList<Map<String, Object>> list = new LinkedList<>();
+        CallableStatement proc;
+        LinkedList<String> columnLabelList = new LinkedList();
+        proc = connection.prepareCall("{CALL public.Project_Select( ? )}");
+        proc.setInt(1, ProjectId);
+        ResultSet rs = proc.executeQuery();
+        while (rs.next())
+        {
+            Map<String, Object> row = new HashMap<>();
+            for (int columnPos = 0; columnPos < 2; columnPos++)
+            {
+                row.put("PROJECTID", rs.getObject(1));
+                row.put("PROJECTNAME", rs.getObject(2));
+            }
+            list.add(row);
+        }
+        proc.close();
+        return list;
+    }
+
+
+    public void Project_Select_Print(Integer ProjectId) throws SQLException
+    {
+        LinkedList list = (LinkedList) this.Project_Select(ProjectId);
+        Iterator it = list.listIterator();
+        while (it.hasNext())
+        {
+            HashMap row = (HashMap) it.next();
+            String ProjectName = (String) row.get("PROJECTNAME");
+            System.out.println(ProjectId + "," + ProjectName);
         }
     }
 
