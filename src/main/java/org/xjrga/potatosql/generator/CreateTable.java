@@ -30,7 +30,8 @@ public class CreateTable implements Code
             sqlbuild.append("(");
             sqlbuild.append("\n");
             sqlbuild.append(sqlStuff.getSqlColumnDefinitionsForTable());
-            if(table.containsPrimaryKeys()){
+            if (table.containsPrimaryKeys())
+            {
                 sqlbuild.append(",");
                 sqlbuild.append("\n");
                 sqlbuild.append("CONSTRAINT");

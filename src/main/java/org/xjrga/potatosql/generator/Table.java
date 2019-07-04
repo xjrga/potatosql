@@ -87,24 +87,6 @@ public class Table
         return largestColumnNameSize;
     }
 
-
-    private int getCountPrimaryKey()
-    {
-
-        primaryKeyCount = 0;
-        Iterator it = columns.iterator();
-        while (it.hasNext())
-        {
-            Column column = (Column) it.next();
-            if (column.isPrimaryKey())
-            {
-                primaryKeyCount++;
-            }
-        }
-        return primaryKeyCount;
-    }
-
-
     public Boolean isEmpty()
     {
 
@@ -118,14 +100,12 @@ public class Table
         return flag;
     }
 
-
     public int getCountKey()
     {
 
         keyCount = columns.size();
         return keyCount;
     }
-
 
     public Boolean containsNonPrimaryKeys()
     {
@@ -139,7 +119,6 @@ public class Table
 
         return flag;
     }
-
 
     private int getCountNonPrimaryKey()
     {
@@ -157,13 +136,11 @@ public class Table
         return nonPrimaryKeyCount;
     }
 
-
     public Iterator getIterator()
     {
 
         return columns.iterator();
     }
-
 
     public Boolean identityExists()
     {
@@ -191,5 +168,21 @@ public class Table
         }
 
         return flag;
+    }
+
+    private int getCountPrimaryKey()
+    {
+
+        primaryKeyCount = 0;
+        Iterator it = columns.iterator();
+        while (it.hasNext())
+        {
+            Column column = (Column) it.next();
+            if (column.isPrimaryKey())
+            {
+                primaryKeyCount++;
+            }
+        }
+        return primaryKeyCount;
     }
 }

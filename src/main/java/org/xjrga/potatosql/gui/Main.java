@@ -427,7 +427,7 @@ public class Main
 
             String toString = sb.toString();
             textArea.setText(toString);
-            Write.writeToFile(toString,"script.sql");
+            Write.writeToFile(toString, "script.sql");
         }
     }
 

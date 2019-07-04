@@ -203,31 +203,6 @@ public class ProcedureStuff
         return sb.toString();
     }
 
-    public String getSqlProcedureMarksAllMinusIdent()
-    {
-        StringBuilder sb = new StringBuilder();
-        Iterator it = table.getIterator();
-
-        while (it.hasNext())
-        {
-            Column column = (Column) it.next();
-
-            if (!column.isIdentity())
-            {
-                sb.append("?");
-                sb.append(",");
-                sb.append(" ");
-            }
-        }
-
-        if (sb.length() > 0)
-        {
-            sb.setLength(sb.length() - 2);
-        }
-
-        return sb.toString();
-    }
-
     public String getProcedureSqlStringPrimaryKeyOnly(String addName)
     {
 
@@ -279,6 +254,31 @@ public class ProcedureStuff
         sqlb.append(" ");
         sqlb.append(")}\"");
         return sqlb.toString();
+    }
+
+    public String getSqlProcedureMarksAllMinusIdent()
+    {
+        StringBuilder sb = new StringBuilder();
+        Iterator it = table.getIterator();
+
+        while (it.hasNext())
+        {
+            Column column = (Column) it.next();
+
+            if (!column.isIdentity())
+            {
+                sb.append("?");
+                sb.append(",");
+                sb.append(" ");
+            }
+        }
+
+        if (sb.length() > 0)
+        {
+            sb.setLength(sb.length() - 2);
+        }
+
+        return sb.toString();
     }
 
     public String getProcedureSqlStringAll(String addName)

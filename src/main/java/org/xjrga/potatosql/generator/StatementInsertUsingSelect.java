@@ -12,7 +12,7 @@ public class StatementInsertUsingSelect implements Code
         this.table = table;
         this.sqlStuff = sqlStuff;
         sqlbuild = new StringBuilder();
-        statementSelectAll = new StatementSelectAll(table,sqlStuff);
+        statementSelectAll = new StatementSelectAll(table, sqlStuff);
     }
 
     @Override

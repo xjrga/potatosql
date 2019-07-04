@@ -27,7 +27,8 @@ public class MethodProcedureInsert implements Code
         String method = "";
 
         //todo double check method works properly
-        if(table.identityExists()){
+        if (table.identityExists())
+        {
             methodParameters = javaStuff.getMethodParametersAllMinusIdent();
             setParameters = procedureStuff.getSetParametersAllMinusIdentity();
             ident = procedureStuff.getIdent();
@@ -40,7 +41,8 @@ public class MethodProcedureInsert implements Code
                     "            " + ident + "\n" +
                     "        return ident;\n" +
                     "    }";
-        }else{
+        } else
+        {
             methodParameters = javaStuff.getMethodParametersAll();
             setParameters = procedureStuff.getSetParametersAll();
             method = "public void " + methodName + "(" + methodParameters + ") throws SQLException\n" +
