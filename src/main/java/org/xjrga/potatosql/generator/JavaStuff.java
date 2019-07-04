@@ -199,4 +199,24 @@ public class JavaStuff
         return sb.toString();
     }
 
+    public String getResultSetObjectString()
+    {
+        StringBuilder sb = new StringBuilder();
+        int count = table.getCountKey();
+        sb.append("for (int columnPos = 0; columnPos < ");
+        sb.append(count);
+        sb.append("; columnPos++)\n{\n");
+        for (int i = 0; i < count; i++)
+        {
+            sb.append("row.put(\"");
+            sb.append(table.getColumn(i).getName().toUpperCase());
+            sb.append("\", ");
+            sb.append("rs.getObject(");
+            sb.append(i + 1);
+            sb.append("));");
+            sb.append("\n");
+        }
+        sb.append("}");
+        return sb.toString();
+    }
 }
