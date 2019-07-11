@@ -27,7 +27,7 @@ Installing
 
 Version
  
-    v0.03
+    v0.04
 
 Authors
 
