@@ -203,9 +203,6 @@ public class JavaStuff
     {
         StringBuilder sb = new StringBuilder();
         int count = table.getCountKey();
-        sb.append("for (int columnPos = 0; columnPos < ");
-        sb.append(count);
-        sb.append("; columnPos++)\n{\n");
         for (int i = 0; i < count; i++)
         {
             sb.append("row.put(\"");
@@ -216,7 +213,6 @@ public class JavaStuff
             sb.append("));");
             sb.append("\n");
         }
-        sb.append("}");
         return sb.toString();
     }
 }
