@@ -58,7 +58,7 @@ public class HsqldbTypeToJavaType
                 javaType = "Time";
                 break;
             case 9:
-                javaType = "TimeStamp";
+                javaType = "Timestamp";
                 break;
             default:
                 javaType = "Object";
