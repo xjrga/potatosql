@@ -345,8 +345,8 @@ public class Main
         tabbedPane.add(getPanelTableKeys());
         tabbedPane.add(getPanelInput2());
         tabbedPane.add(getPanelOutput());
-        tabbedPane.setTitleAt(0, "Table");
-        tabbedPane.setTitleAt(1, "Relationship");
+        tabbedPane.setTitleAt(0, "Keys");
+        tabbedPane.setTitleAt(1, "Relationships");
         tabbedPane.setTitleAt(2, "Output");
         panelWrapper.add(tabbedPane, cc.xyw(1, 1, 2));
         panelWrapper.add(btnGenerate, cc.xy(2, 2));
@@ -366,10 +366,14 @@ public class Main
         {
             StringBuilder sb = new StringBuilder();
             DialectBuilder dialectBuilder = new DialectBuilder(dbLink);
-            SchemaDataObject schemaDataObject = (SchemaDataObject) listSchema.getSelectedValue();
+            SchemaDataObject schemaDataObject = getSelectedSchema();
             int schemaId = schemaDataObject.getSchemaId();
             int numberOfTables = listModelTable.getSize();
             int[] tableIds = new int[numberOfTables];
+
+            dialectBuilder.setHsqldb(mnuiDialectHsqldb.isSelected());
+            dialectBuilder.setMysql(mnuiDialectMysql.isSelected());
+            dialectBuilder.setSchemaId(schemaId);
 
             for (int i = 0; i < numberOfTables; i++)
             {
@@ -377,52 +381,56 @@ public class Main
                 tableIds[i] = tableDataObject.getTableId();
             }
 
-            dialectBuilder.setIds(schemaId, tableIds);
+            dialectBuilder.setTableIds(tableIds);
 
-            dialectBuilder.setHsqldb(mnuiDialectHsqldb.isSelected());
-            dialectBuilder.setMysql(mnuiDialectMysql.isSelected());
-            dialectBuilder.setStmtCreateSelect(cboxStmtCreateSelect.isSelected());
-            dialectBuilder.setStmtInsertSelect(cboxStmtInsertSelect.isSelected());
-            dialectBuilder.setStmtCount(cboxStmtCount.isSelected());
-            dialectBuilder.setFunctionCount(cboxFunctionCount.isSelected());
-            dialectBuilder.setMethodFunctionCount(cboxMethodFunctionCount.isSelected());
-            dialectBuilder.setTriggerStatementAfterInsert(cboxTriggerStatementAfterInsert.isSelected());
-            dialectBuilder.setTriggerStatementAfterUpdate(cboxTriggerStatementAfterUpdate.isSelected());
-            dialectBuilder.setTriggerStatementAfterDelete(cboxTriggerStatementAfterDelete.isSelected());
-            dialectBuilder.setTriggerRowBeforeInsert(cboxTriggerRowBeforeInsert.isSelected());
-            dialectBuilder.setTriggerRowBeforeUpdate(cboxTriggerRowBeforeUpdate.isSelected());
-            dialectBuilder.setTriggerRowBeforeDelete(cboxTriggerRowBeforeDelete.isSelected());
-            dialectBuilder.setTriggerRowAfterInsert(cboxTriggerRowAfterInsert.isSelected());
-            dialectBuilder.setTriggerRowAfterUpdate(cboxTriggerRowAfterUpdate.isSelected());
-            dialectBuilder.setTriggerRowAfterDelete(cboxTriggerRowAfterDelete.isSelected());
-            dialectBuilder.setTablesDup(cboxTablesDup.isSelected());
-            dialectBuilder.setViews(cboxViews.isSelected());
-            dialectBuilder.setTestClass(cboxTestClass.isSelected());
-            dialectBuilder.setTables(cboxTables.isSelected());
-            dialectBuilder.setStmtInsert(cboxStmtInsert.isSelected());
-            dialectBuilder.setStmtUpdate(cboxStmtUpdate.isSelected());
-            dialectBuilder.setStmtDelete(cboxStmtDelete.isSelected());
-            dialectBuilder.setStmtMerge(cboxStmtMerge.isSelected());
-            dialectBuilder.setStmtSelect(cboxStmtSelect.isSelected());
-            dialectBuilder.setStmtDeleteAll(cboxStmtDeleteAll.isSelected());
-            dialectBuilder.setStmtSelectAll(cboxStmtSelectAll.isSelected());
-            dialectBuilder.setProcInsert(cboxProcInsert.isSelected());
-            dialectBuilder.setProcUpdate(cboxProcUpdate.isSelected());
-            dialectBuilder.setProcDelete(cboxProcDelete.isSelected());
-            dialectBuilder.setProcMerge(cboxProcMerge.isSelected());
-            dialectBuilder.setProcSelect(cboxProcSelect.isSelected());
-            dialectBuilder.setProcDeleteAll(cboxProcDeleteAll.isSelected());
-            dialectBuilder.setProcSelectAll(cboxProcSelectAll.isSelected());
-            dialectBuilder.setMethodInsert(cboxMethodInsert.isSelected());
-            dialectBuilder.setMethodUpdate(cboxMethodUpdate.isSelected());
-            dialectBuilder.setMethodDelete(cboxMethodDelete.isSelected());
-            dialectBuilder.setMethodMerge(cboxMethodMerge.isSelected());
-            dialectBuilder.setMethodSelect(cboxMethodSelect.isSelected());
-            dialectBuilder.setMethodDeleteAll(cboxMethodDeleteAll.isSelected());
-            dialectBuilder.setMethodSelectAll(cboxMethodSelectAll.isSelected());
-            dialectBuilder.setDataObject(cboxDataObject.isSelected());
-            dialectBuilder.setMethodSelectPrint(cboxMethodSelectPrint.isSelected());
-            dialectBuilder.setMethodSelectAllPrint(cboxMethodSelectAllPrint.isSelected());
+            if (isTableSelected())
+            {
+                TableDataObject tableDataObject = getSelectedTable();
+                dialectBuilder.setTableId(tableDataObject.getTableId());
+                dialectBuilder.setStmtCreateSelect(cboxStmtCreateSelect.isSelected());
+                dialectBuilder.setStmtInsertSelect(cboxStmtInsertSelect.isSelected());
+                dialectBuilder.setStmtCount(cboxStmtCount.isSelected());
+                dialectBuilder.setFunctionCount(cboxFunctionCount.isSelected());
+                dialectBuilder.setMethodFunctionCount(cboxMethodFunctionCount.isSelected());
+                dialectBuilder.setTriggerStatementAfterInsert(cboxTriggerStatementAfterInsert.isSelected());
+                dialectBuilder.setTriggerStatementAfterUpdate(cboxTriggerStatementAfterUpdate.isSelected());
+                dialectBuilder.setTriggerStatementAfterDelete(cboxTriggerStatementAfterDelete.isSelected());
+                dialectBuilder.setTriggerRowBeforeInsert(cboxTriggerRowBeforeInsert.isSelected());
+                dialectBuilder.setTriggerRowBeforeUpdate(cboxTriggerRowBeforeUpdate.isSelected());
+                dialectBuilder.setTriggerRowBeforeDelete(cboxTriggerRowBeforeDelete.isSelected());
+                dialectBuilder.setTriggerRowAfterInsert(cboxTriggerRowAfterInsert.isSelected());
+                dialectBuilder.setTriggerRowAfterUpdate(cboxTriggerRowAfterUpdate.isSelected());
+                dialectBuilder.setTriggerRowAfterDelete(cboxTriggerRowAfterDelete.isSelected());
+                dialectBuilder.setTablesDup(cboxTablesDup.isSelected());
+                dialectBuilder.setViews(cboxViews.isSelected());
+                dialectBuilder.setTestClass(cboxTestClass.isSelected());
+                dialectBuilder.setTables(cboxTables.isSelected());
+                dialectBuilder.setStmtInsert(cboxStmtInsert.isSelected());
+                dialectBuilder.setStmtUpdate(cboxStmtUpdate.isSelected());
+                dialectBuilder.setStmtDelete(cboxStmtDelete.isSelected());
+                dialectBuilder.setStmtMerge(cboxStmtMerge.isSelected());
+                dialectBuilder.setStmtSelect(cboxStmtSelect.isSelected());
+                dialectBuilder.setStmtDeleteAll(cboxStmtDeleteAll.isSelected());
+                dialectBuilder.setStmtSelectAll(cboxStmtSelectAll.isSelected());
+                dialectBuilder.setProcInsert(cboxProcInsert.isSelected());
+                dialectBuilder.setProcUpdate(cboxProcUpdate.isSelected());
+                dialectBuilder.setProcDelete(cboxProcDelete.isSelected());
+                dialectBuilder.setProcMerge(cboxProcMerge.isSelected());
+                dialectBuilder.setProcSelect(cboxProcSelect.isSelected());
+                dialectBuilder.setProcDeleteAll(cboxProcDeleteAll.isSelected());
+                dialectBuilder.setProcSelectAll(cboxProcSelectAll.isSelected());
+                dialectBuilder.setMethodInsert(cboxMethodInsert.isSelected());
+                dialectBuilder.setMethodUpdate(cboxMethodUpdate.isSelected());
+                dialectBuilder.setMethodDelete(cboxMethodDelete.isSelected());
+                dialectBuilder.setMethodMerge(cboxMethodMerge.isSelected());
+                dialectBuilder.setMethodSelect(cboxMethodSelect.isSelected());
+                dialectBuilder.setMethodDeleteAll(cboxMethodDeleteAll.isSelected());
+                dialectBuilder.setMethodSelectAll(cboxMethodSelectAll.isSelected());
+                dialectBuilder.setDataObject(cboxDataObject.isSelected());
+                dialectBuilder.setMethodSelectPrint(cboxMethodSelectPrint.isSelected());
+                dialectBuilder.setMethodSelectAllPrint(cboxMethodSelectAllPrint.isSelected());
+
+            }
 
             sb.append(dialectBuilder.getCode());
 
@@ -432,10 +440,20 @@ public class Main
         }
     }
 
+    private SchemaDataObject getSelectedSchema()
+    {
+        return (SchemaDataObject) listSchema.getSelectedValue();
+    }
+
 
     private boolean isSchemaSelected()
     {
         return !listSchema.isSelectionEmpty();
+    }
+
+    private TableDataObject getSelectedTable()
+    {
+        return (TableDataObject) listTable.getSelectedValue();
     }
 
     private boolean isTableSelected()
@@ -667,7 +685,7 @@ public class Main
     {
         if (isSchemaSelected())
         {
-            SchemaDataObject schemaDataObject = (SchemaDataObject) listSchema.getSelectedValue();
+            SchemaDataObject schemaDataObject = getSelectedSchema();
             Integer schemaId = schemaDataObject.getSchemaId();
             String schemaName = schemaDataObject.getSchemaName();
             String s = (String) JOptionPane.showInputDialog(null, "What is your new schema name?", "New Schema", -1, null, null, schemaName);
@@ -687,7 +705,7 @@ public class Main
         {
             if (hasTableListBeenSelected())
             {
-                SchemaDataObject schemaDataObject = (SchemaDataObject) listSchema.getSelectedValue();
+                SchemaDataObject schemaDataObject = getSelectedSchema();
                 Integer schemaId = schemaDataObject.getSchemaId();
                 String schemaName = schemaDataObject.getSchemaName();
                 TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
@@ -1524,7 +1542,7 @@ public class Main
         if (isSchemaSelected())
         {
 
-            SchemaDataObject schemaDataObject = (SchemaDataObject) listSchema.getSelectedValue();
+            SchemaDataObject schemaDataObject = getSelectedSchema();
             Integer schemaId = schemaDataObject.getSchemaId();
 
             listModelTable.reload(schemaId);
@@ -1599,7 +1617,7 @@ public class Main
     {
         if (isSchemaSelected())
         {
-            SchemaDataObject schemaDataObject = (SchemaDataObject) listSchema.getSelectedValue();
+            SchemaDataObject schemaDataObject = getSelectedSchema();
             String s = (String) JOptionPane.showInputDialog(null, "What is your new schema name?", "New Schema", -1, null, null, schemaDataObject.getSchemaName());
             if (containsText(s))
             {
@@ -1616,7 +1634,7 @@ public class Main
     {
         if (isSchemaSelected())
         {
-            SchemaDataObject schemaDataObject = (SchemaDataObject) listSchema.getSelectedValue();
+            SchemaDataObject schemaDataObject = getSelectedSchema();
             Integer schemaId = schemaDataObject.getSchemaId();
             dbLink.DatabaseSchema_Delete(schemaId);
             listModelSchema.reload();
@@ -1723,7 +1741,7 @@ public class Main
 
             if (containsText(s))
             {
-                SchemaDataObject schemaDataObject = (SchemaDataObject) listSchema.getSelectedValue();
+                SchemaDataObject schemaDataObject = getSelectedSchema();
                 Integer schemaId = schemaDataObject.getSchemaId();
 
                 dbLink.DatabaseTable_Insert(schemaId, s);

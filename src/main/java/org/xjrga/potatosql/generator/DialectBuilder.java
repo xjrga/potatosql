@@ -49,6 +49,7 @@ public class DialectBuilder implements Code
     private boolean MethodSelectAllPrint;
     private int SchemaId;
     private int[] TableIds;
+    private int TableId;
     private boolean isHsqldb;
     private boolean isMysql;
     private boolean TablesDup;
@@ -61,12 +62,31 @@ public class DialectBuilder implements Code
     }
 
 
-    public void setIds(int schemaId, int[] tableIds)
+    public int getSchemaId()
     {
-        this.SchemaId = schemaId;
-        this.TableIds = tableIds;
+        return SchemaId;
     }
 
+    public void setSchemaId(int schemaId)
+    {
+        SchemaId = schemaId;
+    }
+
+    public int getTableId()
+    {
+        return TableId;
+    }
+
+    public void setTableId(int tableId)
+    {
+        TableId = tableId;
+    }
+
+
+    public void setTableIds(int[] tableIds)
+    {
+        this.TableIds = tableIds;
+    }
 
     public void setTriggerStatementAfterUpdate(boolean triggerStatementAfterUpdate)
     {
@@ -321,375 +341,392 @@ public class DialectBuilder implements Code
             createTestClass = new CreateTestClass();
         }
 
-        for (int i = 0; i < TableIds.length; i++)
+        if (Tables)
         {
-            Integer tableId = TableIds[i];
-
-            Table table = tableMaker.getTable(SchemaId, tableId);
-
-            SqlStuff sqlStuff = new SqlStuff(table);
-            TriggerStuff triggerStuff = new TriggerStuff(table);
-            DataObjectStuff dataObjectStuff = new DataObjectStuff(table);
-
-            //statement create
-            if (Tables)
+            for (int i = 0; i < TableIds.length; i++)
             {
+                Integer tableId = TableIds[i];
+                Table table = tableMaker.getTable(SchemaId, tableId);
+                SqlStuff sqlStuff = new SqlStuff(table);
+
                 CreateTable createTable = new CreateTable(table, sqlStuff);
                 sb.append(createTable.getCode());
                 sb.append("\n");
                 sb.append("\n");
-            }
 
-            if (TablesDup)
-            {
-                CreateTableDup createTableDup = new CreateTableDup(table, sqlStuff);
-                sb.append(createTableDup.getCode());
+                CreateRelationship createRelationship = new CreateRelationship(dbLink, SchemaId);
+                sb.append(createRelationship.getCode());
                 sb.append("\n");
                 sb.append("\n");
             }
 
-            //statement insert
-            if (StmtInsert)
-            {
-                StatementInsert statementInsert = new StatementInsert(table, sqlStuff);
-                sb.append(statementInsert.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        }
 
-            //statement update
-            if (StmtUpdate)
-            {
-                StatementUpdate statementUpdate = new StatementUpdate(table, sqlStuff);
-                sb.append(statementUpdate.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        Table table = tableMaker.getTable(getSchemaId(), getTableId());
 
-            //statement delete
-            if (StmtDelete)
-            {
-                StatementDelete statementDelete = new StatementDelete(table, sqlStuff);
-                sb.append(statementDelete.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        SqlStuff sqlStuff = new SqlStuff(table);
+        TriggerStuff triggerStuff = new TriggerStuff(table);
+        DataObjectStuff dataObjectStuff = new DataObjectStuff(table);
 
-            //statement merge
-            if (StmtMerge)
-            {
-                StatementMerge statementMerge = new StatementMerge(table, sqlStuff);
-                sb.append(statementMerge.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        //statement create
+        if (Tables)
+        {
+            CreateTable createTable = new CreateTable(table, sqlStuff);
+            sb.append(createTable.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            //statement select
-            if (StmtSelect)
-            {
-                StatementSelect statementSelect = new StatementSelect(table, sqlStuff);
-                sb.append(statementSelect.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (TablesDup)
+        {
+            CreateTableDup createTableDup = new CreateTableDup(table, sqlStuff);
+            sb.append(createTableDup.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            //statement deleteall
-            if (StmtDeleteAll)
-            {
-                StatementDeleteAll statementDeleteAll = new StatementDeleteAll(table, sqlStuff);
-                sb.append(statementDeleteAll.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        //statement insert
+        if (StmtInsert)
+        {
+            StatementInsert statementInsert = new StatementInsert(table, sqlStuff);
+            sb.append(statementInsert.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            //statement select all
-            if (StmtSelectAll)
-            {
-                StatementSelectAll statementSelectAll = new StatementSelectAll(table, sqlStuff);
-                sb.append(statementSelectAll.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        //statement update
+        if (StmtUpdate)
+        {
+            StatementUpdate statementUpdate = new StatementUpdate(table, sqlStuff);
+            sb.append(statementUpdate.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            //statement select count
+        //statement delete
+        if (StmtDelete)
+        {
+            StatementDelete statementDelete = new StatementDelete(table, sqlStuff);
+            sb.append(statementDelete.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (StmtCount)
-            {
-                StatementSelectCount statementSelectCount = new StatementSelectCount(table);
-                sb.append(statementSelectCount.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        //statement merge
+        if (StmtMerge)
+        {
+            StatementMerge statementMerge = new StatementMerge(table, sqlStuff);
+            sb.append(statementMerge.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (StmtCreateSelect)
-            {
-                CreateTableUsingSelect createTableUsingSelect = new CreateTableUsingSelect(table, sqlStuff);
-                sb.append(createTableUsingSelect.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        //statement select
+        if (StmtSelect)
+        {
+            StatementSelect statementSelect = new StatementSelect(table, sqlStuff);
+            sb.append(statementSelect.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (StmtInsertSelect)
-            {
-                StatementInsertUsingSelect statementInsertUsingSelect = new StatementInsertUsingSelect(table, sqlStuff);
-                sb.append(statementInsertUsingSelect.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        //statement deleteall
+        if (StmtDeleteAll)
+        {
+            StatementDeleteAll statementDeleteAll = new StatementDeleteAll(table, sqlStuff);
+            sb.append(statementDeleteAll.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (ProcInsert)
-            {
-                ProcedureInsert procedureInsert = new ProcedureInsert(table, sqlStuff);
-                sb.append(procedureInsert.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        //statement select all
+        if (StmtSelectAll)
+        {
+            StatementSelectAll statementSelectAll = new StatementSelectAll(table, sqlStuff);
+            sb.append(statementSelectAll.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (ProcUpdate)
-            {
-                ProcedureUpdate procedureUpdate = new ProcedureUpdate(table, sqlStuff);
-                sb.append(procedureUpdate.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        //statement select count
 
-            if (ProcDelete)
-            {
-                ProcedureDelete procedureDelete = new ProcedureDelete(table, sqlStuff);
-                sb.append(procedureDelete.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (StmtCount)
+        {
+            StatementSelectCount statementSelectCount = new StatementSelectCount(table);
+            sb.append(statementSelectCount.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (ProcMerge)
-            {
-                ProcedureMerge procedureMerge = new ProcedureMerge(table, sqlStuff);
-                sb.append(procedureMerge.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (StmtCreateSelect)
+        {
+            CreateTableUsingSelect createTableUsingSelect = new CreateTableUsingSelect(table, sqlStuff);
+            sb.append(createTableUsingSelect.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            //procedure select
-            if (ProcSelect)
-            {
-                ProcedureSelect procedureSelect = new ProcedureSelect(table, sqlStuff);
-                sb.append(procedureSelect.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (StmtInsertSelect)
+        {
+            StatementInsertUsingSelect statementInsertUsingSelect = new StatementInsertUsingSelect(table, sqlStuff);
+            sb.append(statementInsertUsingSelect.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (ProcDeleteAll)
-            {
-                ProcedureDeleteAll procedureDeleteAll = new ProcedureDeleteAll(table, sqlStuff);
-                sb.append(procedureDeleteAll.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (ProcInsert)
+        {
+            ProcedureInsert procedureInsert = new ProcedureInsert(table, sqlStuff);
+            sb.append(procedureInsert.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (ProcSelectAll)
-            {
-                ProcedureSelectAll procedureSelectAll = new ProcedureSelectAll(table, sqlStuff);
-                sb.append(procedureSelectAll.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (ProcUpdate)
+        {
+            ProcedureUpdate procedureUpdate = new ProcedureUpdate(table, sqlStuff);
+            sb.append(procedureUpdate.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (FunctionCount)
-            {
-                FunctionCount functionCount = new FunctionCount(table);
-                sb.append(functionCount.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (ProcDelete)
+        {
+            ProcedureDelete procedureDelete = new ProcedureDelete(table, sqlStuff);
+            sb.append(procedureDelete.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
+
+        if (ProcMerge)
+        {
+            ProcedureMerge procedureMerge = new ProcedureMerge(table, sqlStuff);
+            sb.append(procedureMerge.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
+
+        //procedure select
+        if (ProcSelect)
+        {
+            ProcedureSelect procedureSelect = new ProcedureSelect(table, sqlStuff);
+            sb.append(procedureSelect.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
+
+        if (ProcDeleteAll)
+        {
+            ProcedureDeleteAll procedureDeleteAll = new ProcedureDeleteAll(table, sqlStuff);
+            sb.append(procedureDeleteAll.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
+
+        if (ProcSelectAll)
+        {
+            ProcedureSelectAll procedureSelectAll = new ProcedureSelectAll(table, sqlStuff);
+            sb.append(procedureSelectAll.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
+
+        if (FunctionCount)
+        {
+            FunctionCount functionCount = new FunctionCount(table);
+            sb.append(functionCount.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
 
-            if (MethodInsert)
-            {
-                MethodProcedureInsert methodProcedureInsert = new MethodProcedureInsert(table);
-                String code = methodProcedureInsert.getCode();
-                //createTestClass.addMethod(code);
-                sb.append(code);
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (MethodInsert)
+        {
+            MethodProcedureInsert methodProcedureInsert = new MethodProcedureInsert(table);
+            String code = methodProcedureInsert.getCode();
+            //createTestClass.addMethod(code);
+            sb.append(code);
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (MethodUpdate)
-            {
-                MethodProcedureUpdate methodProcedureUpdate = new MethodProcedureUpdate(table);
-                String code = methodProcedureUpdate.getCode();
-                //createTestClass.addMethod(code);
-                sb.append(code);
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (MethodUpdate)
+        {
+            MethodProcedureUpdate methodProcedureUpdate = new MethodProcedureUpdate(table);
+            String code = methodProcedureUpdate.getCode();
+            //createTestClass.addMethod(code);
+            sb.append(code);
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (MethodDelete)
-            {
-                MethodProcedureDelete methodProcedureDelete = new MethodProcedureDelete(table);
-                String code = methodProcedureDelete.getCode();
-                //createTestClass.addMethod(code);
-                sb.append(code);
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (MethodDelete)
+        {
+            MethodProcedureDelete methodProcedureDelete = new MethodProcedureDelete(table);
+            String code = methodProcedureDelete.getCode();
+            //createTestClass.addMethod(code);
+            sb.append(code);
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (MethodMerge)
-            {
-                MethodProcedureMerge methodProcedureMerge = new MethodProcedureMerge(table);
-                String code = methodProcedureMerge.getCode();
-                //createTestClass.addMethod(code);
-                sb.append(code);
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (MethodMerge)
+        {
+            MethodProcedureMerge methodProcedureMerge = new MethodProcedureMerge(table);
+            String code = methodProcedureMerge.getCode();
+            //createTestClass.addMethod(code);
+            sb.append(code);
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (MethodSelect)
-            {
-                MethodProcedureSelect methodProcedureSelect = new MethodProcedureSelect(table);
-                String code = methodProcedureSelect.getCode();
-                //createTestClass.addMethod(code);
-                sb.append(code);
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (MethodSelect)
+        {
+            MethodProcedureSelect methodProcedureSelect = new MethodProcedureSelect(table);
+            String code = methodProcedureSelect.getCode();
+            //createTestClass.addMethod(code);
+            sb.append(code);
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (MethodSelectPrint)
-            {
-                MethodProcedureSelectPrint methodProcedureSelectPrint = new MethodProcedureSelectPrint(table);
-                String code = methodProcedureSelectPrint.getCode();
-                //createTestClass.addMethod(code);
-                sb.append(code);
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (MethodSelectPrint)
+        {
+            MethodProcedureSelectPrint methodProcedureSelectPrint = new MethodProcedureSelectPrint(table);
+            String code = methodProcedureSelectPrint.getCode();
+            //createTestClass.addMethod(code);
+            sb.append(code);
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (MethodDeleteAll)
-            {
-                MethodProcedureDeleteAll methodProcedureDeleteAll = new MethodProcedureDeleteAll(table);
-                String code = methodProcedureDeleteAll.getCode();
-                //createTestClass.addMethod(code);
-                sb.append(code);
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (MethodDeleteAll)
+        {
+            MethodProcedureDeleteAll methodProcedureDeleteAll = new MethodProcedureDeleteAll(table);
+            String code = methodProcedureDeleteAll.getCode();
+            //createTestClass.addMethod(code);
+            sb.append(code);
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (MethodSelectAll)
-            {
-                MethodProcedureSelectAll methodProcedureSelectAll = new MethodProcedureSelectAll(table);
-                String code = methodProcedureSelectAll.getCode();
-                //createTestClass.addMethod(code);
-                sb.append(code);
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (MethodSelectAll)
+        {
+            MethodProcedureSelectAll methodProcedureSelectAll = new MethodProcedureSelectAll(table);
+            String code = methodProcedureSelectAll.getCode();
+            //createTestClass.addMethod(code);
+            sb.append(code);
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (MethodSelectAllPrint)
-            {
-                MethodProcedureSelectAllPrint methodProcedureSelectAllPrint = new MethodProcedureSelectAllPrint(table);
-                String code = methodProcedureSelectAllPrint.getCode();
-                //createTestClass.addMethod(code);
-                sb.append(code);
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (MethodSelectAllPrint)
+        {
+            MethodProcedureSelectAllPrint methodProcedureSelectAllPrint = new MethodProcedureSelectAllPrint(table);
+            String code = methodProcedureSelectAllPrint.getCode();
+            //createTestClass.addMethod(code);
+            sb.append(code);
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (MethodFunctionCount)
-            {
-                MethodFunctionCount methodFunctionCount = new MethodFunctionCount(table);
-                String code = methodFunctionCount.getCode();
-                //createTestClass.addMethod(code);
-                sb.append(code);
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (MethodFunctionCount)
+        {
+            MethodFunctionCount methodFunctionCount = new MethodFunctionCount(table);
+            String code = methodFunctionCount.getCode();
+            //createTestClass.addMethod(code);
+            sb.append(code);
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (Views)
-            {
-                CreateView createView = new CreateView(table, sqlStuff);
-                sb.append(createView.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (Views)
+        {
+            CreateView createView = new CreateView(table, sqlStuff);
+            sb.append(createView.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (TriggerRowBeforeInsert)
-            {
-                TriggerRowBeforeInsert triggerRowBeforeInsert = new TriggerRowBeforeInsert(table, triggerStuff);
-                sb.append(triggerRowBeforeInsert.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (TriggerRowBeforeInsert)
+        {
+            TriggerRowBeforeInsert triggerRowBeforeInsert = new TriggerRowBeforeInsert(table, triggerStuff);
+            sb.append(triggerRowBeforeInsert.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (TriggerRowBeforeUpdate)
-            {
-                TriggerRowBeforeUpdate triggerRowBeforeUpdate = new TriggerRowBeforeUpdate(table, triggerStuff);
-                sb.append(triggerRowBeforeUpdate.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (TriggerRowBeforeUpdate)
+        {
+            TriggerRowBeforeUpdate triggerRowBeforeUpdate = new TriggerRowBeforeUpdate(table, triggerStuff);
+            sb.append(triggerRowBeforeUpdate.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (TriggerRowBeforeDelete)
-            {
-                TriggerRowBeforeDelete triggerRowBeforeDelete = new TriggerRowBeforeDelete(table, triggerStuff);
-                sb.append(triggerRowBeforeDelete.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (TriggerRowBeforeDelete)
+        {
+            TriggerRowBeforeDelete triggerRowBeforeDelete = new TriggerRowBeforeDelete(table, triggerStuff);
+            sb.append(triggerRowBeforeDelete.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (TriggerRowAfterInsert)
-            {
-                TriggerRowAfterInsert triggerRowAfterInsert = new TriggerRowAfterInsert(table, triggerStuff);
-                sb.append(triggerRowAfterInsert.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (TriggerRowAfterInsert)
+        {
+            TriggerRowAfterInsert triggerRowAfterInsert = new TriggerRowAfterInsert(table, triggerStuff);
+            sb.append(triggerRowAfterInsert.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (TriggerRowAfterUpdate)
-            {
-                TriggerRowAfterUpdate triggerRowAfterUpdate = new TriggerRowAfterUpdate(table, triggerStuff);
-                sb.append(triggerRowAfterUpdate.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (TriggerRowAfterUpdate)
+        {
+            TriggerRowAfterUpdate triggerRowAfterUpdate = new TriggerRowAfterUpdate(table, triggerStuff);
+            sb.append(triggerRowAfterUpdate.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (TriggerRowAfterDelete)
-            {
-                TriggerRowAfterDelete triggerRowAfterDelete = new TriggerRowAfterDelete(table, triggerStuff);
-                sb.append(triggerRowAfterDelete.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (TriggerRowAfterDelete)
+        {
+            TriggerRowAfterDelete triggerRowAfterDelete = new TriggerRowAfterDelete(table, triggerStuff);
+            sb.append(triggerRowAfterDelete.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (TriggerStatementAfterInsert)
-            {
-                TriggerStatementAfterInsert triggerStatementAfterInsert = new TriggerStatementAfterInsert(table, triggerStuff);
-                sb.append(triggerStatementAfterInsert.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (TriggerStatementAfterInsert)
+        {
+            TriggerStatementAfterInsert triggerStatementAfterInsert = new TriggerStatementAfterInsert(table, triggerStuff);
+            sb.append(triggerStatementAfterInsert.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (TriggerStatementAfterUpdate)
-            {
-                TriggerStatementAfterUpdate triggerStatementAfterUpdate = new TriggerStatementAfterUpdate(table, triggerStuff);
-                sb.append(triggerStatementAfterUpdate.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (TriggerStatementAfterUpdate)
+        {
+            TriggerStatementAfterUpdate triggerStatementAfterUpdate = new TriggerStatementAfterUpdate(table, triggerStuff);
+            sb.append(triggerStatementAfterUpdate.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (TriggerStatementAfterDelete)
-            {
-                TriggerStatementAfterDelete triggerStatementAfterDelete = new TriggerStatementAfterDelete(table, triggerStuff);
-                sb.append(triggerStatementAfterDelete.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (TriggerStatementAfterDelete)
+        {
+            TriggerStatementAfterDelete triggerStatementAfterDelete = new TriggerStatementAfterDelete(table, triggerStuff);
+            sb.append(triggerStatementAfterDelete.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
-            if (DataObject)
-            {
-                DataObject dataObject = new DataObject(table, dataObjectStuff);
-                sb.append(dataObject.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
+        if (DataObject)
+        {
+            DataObject dataObject = new DataObject(table, dataObjectStuff);
+            sb.append(dataObject.getCode());
+            sb.append("\n");
+            sb.append("\n");
+        }
 
             /*if (TestClass)
             {
@@ -698,7 +735,6 @@ public class DialectBuilder implements Code
                 createTestClass.addCallMethod(methodListStuff.getToString());
 
             }*/
-        }
 
         //relationship create
         if (Tables)
