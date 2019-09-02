@@ -89,6 +89,10 @@ ALTER TABLE Relationship ADD CONSTRAINT RelationshipType_Relationship_Relationsh
 /
 ALTER TABLE RelationshipKeyPair ADD CONSTRAINT Relationship_RelationshipKeyPair_Relationship FOREIGN KEY ( SchemaId,Parent_TableId,Child_TableId,RelationshipId ) REFERENCES Relationship ( SchemaId,Parent_TableId,Child_TableId,RelationshipId ) ON DELETE CASCADE;
 /
+ALTER TABLE Relationship ADD CONSTRAINT DatabaseTable_Relationship_Relationship_1 FOREIGN KEY (SchemaId, Parent_TableId ) REFERENCES DatabaseTable (SchemaId, TableId ) ON DELETE CASCADE;
+/
+ALTER TABLE Relationship ADD CONSTRAINT DatabaseTable_Relationship_Relationship_2 FOREIGN KEY (SchemaId, Child_TableId ) REFERENCES DatabaseTable (SchemaId, TableId ) ON DELETE CASCADE;
+/
 
 
 

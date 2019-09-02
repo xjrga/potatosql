@@ -18,11 +18,27 @@ public class HsqldbTypeToJavaType
         map.put("DOUBLE", 3);
         map.put("VARCHAR", 4);
         map.put("BOOLEAN", 5);
-        map.put("BLOB", 6);
-        map.put("DATE", 7);
-        map.put("TIME", 8);
-        map.put("TIMESTAMP", 9);
+        map.put("DATE", 6);
+        map.put("TIME", 7);
+        map.put("TIMESTAMP", 8);
+        map.put("DECIMAL", 9);
+        map.put("LONGVARCHAR", 10);
+        map.put("BLOB", 11);
+        map.put("CLOB", 12);
 
+        /*  0	IDENTITY
+            1	INTEGER
+            2	DOUBLE
+            3	VARCHAR
+            4	BOOLEAN
+            5	DATE
+            6	TIME
+            7	TIMESTAMP
+            8	DECIMAL
+            9	LONGVARCHAR
+            10	BLOB
+            11	CLOB
+        */
     }
 
 
@@ -49,16 +65,25 @@ public class HsqldbTypeToJavaType
                 javaType = "Boolean";
                 break;
             case 6:
-                javaType = "byte[]";
-                break;
-            case 7:
                 javaType = "Date";
                 break;
-            case 8:
+            case 7:
                 javaType = "Time";
                 break;
-            case 9:
+            case 8:
                 javaType = "Timestamp";
+                break;
+            case 9:
+                javaType = "BigDecimal";
+                break;
+            case 10:
+                javaType = "String";
+                break;
+            case 11:
+                javaType = "Blob";
+                break;
+            case 12:
+                javaType = "Clob";
                 break;
             default:
                 javaType = "Object";
