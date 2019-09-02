@@ -327,7 +327,7 @@ public class Main
 
     private JPanel getMainPanel()
     {
-        FormLayout layout = new FormLayout("min,min:grow", //columns
+        FormLayout layout = new FormLayout("min,min,min:grow", //columns
                 "fill:min:grow" //rows
         );
         FormLayout panelWrapperLayout = new FormLayout("min:grow,min", //columns
@@ -342,7 +342,7 @@ public class Main
         panel.setLayout(layout);
         tabbedPane.setTabPlacement(SwingConstants.BOTTOM);
 
-        tabbedPane.add(getPanelInput1());
+        tabbedPane.add(getPanelTableKeys());
         tabbedPane.add(getPanelInput2());
         tabbedPane.add(getPanelOutput());
         tabbedPane.setTitleAt(0, "Table");
@@ -351,7 +351,8 @@ public class Main
         panelWrapper.add(tabbedPane, cc.xyw(1, 1, 2));
         panelWrapper.add(btnGenerate, cc.xy(2, 2));
         panel.add(getPanelSchema(), cc.xy(1, 1));
-        panel.add(panelWrapper, cc.xy(2, 1));
+        panel.add(getPanelTable(), cc.xy(2, 1));
+        panel.add(panelWrapper, cc.xy(3, 1));
 
         btnGenerate.addActionListener(e -> btnGenerate_actionPerformed());
 
@@ -703,23 +704,6 @@ public class Main
             }
         }
     }
-
-
-    private JPanel getPanelInput1()
-    {
-        FormLayout layout = new FormLayout("min,min:grow", //columns
-                "fill:min:grow" //rows
-        );
-        JPanel panel = new JPanel();
-
-        panel.setLayout(layout);
-
-        panel.add(getPanelTable(), cc.xy(1, 1));
-        panel.add(getPanelTableKeys(), cc.xy(2, 1));
-
-        return panel;
-    }
-
 
     private JPanel getPanelInput2()
     {
