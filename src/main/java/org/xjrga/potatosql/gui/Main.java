@@ -189,7 +189,7 @@ public class Main
 
     private void initialize()
     {
-        cboxTablesDup = new JCheckBox("Duplicate Tables For Testing Triggers");
+        cboxTablesDup = new JCheckBox("Duplicate Table To Test Trigger");
         cboxStmtCreateSelect = new JCheckBox("Create Table As Select");
         cboxStmtInsertSelect = new JCheckBox("Insert Using Select");
         cboxStmtCount = new JCheckBox("");
@@ -204,9 +204,9 @@ public class Main
         cboxTriggerRowAfterInsert = new JCheckBox("");
         cboxTriggerRowAfterUpdate = new JCheckBox("");
         cboxTriggerRowAfterDelete = new JCheckBox("");
-        cboxViews = new JCheckBox("Views");
+        cboxViews = new JCheckBox("View");
         cboxTestClass = new JCheckBox("Test Class");
-        cboxDataObject = new JCheckBox("Data Objects");
+        cboxDataObject = new JCheckBox("Data Object");
         cboxTables = new JCheckBox("Tables and Relationships");
         cboxStmtInsert = new JCheckBox("");
         cboxStmtUpdate = new JCheckBox("");
