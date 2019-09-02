@@ -375,6 +375,15 @@ public class DbLink
         return procRunner.callProcedureR(sql, parameterList.toArray());
     }
 
+    public List<Map<String, Object>> Relationship_Multiple_Select_2(Integer SchemaId,Integer TableId)
+    {
+
+        String sql = "{CALL public.Relationship_Multiple_Select_2(?,?)}";
+        LinkedList<Object> parameterList = new LinkedList<>();
+        parameterList.add(SchemaId);
+        parameterList.add(TableId);
+        return procRunner.callProcedureR(sql, parameterList.toArray());
+    }
 
     public void RelationshipKeyPair_Insert(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId, Integer Parent_KeyId, Integer Child_KeyId)
     {

@@ -906,13 +906,15 @@ public class Main
     {
         if (hasTableListBeenSelected())
         {
-
             TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
             Integer schemaId = tableDataObject.getSchemaId();
             Integer tableId = tableDataObject.getTableId();
             tableModelKeys.reload(schemaId, tableId);
             hideTableKeysColumns();
-
+            tableModelRelationship.reload(schemaId,tableId);
+            hideTableRelationshipColumns();
+            tableModelRelationshipKeyPair.clear();
+            hideTableRelationshipKeyPairColumns();
         }
     }
 

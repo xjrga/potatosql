@@ -187,6 +187,66 @@ public class TableModelRelationship extends DefaultTableModel
 
     }
 
+    public void reload(int schemaid,int tableid)
+    {
+
+        Vector table = new Vector();
+
+        LinkedList list = (LinkedList) dbLink.Relationship_Multiple_Select_2(schemaid,tableid);
+
+        Iterator it = list.iterator();
+
+        while (it.hasNext())
+        {
+
+            HashMap row_hashmap = (HashMap) it.next();
+
+            /*
+            *   SchemaId,
+                Parent_TableId,
+                b.Name as Parent,
+                Child_TableId,
+                c.Name as Child,
+                RelationshipTypeId,
+                RelationshipId,
+                d.Name as RelationshipTypeName,
+                a.Nameas as RelationshipName,
+                a.ForwardVerbPhrase,
+                a.ReverseVerbPhrase
+            *
+            * */
+            //schemaid = (Integer)row_hashmap.get("SCHEMAID");
+            Integer parent_tableid = (Integer) row_hashmap.get("PARENT_TABLEID");
+            String parent = (String) row_hashmap.get("PARENT");
+            Integer child_tableid = (Integer) row_hashmap.get("CHILD_TABLEID");
+            String child = (String) row_hashmap.get("CHILD");
+            Integer relationshiptypeid = (Integer) row_hashmap.get("RELATIONSHIPTYPEID");
+            Integer relationshipid = (Integer) row_hashmap.get("RELATIONSHIPID");
+            String relationshiptypename = (String) row_hashmap.get("RELATIONSHIPTYPENAME");
+            String relationshipname = (String) row_hashmap.get("RELATIONSHIPNAME");
+            String forwardverbphrase = (String) row_hashmap.get("FORWARDVERBPHRASE");
+            String reverseverbphrase = (String) row_hashmap.get("REVERSEVERBPHRASE");
+
+            Vector row_vector = new Vector();
+
+            row_vector.add(relationshipid);
+            row_vector.add(schemaid);
+            row_vector.add(parent_tableid);
+            row_vector.add(parent);
+            row_vector.add(child_tableid);
+            row_vector.add(child);
+            row_vector.add(relationshiptypeid);
+            row_vector.add(relationshiptypename);
+            row_vector.add(relationshipname);
+            row_vector.add(forwardverbphrase);
+            row_vector.add(reverseverbphrase);
+
+            table.add(row_vector);
+        }
+
+        this.setDataVector(table, columns);
+
+    }
 
     public void clear()
     {
