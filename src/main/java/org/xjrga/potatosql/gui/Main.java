@@ -1480,6 +1480,8 @@ public class Main
                     hideTableRelationshipKeyPairColumns();
                 }
             }
+        }else{
+            showMessage("Select relationship.");
         }
     }
 
