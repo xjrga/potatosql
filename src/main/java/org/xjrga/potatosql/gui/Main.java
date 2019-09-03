@@ -1229,7 +1229,7 @@ public class Main
             }
 
             dbLink.Relationship_Insert(schemaid, parent_tableid, child_tableid, relationshiptypeid, relationShipName, forwardVerbPhrase, reverseVerbPhrase);
-            tableModelRelationship.reload(schemaid);
+            tableModelRelationship.reload(schemaid,parent_tableid);
             hideTableRelationshipColumns();
         }
     }
@@ -1332,7 +1332,7 @@ public class Main
             Integer relationshiptypeid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 6);
 
             dbLink.Relationship_Delete(schemaid, parent_tableid, child_tableid, relationshipid);
-            tableModelRelationship.reload(schemaid);
+            tableModelRelationship.reload(schemaid,parent_tableid);
             tableModelRelationshipKeyPair.reload(schemaid, parent_tableid, child_tableid, relationshipid);
             hideTableRelationshipColumns();
             hideTableRelationshipKeyPairColumns();
