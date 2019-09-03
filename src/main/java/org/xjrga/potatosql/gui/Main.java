@@ -2219,7 +2219,11 @@ public class Main
                 "min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu" //rows
         );
 
-        FormLayout layoutSchema = new FormLayout("min", //columns
+        FormLayout layoutSchemaSql = new FormLayout("min", //columns
+                "min,10dlu,min,10dlu" //rows
+        );
+
+        FormLayout layoutOtherJava = new FormLayout("min", //columns
                 "min,10dlu,min,10dlu" //rows
         );
 
@@ -2239,7 +2243,8 @@ public class Main
         JPanel paneJava02 = new JPanel();
         JPanel paneSql01 = new JPanel();
         JPanel paneSql02 = new JPanel();
-        JPanel pnlSchema = new JPanel();
+        JPanel pnlSchemaSql = new JPanel();
+        JPanel pnlOtherJava = new JPanel();
         JPanel pnlTableJava = new JPanel();
         JPanel pnlTableSql = new JPanel();
         JPanel panel = new JPanel();
@@ -2253,16 +2258,18 @@ public class Main
         pnlTableJava.setLayout(layoutJava);
         pnlTableSql.setLayout(layoutSql);
         panel.setLayout(layout);
-        pnlSchema.setLayout(layoutSchema);
+        pnlSchemaSql.setLayout(layoutSchemaSql);
+        pnlOtherJava.setLayout(layoutOtherJava);
 
         pnlTableJava.add(paneJava01, cc.xy(2, 2));
         pnlTableJava.add(paneJava02, cc.xy(2, 4));
         pnlTableSql.add(paneSql01, cc.xy(2, 2));
         pnlTableSql.add(paneSql02, cc.xy(2, 4));
 
-        tabbedPane.add(pnlSchema, "Schema / Sql");
+        tabbedPane.add(pnlSchemaSql, "Schema / Sql");
         tabbedPane.add(pnlTableSql, "Table / Sql");
         tabbedPane.add(pnlTableJava, "Table / Java");
+        tabbedPane.add(pnlOtherJava, "Other / Java");
 
         panel.add(tabbedPane, cc.xyw(1, 1, 2));
         panel.add(clear, cc.xy(2, 2));
@@ -2302,7 +2309,9 @@ public class Main
         JLabel label_Method2 = new JLabel("Method");
         JLabel label_MethodPrint2 = new JLabel("Method Print");
 
-        pnlSchema.add(cboxTables, cc.xy(1, 1));
+        pnlSchemaSql.add(cboxTables, cc.xy(1, 1));
+
+        pnlOtherJava.add(cboxTestClass, cc.xy(1, 1));
 
         paneSql01.add(cboxTablesDup, cc.xy(1, 3));
         paneSql01.add(cboxViews, cc.xy(1, 5));
@@ -2348,7 +2357,6 @@ public class Main
         paneSql02.add(cboxTriggerRowAfterUpdate, cc.xy(5, 11));
         paneSql02.add(cboxTriggerRowAfterDelete, cc.xy(7, 11));
 
-        paneJava01.add(cboxTestClass, cc.xy(1, 1));
         paneJava01.add(cboxDataObject, cc.xy(1, 3));
 
         //first row
