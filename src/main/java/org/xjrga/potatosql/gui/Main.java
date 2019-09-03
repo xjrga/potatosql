@@ -498,15 +498,18 @@ public class Main
         JMenu mnuKey = new JMenu();
         JMenu mnuOutput = new JMenu();
         JMenu mnuDialect = new JMenu();
+        JMenu mnuHelp = new JMenu();
         JMenuItem mnuiExit = new JMenuItem();
         JMenuItem mnuiSchemaCopy = new JMenuItem();
         JMenuItem mnuiTableCopy = new JMenuItem();
         JMenuItem mnuiTableImportData = new JMenuItem();
         JMenuItem mnuiKeyCopy = new JMenuItem();
         ButtonGroup dialectGroup = new ButtonGroup();
-
         dialectGroup.add(mnuiDialectHsqldb);
         dialectGroup.add(mnuiDialectMysql);
+        JMenuItem mnuiGuide = new JMenuItem();
+        JMenuItem mnuiCredits = new JMenuItem();
+        JMenuItem mnuiAbout = new JMenuItem();
 
         menuBar.add(mnuProgram);
         menuBar.add(mnuSchema);
@@ -514,6 +517,7 @@ public class Main
         menuBar.add(mnuKey);
         menuBar.add(mnuOutput);
         menuBar.add(mnuDialect);
+        menuBar.add(mnuHelp);
 
         mnuProgram.add(mnuiExit);
         mnuSchema.add(mnuiSchemaCopy);
@@ -523,6 +527,9 @@ public class Main
         mnuOutput.add(mnuiOptions);
         mnuDialect.add(mnuiDialectHsqldb);
         mnuDialect.add(mnuiDialectMysql);
+        mnuHelp.add(mnuiGuide);
+        mnuHelp.add(mnuiCredits);
+        mnuHelp.add(mnuiAbout);
 
         mnuProgram.setText("Program");
         mnuSchema.setText("Schema");
@@ -530,6 +537,8 @@ public class Main
         mnuKey.setText("Key");
         mnuOutput.setText("Output");
         mnuDialect.setText("Dialect");
+        mnuHelp.setText("Help");
+
         mnuiExit.setText("Exit");
         mnuiSchemaCopy.setText("Duplicate");
         mnuiTableCopy.setText("Duplicate");
@@ -538,8 +547,10 @@ public class Main
         mnuiOptions.setText("Options");
         mnuiDialectHsqldb.setText("Hsqldb");
         mnuiDialectMysql.setText("Mysql");
-
         mnuiDialectHsqldb.setSelected(true);
+        mnuiGuide.setText("Guide");
+        mnuiCredits.setText("Credits");
+        mnuiAbout.setText("About");
 
         mnuiOptions.addActionListener(new ActionListener()
         {
