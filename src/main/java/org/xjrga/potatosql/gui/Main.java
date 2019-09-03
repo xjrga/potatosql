@@ -1268,7 +1268,7 @@ public class Main
             String reverseVerbPhrase = (String) tableRelationshipFacts.getValueAt(selectedRow, 10);
             TableDataObject tableDataObject_Parent = new TableDataObject(schemaid, parent_tableid, parent);
             TableDataObject tableDataObject_Child = new TableDataObject(schemaid, child_tableid, child);
-
+            listModelTableOne.reload(schemaid,parent_tableid);
             listParent.setSelectedValue(tableDataObject_Parent, true);
             listChild.setSelectedValue(tableDataObject_Child, true);
             txtRelationshipName.setText(relationshipname);
