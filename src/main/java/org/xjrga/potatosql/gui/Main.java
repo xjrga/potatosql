@@ -2241,33 +2241,34 @@ public class Main
 
         JPanel paneJava01 = new JPanel();
         JPanel paneJava02 = new JPanel();
-        JPanel paneSql01 = new JPanel();
+        JPanel pnlTableSql01 = new JPanel();
         JPanel paneSql02 = new JPanel();
         JPanel pnlSchemaSql = new JPanel();
         JPanel pnlOtherJava = new JPanel();
         JPanel pnlTableJava = new JPanel();
-        JPanel pnlTableSql = new JPanel();
+        JPanel pnlTableSql02 = new JPanel();
         JPanel panel = new JPanel();
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
 
         paneJava01.setLayout(layoutJava01);
         paneJava02.setLayout(layoutJava02);
-        paneSql01.setLayout(layoutSql01);
+        pnlTableSql01.setLayout(layoutSql01);
         paneSql02.setLayout(layoutSql02);
         pnlTableJava.setLayout(layoutJava);
-        pnlTableSql.setLayout(layoutSql);
+        pnlTableSql02.setLayout(layoutSql);
         panel.setLayout(layout);
         pnlSchemaSql.setLayout(layoutSchemaSql);
         pnlOtherJava.setLayout(layoutOtherJava);
 
         pnlTableJava.add(paneJava01, cc.xy(2, 2));
         pnlTableJava.add(paneJava02, cc.xy(2, 4));
-        pnlTableSql.add(paneSql01, cc.xy(2, 2));
-        pnlTableSql.add(paneSql02, cc.xy(2, 4));
+        pnlTableSql02.add(pnlTableSql01, cc.xy(2, 2));
+        pnlTableSql02.add(paneSql02, cc.xy(2, 4));
 
         tabbedPane.add(pnlSchemaSql, "Schema / Sql");
-        tabbedPane.add(pnlTableSql, "Table / Sql");
+        tabbedPane.add(pnlTableSql01, "Table / Sql (1)");
+        tabbedPane.add(pnlTableSql02, "Table / Sql (2)");
         tabbedPane.add(pnlTableJava, "Table / Java");
         tabbedPane.add(pnlOtherJava, "Other / Java");
 
@@ -2313,10 +2314,10 @@ public class Main
 
         pnlOtherJava.add(cboxTestClass, cc.xy(1, 1));
 
-        paneSql01.add(cboxTablesDup, cc.xy(1, 3));
-        paneSql01.add(cboxViews, cc.xy(1, 5));
-        paneSql01.add(cboxStmtCreateSelect, cc.xy(1, 7));
-        paneSql01.add(cboxStmtInsertSelect, cc.xy(1, 9));
+        pnlTableSql01.add(cboxTablesDup, cc.xy(1, 3));
+        pnlTableSql01.add(cboxViews, cc.xy(1, 5));
+        pnlTableSql01.add(cboxStmtCreateSelect, cc.xy(1, 7));
+        pnlTableSql01.add(cboxStmtInsertSelect, cc.xy(1, 9));
 
         paneSql02.add(label_Insert, cc.xy(3, 1));
         paneSql02.add(label_Update, cc.xy(5, 1));
