@@ -101,6 +101,7 @@ public class Main
     private ListModelParentNPK listModelParentNPK;
     private ListModelParentPK listModelParentPK;
     private ListModelSchema listModelSchema;
+    private ListModelTable listModelTableOne;
     private ListModelTable listModelTable;
     private TableModelKeys tableModelKeys;
     private TableModelRelationshipKeyPair tableModelRelationshipKeyPair;
@@ -265,8 +266,9 @@ public class Main
         textArea = new JTextArea();
         listTable = new JList<>();
         listTable.setValueIsAdjusting(true);
+        listModelTableOne = new ListModelTable(dbLink);
         listModelTable = new ListModelTable(dbLink);
-        listParent.setModel(listModelTable);
+        listParent.setModel(listModelTableOne);
         listChild.setModel(listModelTable);
         listTable.setModel(listModelTable);
         tableKeys = new JTable();
@@ -1202,6 +1204,10 @@ public class Main
     {
         clearPanelRelationshipInput();
 
+        SchemaDataObject schemaDataObject = getSelectedSchema();
+        TableDataObject tableDataObject = getSelectedTable();
+        listModelTableOne.reload(schemaDataObject.getSchemaId(),tableDataObject.getTableId());
+
         JPanel panelRelationshipInput = getPanelRelationshipInput();
 
         panelRelationshipInput.setPreferredSize(new Dimension(700, 433));
@@ -1236,8 +1242,6 @@ public class Main
 
     private void clearPanelRelationshipInput()
     {
-        listParent.setSelectedValue(listParent.getModel().getElementAt(0), true);
-        listChild.setSelectedValue(listChild.getModel().getElementAt(0), true);
         txtRelationshipName.setText("");
         txtForward.setText("");
         txtReverse.setText("");

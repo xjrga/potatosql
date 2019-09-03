@@ -64,4 +64,25 @@ public class ListModelTable extends DefaultListModel
 
     }
 
+    public void reload(Integer schemaId, Integer tableId)
+    {
+
+        this.clear();
+
+        LinkedList list = (LinkedList) dbLink.DatabaseTable_Select(schemaId,tableId);
+        Iterator it = list.iterator();
+
+        while (it.hasNext())
+        {
+
+            HashMap row = (HashMap) it.next();
+            Integer schemaid = (Integer) row.get("SCHEMAID");
+            Integer tableid = (Integer) row.get("TABLEID");
+            String name = (String) row.get("NAME");
+            TableDataObject tableDataObject = new TableDataObject(schemaid, tableid, name);
+
+            this.addElement(tableDataObject);
+        }
+
+    }
 }

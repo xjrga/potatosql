@@ -126,7 +126,6 @@ public class DbLink
         return procRunner.callProcedureR(sql, parameterList.toArray());
     }
 
-
     public List<Map<String, Object>> DatabaseTable_Select(Integer SchemaId, Integer TableId)
     {
 
