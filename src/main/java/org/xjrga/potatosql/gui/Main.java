@@ -2220,7 +2220,7 @@ public class Main
         );
 
         FormLayout layoutSchemaSql = new FormLayout("min", //columns
-                "min,min" //rows
+                "min,min,min,min,min,min" //rows
         );
 
         FormLayout layoutOtherJava = new FormLayout("min", //columns
@@ -2305,7 +2305,8 @@ public class Main
         JLabel label_MethodPrint2 = new JLabel("Method Print");
 
         pnlSchemaSql.add(cboxTables, cc.xy(1, 1));
-        pnlSchemaSql.add(new JCheckBox("Hello, world!"), cc.xy(1, 2));
+        pnlSchemaSql.add(new JCheckBox("Create Schema"), cc.xy(1, 2));
+        pnlSchemaSql.add(new JCheckBox("Drop Schema"), cc.xy(1, 3));
 
         pnlOtherJava.add(cboxTestClass, cc.xy(1, 1));
 
