@@ -2219,6 +2219,10 @@ public class Main
                 "min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu" //rows
         );
 
+        FormLayout layoutSchema = new FormLayout("min", //columns
+                "min,10dlu,min,10dlu" //rows
+        );
+
         FormLayout layoutJava = new FormLayout("20dlu,min:grow,20dlu", //columns
                 "20dlu,min,5dlu,min,20dlu" //rows
         );
@@ -2235,32 +2239,33 @@ public class Main
         JPanel paneJava02 = new JPanel();
         JPanel paneSql01 = new JPanel();
         JPanel paneSql02 = new JPanel();
-        JPanel paneJava = new JPanel();
-        JPanel paneSql = new JPanel();
+        JPanel pnlSchema = new JPanel();
+        JPanel pnlTableJava = new JPanel();
+        JPanel pnlTableSql = new JPanel();
         JPanel panel = new JPanel();
         JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
 
         paneJava01.setLayout(layoutJava01);
         paneJava02.setLayout(layoutJava02);
         paneSql01.setLayout(layoutSql01);
         paneSql02.setLayout(layoutSql02);
-        paneJava.setLayout(layoutJava);
-        paneSql.setLayout(layoutSql);
+        pnlTableJava.setLayout(layoutJava);
+        pnlTableSql.setLayout(layoutSql);
         panel.setLayout(layout);
+        pnlSchema.setLayout(layoutSchema);
 
-        paneJava.add(paneJava01, cc.xy(2, 2));
-        paneJava.add(paneJava02, cc.xy(2, 4));
-        paneSql.add(paneSql01, cc.xy(2, 2));
-        paneSql.add(paneSql02, cc.xy(2, 4));
-        tabbedPane.add(paneSql, "Pl/Sql");
-        tabbedPane.add(paneJava, "Java");
+        pnlTableJava.add(paneJava01, cc.xy(2, 2));
+        pnlTableJava.add(paneJava02, cc.xy(2, 4));
+        pnlTableSql.add(paneSql01, cc.xy(2, 2));
+        pnlTableSql.add(paneSql02, cc.xy(2, 4));
+
+        tabbedPane.add(pnlSchema, "Schema / Sql");
+        tabbedPane.add(pnlTableSql, "Table / Sql");
+        tabbedPane.add(pnlTableJava, "Table / Java");
+
         panel.add(tabbedPane, cc.xyw(1, 1, 2));
         panel.add(clear, cc.xy(2, 2));
-
-        //paneA1.setBorder(new TitledBorder(""));
-        //paneA2.setBorder(new TitledBorder(""));
-        //paneB1.setBorder(new TitledBorder(""));
-        //paneB2.setBorder(new TitledBorder(""));
 
         JLabel label_Insert = new JLabel("Insert");
         JLabel label_Update = new JLabel("Update");
@@ -2278,7 +2283,6 @@ public class Main
         JLabel label_Trigger_Row_Before = new JLabel("(Row Level, Before Event) Trigger");
         JLabel label_Trigger_Row_After = new JLabel(" (Row Level, After Event) Trigger");
 
-        tabbedPane.setTabPlacement(JTabbedPane.RIGHT);
         label_Statement.setHorizontalAlignment(JLabel.RIGHT);
         label_Procedure.setHorizontalAlignment(JLabel.RIGHT);
         label_Method.setHorizontalAlignment(JLabel.RIGHT);
@@ -2298,7 +2302,8 @@ public class Main
         JLabel label_Method2 = new JLabel("Method");
         JLabel label_MethodPrint2 = new JLabel("Method Print");
 
-        paneSql01.add(cboxTables, cc.xy(1, 1));
+        pnlSchema.add(cboxTables, cc.xy(1, 1));
+
         paneSql01.add(cboxTablesDup, cc.xy(1, 3));
         paneSql01.add(cboxViews, cc.xy(1, 5));
         paneSql01.add(cboxStmtCreateSelect, cc.xy(1, 7));
