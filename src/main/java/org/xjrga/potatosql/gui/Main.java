@@ -638,7 +638,7 @@ public class Main
         sb.append("\n");
         sb.append("- generates ddl and dml code");
         sb.append("\n");
-        sb.append("-  allows me to build prototypes faster and less expensively");
+        sb.append("- allows me to build prototypes faster and less expensively");
         sb.append("\n");
         sb.append("- can be used as a learning/teaching tool");
         sb.append("\n");
@@ -689,6 +689,7 @@ public class Main
 
     private void eventActionPerformed_mnuiTableImportData(ActionEvent e)
     {
+        //todo eventActionPerformed_mnuiTableImportData
         if (isTableSelected())
         {
             JFileChooser fileChooser = new JFileChooser();
@@ -730,7 +731,7 @@ public class Main
             BufferedReader in = new BufferedReader(new FileReader(file));
             String str = "";
             TableMaker tableMaker = new TableMaker(dbLink);
-            TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
+            TableDataObject tableDataObject = getSelectedTable();
             int schemaId = tableDataObject.getSchemaId();
             int tableId = tableDataObject.getTableId();
             Table table = tableMaker.getTable(schemaId, tableId);
