@@ -589,7 +589,8 @@ public class Main
         {
             public void actionPerformed(ActionEvent e)
             {
-                eventActionPerformed_mnuiTableImportData(e);
+                //todo eventActionPerformed_mnuiTableImportData(e);
+                //eventActionPerformed_mnuiTableImportData(e);
             }
         });
 
