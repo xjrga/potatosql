@@ -7,10 +7,7 @@ import org.xjrga.potatosql.dataobject.KeyDataObject;
 import org.xjrga.potatosql.dataobject.KeyTypeDataObject;
 import org.xjrga.potatosql.dataobject.SchemaDataObject;
 import org.xjrga.potatosql.dataobject.TableDataObject;
-import org.xjrga.potatosql.generator.DialectBuilder;
-import org.xjrga.potatosql.generator.PrintProcedureInsertCall;
-import org.xjrga.potatosql.generator.Table;
-import org.xjrga.potatosql.generator.TableMaker;
+import org.xjrga.potatosql.generator.*;
 import org.xjrga.potatosql.model.*;
 import org.xjrga.potatosql.other.Replacer;
 import org.xjrga.potatosql.other.Write;
@@ -362,15 +359,22 @@ public class Main
 
     private void btnGenerate_actionPerformed()
     {
+        StringBuilder sb = new StringBuilder();
+
+        DialectBuilder3 dialectBuilder3 = new DialectBuilder3();
+        dialectBuilder3.setHsqldb(mnuiDialectHsqldb.isSelected());
+        dialectBuilder3.setTestClassSelected(cboxTestClass.isSelected());
+        sb.append(dialectBuilder3.getCode());
+
         if (isSchemaSelected())
         {
-            StringBuilder sb = new StringBuilder();
             DialectBuilder dialectBuilder = new DialectBuilder(dbLink);
             SchemaDataObject schemaDataObject = getSelectedSchema();
             int schemaId = schemaDataObject.getSchemaId();
             int numberOfTables = listModelTable.getSize();
             int[] tableIds = new int[numberOfTables];
 
+            dialectBuilder.setTables(cboxTables.isSelected());
             dialectBuilder.setHsqldb(mnuiDialectHsqldb.isSelected());
             dialectBuilder.setMysql(mnuiDialectMysql.isSelected());
             dialectBuilder.setSchemaId(schemaId);
@@ -382,62 +386,64 @@ public class Main
             }
 
             dialectBuilder.setTableIds(tableIds);
+            sb.append(dialectBuilder.getCode());
 
             if (isTableSelected())
             {
+         /*       DialectBuilder2 dialectBuilder2 = new DialectBuilder2(dbLink);
                 TableDataObject tableDataObject = getSelectedTable();
-                dialectBuilder.setTableId(tableDataObject.getTableId());
-                dialectBuilder.setStmtCreateSelect(cboxStmtCreateSelect.isSelected());
-                dialectBuilder.setStmtInsertSelect(cboxStmtInsertSelect.isSelected());
-                dialectBuilder.setStmtCount(cboxStmtCount.isSelected());
-                dialectBuilder.setFunctionCount(cboxFunctionCount.isSelected());
-                dialectBuilder.setMethodFunctionCount(cboxMethodFunctionCount.isSelected());
-                dialectBuilder.setTriggerStatementAfterInsert(cboxTriggerStatementAfterInsert.isSelected());
-                dialectBuilder.setTriggerStatementAfterUpdate(cboxTriggerStatementAfterUpdate.isSelected());
-                dialectBuilder.setTriggerStatementAfterDelete(cboxTriggerStatementAfterDelete.isSelected());
-                dialectBuilder.setTriggerRowBeforeInsert(cboxTriggerRowBeforeInsert.isSelected());
-                dialectBuilder.setTriggerRowBeforeUpdate(cboxTriggerRowBeforeUpdate.isSelected());
-                dialectBuilder.setTriggerRowBeforeDelete(cboxTriggerRowBeforeDelete.isSelected());
-                dialectBuilder.setTriggerRowAfterInsert(cboxTriggerRowAfterInsert.isSelected());
-                dialectBuilder.setTriggerRowAfterUpdate(cboxTriggerRowAfterUpdate.isSelected());
-                dialectBuilder.setTriggerRowAfterDelete(cboxTriggerRowAfterDelete.isSelected());
-                dialectBuilder.setTablesDup(cboxTablesDup.isSelected());
-                dialectBuilder.setViews(cboxViews.isSelected());
-                dialectBuilder.setTestClass(cboxTestClass.isSelected());
-                dialectBuilder.setTables(cboxTables.isSelected());
-                dialectBuilder.setStmtInsert(cboxStmtInsert.isSelected());
-                dialectBuilder.setStmtUpdate(cboxStmtUpdate.isSelected());
-                dialectBuilder.setStmtDelete(cboxStmtDelete.isSelected());
-                dialectBuilder.setStmtMerge(cboxStmtMerge.isSelected());
-                dialectBuilder.setStmtSelect(cboxStmtSelect.isSelected());
-                dialectBuilder.setStmtDeleteAll(cboxStmtDeleteAll.isSelected());
-                dialectBuilder.setStmtSelectAll(cboxStmtSelectAll.isSelected());
-                dialectBuilder.setProcInsert(cboxProcInsert.isSelected());
-                dialectBuilder.setProcUpdate(cboxProcUpdate.isSelected());
-                dialectBuilder.setProcDelete(cboxProcDelete.isSelected());
-                dialectBuilder.setProcMerge(cboxProcMerge.isSelected());
-                dialectBuilder.setProcSelect(cboxProcSelect.isSelected());
-                dialectBuilder.setProcDeleteAll(cboxProcDeleteAll.isSelected());
-                dialectBuilder.setProcSelectAll(cboxProcSelectAll.isSelected());
-                dialectBuilder.setMethodInsert(cboxMethodInsert.isSelected());
-                dialectBuilder.setMethodUpdate(cboxMethodUpdate.isSelected());
-                dialectBuilder.setMethodDelete(cboxMethodDelete.isSelected());
-                dialectBuilder.setMethodMerge(cboxMethodMerge.isSelected());
-                dialectBuilder.setMethodSelect(cboxMethodSelect.isSelected());
-                dialectBuilder.setMethodDeleteAll(cboxMethodDeleteAll.isSelected());
-                dialectBuilder.setMethodSelectAll(cboxMethodSelectAll.isSelected());
-                dialectBuilder.setDataObject(cboxDataObject.isSelected());
-                dialectBuilder.setMethodSelectPrint(cboxMethodSelectPrint.isSelected());
-                dialectBuilder.setMethodSelectAllPrint(cboxMethodSelectAllPrint.isSelected());
+                dialectBuilder2.setTableId(tableDataObject.getTableId());
+                dialectBuilder2.setStmtCreateSelect(cboxStmtCreateSelect.isSelected());
+                dialectBuilder2.setStmtInsertSelect(cboxStmtInsertSelect.isSelected());
+                dialectBuilder2.setStmtCount(cboxStmtCount.isSelected());
+                dialectBuilder2.setFunctionCount(cboxFunctionCount.isSelected());
+                dialectBuilder2.setMethodFunctionCount(cboxMethodFunctionCount.isSelected());
+                dialectBuilder2.setTriggerStatementAfterInsert(cboxTriggerStatementAfterInsert.isSelected());
+                dialectBuilder2.setTriggerStatementAfterUpdate(cboxTriggerStatementAfterUpdate.isSelected());
+                dialectBuilder2.setTriggerStatementAfterDelete(cboxTriggerStatementAfterDelete.isSelected());
+                dialectBuilder2.setTriggerRowBeforeInsert(cboxTriggerRowBeforeInsert.isSelected());
+                dialectBuilder2.setTriggerRowBeforeUpdate(cboxTriggerRowBeforeUpdate.isSelected());
+                dialectBuilder2.setTriggerRowBeforeDelete(cboxTriggerRowBeforeDelete.isSelected());
+                dialectBuilder2.setTriggerRowAfterInsert(cboxTriggerRowAfterInsert.isSelected());
+                dialectBuilder2.setTriggerRowAfterUpdate(cboxTriggerRowAfterUpdate.isSelected());
+                dialectBuilder2.setTriggerRowAfterDelete(cboxTriggerRowAfterDelete.isSelected());
+                dialectBuilder2.setTablesDup(cboxTablesDup.isSelected());
+                dialectBuilder2.setViews(cboxViews.isSelected());
+                dialectBuilder2.setTestClass(cboxTestClass.isSelected());
+                dialectBuilder2.setTables(cboxTables.isSelected());
+                dialectBuilder2.setStmtInsert(cboxStmtInsert.isSelected());
+                dialectBuilder2.setStmtUpdate(cboxStmtUpdate.isSelected());
+                dialectBuilder2.setStmtDelete(cboxStmtDelete.isSelected());
+                dialectBuilder2.setStmtMerge(cboxStmtMerge.isSelected());
+                dialectBuilder2.setStmtSelect(cboxStmtSelect.isSelected());
+                dialectBuilder2.setStmtDeleteAll(cboxStmtDeleteAll.isSelected());
+                dialectBuilder2.setStmtSelectAll(cboxStmtSelectAll.isSelected());
+                dialectBuilder2.setProcInsert(cboxProcInsert.isSelected());
+                dialectBuilder2.setProcUpdate(cboxProcUpdate.isSelected());
+                dialectBuilder2.setProcDelete(cboxProcDelete.isSelected());
+                dialectBuilder2.setProcMerge(cboxProcMerge.isSelected());
+                dialectBuilder2.setProcSelect(cboxProcSelect.isSelected());
+                dialectBuilder2.setProcDeleteAll(cboxProcDeleteAll.isSelected());
+                dialectBuilder2.setProcSelectAll(cboxProcSelectAll.isSelected());
+                dialectBuilder2.setMethodInsert(cboxMethodInsert.isSelected());
+                dialectBuilder2.setMethodUpdate(cboxMethodUpdate.isSelected());
+                dialectBuilder2.setMethodDelete(cboxMethodDelete.isSelected());
+                dialectBuilder2.setMethodMerge(cboxMethodMerge.isSelected());
+                dialectBuilder2.setMethodSelect(cboxMethodSelect.isSelected());
+                dialectBuilder2.setMethodDeleteAll(cboxMethodDeleteAll.isSelected());
+                dialectBuilder2.setMethodSelectAll(cboxMethodSelectAll.isSelected());
+                dialectBuilder2.setDataObject(cboxDataObject.isSelected());
+                dialectBuilder2.setMethodSelectPrint(cboxMethodSelectPrint.isSelected());
+                dialectBuilder2.setMethodSelectAllPrint(cboxMethodSelectAllPrint.isSelected());*/
 
             }
 
-            sb.append(dialectBuilder.getCode());
-
-            String toString = sb.toString();
-            textArea.setText(toString);
-            Write.writeToFile(toString, "script.sql");
         }
+
+        String toString = sb.toString();
+        textArea.setText(toString);
+        Write.writeToFile(toString, "script.sql");
+
     }
 
     private SchemaDataObject getSelectedSchema()
