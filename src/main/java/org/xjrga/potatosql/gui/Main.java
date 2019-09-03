@@ -1125,6 +1125,12 @@ public class Main
         JButton btnRelationshipAdd = new JButton("+");
         JButton btnRelationshipDelete = new JButton("-");
         JButton btnRelationshipUpdate = new JButton("u");
+        JButton btnRelationshipShow = new JButton("a");
+
+        btnRelationshipAdd.setToolTipText("Add Table Relationship");
+        btnRelationshipDelete.setToolTipText("Delete Table Relationship");
+        btnRelationshipUpdate.setToolTipText("Update Table Relationship");
+        btnRelationshipShow.setToolTipText("Show All Relationships");
 
         panel.setLayout(layout);
         panel.setBorder(new TitledBorder("Relationship"));
@@ -1134,6 +1140,7 @@ public class Main
         panelRelationshipButtons.add(btnRelationshipAdd);
         panelRelationshipButtons.add(btnRelationshipDelete);
         panelRelationshipButtons.add(btnRelationshipUpdate);
+        panelRelationshipButtons.add(btnRelationshipShow);
 
         hideTableRelationshipColumns();
 
@@ -1173,9 +1180,26 @@ public class Main
             }
         });
 
+        btnRelationshipShow.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+
+                eventActionPerformed_btnRelationshipShow(e);
+            }
+        });
+
         return panel;
     }
 
+    private void eventActionPerformed_btnRelationshipShow(ActionEvent e)
+    {
+        SchemaDataObject schemaDataObject = getSelectedSchema();
+        tableModelRelationship.reload(schemaDataObject.getSchemaId());
+        hideTableRelationshipColumns();
+        tableModelRelationshipKeyPair.clear();
+        hideTableRelationshipKeyPairColumns();
+    }
 
     private void eventListSelection_tableRelationship(ListSelectionEvent e)
     {
