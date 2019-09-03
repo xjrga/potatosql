@@ -53,10 +53,9 @@ public class Generator1 implements Code
 
         if (Tables)
         {
-            sb.append("CREATE SCHEMA");
-            sb.append(" ");
-            sb.append(getSchemaDataObject().getSchemaName());
-            sb.append(";\n/\n\n");
+            CreateSchema createSchema = new CreateSchema();
+            createSchema.setSchemaDataObject(getSchemaDataObject());
+            sb.append(createSchema.getCode());
 
             for (int i = 0; i < TableIds.length; i++)
             {
