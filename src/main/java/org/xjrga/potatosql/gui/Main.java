@@ -374,9 +374,9 @@ public class Main
             int numberOfTables = listModelTable.getSize();
             int[] tableIds = new int[numberOfTables];
 
-            dialectBuilder.setTables(cboxTables.isSelected());
             dialectBuilder.setHsqldb(mnuiDialectHsqldb.isSelected());
             dialectBuilder.setMysql(mnuiDialectMysql.isSelected());
+            dialectBuilder.setTables(cboxTables.isSelected());
             dialectBuilder.setSchemaId(schemaId);
 
             for (int i = 0; i < numberOfTables; i++)
@@ -390,8 +390,12 @@ public class Main
 
             if (isTableSelected())
             {
-         /*       DialectBuilder2 dialectBuilder2 = new DialectBuilder2(dbLink);
+                DialectBuilder2 dialectBuilder2 = new DialectBuilder2(dbLink);
                 TableDataObject tableDataObject = getSelectedTable();
+                dialectBuilder2.setSchemaId(tableDataObject.getSchemaId());
+                dialectBuilder2.setTableId(tableDataObject.getTableId());
+                dialectBuilder2.setHsqldb(mnuiDialectHsqldb.isSelected());
+                dialectBuilder2.setMysql(mnuiDialectMysql.isSelected());
                 dialectBuilder2.setTableId(tableDataObject.getTableId());
                 dialectBuilder2.setStmtCreateSelect(cboxStmtCreateSelect.isSelected());
                 dialectBuilder2.setStmtInsertSelect(cboxStmtInsertSelect.isSelected());
@@ -409,7 +413,6 @@ public class Main
                 dialectBuilder2.setTriggerRowAfterDelete(cboxTriggerRowAfterDelete.isSelected());
                 dialectBuilder2.setTablesDup(cboxTablesDup.isSelected());
                 dialectBuilder2.setViews(cboxViews.isSelected());
-                dialectBuilder2.setTestClass(cboxTestClass.isSelected());
                 dialectBuilder2.setTables(cboxTables.isSelected());
                 dialectBuilder2.setStmtInsert(cboxStmtInsert.isSelected());
                 dialectBuilder2.setStmtUpdate(cboxStmtUpdate.isSelected());
@@ -434,8 +437,8 @@ public class Main
                 dialectBuilder2.setMethodSelectAll(cboxMethodSelectAll.isSelected());
                 dialectBuilder2.setDataObject(cboxDataObject.isSelected());
                 dialectBuilder2.setMethodSelectPrint(cboxMethodSelectPrint.isSelected());
-                dialectBuilder2.setMethodSelectAllPrint(cboxMethodSelectAllPrint.isSelected());*/
-
+                dialectBuilder2.setMethodSelectAllPrint(cboxMethodSelectAllPrint.isSelected());
+                sb.append(dialectBuilder2.getCode());
             }
 
         }

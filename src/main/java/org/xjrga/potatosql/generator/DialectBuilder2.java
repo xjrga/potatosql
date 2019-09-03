@@ -17,7 +17,6 @@ public class DialectBuilder2 implements Code
     private boolean TriggerRowAfterUpdate;
     private boolean TriggerRowAfterDelete;
     private boolean Views;
-    private boolean TestClass;
     private boolean Tables;
     private boolean StmtInsert;
     private boolean StmtUpdate;
@@ -53,7 +52,6 @@ public class DialectBuilder2 implements Code
     private boolean isHsqldb;
     private boolean isMysql;
     private boolean TablesDup;
-    private CreateTestClass createTestClass;
 
 
     public DialectBuilder2(DbLink dbLink)
@@ -82,11 +80,6 @@ public class DialectBuilder2 implements Code
         TableId = tableId;
     }
 
-
-    public void setTableIds(int[] tableIds)
-    {
-        this.TableIds = tableIds;
-    }
 
     public void setTriggerStatementAfterUpdate(boolean triggerStatementAfterUpdate)
     {
@@ -139,12 +132,6 @@ public class DialectBuilder2 implements Code
     public void setViews(boolean views)
     {
         Views = views;
-    }
-
-
-    public void setTestClass(boolean testClass)
-    {
-        TestClass = testClass;
     }
 
 
@@ -333,37 +320,8 @@ public class DialectBuilder2 implements Code
     public String getHsqldb()
     {
         StringBuilder sb = new StringBuilder();
-
         TableMaker tableMaker = new TableMaker(dbLink);
-
-        if (TestClass)
-        {
-            createTestClass = new CreateTestClass();
-        }
-
-        if (Tables)
-        {
-            for (int i = 0; i < TableIds.length; i++)
-            {
-                Integer tableId = TableIds[i];
-                Table table = tableMaker.getTable(SchemaId, tableId);
-                SqlStuff sqlStuff = new SqlStuff(table);
-
-                CreateTable createTable = new CreateTable(table, sqlStuff);
-                sb.append(createTable.getCode());
-                sb.append("\n");
-                sb.append("\n");
-
-                CreateRelationship createRelationship = new CreateRelationship(dbLink, SchemaId);
-                sb.append(createRelationship.getCode());
-                sb.append("\n");
-                sb.append("\n");
-            }
-
-        }
-
         Table table = tableMaker.getTable(getSchemaId(), getTableId());
-
         SqlStuff sqlStuff = new SqlStuff(table);
         TriggerStuff triggerStuff = new TriggerStuff(table);
         DataObjectStuff dataObjectStuff = new DataObjectStuff(table);
@@ -745,13 +703,6 @@ public class DialectBuilder2 implements Code
             sb.append("\n");
             sb.append("\n");
 
-        }
-
-        if (TestClass)
-        {
-            sb.append(createTestClass.getCode());
-            sb.append("\n");
-            sb.append("\n");
         }
 
         return sb.toString();
