@@ -645,7 +645,7 @@ public class Main
         sb.append("\n");
         sb.append("- is available as free software");
         sb.append("\n\n");
-        sb.append("This is version 0.2");
+        sb.append("This is version 0.10");
         sb.append("\n\n");
         sb.append("Please send your comments and suggestions to jorge.r.garciadealba+potatosql@gmail.com");
         sb.append("\n\n");
