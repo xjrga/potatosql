@@ -1,30 +1,21 @@
 package org.xjrga.potatosql.generator;
 
 import org.xjrga.potatosql.data.DbLink;
+import org.xjrga.potatosql.dataobject.SchemaDataObject;
 
 public class Generator1 implements Code
 {
 
     private DbLink dbLink;
     private boolean Tables;
-    private int SchemaId;
     private int[] TableIds;
     private boolean isHsqldb;
     private boolean isMysql;
+    private SchemaDataObject schemaDataObject;
 
     public Generator1(DbLink dbLink)
     {
         this.dbLink = dbLink;
-    }
-
-    public int getSchemaId()
-    {
-        return SchemaId;
-    }
-
-    public void setSchemaId(int schemaId)
-    {
-        SchemaId = schemaId;
     }
 
     public void setTableIds(int[] tableIds)
@@ -65,7 +56,7 @@ public class Generator1 implements Code
             for (int i = 0; i < TableIds.length; i++)
             {
                 Integer tableId = TableIds[i];
-                Table table = tableMaker.getTable(SchemaId, tableId);
+                Table table = tableMaker.getTable(getSchemaDataObject().getSchemaId(), tableId);
                 SqlStuff sqlStuff = new SqlStuff(table);
 
                 CreateTable createTable = new CreateTable(table, sqlStuff);
@@ -75,7 +66,7 @@ public class Generator1 implements Code
 
             }
 
-            CreateRelationship createRelationship = new CreateRelationship(dbLink, SchemaId);
+            CreateRelationship createRelationship = new CreateRelationship(dbLink, getSchemaDataObject().getSchemaId());
             String code = createRelationship.getCode();
             sb.append(code);
             sb.append("\n");
@@ -107,4 +98,15 @@ public class Generator1 implements Code
     {
         isHsqldb = hsqldb;
     }
+
+    public void setSchemaDataObject(SchemaDataObject schemaDataObject)
+    {
+           this.schemaDataObject = schemaDataObject;
+    }
+
+    public SchemaDataObject getSchemaDataObject()
+    {
+        return schemaDataObject;
+    }
+
 }

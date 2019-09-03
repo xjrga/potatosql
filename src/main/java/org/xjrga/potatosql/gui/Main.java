@@ -373,14 +373,12 @@ public class Main
         {
             Generator1 generator1 = new Generator1(dbLink);
             SchemaDataObject schemaDataObject = getSelectedSchema();
-            int schemaId = schemaDataObject.getSchemaId();
             int numberOfTables = listModelTable.getSize();
             int[] tableIds = new int[numberOfTables];
-
             generator1.setHsqldb(mnuiDialectHsqldb.isSelected());
             generator1.setMysql(mnuiDialectMysql.isSelected());
             generator1.setTablesAndRelationshipsSelected(cboxTables.isSelected());
-            generator1.setSchemaId(schemaId);
+            generator1.setSchemaDataObject(schemaDataObject);
 
             for (int i = 0; i < numberOfTables; i++)
             {
