@@ -1,6 +1,6 @@
 package org.xjrga.potatosql.generator;
 
-public class DialectBuilder3 implements Code
+public class Generator0 implements Code
 {
 
     private boolean isHsqldb;
@@ -8,7 +8,7 @@ public class DialectBuilder3 implements Code
     private boolean isTestClassSelected;
 
 
-    public DialectBuilder3()
+    public Generator0()
     {
     }
 

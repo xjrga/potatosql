@@ -2,7 +2,7 @@ package org.xjrga.potatosql.generator;
 
 import org.xjrga.potatosql.data.DbLink;
 
-public class DialectBuilder implements Code
+public class Generator1 implements Code
 {
 
     private DbLink dbLink;
@@ -12,7 +12,7 @@ public class DialectBuilder implements Code
     private boolean isHsqldb;
     private boolean isMysql;
 
-    public DialectBuilder(DbLink dbLink)
+    public Generator1(DbLink dbLink)
     {
         this.dbLink = dbLink;
     }
@@ -32,7 +32,7 @@ public class DialectBuilder implements Code
         this.TableIds = tableIds;
     }
 
-    public void setTables(boolean tables)
+    public void setTablesAndRelationshipsSelected(boolean tables)
     {
         Tables = tables;
     }

@@ -2,7 +2,7 @@ package org.xjrga.potatosql.generator;
 
 import org.xjrga.potatosql.data.DbLink;
 
-public class DialectBuilder2 implements Code
+public class Generator2 implements Code
 {
 
     private DbLink dbLink;
@@ -54,7 +54,7 @@ public class DialectBuilder2 implements Code
     private boolean TablesDup;
 
 
-    public DialectBuilder2(DbLink dbLink)
+    public Generator2(DbLink dbLink)
     {
         this.dbLink = dbLink;
     }

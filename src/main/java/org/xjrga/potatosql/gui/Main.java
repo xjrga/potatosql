@@ -364,23 +364,23 @@ public class Main
     {
         StringBuilder sb = new StringBuilder();
 
-        DialectBuilder3 dialectBuilder3 = new DialectBuilder3();
-        dialectBuilder3.setHsqldb(mnuiDialectHsqldb.isSelected());
-        dialectBuilder3.setTestClassSelected(cboxTestClass.isSelected());
-        sb.append(dialectBuilder3.getCode());
+        Generator0 generator0 = new Generator0();
+        generator0.setHsqldb(mnuiDialectHsqldb.isSelected());
+        generator0.setTestClassSelected(cboxTestClass.isSelected());
+        sb.append(generator0.getCode());
 
         if (isSchemaSelected())
         {
-            DialectBuilder dialectBuilder = new DialectBuilder(dbLink);
+            Generator1 generator1 = new Generator1(dbLink);
             SchemaDataObject schemaDataObject = getSelectedSchema();
             int schemaId = schemaDataObject.getSchemaId();
             int numberOfTables = listModelTable.getSize();
             int[] tableIds = new int[numberOfTables];
 
-            dialectBuilder.setHsqldb(mnuiDialectHsqldb.isSelected());
-            dialectBuilder.setMysql(mnuiDialectMysql.isSelected());
-            dialectBuilder.setTables(cboxTables.isSelected());
-            dialectBuilder.setSchemaId(schemaId);
+            generator1.setHsqldb(mnuiDialectHsqldb.isSelected());
+            generator1.setMysql(mnuiDialectMysql.isSelected());
+            generator1.setTablesAndRelationshipsSelected(cboxTables.isSelected());
+            generator1.setSchemaId(schemaId);
 
             for (int i = 0; i < numberOfTables; i++)
             {
@@ -388,60 +388,60 @@ public class Main
                 tableIds[i] = tableDataObject.getTableId();
             }
 
-            dialectBuilder.setTableIds(tableIds);
-            sb.append(dialectBuilder.getCode());
+            generator1.setTableIds(tableIds);
+            sb.append(generator1.getCode());
 
             if (isTableSelected())
             {
-                DialectBuilder2 dialectBuilder2 = new DialectBuilder2(dbLink);
+                Generator2 generator2 = new Generator2(dbLink);
                 TableDataObject tableDataObject = getSelectedTable();
-                dialectBuilder2.setSchemaId(tableDataObject.getSchemaId());
-                dialectBuilder2.setTableId(tableDataObject.getTableId());
-                dialectBuilder2.setHsqldb(mnuiDialectHsqldb.isSelected());
-                dialectBuilder2.setMysql(mnuiDialectMysql.isSelected());
-                dialectBuilder2.setTableId(tableDataObject.getTableId());
-                dialectBuilder2.setStmtCreateSelect(cboxStmtCreateSelect.isSelected());
-                dialectBuilder2.setStmtInsertSelect(cboxStmtInsertSelect.isSelected());
-                dialectBuilder2.setStmtCount(cboxStmtCount.isSelected());
-                dialectBuilder2.setFunctionCount(cboxFunctionCount.isSelected());
-                dialectBuilder2.setMethodFunctionCount(cboxMethodFunctionCount.isSelected());
-                dialectBuilder2.setTriggerStatementAfterInsert(cboxTriggerStatementAfterInsert.isSelected());
-                dialectBuilder2.setTriggerStatementAfterUpdate(cboxTriggerStatementAfterUpdate.isSelected());
-                dialectBuilder2.setTriggerStatementAfterDelete(cboxTriggerStatementAfterDelete.isSelected());
-                dialectBuilder2.setTriggerRowBeforeInsert(cboxTriggerRowBeforeInsert.isSelected());
-                dialectBuilder2.setTriggerRowBeforeUpdate(cboxTriggerRowBeforeUpdate.isSelected());
-                dialectBuilder2.setTriggerRowBeforeDelete(cboxTriggerRowBeforeDelete.isSelected());
-                dialectBuilder2.setTriggerRowAfterInsert(cboxTriggerRowAfterInsert.isSelected());
-                dialectBuilder2.setTriggerRowAfterUpdate(cboxTriggerRowAfterUpdate.isSelected());
-                dialectBuilder2.setTriggerRowAfterDelete(cboxTriggerRowAfterDelete.isSelected());
-                dialectBuilder2.setTablesDup(cboxTablesDup.isSelected());
-                dialectBuilder2.setViews(cboxViews.isSelected());
-                dialectBuilder2.setTables(cboxTables.isSelected());
-                dialectBuilder2.setStmtInsert(cboxStmtInsert.isSelected());
-                dialectBuilder2.setStmtUpdate(cboxStmtUpdate.isSelected());
-                dialectBuilder2.setStmtDelete(cboxStmtDelete.isSelected());
-                dialectBuilder2.setStmtMerge(cboxStmtMerge.isSelected());
-                dialectBuilder2.setStmtSelect(cboxStmtSelect.isSelected());
-                dialectBuilder2.setStmtDeleteAll(cboxStmtDeleteAll.isSelected());
-                dialectBuilder2.setStmtSelectAll(cboxStmtSelectAll.isSelected());
-                dialectBuilder2.setProcInsert(cboxProcInsert.isSelected());
-                dialectBuilder2.setProcUpdate(cboxProcUpdate.isSelected());
-                dialectBuilder2.setProcDelete(cboxProcDelete.isSelected());
-                dialectBuilder2.setProcMerge(cboxProcMerge.isSelected());
-                dialectBuilder2.setProcSelect(cboxProcSelect.isSelected());
-                dialectBuilder2.setProcDeleteAll(cboxProcDeleteAll.isSelected());
-                dialectBuilder2.setProcSelectAll(cboxProcSelectAll.isSelected());
-                dialectBuilder2.setMethodInsert(cboxMethodInsert.isSelected());
-                dialectBuilder2.setMethodUpdate(cboxMethodUpdate.isSelected());
-                dialectBuilder2.setMethodDelete(cboxMethodDelete.isSelected());
-                dialectBuilder2.setMethodMerge(cboxMethodMerge.isSelected());
-                dialectBuilder2.setMethodSelect(cboxMethodSelect.isSelected());
-                dialectBuilder2.setMethodDeleteAll(cboxMethodDeleteAll.isSelected());
-                dialectBuilder2.setMethodSelectAll(cboxMethodSelectAll.isSelected());
-                dialectBuilder2.setDataObject(cboxDataObject.isSelected());
-                dialectBuilder2.setMethodSelectPrint(cboxMethodSelectPrint.isSelected());
-                dialectBuilder2.setMethodSelectAllPrint(cboxMethodSelectAllPrint.isSelected());
-                sb.append(dialectBuilder2.getCode());
+                generator2.setSchemaId(tableDataObject.getSchemaId());
+                generator2.setTableId(tableDataObject.getTableId());
+                generator2.setHsqldb(mnuiDialectHsqldb.isSelected());
+                generator2.setMysql(mnuiDialectMysql.isSelected());
+                generator2.setTableId(tableDataObject.getTableId());
+                generator2.setStmtCreateSelect(cboxStmtCreateSelect.isSelected());
+                generator2.setStmtInsertSelect(cboxStmtInsertSelect.isSelected());
+                generator2.setStmtCount(cboxStmtCount.isSelected());
+                generator2.setFunctionCount(cboxFunctionCount.isSelected());
+                generator2.setMethodFunctionCount(cboxMethodFunctionCount.isSelected());
+                generator2.setTriggerStatementAfterInsert(cboxTriggerStatementAfterInsert.isSelected());
+                generator2.setTriggerStatementAfterUpdate(cboxTriggerStatementAfterUpdate.isSelected());
+                generator2.setTriggerStatementAfterDelete(cboxTriggerStatementAfterDelete.isSelected());
+                generator2.setTriggerRowBeforeInsert(cboxTriggerRowBeforeInsert.isSelected());
+                generator2.setTriggerRowBeforeUpdate(cboxTriggerRowBeforeUpdate.isSelected());
+                generator2.setTriggerRowBeforeDelete(cboxTriggerRowBeforeDelete.isSelected());
+                generator2.setTriggerRowAfterInsert(cboxTriggerRowAfterInsert.isSelected());
+                generator2.setTriggerRowAfterUpdate(cboxTriggerRowAfterUpdate.isSelected());
+                generator2.setTriggerRowAfterDelete(cboxTriggerRowAfterDelete.isSelected());
+                generator2.setTablesDup(cboxTablesDup.isSelected());
+                generator2.setViews(cboxViews.isSelected());
+                generator2.setTables(cboxTables.isSelected());
+                generator2.setStmtInsert(cboxStmtInsert.isSelected());
+                generator2.setStmtUpdate(cboxStmtUpdate.isSelected());
+                generator2.setStmtDelete(cboxStmtDelete.isSelected());
+                generator2.setStmtMerge(cboxStmtMerge.isSelected());
+                generator2.setStmtSelect(cboxStmtSelect.isSelected());
+                generator2.setStmtDeleteAll(cboxStmtDeleteAll.isSelected());
+                generator2.setStmtSelectAll(cboxStmtSelectAll.isSelected());
+                generator2.setProcInsert(cboxProcInsert.isSelected());
+                generator2.setProcUpdate(cboxProcUpdate.isSelected());
+                generator2.setProcDelete(cboxProcDelete.isSelected());
+                generator2.setProcMerge(cboxProcMerge.isSelected());
+                generator2.setProcSelect(cboxProcSelect.isSelected());
+                generator2.setProcDeleteAll(cboxProcDeleteAll.isSelected());
+                generator2.setProcSelectAll(cboxProcSelectAll.isSelected());
+                generator2.setMethodInsert(cboxMethodInsert.isSelected());
+                generator2.setMethodUpdate(cboxMethodUpdate.isSelected());
+                generator2.setMethodDelete(cboxMethodDelete.isSelected());
+                generator2.setMethodMerge(cboxMethodMerge.isSelected());
+                generator2.setMethodSelect(cboxMethodSelect.isSelected());
+                generator2.setMethodDeleteAll(cboxMethodDeleteAll.isSelected());
+                generator2.setMethodSelectAll(cboxMethodSelectAll.isSelected());
+                generator2.setDataObject(cboxDataObject.isSelected());
+                generator2.setMethodSelectPrint(cboxMethodSelectPrint.isSelected());
+                generator2.setMethodSelectAllPrint(cboxMethodSelectAllPrint.isSelected());
+                sb.append(generator2.getCode());
             }
 
         }
