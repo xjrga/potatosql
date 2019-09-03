@@ -27,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 
 public class Main
 {
@@ -299,7 +300,7 @@ public class Main
         frame.setSize(new Dimension(1132, 700));
         frame.setVisible(true);
         frame.setDefaultCloseOperation(3);
-        frame.setTitle("PotatoSQL");
+        frame.setTitle("PotatoSql: Software for Database Design");
         frame.setJMenuBar(getMenuBar());
         frame.add(getMainPanel());
 
@@ -600,7 +601,90 @@ public class Main
             }
         });
 
+        mnuiGuide.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                eventActionPerformed_mnuiGuide(e);
+            }
+        });
+
+        mnuiCredits.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                eventActionPerformed_mnuiCredits(e);
+            }
+        });
+
+        mnuiAbout.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                eventActionPerformed_mnuiAbout(e);
+            }
+        });
+
         return menuBar;
+    }
+
+    private void eventActionPerformed_mnuiAbout(ActionEvent e)
+    {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append("This software:");
+        sb.append("\n\n");
+        sb.append("- allows me to design database schemas");
+        sb.append("\n");
+        sb.append("- generates ddl and dml code");
+        sb.append("\n");
+        sb.append("-  allows me to build prototypes faster and less expensively");
+        sb.append("\n");
+        sb.append("- can be used as a learning/teaching tool");
+        sb.append("\n");
+        sb.append("- is available as free software");
+        sb.append("\n\n");
+        sb.append("This is version 0.2");
+        sb.append("\n\n");
+        sb.append("Please send your comments and suggestions to jorge.r.garciadealba+potatosql@gmail.com");
+        sb.append("\n\n");
+        sb.append("Software can be downloaded at https://sourceforge.net/projects/potatosql/");
+
+        JTextArea textArea = new JTextArea(15, 90);
+        textArea.setText(sb.toString());
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        JOptionPane.showMessageDialog(null, scrollPane, "PotatoSql: Software for Database Design", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private void eventActionPerformed_mnuiCredits(ActionEvent e)
+    {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append("PotatoSql uses the following libraries:");
+        sb.append("\n\n");
+        sb.append("hsqldb.jar (v2.5.0)");
+        sb.append("\n");
+        sb.append("jgoodies-common-1.8.1.jar");
+        sb.append("\n");
+        sb.append("jgoodies-forms-1.8.0.jar");
+        sb.append("\n");
+        sb.append("jgoodies-looks-2.7.0.jar");
+        sb.append("\n");
+        sb.append("It was written with IntelliJ IDEA (Community Edition).");
+        sb.append("\n\n");
+
+        JTextArea textArea = new JTextArea(15, 90);
+        textArea.setText(sb.toString());
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        JOptionPane.showMessageDialog(null, scrollPane, "PotatoSql: Software for Database Design", JOptionPane.PLAIN_MESSAGE);
+
+    }
+
+    private void eventActionPerformed_mnuiGuide(ActionEvent e)
+    {
+        openUrl("http://x-jrga.github.io/potatosql");
     }
 
     private void eventActionPerformed_mnuiTableImportData(ActionEvent e)
@@ -2339,5 +2423,16 @@ public class Main
                 textArea.setText("");
             }
         });
+    }
+
+    private void openUrl(String url)
+    {
+        try
+        {
+            Desktop.getDesktop().browse(new URL(url).toURI());
+        }
+        catch (Exception ex)
+        {
+        }
     }
 }
