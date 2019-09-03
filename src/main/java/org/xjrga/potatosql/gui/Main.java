@@ -300,7 +300,7 @@ public class Main
         frame.setSize(new Dimension(1132, 700));
         frame.setVisible(true);
         frame.setDefaultCloseOperation(3);
-        frame.setTitle("PotatoSql: Software for Database Design");
+        frame.setTitle("PotatoSQL: Software for Database Design");
         frame.setJMenuBar(getMenuBar());
         frame.add(getMainPanel());
 
@@ -523,7 +523,7 @@ public class Main
         mnuProgram.add(mnuiExit);
         mnuSchema.add(mnuiSchemaCopy);
         mnuTable.add(mnuiTableCopy);
-        mnuTable.add(mnuiTableImportData);
+        //mnuTable.add(mnuiTableImportData);
         mnuKey.add(mnuiKeyCopy);
         mnuOutput.add(mnuiOptions);
         mnuDialect.add(mnuiDialectHsqldb);
@@ -590,7 +590,7 @@ public class Main
             public void actionPerformed(ActionEvent e)
             {
                 //todo eventActionPerformed_mnuiTableImportData(e);
-                //eventActionPerformed_mnuiTableImportData(e);
+                eventActionPerformed_mnuiTableImportData(e);
             }
         });
 
@@ -655,14 +655,14 @@ public class Main
         textArea.setText(sb.toString());
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
-        JOptionPane.showMessageDialog(null, scrollPane, "PotatoSql: Software for Database Design", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(null, scrollPane, "PotatoSQL: Software for Database Design", JOptionPane.PLAIN_MESSAGE);
     }
 
     private void eventActionPerformed_mnuiCredits(ActionEvent e)
     {
         StringBuffer sb = new StringBuffer();
 
-        sb.append("PotatoSql uses the following libraries:");
+        sb.append("PotatoSQL uses the following libraries:");
         sb.append("\n\n");
         sb.append("hsqldb.jar (v2.5.0)");
         sb.append("\n");
@@ -671,15 +671,14 @@ public class Main
         sb.append("jgoodies-forms-1.8.0.jar");
         sb.append("\n");
         sb.append("jgoodies-looks-2.7.0.jar");
-        sb.append("\n");
-        sb.append("It was written with IntelliJ IDEA (Community Edition).");
         sb.append("\n\n");
+        sb.append("It was written using IntelliJ IDEA (Community Edition), SQL Workbench/J and PotatoSQL.");
 
         JTextArea textArea = new JTextArea(15, 90);
         textArea.setText(sb.toString());
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
-        JOptionPane.showMessageDialog(null, scrollPane, "PotatoSql: Software for Database Design", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(null, scrollPane, "PotatoSQL: Software for Database Design", JOptionPane.PLAIN_MESSAGE);
 
     }
 
@@ -2197,7 +2196,7 @@ public class Main
 
     private void showMessage(String message)
     {
-        JOptionPane.showMessageDialog(null, message, "PotatoSql", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, message, "PotatoSQL", JOptionPane.INFORMATION_MESSAGE);
     }
 
 
