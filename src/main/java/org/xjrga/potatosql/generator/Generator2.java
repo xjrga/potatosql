@@ -47,7 +47,6 @@ public class Generator2 implements Code
     private boolean MethodSelectPrint;
     private boolean MethodSelectAllPrint;
     private int SchemaId;
-    private int[] TableIds;
     private int TableId;
     private boolean isHsqldb;
     private boolean isMysql;
@@ -502,7 +501,6 @@ public class Generator2 implements Code
         {
             MethodProcedureInsert methodProcedureInsert = new MethodProcedureInsert(table);
             String code = methodProcedureInsert.getCode();
-            //createTestClass.addMethod(code);
             sb.append(code);
             sb.append("\n");
             sb.append("\n");
@@ -512,7 +510,6 @@ public class Generator2 implements Code
         {
             MethodProcedureUpdate methodProcedureUpdate = new MethodProcedureUpdate(table);
             String code = methodProcedureUpdate.getCode();
-            //createTestClass.addMethod(code);
             sb.append(code);
             sb.append("\n");
             sb.append("\n");
@@ -522,7 +519,6 @@ public class Generator2 implements Code
         {
             MethodProcedureDelete methodProcedureDelete = new MethodProcedureDelete(table);
             String code = methodProcedureDelete.getCode();
-            //createTestClass.addMethod(code);
             sb.append(code);
             sb.append("\n");
             sb.append("\n");
@@ -532,7 +528,6 @@ public class Generator2 implements Code
         {
             MethodProcedureMerge methodProcedureMerge = new MethodProcedureMerge(table);
             String code = methodProcedureMerge.getCode();
-            //createTestClass.addMethod(code);
             sb.append(code);
             sb.append("\n");
             sb.append("\n");
@@ -542,7 +537,6 @@ public class Generator2 implements Code
         {
             MethodProcedureSelect methodProcedureSelect = new MethodProcedureSelect(table);
             String code = methodProcedureSelect.getCode();
-            //createTestClass.addMethod(code);
             sb.append(code);
             sb.append("\n");
             sb.append("\n");
@@ -552,7 +546,6 @@ public class Generator2 implements Code
         {
             MethodProcedureSelectPrint methodProcedureSelectPrint = new MethodProcedureSelectPrint(table);
             String code = methodProcedureSelectPrint.getCode();
-            //createTestClass.addMethod(code);
             sb.append(code);
             sb.append("\n");
             sb.append("\n");
@@ -562,7 +555,6 @@ public class Generator2 implements Code
         {
             MethodProcedureDeleteAll methodProcedureDeleteAll = new MethodProcedureDeleteAll(table);
             String code = methodProcedureDeleteAll.getCode();
-            //createTestClass.addMethod(code);
             sb.append(code);
             sb.append("\n");
             sb.append("\n");
@@ -572,7 +564,6 @@ public class Generator2 implements Code
         {
             MethodProcedureSelectAll methodProcedureSelectAll = new MethodProcedureSelectAll(table);
             String code = methodProcedureSelectAll.getCode();
-            //createTestClass.addMethod(code);
             sb.append(code);
             sb.append("\n");
             sb.append("\n");
@@ -582,7 +573,6 @@ public class Generator2 implements Code
         {
             MethodProcedureSelectAllPrint methodProcedureSelectAllPrint = new MethodProcedureSelectAllPrint(table);
             String code = methodProcedureSelectAllPrint.getCode();
-            //createTestClass.addMethod(code);
             sb.append(code);
             sb.append("\n");
             sb.append("\n");
@@ -592,7 +582,6 @@ public class Generator2 implements Code
         {
             MethodFunctionCount methodFunctionCount = new MethodFunctionCount(table);
             String code = methodFunctionCount.getCode();
-            //createTestClass.addMethod(code);
             sb.append(code);
             sb.append("\n");
             sb.append("\n");
@@ -684,25 +673,6 @@ public class Generator2 implements Code
             sb.append(dataObject.getCode());
             sb.append("\n");
             sb.append("\n");
-        }
-
-            /*if (TestClass)
-            {
-
-                MethodListStuff methodListStuff = new MethodListStuff(table);
-                createTestClass.addCallMethod(methodListStuff.getToString());
-
-            }*/
-
-        //relationship create
-        if (Tables)
-        {
-
-            CreateRelationship createRelationship = new CreateRelationship(dbLink, SchemaId);
-            sb.append(createRelationship.getCode());
-            sb.append("\n");
-            sb.append("\n");
-
         }
 
         return sb.toString();
