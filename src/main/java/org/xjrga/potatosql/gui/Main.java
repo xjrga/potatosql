@@ -336,7 +336,7 @@ public class Main
         JTabbedPane tabbedPane = new JTabbedPane();
         JPanel panelWrapper = new JPanel();
         JButton btnGenerate = new JButton("Generate");
-
+        btnGenerate.setToolTipText("Generate source code");
         panelWrapper.setLayout(panelWrapperLayout);
         panel.setLayout(layout);
         tabbedPane.setTabPlacement(SwingConstants.BOTTOM);
@@ -861,7 +861,7 @@ public class Main
         );
         JPanel panel = new JPanel();
         JButton btnCopy = new JButton("Copy");
-
+        btnCopy.setToolTipText("Copy output to clipboard");
         panel.setLayout(layout);
         panel.setBorder(new TitledBorder("Output"));
 
@@ -1127,10 +1127,10 @@ public class Main
         JButton btnRelationshipUpdate = new JButton("u");
         JButton btnRelationshipShow = new JButton("a");
 
-        btnRelationshipAdd.setToolTipText("Add Table Relationship");
-        btnRelationshipDelete.setToolTipText("Delete Table Relationship");
-        btnRelationshipUpdate.setToolTipText("Update Table Relationship");
-        btnRelationshipShow.setToolTipText("Show All Relationships");
+        btnRelationshipAdd.setToolTipText("Add table relationship");
+        btnRelationshipDelete.setToolTipText("Delete table relationship");
+        btnRelationshipUpdate.setToolTipText("Update table relationship");
+        btnRelationshipShow.setToolTipText("Show all relationships");
 
         panel.setLayout(layout);
         panel.setBorder(new TitledBorder("Relationship"));
@@ -1422,6 +1422,9 @@ public class Main
         JButton btnRelationshipKeyAdd = new JButton();
         JButton btnRelationshipKeyDelete = new JButton();
 
+        btnRelationshipKeyAdd.setToolTipText("Add foreign key");
+        btnRelationshipKeyDelete.setToolTipText("Delete foreign key");
+
         panel.setLayout(layout);
         panel.setBorder(new TitledBorder("Relationship Key Pair"));
 
@@ -1608,9 +1611,10 @@ public class Main
         JButton btnSchemaAdd = new JButton("+");
         JButton btnSchemaDelete = new JButton("-");
         JButton btnSchemaUpdate = new JButton("u");
-
+        btnSchemaAdd.setToolTipText("Add database schema");
+        btnSchemaDelete.setToolTipText("Delete database schema");
+        btnSchemaUpdate.setToolTipText("Rename database schema");
         panel.setLayout(layout);
-
         panel.add(btnSchemaAdd, cc.xy(2, 1));
         panel.add(btnSchemaDelete, cc.xy(3, 1));
         panel.add(btnSchemaUpdate, cc.xy(4, 1));
@@ -1700,9 +1704,10 @@ public class Main
         JButton btnTableAdd = new JButton("+");
         JButton btnTableDelete = new JButton("-");
         JButton btnTableUpdate = new JButton("u");
-
+        btnTableAdd.setToolTipText("Add database table");
+        btnTableDelete.setToolTipText("Delete database table");
+        btnTableUpdate.setToolTipText("Rename database table");
         panel.setLayout(layout);
-
         panel.add(btnTableAdd, cc.xy(2, 1));
         panel.add(btnTableDelete, cc.xy(3, 1));
         panel.add(btnTableUpdate, cc.xy(4, 1));
@@ -1811,6 +1816,9 @@ public class Main
         JButton btnKeyAdd = new JButton("+");
         JButton btnKeyDelete = new JButton("-");
         JButton btnKeyUpdate = new JButton("u");
+        btnKeyAdd.setToolTipText("Add table key");
+        btnKeyDelete.setToolTipText("Delete table key");
+        btnKeyUpdate.setToolTipText("Update table key");
         buttonPanel.add(btnKeyAdd, cc.xy(2, 1));
         buttonPanel.add(btnKeyDelete, cc.xy(3, 1));
         buttonPanel.add(btnKeyUpdate, cc.xy(4, 1));
