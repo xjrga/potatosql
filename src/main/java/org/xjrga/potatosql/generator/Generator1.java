@@ -53,10 +53,16 @@ public class Generator1 implements Code
 
         if (Tables)
         {
+            sb.append("CREATE SCHEMA");
+            sb.append(" ");
+            sb.append(getSchemaDataObject().getSchemaName());
+            sb.append(";\n/\n\n");
+
             for (int i = 0; i < TableIds.length; i++)
             {
                 Integer tableId = TableIds[i];
                 Table table = tableMaker.getTable(getSchemaDataObject().getSchemaId(), tableId);
+                table.setSchema(getSchemaDataObject().getSchemaName());
                 SqlStuff sqlStuff = new SqlStuff(table);
 
                 CreateTable createTable = new CreateTable(table, sqlStuff);
@@ -66,7 +72,7 @@ public class Generator1 implements Code
 
             }
 
-            CreateRelationship createRelationship = new CreateRelationship(dbLink, getSchemaDataObject().getSchemaId());
+            CreateRelationship createRelationship = new CreateRelationship(dbLink, getSchemaDataObject());
             String code = createRelationship.getCode();
             sb.append(code);
             sb.append("\n");

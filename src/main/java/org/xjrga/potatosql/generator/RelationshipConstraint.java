@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 public class RelationshipConstraint implements Code
 {
-
+    private String schema;
     private String parent;
     private LinkedList<String> parentkeys;
     private String child;
@@ -73,6 +73,8 @@ public class RelationshipConstraint implements Code
 
         StringBuilder sb = new StringBuilder();
         sb.append("ALTER TABLE ");
+        sb.append(getSchema());
+        sb.append(".");
         sb.append(child);
         sb.append(" ");
         sb.append("ADD ");
@@ -96,6 +98,8 @@ public class RelationshipConstraint implements Code
         sb.setLength(sb.length() - 1);
         sb.append(" ) ");
         sb.append("REFERENCES ");
+        sb.append(getSchema());
+        sb.append(".");
         sb.append(parent);
         sb.append(" ( ");
         Iterator it2 = parentkeys.iterator();
@@ -158,4 +162,15 @@ public class RelationshipConstraint implements Code
     {
         this.relationshiptypeid = relationshiptypeid;
     }
+
+    public String getSchema()
+    {
+        return schema;
+    }
+
+    public void setSchema(String schema)
+    {
+        this.schema = schema;
+    }
+
 }

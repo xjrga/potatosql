@@ -25,6 +25,8 @@ public class CreateTable implements Code
         {
             sqlbuild.append("CREATE TABLE");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append("\n");
             sqlbuild.append("(");

@@ -11,6 +11,7 @@ public class Table
     private int keyCount;
     private int primaryKeyCount;
     private int nonPrimaryKeyCount;
+    private String schema;
 
 
     public Table(String name)
@@ -185,4 +186,15 @@ public class Table
         }
         return primaryKeyCount;
     }
+
+    public String getSchema()
+    {
+        return schema;
+    }
+
+    public void setSchema(String schema)
+    {
+        this.schema = schema;
+    }
+
 }

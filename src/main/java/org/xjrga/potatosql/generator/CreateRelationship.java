@@ -1,6 +1,7 @@
 package org.xjrga.potatosql.generator;
 
 import org.xjrga.potatosql.data.DbLink;
+import org.xjrga.potatosql.dataobject.SchemaDataObject;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,11 +12,11 @@ public class CreateRelationship implements Code
 
     private StringBuilder sqlbuild;
 
-    public CreateRelationship(DbLink dbLink, Integer schemaid)
+    public CreateRelationship(DbLink dbLink, SchemaDataObject schemaDataObject)
     {
         sqlbuild = new StringBuilder();
         RelationshipConstraint relationshipConstraint = new RelationshipConstraint();
-        LinkedList list = (LinkedList) dbLink.Relationship_SelectOnlyNames(schemaid);
+        LinkedList list = (LinkedList) dbLink.Relationship_SelectOnlyNames(schemaDataObject.getSchemaId());
         Iterator it = list.iterator();
         int count = 0;
         int relationshipid_old = -1;
@@ -38,6 +39,7 @@ public class CreateRelationship implements Code
                     sqlbuild.append("\n");
                 }
                 relationshipConstraint = new RelationshipConstraint();
+                relationshipConstraint.setSchema(schemaDataObject.getSchemaName());
                 relationshipConstraint.setParent(parent);
                 relationshipConstraint.setChild(child);
                 relationshipConstraint.setRelationshipType(relationshiptypeid);
