@@ -326,13 +326,13 @@ public class Generator2 implements Code
         DataObjectStuff dataObjectStuff = new DataObjectStuff(table);
 
         //statement create
-        if (Tables)
+        /*if (Tables)
         {
             CreateTable createTable = new CreateTable(table, sqlStuff);
             sb.append(createTable.getCode());
             sb.append("\n");
             sb.append("\n");
-        }
+        }*/
 
         if (TablesDup)
         {
