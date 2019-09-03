@@ -1207,7 +1207,8 @@ public class Main
         SchemaDataObject schemaDataObject = getSelectedSchema();
         TableDataObject tableDataObject = getSelectedTable();
         listModelTableOne.reload(schemaDataObject.getSchemaId(),tableDataObject.getTableId());
-
+        listParent.setSelectedValue(tableDataObject, true);
+        listChild.clearSelection();
         JPanel panelRelationshipInput = getPanelRelationshipInput();
 
         panelRelationshipInput.setPreferredSize(new Dimension(700, 433));
