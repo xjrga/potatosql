@@ -2212,7 +2212,7 @@ public class Main
         );
 
         FormLayout layoutSql01 = new FormLayout("min", //columns
-                "min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu" //rows
+                "min,min,min,min,min" //rows
         );
 
         FormLayout layoutSql02 = new FormLayout("min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu", //columns
@@ -2220,7 +2220,7 @@ public class Main
         );
 
         FormLayout layoutSchemaSql = new FormLayout("min", //columns
-                "min,10dlu,min,10dlu" //rows
+                "min,min" //rows
         );
 
         FormLayout layoutOtherJava = new FormLayout("min", //columns
@@ -2231,9 +2231,6 @@ public class Main
                 "20dlu,min,5dlu,min,20dlu" //rows
         );
 
-        FormLayout layoutSql = new FormLayout("20dlu,min:grow,20dlu", //columns
-                "20dlu,min,5dlu,min,20dlu" //rows
-        );
 
         FormLayout layout = new FormLayout("min:grow,min", //columns
                 "min,min" //rows
@@ -2308,13 +2305,14 @@ public class Main
         JLabel label_MethodPrint2 = new JLabel("Method Print");
 
         pnlSchemaSql.add(cboxTables, cc.xy(1, 1));
+        pnlSchemaSql.add(new JCheckBox("Hello, world!"), cc.xy(1, 2));
 
         pnlOtherJava.add(cboxTestClass, cc.xy(1, 1));
 
-        pnlTableSql01.add(cboxTablesDup, cc.xy(1, 3));
-        pnlTableSql01.add(cboxViews, cc.xy(1, 5));
-        pnlTableSql01.add(cboxStmtCreateSelect, cc.xy(1, 7));
-        pnlTableSql01.add(cboxStmtInsertSelect, cc.xy(1, 9));
+        pnlTableSql01.add(cboxTablesDup, cc.xy(1, 1));
+        pnlTableSql01.add(cboxViews, cc.xy(1, 2));
+        pnlTableSql01.add(cboxStmtCreateSelect, cc.xy(1, 3));
+        pnlTableSql01.add(cboxStmtInsertSelect, cc.xy(1, 4));
 
         pnlTableSql02.add(label_Insert, cc.xy(3, 1));
         pnlTableSql02.add(label_Update, cc.xy(5, 1));
