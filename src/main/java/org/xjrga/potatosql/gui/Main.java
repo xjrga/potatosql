@@ -773,7 +773,7 @@ public class Main
 
             String s = (String) JOptionPane.showInputDialog(null, "What is your key name?", "New Key", -1, null, null, keyname);
 
-            if (containsText(s))
+            if (isAlphaNumeric(s))
             {
                 dbLink.PotatoSql_TableKey_Copy(schemaid, tableid, keyid, s);
                 tableModelKeys.reload(schemaid, tableid);
@@ -793,7 +793,7 @@ public class Main
             String schemaName = schemaDataObject.getSchemaName();
             String s = (String) JOptionPane.showInputDialog(null, "What is your new schema name?", "New Schema", -1, null, null, schemaName);
 
-            if (containsText(s))
+            if (isAlphaNumeric(s))
             {
                 dbLink.DatabaseSchema_Copy(schemaId, s);
                 listModelSchema.reload();
@@ -817,7 +817,7 @@ public class Main
                 String tableName = tableDataObject.getTableName();
                 String s = (String) JOptionPane.showInputDialog(null, "What is your new table name?", "New Table", -1, null, null, tableName);
 
-                if (containsText(s))
+                if (isAlphaNumeric(s))
                 {
                     dbLink.PotatoSql_Table_Copy(schemaId, tableId_Old, s);
                     listModelTable.reload(schemaId);
@@ -1076,37 +1076,18 @@ public class Main
 
             public void removeUpdate(DocumentEvent e)
             {
-
                 setText(e);
             }
 
 
             public void setText(DocumentEvent e)
             {
-
-                StringBuilder sb = new StringBuilder();
-
-                if (!keyName.getText().matches("^$|^[a-zA-Z][a-zA-Z0-9_]*"))
-                {
-                    try
-                    {
-                        sb.append("• Takes alphanumeric characters\n\n");
-                        sb.append("  Character is ");
-                        sb.append(e.getDocument().getText(e.getOffset(), 1));
-                        JOptionPane.showMessageDialog(null, sb.toString(), "Error Message", JOptionPane.PLAIN_MESSAGE);
-                    }
-                    catch (BadLocationException ex)
-                    {
-                        ex.printStackTrace();
-                    }
-                }
-
+                checkForAlphaNumeric(e);
             }
 
 
             public void insertUpdate(DocumentEvent e)
             {
-
                 setText(e);
             }
 
@@ -1116,6 +1097,25 @@ public class Main
 
     }
 
+    private void checkForAlphaNumeric(DocumentEvent e)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        if (!keyName.getText().matches("^$|^[a-zA-Z][a-zA-Z0-9_]*"))
+        {
+            try
+            {
+                sb.append("• Takes alphanumeric characters\n\n");
+                sb.append("  Character is ");
+                sb.append(e.getDocument().getText(e.getOffset(), 1));
+                JOptionPane.showMessageDialog(null, sb.toString(), "Error Message", JOptionPane.PLAIN_MESSAGE);
+            }
+            catch (BadLocationException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+    }
 
     private JPanel getPanelTableKeys()
     {
@@ -1318,43 +1318,50 @@ public class Main
 
     private void eventActionPerformed_btnRelationshipAdd(ActionEvent e)
     {
-        clearPanelRelationshipInput();
+        if(isTableSelected()){
 
-        SchemaDataObject schemaDataObject = getSelectedSchema();
-        TableDataObject tableDataObject = getSelectedTable();
-        listModelTableOne.reload(schemaDataObject.getSchemaId(),tableDataObject.getTableId());
-        listParent.setSelectedValue(tableDataObject, true);
-        listChild.clearSelection();
-        JPanel panelRelationshipInput = getPanelRelationshipInput();
+            clearPanelRelationshipInput();
 
-        panelRelationshipInput.setPreferredSize(new Dimension(700, 433));
+            SchemaDataObject schemaDataObject = getSelectedSchema();
+            TableDataObject tableDataObject = getSelectedTable();
+            listModelTableOne.reload(schemaDataObject.getSchemaId(),tableDataObject.getTableId());
+            listParent.setSelectedValue(tableDataObject, true);
+            listChild.clearSelection();
+            JPanel panelRelationshipInput = getPanelRelationshipInput();
 
-        int i = JOptionPane.showOptionDialog(null, panelRelationshipInput, "Relationship", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{"Cancel", "  Ok  "}, null);
+            panelRelationshipInput.setPreferredSize(new Dimension(700, 433));
 
-        if (i == 1)
-        {
-            TableDataObject parent = (TableDataObject) listParent.getSelectedValue();
-            TableDataObject child = (TableDataObject) listChild.getSelectedValue();
-            Integer schemaid = parent.getSchemaId();
-            Integer parent_tableid = parent.getTableId();
-            Integer child_tableid = child.getTableId();
-            Integer relationshiptypeid;
-            String forwardVerbPhrase = txtForward.getText();
-            String reverseVerbPhrase = txtReverse.getText();
-            String relationShipName = txtRelationshipName.getText();
+            int i = JOptionPane.showOptionDialog(null, panelRelationshipInput, "Relationship", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{"Cancel", "  Ok  "}, null);
 
-            if (btnIdentifying.isSelected())
+            if (i == 1)
             {
-                relationshiptypeid = 0;
-            } else
-            {
-                relationshiptypeid = 1;
+                TableDataObject parent = (TableDataObject) listParent.getSelectedValue();
+                TableDataObject child = (TableDataObject) listChild.getSelectedValue();
+                Integer schemaid = parent.getSchemaId();
+                Integer parent_tableid = parent.getTableId();
+                Integer child_tableid = child.getTableId();
+                Integer relationshiptypeid;
+                String forwardVerbPhrase = txtForward.getText();
+                String reverseVerbPhrase = txtReverse.getText();
+                String relationShipName = txtRelationshipName.getText();
+
+                if (btnIdentifying.isSelected())
+                {
+                    relationshiptypeid = 0;
+                } else
+                {
+                    relationshiptypeid = 1;
+                }
+
+                dbLink.Relationship_Insert(schemaid, parent_tableid, child_tableid, relationshiptypeid, relationShipName, forwardVerbPhrase, reverseVerbPhrase);
+                tableModelRelationship.reload(schemaid,parent_tableid);
+                hideTableRelationshipColumns();
             }
-
-            dbLink.Relationship_Insert(schemaid, parent_tableid, child_tableid, relationshiptypeid, relationShipName, forwardVerbPhrase, reverseVerbPhrase);
-            tableModelRelationship.reload(schemaid,parent_tableid);
-            hideTableRelationshipColumns();
+        }else
+        {
+            showMessage("Please select table.");
         }
+
     }
 
     private void clearPanelRelationshipInput()
@@ -1371,7 +1378,7 @@ public class Main
     {
         Integer selectedRow = tableRelationshipFacts.getSelectedRow();
 
-        if (selectedRow > -1)
+        if (selectedRow != -1)
         {
             Integer schemaid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 1);
             Integer parent_tableid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 2);
@@ -1457,6 +1464,9 @@ public class Main
             tableModelRelationshipKeyPair.reload(schemaid, parent_tableid, child_tableid, relationshipid);
             hideTableRelationshipColumns();
             hideTableRelationshipKeyPairColumns();
+        }else
+        {
+            showMessage("Please select row to delete.");
         }
     }
 
@@ -1743,7 +1753,7 @@ public class Main
     {
         String s = (String) JOptionPane.showInputDialog(null, "What is your new schema name?", "New Schema", -1, null, null, "");
 
-        if (containsText(s))
+        if (isAlphaNumeric(s))
         {
             dbLink.DatabaseSchema_Insert(s);
             listModelSchema.reload();
@@ -1757,7 +1767,7 @@ public class Main
         {
             SchemaDataObject schemaDataObject = getSelectedSchema();
             String s = (String) JOptionPane.showInputDialog(null, "What is your new schema name?", "New Schema", -1, null, null, schemaDataObject.getSchemaName());
-            if (containsText(s))
+            if (isAlphaNumeric(s))
             {
                 Integer schemaId = schemaDataObject.getSchemaId();
                 dbLink.DatabaseSchema_Update(schemaId, s);
@@ -1838,7 +1848,7 @@ public class Main
         {
             TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
             String s = (String) JOptionPane.showInputDialog(null, "What is your new table name?", "New Table", -1, null, null, tableDataObject.getTableName());
-            if (containsText(s))
+            if (isAlphaNumeric(s))
             {
                 Integer schemaId = tableDataObject.getSchemaId();
                 Integer tableId = tableDataObject.getTableId();
@@ -1878,7 +1888,7 @@ public class Main
         {
             String s = (String) JOptionPane.showInputDialog(null, "What is your new table name?", "New Table", -1, null, null, "");
 
-            if (containsText(s))
+            if (isAlphaNumeric(s))
             {
                 SchemaDataObject schemaDataObject = getSelectedSchema();
                 Integer schemaId = schemaDataObject.getSchemaId();
@@ -1892,11 +1902,10 @@ public class Main
     }
 
 
-    private boolean containsText(String s)
+    private boolean isAlphaNumeric(String s)
     {
-        return s != null && s.length() > 0;
+        return s != null && s.length() > 0 && s.matches("^$|^[a-zA-Z][a-zA-Z0-9_]*");
     }
-
 
     private JPanel getPanelTableKeyButtons()
     {
