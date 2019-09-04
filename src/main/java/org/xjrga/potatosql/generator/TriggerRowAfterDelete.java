@@ -23,11 +23,15 @@ public class TriggerRowAfterDelete implements Code
         {
             sqlbuild.append("CREATE TRIGGER");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append("_RowLevelAfterDelete_Trigger");
             sqlbuild.append("\n");
             sqlbuild.append("AFTER DELETE ON");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append(" ");
             sqlbuild.append("REFERENCING OLD as row");
@@ -37,6 +41,8 @@ public class TriggerRowAfterDelete implements Code
             sqlbuild.append("BEGIN ATOMIC");
             sqlbuild.append("\n");
             sqlbuild.append("DELETE FROM ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName() + "2");
             sqlbuild.append("\n");
             sqlbuild.append("WHERE");

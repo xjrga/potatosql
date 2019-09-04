@@ -207,7 +207,9 @@ public class ProcedureStuff
     {
 
         StringBuilder sqlb = new StringBuilder();
-        sqlb.append("\"{CALL public.");
+        sqlb.append("\"{CALL ");
+        sqlb.append(table.getSchema());
+        sqlb.append(".");
         sqlb.append(table.getName());
         sqlb.append("_" + addName + "(");
         sqlb.append(" ");
@@ -246,7 +248,9 @@ public class ProcedureStuff
     {
 
         StringBuilder sqlb = new StringBuilder();
-        sqlb.append("\"{CALL public.");
+        sqlb.append("\"{CALL ");
+        sqlb.append(table.getSchema());
+        sqlb.append(".");
         sqlb.append(table.getName());
         sqlb.append("_" + addName + "(");
         sqlb.append(" ");
@@ -285,7 +289,9 @@ public class ProcedureStuff
     {
 
         StringBuilder sqlb = new StringBuilder();
-        sqlb.append("\"{CALL public.");
+        sqlb.append("\"{CALL ");
+        sqlb.append(table.getSchema());
+        sqlb.append(".");
         sqlb.append(table.getName());
         sqlb.append("_" + addName + "(");
         sqlb.append(" ");
@@ -320,7 +326,9 @@ public class ProcedureStuff
     {
 
         StringBuilder sqlb = new StringBuilder();
-        sqlb.append("\"{CALL public.");
+        sqlb.append("\"{CALL ");
+        sqlb.append(table.getSchema());
+        sqlb.append(".");
         sqlb.append(table.getName());
         sqlb.append("_" + addName + "(");
         sqlb.append(")}\"");

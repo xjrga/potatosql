@@ -25,6 +25,8 @@ public class FunctionCount implements Code
         {
             sqlbuild.append("CREATE FUNCTION");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append("_Count () RETURNS INTEGER");
             sqlbuild.append("\n");

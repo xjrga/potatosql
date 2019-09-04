@@ -27,6 +27,8 @@ public class ProcedureMerge implements Code
         {
             sqlbuild.append("CREATE PROCEDURE");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append("_Merge (");
             sqlbuild.append("\n");

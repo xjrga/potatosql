@@ -23,6 +23,8 @@ public class StatementDeleteAll implements Code
 
         sqlbuild.append("DELETE FROM");
         sqlbuild.append(" ");
+        sqlbuild.append(table.getSchema());
+        sqlbuild.append(".");
         sqlbuild.append(table.getName());
         sqlbuild.append(";");
         sqlbuild.append("\n");

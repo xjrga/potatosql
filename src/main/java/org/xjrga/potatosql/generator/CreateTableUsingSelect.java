@@ -22,6 +22,8 @@ public class CreateTableUsingSelect implements Code
         {
             sqlbuild.append("CREATE TABLE");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName() + "2");
             sqlbuild.append("\n");
             sqlbuild.append("(");
@@ -32,6 +34,8 @@ public class CreateTableUsingSelect implements Code
             sqlbuild.append("\n");
             sqlbuild.append("AS (\nSELECT * FROM");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append(" ");
             sqlbuild.append("\n) WITH DATA");

@@ -25,6 +25,8 @@ public class StatementMerge implements Code
         {
             sqlbuild.append("MERGE INTO");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append(" ");
             sqlbuild.append("USING");

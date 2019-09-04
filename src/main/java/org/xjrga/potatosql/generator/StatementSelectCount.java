@@ -25,6 +25,8 @@ public class StatementSelectCount implements Code
             sqlbuild.append("\n");
             sqlbuild.append("FROM");
             sqlbuild.append("\n");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append(";");
             sqlbuild.append("\n");

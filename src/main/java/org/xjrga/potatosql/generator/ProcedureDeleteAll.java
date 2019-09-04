@@ -25,6 +25,8 @@ public class ProcedureDeleteAll implements Code
 
         sqlbuild.append("CREATE PROCEDURE");
         sqlbuild.append(" ");
+        sqlbuild.append(table.getSchema());
+        sqlbuild.append(".");
         sqlbuild.append(table.getName());
         sqlbuild.append("_Delete_All ()");
         sqlbuild.append("\n");

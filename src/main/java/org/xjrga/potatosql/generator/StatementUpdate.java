@@ -25,6 +25,8 @@ public class StatementUpdate implements Code
         {
             sqlbuild.append("UPDATE");
             sqlbuild.append("\n");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append("\n");
             sqlbuild.append("SET");

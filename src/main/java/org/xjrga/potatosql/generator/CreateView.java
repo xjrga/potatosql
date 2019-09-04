@@ -27,6 +27,8 @@ public class CreateView implements Code
         {
             sqlbuild.append("CREATE View");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append("_View");
             sqlbuild.append(" ");

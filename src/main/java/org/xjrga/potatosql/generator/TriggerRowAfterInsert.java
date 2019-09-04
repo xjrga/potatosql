@@ -23,11 +23,15 @@ public class TriggerRowAfterInsert implements Code
         {
             sqlbuild.append("CREATE TRIGGER");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append("_RowLevelAfterInsert_Trigger");
             sqlbuild.append("\n");
             sqlbuild.append("AFTER INSERT ON");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append(" ");
             sqlbuild.append("REFERENCING NEW ROW AS newrow");
@@ -37,6 +41,8 @@ public class TriggerRowAfterInsert implements Code
             sqlbuild.append("BEGIN ATOMIC");
             sqlbuild.append("\n");
             sqlbuild.append("INSERT INTO ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName() + "2");
             sqlbuild.append(" VALUES (");
             sqlbuild.append(triggerStuff.getTriggerNewRowFields());

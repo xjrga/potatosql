@@ -23,11 +23,15 @@ public class TriggerRowBeforeInsert implements Code
         {
             sqlbuild.append("CREATE TRIGGER");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append("_RowLevelBeforeInsert_Trigger");
             sqlbuild.append("\n");
             sqlbuild.append("BEFORE INSERT ON");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append(" ");
             sqlbuild.append("REFERENCING NEW ROW AS newrow");

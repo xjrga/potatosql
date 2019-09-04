@@ -331,7 +331,7 @@ public class Generator2 implements Code
             sb.append("\n");
         }
 
-        //todo statement update
+        //statement update
         if (StmtUpdate)
         {
             StatementUpdate statementUpdate = new StatementUpdate(table, sqlStuff);
@@ -340,7 +340,7 @@ public class Generator2 implements Code
             sb.append("\n");
         }
 
-        //todo statement delete
+        //statement delete
         if (StmtDelete)
         {
             StatementDelete statementDelete = new StatementDelete(table, sqlStuff);
@@ -349,7 +349,7 @@ public class Generator2 implements Code
             sb.append("\n");
         }
 
-        //todo statement merge
+        //statement merge
         if (StmtMerge)
         {
             StatementMerge statementMerge = new StatementMerge(table, sqlStuff);
@@ -358,7 +358,7 @@ public class Generator2 implements Code
             sb.append("\n");
         }
 
-        //todo statement select
+        //statement select
         if (StmtSelect)
         {
             StatementSelect statementSelect = new StatementSelect(table, sqlStuff);
@@ -367,7 +367,7 @@ public class Generator2 implements Code
             sb.append("\n");
         }
 
-        //todo statement deleteall
+        //statement deleteall
         if (StmtDeleteAll)
         {
             StatementDeleteAll statementDeleteAll = new StatementDeleteAll(table, sqlStuff);
@@ -376,7 +376,7 @@ public class Generator2 implements Code
             sb.append("\n");
         }
 
-        //todo statement select all
+        //statement select all
         if (StmtSelectAll)
         {
             StatementSelectAll statementSelectAll = new StatementSelectAll(table, sqlStuff);
@@ -385,7 +385,7 @@ public class Generator2 implements Code
             sb.append("\n");
         }
 
-        //todo statement select count
+        //statement select count
         if (StmtCount)
         {
             StatementSelectCount statementSelectCount = new StatementSelectCount(table);
@@ -393,7 +393,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo statement create select
+        //statement create select
         if (StmtCreateSelect)
         {
             CreateTableUsingSelect createTableUsingSelect = new CreateTableUsingSelect(table, sqlStuff);
@@ -401,7 +401,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo statement insert select
+        //statement insert select
         if (StmtInsertSelect)
         {
             StatementInsertUsingSelect statementInsertUsingSelect = new StatementInsertUsingSelect(table, sqlStuff);
@@ -409,7 +409,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo procinsert
+        //procinsert
         if (ProcInsert)
         {
             ProcedureInsert procedureInsert = new ProcedureInsert(table, sqlStuff);
@@ -417,7 +417,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo procupdate
+        //procupdate
         if (ProcUpdate)
         {
             ProcedureUpdate procedureUpdate = new ProcedureUpdate(table, sqlStuff);
@@ -425,7 +425,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo procdelete
+        //procdelete
         if (ProcDelete)
         {
             ProcedureDelete procedureDelete = new ProcedureDelete(table, sqlStuff);
@@ -433,7 +433,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo procmerge
+        //procmerge
         if (ProcMerge)
         {
             ProcedureMerge procedureMerge = new ProcedureMerge(table, sqlStuff);
@@ -442,7 +442,7 @@ public class Generator2 implements Code
             sb.append("\n");
         }
 
-        //todo procedure select
+        //procedure select
         if (ProcSelect)
         {
             ProcedureSelect procedureSelect = new ProcedureSelect(table, sqlStuff);
@@ -450,7 +450,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo procdeleteall
+        //procdeleteall
         if (ProcDeleteAll)
         {
             ProcedureDeleteAll procedureDeleteAll = new ProcedureDeleteAll(table, sqlStuff);
@@ -458,7 +458,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo procselectall
+        //procselectall
         if (ProcSelectAll)
         {
             ProcedureSelectAll procedureSelectAll = new ProcedureSelectAll(table, sqlStuff);
@@ -466,7 +466,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo functioncount
+        //functioncount
         if (FunctionCount)
         {
             FunctionCount functionCount = new FunctionCount(table);
@@ -565,7 +565,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo views
+        //views
         if (Views)
         {
             CreateView createView = new CreateView(table, sqlStuff);
@@ -573,7 +573,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo triggerrowbeforeinsert
+        //trigger row before insert
         if (TriggerRowBeforeInsert)
         {
             TriggerRowBeforeInsert triggerRowBeforeInsert = new TriggerRowBeforeInsert(table, triggerStuff);
@@ -581,7 +581,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo triggerrowbeforeupdate
+        //trigger row before update
         if (TriggerRowBeforeUpdate)
         {
             TriggerRowBeforeUpdate triggerRowBeforeUpdate = new TriggerRowBeforeUpdate(table, triggerStuff);
@@ -589,7 +589,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo trigger row before delete
+        //trigger row before delete
         if (TriggerRowBeforeDelete)
         {
             TriggerRowBeforeDelete triggerRowBeforeDelete = new TriggerRowBeforeDelete(table, triggerStuff);
@@ -597,7 +597,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo trigger row after insert
+        //trigger row after insert
         if (TriggerRowAfterInsert)
         {
             TriggerRowAfterInsert triggerRowAfterInsert = new TriggerRowAfterInsert(table, triggerStuff);
@@ -605,7 +605,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo trigger row after update
+        //trigger row after update
         if (TriggerRowAfterUpdate)
         {
             TriggerRowAfterUpdate triggerRowAfterUpdate = new TriggerRowAfterUpdate(table, triggerStuff);
@@ -613,7 +613,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo trigger row after delete
+        //trigger row after delete
         if (TriggerRowAfterDelete)
         {
             TriggerRowAfterDelete triggerRowAfterDelete = new TriggerRowAfterDelete(table, triggerStuff);
@@ -621,7 +621,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo trigger statement after insert
+        //trigger statement after insert
         if (TriggerStatementAfterInsert)
         {
             TriggerStatementAfterInsert triggerStatementAfterInsert = new TriggerStatementAfterInsert(table, triggerStuff);
@@ -629,7 +629,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo trigger statement after update
+        //trigger statement after update
         if (TriggerStatementAfterUpdate)
         {
             TriggerStatementAfterUpdate triggerStatementAfterUpdate = new TriggerStatementAfterUpdate(table, triggerStuff);
@@ -637,7 +637,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo trigger statement after delete
+        //trigger statement after delete
         if (TriggerStatementAfterDelete)
         {
             TriggerStatementAfterDelete triggerStatementAfterDelete = new TriggerStatementAfterDelete(table, triggerStuff);

@@ -686,7 +686,6 @@ public class Main
 
     private void eventActionPerformed_mnuiTableImportData(ActionEvent e)
     {
-        //todo eventActionPerformed_mnuiTableImportData
         if (isTableSelected())
         {
             JFileChooser fileChooser = new JFileChooser();

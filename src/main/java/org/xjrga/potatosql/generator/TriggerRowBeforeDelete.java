@@ -23,11 +23,15 @@ public class TriggerRowBeforeDelete implements Code
         {
             sqlbuild.append("CREATE TRIGGER");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append("_RowLevelBeforeDelete_Trigger");
             sqlbuild.append("\n");
             sqlbuild.append("BEFORE DELETE ON");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append(" ");
             sqlbuild.append("REFERENCING OLD ROW AS oldrow");

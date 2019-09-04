@@ -23,11 +23,15 @@ public class TriggerRowBeforeUpdate implements Code
         {
             sqlbuild.append("CREATE TRIGGER");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append("_RowLevelBeforeUpdate_Trigger");
             sqlbuild.append("\n");
             sqlbuild.append("BEFORE UPDATE ON");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append(" ");
             sqlbuild.append("REFERENCING NEW ROW AS row OLD as oldrow");

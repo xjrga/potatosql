@@ -26,7 +26,6 @@ public class MethodProcedureInsert implements Code
         String ident = "";
         String method = "";
 
-        //todo double check method works properly
         if (table.identityExists())
         {
             methodParameters = javaStuff.getMethodParametersAllMinusIdent();

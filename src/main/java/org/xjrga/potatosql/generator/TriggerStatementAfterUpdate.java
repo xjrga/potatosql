@@ -23,11 +23,15 @@ public class TriggerStatementAfterUpdate implements Code
         {
             sqlbuild.append("CREATE TRIGGER");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append("_StatementLevelAfterUpdate_Trigger");
             sqlbuild.append("\n");
             sqlbuild.append("AFTER UPDATE ON");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append("\n");
             sqlbuild.append("FOR EACH STATEMENT");
@@ -35,11 +39,17 @@ public class TriggerStatementAfterUpdate implements Code
             sqlbuild.append("BEGIN ATOMIC");
             sqlbuild.append("\n");
             sqlbuild.append("DELETE FROM ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName() + "2;");
             sqlbuild.append("\n");
             sqlbuild.append("INSERT INTO ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName() + "2 ");
             sqlbuild.append("(SELECT * FROM ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append(");");
             sqlbuild.append("\n");
