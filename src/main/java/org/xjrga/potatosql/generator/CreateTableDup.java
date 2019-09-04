@@ -25,6 +25,8 @@ public class CreateTableDup implements Code
         {
             sqlbuild.append("CREATE TABLE");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append("2");
             sqlbuild.append("\n");

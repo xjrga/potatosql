@@ -391,13 +391,12 @@ public class Main
 
             if (isTableSelected())
             {
-                Generator2 generator2 = new Generator2(dbLink);
                 TableDataObject tableDataObject = getSelectedTable();
-                generator2.setSchemaId(tableDataObject.getSchemaId());
-                generator2.setTableId(tableDataObject.getTableId());
+                Generator2 generator2 = new Generator2(dbLink);
+                generator2.setSchemaDataObject(schemaDataObject);
+                generator2.setTableDataObject(tableDataObject);
                 generator2.setHsqldb(mnuiDialectHsqldb.isSelected());
                 generator2.setMysql(mnuiDialectMysql.isSelected());
-                generator2.setTableId(tableDataObject.getTableId());
                 generator2.setStmtCreateSelect(cboxStmtCreateSelect.isSelected());
                 generator2.setStmtInsertSelect(cboxStmtInsertSelect.isSelected());
                 generator2.setStmtCount(cboxStmtCount.isSelected());
@@ -2303,7 +2302,7 @@ public class Main
         JLabel label_MethodPrint2 = new JLabel("Method Print");
 
         pnlSchemaSql.add(cboxTables, cc.xy(1, 1));
-        
+
         pnlOtherJava.add(cboxTestClass, cc.xy(1, 1));
 
         pnlTableSql01.add(cboxTablesDup, cc.xy(1, 1));

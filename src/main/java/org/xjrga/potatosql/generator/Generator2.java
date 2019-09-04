@@ -1,6 +1,8 @@
 package org.xjrga.potatosql.generator;
 
 import org.xjrga.potatosql.data.DbLink;
+import org.xjrga.potatosql.dataobject.SchemaDataObject;
+import org.xjrga.potatosql.dataobject.TableDataObject;
 
 public class Generator2 implements Code
 {
@@ -46,39 +48,16 @@ public class Generator2 implements Code
     private boolean MethodFunctionCount;
     private boolean MethodSelectPrint;
     private boolean MethodSelectAllPrint;
-    private int SchemaId;
-    private int TableId;
     private boolean isHsqldb;
     private boolean isMysql;
     private boolean TablesDup;
-
+    private SchemaDataObject schemaDataObject;
+    private TableDataObject tableDataObject;
 
     public Generator2(DbLink dbLink)
     {
         this.dbLink = dbLink;
     }
-
-
-    public int getSchemaId()
-    {
-        return SchemaId;
-    }
-
-    public void setSchemaId(int schemaId)
-    {
-        SchemaId = schemaId;
-    }
-
-    public int getTableId()
-    {
-        return TableId;
-    }
-
-    public void setTableId(int tableId)
-    {
-        TableId = tableId;
-    }
-
 
     public void setTriggerStatementAfterUpdate(boolean triggerStatementAfterUpdate)
     {
@@ -320,7 +299,8 @@ public class Generator2 implements Code
     {
         StringBuilder sb = new StringBuilder();
         TableMaker tableMaker = new TableMaker(dbLink);
-        Table table = tableMaker.getTable(getSchemaId(), getTableId());
+        Table table = tableMaker.getTable(getSchemaDataObject().getSchemaId(), getTableDataObject().getTableId());
+        table.setSchema(getSchemaDataObject().getSchemaName());
         SqlStuff sqlStuff = new SqlStuff(table);
         TriggerStuff triggerStuff = new TriggerStuff(table);
         DataObjectStuff dataObjectStuff = new DataObjectStuff(table);
@@ -719,5 +699,24 @@ public class Generator2 implements Code
     public void setStmtInsertSelect(boolean stmtInsertSelect)
     {
         this.StmtInsertSelect = stmtInsertSelect;
+    }
+
+    public void setSchemaDataObject(SchemaDataObject schemaDataObject)
+    {
+        this.schemaDataObject = schemaDataObject;
+    }
+
+    public SchemaDataObject getSchemaDataObject()
+    {
+        return schemaDataObject;
+    }
+
+    public void setTableDataObject(TableDataObject tableDataObject)
+    {
+           this.tableDataObject = tableDataObject;
+    }
+    public TableDataObject getTableDataObject()
+    {
+        return tableDataObject;
     }
 }
