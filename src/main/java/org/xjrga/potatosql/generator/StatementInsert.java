@@ -25,6 +25,8 @@ public class StatementInsert implements Code
         {
             sqlbuild.append("INSERT INTO");
             sqlbuild.append(" ");
+            sqlbuild.append(table.getSchema());
+            sqlbuild.append(".");
             sqlbuild.append(table.getName());
             sqlbuild.append(" ");
             sqlbuild.append("(");
