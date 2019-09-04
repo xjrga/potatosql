@@ -475,7 +475,7 @@ public class Generator2 implements Code
             sb.append("\n");
         }
 
-        //todo method insert
+        //method insert
         if (MethodInsert)
         {
             MethodProcedureInsert methodProcedureInsert = new MethodProcedureInsert(table);
@@ -484,7 +484,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo methodupdate
+        //method update
         if (MethodUpdate)
         {
             MethodProcedureUpdate methodProcedureUpdate = new MethodProcedureUpdate(table);
@@ -493,7 +493,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo methoddelete
+        //method delete
         if (MethodDelete)
         {
             MethodProcedureDelete methodProcedureDelete = new MethodProcedureDelete(table);
@@ -502,7 +502,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo methodmerge
+        //method merge
         if (MethodMerge)
         {
             MethodProcedureMerge methodProcedureMerge = new MethodProcedureMerge(table);
@@ -511,7 +511,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo methodselect
+        //method select
         if (MethodSelect)
         {
             MethodProcedureSelect methodProcedureSelect = new MethodProcedureSelect(table);
@@ -520,7 +520,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo methodselectprint
+        //method select print
         if (MethodSelectPrint)
         {
             MethodProcedureSelectPrint methodProcedureSelectPrint = new MethodProcedureSelectPrint(table);
@@ -529,7 +529,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo methoddeleteall
+        //method delete all
         if (MethodDeleteAll)
         {
             MethodProcedureDeleteAll methodProcedureDeleteAll = new MethodProcedureDeleteAll(table);
@@ -538,7 +538,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo methodselectall
+        //method select all
         if (MethodSelectAll)
         {
             MethodProcedureSelectAll methodProcedureSelectAll = new MethodProcedureSelectAll(table);
@@ -547,7 +547,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo methodselectallprint
+        //method select all print
         if (MethodSelectAllPrint)
         {
             MethodProcedureSelectAllPrint methodProcedureSelectAllPrint = new MethodProcedureSelectAllPrint(table);
@@ -556,7 +556,7 @@ public class Generator2 implements Code
             sb.append("\n");
             sb.append("\n");
         }
-        //todo methodfunctioncount
+        //method function count
         if (MethodFunctionCount)
         {
             MethodFunctionCount methodFunctionCount = new MethodFunctionCount(table);
