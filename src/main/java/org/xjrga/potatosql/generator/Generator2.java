@@ -673,6 +673,25 @@ public class Generator2 implements Code
         isMysql = mysql;
     }
 
+    public SchemaDataObject getSchemaDataObject()
+    {
+        return schemaDataObject;
+    }
+
+    public void setSchemaDataObject(SchemaDataObject schemaDataObject)
+    {
+        this.schemaDataObject = schemaDataObject;
+    }
+
+    public TableDataObject getTableDataObject()
+    {
+        return tableDataObject;
+    }
+
+    public void setTableDataObject(TableDataObject tableDataObject)
+    {
+        this.tableDataObject = tableDataObject;
+    }
 
     public void setHsqldb(boolean hsqldb)
     {
@@ -698,25 +717,5 @@ public class Generator2 implements Code
     public void setStmtInsertSelect(boolean stmtInsertSelect)
     {
         this.StmtInsertSelect = stmtInsertSelect;
-    }
-
-    public void setSchemaDataObject(SchemaDataObject schemaDataObject)
-    {
-        this.schemaDataObject = schemaDataObject;
-    }
-
-    public SchemaDataObject getSchemaDataObject()
-    {
-        return schemaDataObject;
-    }
-
-    public void setTableDataObject(TableDataObject tableDataObject)
-    {
-        this.tableDataObject = tableDataObject;
-    }
-
-    public TableDataObject getTableDataObject()
-    {
-        return tableDataObject;
     }
 }

@@ -187,12 +187,12 @@ public class TableModelRelationship extends DefaultTableModel
 
     }
 
-    public void reload(int schemaid,int tableid)
+    public void reload(int schemaid, int tableid)
     {
 
         Vector table = new Vector();
 
-        LinkedList list = (LinkedList) dbLink.Relationship_Multiple_Select_2(schemaid,tableid);
+        LinkedList list = (LinkedList) dbLink.Relationship_Multiple_Select_2(schemaid, tableid);
 
         Iterator it = list.iterator();
 

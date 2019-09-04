@@ -102,20 +102,19 @@ public class Generator1 implements Code
         isMysql = mysql;
     }
 
-
-    public void setHsqldb(boolean hsqldb)
+    public SchemaDataObject getSchemaDataObject()
     {
-        isHsqldb = hsqldb;
+        return schemaDataObject;
     }
 
     public void setSchemaDataObject(SchemaDataObject schemaDataObject)
     {
-           this.schemaDataObject = schemaDataObject;
+        this.schemaDataObject = schemaDataObject;
     }
 
-    public SchemaDataObject getSchemaDataObject()
+    public void setHsqldb(boolean hsqldb)
     {
-        return schemaDataObject;
+        isHsqldb = hsqldb;
     }
 
 }

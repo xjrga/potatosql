@@ -51,14 +51,14 @@ public class Generator0 implements Code
         isHsqldb = hsqldb;
     }
 
-    public void setTestClassSelected(boolean selected)
-    {
-        isTestClassSelected = selected;
-    }
-
     public boolean isTestClassSelected()
     {
         return isTestClassSelected;
+    }
+
+    public void setTestClassSelected(boolean selected)
+    {
+        isTestClassSelected = selected;
     }
 
 }

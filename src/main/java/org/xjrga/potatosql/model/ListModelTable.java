@@ -69,7 +69,7 @@ public class ListModelTable extends DefaultListModel
 
         this.clear();
 
-        LinkedList list = (LinkedList) dbLink.DatabaseTable_Select(schemaId,tableId);
+        LinkedList list = (LinkedList) dbLink.DatabaseTable_Select(schemaId, tableId);
         Iterator it = list.iterator();
 
         while (it.hasNext())

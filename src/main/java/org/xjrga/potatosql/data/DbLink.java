@@ -374,7 +374,7 @@ public class DbLink
         return procRunner.callProcedureR(sql, parameterList.toArray());
     }
 
-    public List<Map<String, Object>> Relationship_Multiple_Select_2(Integer SchemaId,Integer TableId)
+    public List<Map<String, Object>> Relationship_Multiple_Select_2(Integer SchemaId, Integer TableId)
     {
 
         String sql = "{CALL public.Relationship_Multiple_Select_2(?,?)}";

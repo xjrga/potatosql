@@ -996,7 +996,7 @@ public class Main
             Integer tableId = tableDataObject.getTableId();
             tableModelKeys.reload(schemaId, tableId);
             hideTableKeysColumns();
-            tableModelRelationship.reload(schemaId,tableId);
+            tableModelRelationship.reload(schemaId, tableId);
             hideTableRelationshipColumns();
             tableModelRelationshipKeyPair.clear();
             hideTableRelationshipKeyPairColumns();
@@ -1300,13 +1300,14 @@ public class Main
 
     private void eventActionPerformed_btnRelationshipAdd(ActionEvent e)
     {
-        if(isTableSelected()){
+        if (isTableSelected())
+        {
 
             clearPanelRelationshipInput();
 
             SchemaDataObject schemaDataObject = getSelectedSchema();
             TableDataObject tableDataObject = getSelectedTable();
-            listModelTableOne.reload(schemaDataObject.getSchemaId(),tableDataObject.getTableId());
+            listModelTableOne.reload(schemaDataObject.getSchemaId(), tableDataObject.getTableId());
             listParent.setSelectedValue(tableDataObject, true);
             listChild.clearSelection();
             JPanel panelRelationshipInput = getPanelRelationshipInput();
@@ -1336,10 +1337,10 @@ public class Main
                 }
 
                 dbLink.Relationship_Insert(schemaid, parent_tableid, child_tableid, relationshiptypeid, relationShipName, forwardVerbPhrase, reverseVerbPhrase);
-                tableModelRelationship.reload(schemaid,parent_tableid);
+                tableModelRelationship.reload(schemaid, parent_tableid);
                 hideTableRelationshipColumns();
             }
-        }else
+        } else
         {
             showMessage("Please select table.");
         }
@@ -1374,7 +1375,7 @@ public class Main
             String reverseVerbPhrase = (String) tableRelationshipFacts.getValueAt(selectedRow, 10);
             TableDataObject tableDataObject_Parent = new TableDataObject(schemaid, parent_tableid, parent);
             TableDataObject tableDataObject_Child = new TableDataObject(schemaid, child_tableid, child);
-            listModelTableOne.reload(schemaid,parent_tableid);
+            listModelTableOne.reload(schemaid, parent_tableid);
             listParent.setSelectedValue(tableDataObject_Parent, true);
             listChild.setSelectedValue(tableDataObject_Child, true);
             txtRelationshipName.setText(relationshipname);
@@ -1442,11 +1443,11 @@ public class Main
             Integer relationshiptypeid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 6);
 
             dbLink.Relationship_Delete(schemaid, parent_tableid, child_tableid, relationshipid);
-            tableModelRelationship.reload(schemaid,parent_tableid);
+            tableModelRelationship.reload(schemaid, parent_tableid);
             tableModelRelationshipKeyPair.reload(schemaid, parent_tableid, child_tableid, relationshipid);
             hideTableRelationshipColumns();
             hideTableRelationshipKeyPairColumns();
-        }else
+        } else
         {
             showMessage("Please select row to delete.");
         }
@@ -1607,7 +1608,8 @@ public class Main
                     hideTableRelationshipKeyPairColumns();
                 }
             }
-        }else{
+        } else
+        {
             showMessage("Select relationship.");
         }
     }
@@ -1970,7 +1972,7 @@ public class Main
             {
                 hideTableKeysColumns();
             }
-        }else
+        } else
         {
             showMessage("Please select table.");
         }

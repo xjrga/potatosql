@@ -126,13 +126,16 @@ public class RelationshipConstraint implements Code
             * */
     }
 
+    public String getSchema()
+    {
+        return schema;
+    }
 
     public Integer getCount()
     {
 
         return count;
     }
-
 
     public void setCount(Integer count)
     {
@@ -158,19 +161,14 @@ public class RelationshipConstraint implements Code
         return sb.toString();
     }
 
-    public void setRelationshipType(Integer relationshiptypeid)
-    {
-        this.relationshiptypeid = relationshiptypeid;
-    }
-
-    public String getSchema()
-    {
-        return schema;
-    }
-
     public void setSchema(String schema)
     {
         this.schema = schema;
+    }
+
+    public void setRelationshipType(Integer relationshiptypeid)
+    {
+        this.relationshiptypeid = relationshiptypeid;
     }
 
 }
