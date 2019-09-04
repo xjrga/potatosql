@@ -470,23 +470,6 @@ public class Main
         return !listTable.isSelectionEmpty();
     }
 
-
-    private boolean isTableKeySelected()
-    {
-        boolean flag = false;
-
-        Integer selectedRow = tableKeys.getSelectedRow();
-
-        if (selectedRow != -1)
-        {
-            flag = true;
-
-        }
-
-        return flag;
-    }
-
-
     private JMenuBar getMenuBar()
     {
         JMenuBar menuBar = new JMenuBar();
@@ -761,11 +744,10 @@ public class Main
 
     private void eventActionPerformed_mnuiKeyCopy(ActionEvent e)
     {
-        if (isTableKeySelected())
+        int selectedRow = tableKeys.getSelectedRow();
+
+        if (selectedRow != -1)
         {
-
-            int selectedRow = tableKeys.getSelectedRow();
-
             int schemaid = (int) tableModelKeys.getValueAt(selectedRow, 0);
             int tableid = (int) tableModelKeys.getValueAt(selectedRow, 1);
             int keyid = (int) tableModelKeys.getValueAt(selectedRow, 2);
@@ -806,7 +788,7 @@ public class Main
     {
         if (isSchemaSelected())
         {
-            if (hasTableListBeenSelected())
+            if (isTableSelected())
             {
                 SchemaDataObject schemaDataObject = getSelectedSchema();
                 Integer schemaId = schemaDataObject.getSchemaId();
@@ -1007,7 +989,7 @@ public class Main
 
     private void eventListSelection_listTable(ListSelectionEvent e)
     {
-        if (hasTableListBeenSelected())
+        if (isTableSelected())
         {
             TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
             Integer schemaId = tableDataObject.getSchemaId();
@@ -1954,7 +1936,7 @@ public class Main
 
     private void eventActionPerformed_btnKeyAdd(ActionEvent e)
     {
-        if (hasTableListBeenSelected())
+        if (isTableSelected())
         {
             clearPanelTableKeyInput();
             JPanel panelTableKeyInput = getPanelTableKeyInput();
@@ -1988,19 +1970,15 @@ public class Main
             {
                 hideTableKeysColumns();
             }
+        }else
+        {
+            showMessage("Please select table.");
         }
     }
 
-
-    private boolean hasTableListBeenSelected()
-    {
-        return !listTable.isSelectionEmpty();
-    }
-
-
     private void eventActionPerformed_btnKeyUpdate(ActionEvent e)
     {
-        if (hasTableListBeenSelected())
+        if (isTableSelected())
         {
             fillPanelTableKeyInput();
             JPanel panelTableKeyInput = getPanelTableKeyInput();
@@ -2050,7 +2028,7 @@ public class Main
 
     private void eventActionPerformed_btnKeyDelete(ActionEvent e)
     {
-        if (hasTableListBeenSelected())
+        if (isTableSelected())
         {
             TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
             Integer schemaid = tableDataObject.getSchemaId();
