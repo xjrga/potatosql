@@ -1948,7 +1948,7 @@ public class Main
             {
                 TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
 
-                if (hasKeyTypesListBeenSelected())
+                if (isKeyTypesListSelected())
                 {
                     KeyTypeDataObject keyTypeDataObject = (KeyTypeDataObject) listKeyTypes.getSelectedValue();
                     String keyOrderText = keyOrder.getText();
@@ -1989,7 +1989,7 @@ public class Main
             if (i == 1)
             {
                 TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
-                if (hasKeyTypesListBeenSelected())
+                if (isKeyTypesListSelected())
                 {
                     KeyTypeDataObject keyTypeDataObject = (KeyTypeDataObject) listKeyTypes.getSelectedValue();
                     String keyOrderText = keyOrder.getText();
@@ -2020,7 +2020,7 @@ public class Main
     }
 
 
-    private boolean hasKeyTypesListBeenSelected()
+    private boolean isKeyTypesListSelected()
     {
         return !listKeyTypes.isSelectionEmpty();
     }
