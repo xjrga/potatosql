@@ -53,6 +53,10 @@ public class Generator1 implements Code
 
         if (Tables)
         {
+            DropSchema dropSchema = new DropSchema();
+            dropSchema.setSchemaDataObject(getSchemaDataObject());
+            sb.append(dropSchema.getCode());
+
             CreateSchema createSchema = new CreateSchema();
             createSchema.setSchemaDataObject(getSchemaDataObject());
             sb.append(createSchema.getCode());
