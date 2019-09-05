@@ -11,6 +11,7 @@ public class Column
     private boolean isIdentity = false;
     private boolean isPrecisionRequired = false;
     private Integer precision;
+    private boolean isScaleRequired = false;
     private Integer scale;
     private Integer order;
 

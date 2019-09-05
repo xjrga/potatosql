@@ -2057,12 +2057,13 @@ public class Main
             call keytype_insert(1,'INTEGER',false,false);
             call keytype_insert(2,'DOUBLE',false,false);
             call keytype_insert(3,'VARCHAR',true,false);
-            call keytype_insert(4,'BOOLEAN',false,false);
-            call keytype_insert(5,'BLOB',false,false);
-            call keytype_insert(6,'DATE',false,false);
-            call keytype_insert(7,'TIME',false,false);
-            call keytype_insert(8,'TIMESTAMP',false,false);
-            call keytype_insert(9,'DECIMAL',true,true);
+            call keytype_insert(4,'DATE',false,false);
+            call keytype_insert(5,'TIME',false,false);
+            call keytype_insert(6,'TIMESTAMP',false,false);
+            call keytype_insert(7,'DECIMAL',true,true);
+            call keytype_insert(8,'LONGVARCHAR',false,false);
+            call keytype_insert(9,'BLOB',false,false);
+            call keytype_insert(10,'CLOB',false,false);
         * */
 
         Integer precision = null;
@@ -2072,7 +2073,7 @@ public class Main
             case 3:
                 precision = 8000;
                 break;
-            case 9:
+            case 7:
                 precision = 10;
                 break;
             default:
@@ -2091,19 +2092,20 @@ public class Main
             call keytype_insert(1,'INTEGER',false,false);
             call keytype_insert(2,'DOUBLE',false,false);
             call keytype_insert(3,'VARCHAR',true,false);
-            call keytype_insert(4,'BOOLEAN',false,false);
-            call keytype_insert(5,'BLOB',false,false);
-            call keytype_insert(6,'DATE',false,false);
-            call keytype_insert(7,'TIME',false,false);
-            call keytype_insert(8,'TIMESTAMP',false,false);
-            call keytype_insert(9,'DECIMAL',true,true);
+            call keytype_insert(4,'DATE',false,false);
+            call keytype_insert(5,'TIME',false,false);
+            call keytype_insert(6,'TIMESTAMP',false,false);
+            call keytype_insert(7,'DECIMAL',true,true);
+            call keytype_insert(8,'LONGVARCHAR',false,false);
+            call keytype_insert(9,'BLOB',false,false);
+            call keytype_insert(10,'CLOB',false,false);
         * */
 
         Integer scale = null;
 
         switch (keytypeid)
         {
-            case 9:
+            case 7:
                 scale = 2;
                 break;
             default:
