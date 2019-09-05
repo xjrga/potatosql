@@ -273,9 +273,11 @@ public class Main
         listChild.setModel(listModelTable);
         listTable.setModel(listModelTable);
         tableKeys = new JTable();
+        tableKeys.getTableHeader().setReorderingAllowed(false);
         tableModelKeys = new TableModelKeys(dbLink);
         tableKeys.setModel(tableModelKeys);
         tableRelationshipFacts = new JTable();
+        tableRelationshipFacts.getTableHeader().setReorderingAllowed(false);
         tableModelRelationship = new TableModelRelationship(dbLink);
         tableRelationshipFacts.setModel(tableModelRelationship);
         listParentPK.setModel(listModelParentPK);
@@ -283,6 +285,7 @@ public class Main
         listChildPK.setModel(listModelChildPK);
         listChildNPK.setModel(listModelChildNPK);
         tableRelationshipPairKeys = new JTable();
+        tableRelationshipPairKeys.getTableHeader().setReorderingAllowed(false);
         tableModelRelationshipKeyPair = new TableModelRelationshipKeyPair(dbLink);
         tableRelationshipPairKeys.setModel(tableModelRelationshipKeyPair);
         frame = this.getFrame();
