@@ -28,6 +28,11 @@ public class SqlStuff
             {
                 sb.append("(");
                 sb.append(column.getPrecision());
+                if (column.isScaleRequired())
+                {
+                    sb.append(",");
+                    sb.append(column.getScale());
+                }
                 sb.append(")");
             }
             sb.append(",");
