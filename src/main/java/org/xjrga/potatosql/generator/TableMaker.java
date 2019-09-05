@@ -45,6 +45,8 @@ public class TableMaker
             Boolean isidentity = (Boolean) row.get("ISIDENTITY");
             Boolean precisionrequired = (Boolean) row.get("PRECISIONREQUIRED");
             Integer precision = (Integer) row.get("PRECISION");
+            Boolean scalerequired = (Boolean) row.get("SCALEREQUIRED");
+            Integer scale = (Integer) row.get("SCALE");
             Integer order = (Integer) row.get("ORDEN");
 
             Column column = new Column(name);
@@ -58,6 +60,8 @@ public class TableMaker
             column.setIdentity(isidentity);
             column.setPrecisionRequired(precisionrequired);
             column.setPrecision(precision);
+            column.setScaleRequired(scalerequired);
+            column.setScale(scale);
             column.setOrder(order);
 
         }

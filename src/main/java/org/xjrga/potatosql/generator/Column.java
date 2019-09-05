@@ -16,7 +16,7 @@ public class Column
     private Integer order;
 
 
-    public Column(String name, String label, boolean isPrimaryKey, Integer typeid, String typename, boolean isIdentity, boolean isPrecisionRequired, Integer precision, Integer order)
+    public Column(String name, String label, boolean isPrimaryKey, Integer typeid, String typename, boolean isIdentity, boolean isPrecisionRequired, Integer precision, boolean isScaleRequired, Integer scale,Integer order)
     {
 
         this.name = name;
@@ -27,6 +27,9 @@ public class Column
         this.isIdentity = isIdentity;
         this.isPrecisionRequired = isPrecisionRequired;
         this.precision = precision;
+        this.isScaleRequired = isScaleRequired;
+        this.scale = scale;
+
         this.order = order;
     }
 
@@ -149,6 +152,19 @@ public class Column
         this.precision = precision;
     }
 
+
+    public boolean isScaleRequired()
+    {
+
+        return isScaleRequired;
+    }
+
+
+    public void setScaleRequired(Boolean scalerequired)
+    {
+
+        isScaleRequired = scalerequired;
+    }
 
     public Integer getScale()
     {
