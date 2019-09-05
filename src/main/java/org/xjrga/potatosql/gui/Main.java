@@ -133,9 +133,7 @@ public class Main
         {
             String operating_system = System.getProperty("os.name").toLowerCase();
             String java_version = System.getProperty("java.version");
-            //UIManager.setLookAndFeel ("com.seaglasslookandfeel.SeaGlassLookAndFeel");
-            //UIManager.setLookAndFeel ("com.alee.laf.WebLookAndFeel");
-            //UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
             //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
             //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
             //UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
@@ -144,7 +142,7 @@ public class Main
             //UIManager.setLookAndFeel ("com.jgoodies.looks.plastic.PlasticXPLookAndFeel");
             //UIManager.setLookAndFeel ("com.jgoodies.looks.plastic.PlasticLookAndFeel");
             //UIManager.setLookAndFeel ("com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
         }
         catch (ClassNotFoundException e)
