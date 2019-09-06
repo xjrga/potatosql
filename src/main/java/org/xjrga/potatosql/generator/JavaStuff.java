@@ -235,74 +235,94 @@ public class JavaStuff
         {
             case "INTEGER":
             case "IDENTITY":
+                sb.append("\"");
+                sb.append(column.getName());
+                sb.append("\"");
+                sb.append(",");
                 sb.append("rs.getInt(");
                 sb.append(count);
-                sb.append(",");
-                sb.append(column.getName());
                 sb.append(")");
                 break;
             case "DOUBLE":
+                sb.append("\"");
+                sb.append(column.getName());
+                sb.append("\"");
+                sb.append(",");
                 sb.append("rs.getDouble(");
                 sb.append(count);
-                sb.append(",");
-                sb.append(column.getName());
                 sb.append(")");
                 break;
             case "VARCHAR":
             case "LONGVARCHAR":
+                sb.append("\"");
+                sb.append(column.getName());
+                sb.append("\"");
+                sb.append(",");
                 sb.append("rs.getString(");
                 sb.append(count);
-                sb.append(",");
-                sb.append(column.getName());
                 sb.append(")");
                 break;
             case "DATE":
+                sb.append("\"");
+                sb.append(column.getName());
+                sb.append("\"");
+                sb.append(",");
                 sb.append("rs.getDate(");
                 sb.append(count);
-                sb.append(",");
-                sb.append(column.getName());
                 sb.append(")");
                 break;
             case "TIME":
+                sb.append("\"");
+                sb.append(column.getName());
+                sb.append("\"");
+                sb.append(",");
                 sb.append("rs.getTime(");
                 sb.append(count);
-                sb.append(",");
-                sb.append(column.getName());
                 sb.append(")");
                 break;
             case "TIMESTAMP":
+                sb.append("\"");
+                sb.append(column.getName());
+                sb.append("\"");
+                sb.append(",");
                 sb.append("rs.getTimestamp(");
                 sb.append(count);
-                sb.append(",");
-                sb.append(column.getName());
                 sb.append(")");
                 break;
             case "DECIMAL":
+                sb.append("\"");
+                sb.append(column.getName());
+                sb.append("\"");
+                sb.append(",");
                 sb.append("rs.getBigDecimal(");
                 sb.append(count);
-                sb.append(",");
-                sb.append(column.getName());
                 sb.append(")");
                 break;
             case "BLOB":
+                sb.append("\"");
+                sb.append(column.getName());
+                sb.append("\"");
+                sb.append(",");
                 sb.append("rs.getBlob(");
                 sb.append(count);
-                sb.append(",");
-                sb.append(column.getName());
                 sb.append(")");
                 break;
             case "CLOB":
+                sb.append("\"");
+                sb.append(column.getName());
+                sb.append("\"");
+                sb.append(",");
                 sb.append("rs.getClob(");
                 sb.append(count);
-                sb.append(",");
-                sb.append(column.getName());
                 sb.append(")");
                 break;
             default:
+                sb.append("\"");
+                sb.append(column.getName());
+                sb.append("\"");
+                sb.append(",");
                 sb.append("rs.getObject(");
                 sb.append(count);
-                sb.append(",");
-                sb.append(column.getName());
                 sb.append(")");
                 break;
         }
