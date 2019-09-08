@@ -30,4 +30,9 @@ public class DropSchema implements Code
     {
         this.schemaDataObject = schemaDataObject;
     }
+
+    //DROP SCHEMA PUBLIC CASCADE - clear all data and drop all tables
+    //TRUNCATE SCHEMA PUBLIC AND COMMIT - clear all data and keep tables
+    //TRUNCATE SCHEMA PUBLIC AND COMMIT NO CHECK - clear all data, keep tables, bypass referential integrity
+    //TRUNCATE SCHEMA PUBLIC RESTART IDENTITY AND COMMIT NO CHECK - clear all data, restart identities, keep tables, bypass referential integrity
 }

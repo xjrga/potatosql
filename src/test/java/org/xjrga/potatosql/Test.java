@@ -1,7 +1,11 @@
 package org.xjrga.potatosql;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.*;
-import java.util.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class Test
 {
@@ -26,8 +30,7 @@ public class Test
             connection.setAutoCommit(false);
 
             //call insert, update, delete or merge methodNames here
-            //this.Project_Select_All_Print();
-            this.Project_Select_Print(0);
+
             connection.commit();
 
         }
@@ -56,79 +59,59 @@ public class Test
         }
     }
 
-    public void Project_Select_Print(Integer ProjectId) throws SQLException
-    {
-        LinkedList list = (LinkedList) this.Project_Select(ProjectId);
-        Iterator it = list.listIterator();
-        while (it.hasNext())
-        {
-            HashMap row = (HashMap) it.next();
-            String ProjectName = (String) row.get("PROJECTNAME");
-            System.out.println(ProjectId + "," + ProjectName);
-        }
-    }
 
     //paste generated methodNames here
 
-    public List<Map<String, Object>> Project_Select(Integer ProjectId) throws SQLException
-    {
-        LinkedList<Map<String, Object>> list = new LinkedList<>();
-        CallableStatement proc;
-        LinkedList<String> columnLabelList = new LinkedList();
-        proc = connection.prepareCall("{CALL public.Project_Select( ? )}");
-        proc.setInt(1, ProjectId);
-        ResultSet rs = proc.executeQuery();
-        while (rs.next())
-        {
-            Map<String, Object> row = new HashMap<>();
-            for (int columnPos = 0; columnPos < 2; columnPos++)
-            {
-                row.put("PROJECTID", rs.getObject(1));
-                row.put("PROJECTNAME", rs.getObject(2));
-            }
-            list.add(row);
-        }
-        proc.close();
-        return list;
-    }
 
     public static void main(String[] args)
     {
         Test test = new Test();
     }
 
-    public void Project_Select_All_Print() throws SQLException
+    private Date createDate(String dateastxt) throws ParseException
     {
-        LinkedList list = (LinkedList) this.Project_Select_All();
-        Iterator it = list.listIterator();
-        while (it.hasNext())
-        {
-            HashMap row = (HashMap) it.next();
-            Integer ProjectId = (Integer) row.get("PROJECTID");
-            String ProjectName = (String) row.get("PROJECTNAME");
-            System.out.println(ProjectId + "," + ProjectName);
-        }
+        //"2019/09/06 19:00:00"
+        long millis = getMillis(dateastxt);
+        Date date = new Date(millis);
+        return date;
     }
 
-    public List<Map<String, Object>> Project_Select_All() throws SQLException
+    private Time createTime(String dateastxt) throws ParseException
     {
-        LinkedList<Map<String, Object>> list = new LinkedList<>();
-        CallableStatement proc;
-        proc = connection.prepareCall("{CALL public.Project_Select_All()}");
-        ResultSet rs = proc.executeQuery();
-        while (rs.next())
-        {
-            Map<String, Object> row = new HashMap<>();
-            for (int columnPos = 0; columnPos < 2; columnPos++)
-            {
-                row.put("PROJECTID", rs.getObject(1));
-                row.put("PROJECTNAME", rs.getObject(2));
-            }
-            list.add(row);
-        }
-        proc.close();
-        return list;
+        //"2019/09/06 19:00:00"
+        long millis = getMillis(dateastxt);
+        Time time = new Time(millis);
+        return time;
     }
 
+    private Timestamp createTimestamp(String dateastxt) throws ParseException
+    {
+        //"2019/09/06 19:00:00"
+        long millis = getMillis(dateastxt);
+        Timestamp timestamp = new Timestamp(millis);
+        return timestamp;
+    }
+
+    private long getMillis(String timestamp) throws ParseException
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        return sdf.parse(timestamp).getTime();
+    }
+
+    private Blob createBlob(String filepath) throws SQLException, IOException
+    {
+        Blob blob = connection.createBlob();
+        byte[] bytes = Files.readAllBytes(Paths.get(filepath));
+        blob.setBytes(1, bytes);
+        return blob;
+    }
+
+    private Clob createClob(String filepath) throws SQLException, IOException
+    {
+        Clob clob = connection.createClob();
+        byte[] bytes = Files.readAllBytes(Paths.get(filepath));
+        clob.setString(1, new String(bytes));
+        return clob;
+    }
 }
 
