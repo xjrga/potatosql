@@ -1,3 +1,104 @@
+CREATE TABLE DatabaseSchema
+(
+SchemaId IDENTITY,
+Name VARCHAR(300),
+CONSTRAINT DatabaseSchema_primaryKey PRIMARY KEY (SchemaId)
+);
+/
+
+CREATE TABLE DatabaseTable
+(
+SchemaId INTEGER,
+TableId IDENTITY,
+Name VARCHAR(300),
+CONSTRAINT DatabaseTable_primaryKey PRIMARY KEY (SchemaId, TableId)
+);
+/
+
+CREATE TABLE TableKey
+(
+SchemaId INTEGER,
+TableId INTEGER,
+KeyId IDENTITY,
+Name VARCHAR(300),
+Label VARCHAR(300),
+IsPk BOOLEAN,
+TypeId INTEGER,
+Precision INTEGER,
+Scale INTEGER,
+Orden INTEGER,
+CONSTRAINT TableKey_primaryKey PRIMARY KEY (SchemaId, TableId, KeyId)
+);
+/
+
+CREATE TABLE KeyType
+(
+TypeId INTEGER,
+Name VARCHAR(300),
+PrecisionRequired BOOLEAN,
+ScaleRequired BOOLEAN,
+CONSTRAINT KeyType_primaryKey PRIMARY KEY (TypeId)
+);
+/
+
+CREATE TABLE RelationshipType
+(
+RelationshipTypeId INTEGER,
+Name VARCHAR(300),
+CONSTRAINT RelationshipType_primaryKey PRIMARY KEY (RelationshipTypeId)
+);
+/
+
+CREATE TABLE Relationship
+(
+SchemaId INTEGER,
+Parent_TableId INTEGER,
+Child_TableId INTEGER,
+RelationshipId IDENTITY,
+RelationshipTypeId INTEGER,
+Name VARCHAR(300),
+ForwardVerbPhrase VARCHAR(300),
+ReverseVerbPhrase VARCHAR(300),
+CONSTRAINT Relationship_primaryKey PRIMARY KEY (SchemaId, Parent_TableId, Child_TableId, RelationshipId)
+);
+/
+
+CREATE TABLE RelationshipKeyPair
+(
+SchemaId INTEGER,
+Parent_TableId INTEGER,
+Child_TableId INTEGER,
+RelationshipId INTEGER,
+Parent_KeyId INTEGER,
+Child_KeyId INTEGER,
+CONSTRAINT RelationshipKeyPair_primaryKey PRIMARY KEY (SchemaId, Parent_TableId, Child_TableId, RelationshipId, Parent_KeyId, Child_KeyId)
+);
+/
+
+ALTER TABLE DatabaseTable ADD CONSTRAINT DatabaseSchema_DatabaseTable_Relationship FOREIGN KEY ( SchemaId ) REFERENCES DatabaseSchema ( SchemaId ) ON DELETE CASCADE;
+/
+ALTER TABLE TableKey ADD CONSTRAINT DatabaseTable_TableKey_Relationship FOREIGN KEY ( SchemaId,TableId ) REFERENCES DatabaseTable ( SchemaId,TableId ) ON DELETE CASCADE;
+/
+ALTER TABLE RelationshipKeyPair ADD CONSTRAINT TableKey_RelationshipKeyPair_Relationship_1 FOREIGN KEY ( SchemaId,Parent_TableId,Parent_KeyId ) REFERENCES TableKey ( SchemaId,TableId,KeyId ) ON DELETE CASCADE;
+/
+ALTER TABLE RelationshipKeyPair ADD CONSTRAINT TableKey_RelationshipKeyPair_Relationship_2 FOREIGN KEY ( SchemaId,Child_TableId,Child_KeyId ) REFERENCES TableKey ( SchemaId,TableId,KeyId ) ON DELETE CASCADE;
+/
+ALTER TABLE TableKey ADD CONSTRAINT KeyType_TableKey_Relationship FOREIGN KEY ( TypeId ) REFERENCES KeyType ( TypeId ) ON DELETE CASCADE;
+/
+ALTER TABLE Relationship ADD CONSTRAINT RelationshipType_Relationship_Relationship FOREIGN KEY ( RelationshipTypeId ) REFERENCES RelationshipType ( RelationshipTypeId ) ON DELETE CASCADE;
+/
+ALTER TABLE RelationshipKeyPair ADD CONSTRAINT Relationship_RelationshipKeyPair_Relationship FOREIGN KEY ( SchemaId,Parent_TableId,Child_TableId,RelationshipId ) REFERENCES Relationship ( SchemaId,Parent_TableId,Child_TableId,RelationshipId ) ON DELETE CASCADE;
+/
+ALTER TABLE Relationship ADD CONSTRAINT DatabaseTable_Relationship_Relationship_1 FOREIGN KEY (SchemaId, Parent_TableId ) REFERENCES DatabaseTable (SchemaId, TableId ) ON DELETE CASCADE;
+/
+ALTER TABLE Relationship ADD CONSTRAINT DatabaseTable_Relationship_Relationship_2 FOREIGN KEY (SchemaId, Child_TableId ) REFERENCES DatabaseTable (SchemaId, TableId ) ON DELETE CASCADE;
+/
+
+
+
+
+
+
 CREATE PROCEDURE PUBLIC.DATABASESCHEMA_INSERT (IN V_NAME VARCHAR(300)) SPECIFIC DATABASESCHEMA_INSERT_10134 LANGUAGE SQL NOT DETERMINISTIC MODIFIES SQL DATA NEW SAVEPOINT LEVEL BEGIN ATOMIC INSERT INTO PUBLIC.DATABASESCHEMA
 (
   SCHEMAID,
@@ -792,4 +893,34 @@ OPEN RESULT;
 
 --
 END;
+/
+
+
+call keytype_insert(0,'IDENTITY',false,false);
+/
+call keytype_insert(1,'INTEGER',false,false);
+/
+call keytype_insert(2,'DOUBLE',false,false);
+/
+call keytype_insert(3,'VARCHAR',true,false);
+/
+call keytype_insert(4,'DATE',false,false);
+/
+call keytype_insert(5,'TIME',false,false);
+/
+call keytype_insert(6,'TIMESTAMP',false,false);
+/
+call keytype_insert(7,'DECIMAL',true,true);
+/
+call keytype_insert(8,'LONGVARCHAR',false,false);
+/
+call keytype_insert(9,'BLOB',false,false);
+/
+call keytype_insert(10,'CLOB',false,false);
+/
+
+
+call relationshiptype_insert(0,'Identifying');
+/
+call relationshiptype_insert(1,'Non-Identifying');
 /
