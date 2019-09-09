@@ -484,7 +484,6 @@ public class Main
         JMenuItem mnuiExit = new JMenuItem();
         JMenuItem mnuiSchemaCopy = new JMenuItem();
         JMenuItem mnuiTableCopy = new JMenuItem();
-        JMenuItem mnuiTableImportData = new JMenuItem();
         JMenuItem mnuiKeyCopy = new JMenuItem();
         ButtonGroup dialectGroup = new ButtonGroup();
         dialectGroup.add(mnuiDialectHsqldb);
@@ -524,7 +523,6 @@ public class Main
         mnuiExit.setText("Exit");
         mnuiSchemaCopy.setText("Duplicate");
         mnuiTableCopy.setText("Duplicate");
-        mnuiTableImportData.setText("Create Insert Calls");
         mnuiKeyCopy.setText("Duplicate");
         mnuiOptions.setText("Options");
         mnuiDialectHsqldb.setText("Hsqldb");
@@ -563,15 +561,6 @@ public class Main
             public void actionPerformed(ActionEvent e)
             {
                 eventActionPerformed_mnuiTableCopy(e);
-            }
-        });
-
-        mnuiTableImportData.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                //todo eventActionPerformed_mnuiTableImportData(e);
-                eventActionPerformed_mnuiTableImportData(e);
             }
         });
 
@@ -666,81 +655,6 @@ public class Main
     private void eventActionPerformed_mnuiGuide(ActionEvent e)
     {
         openUrl("http://x-jrga.github.io/potatosql");
-    }
-
-    private void eventActionPerformed_mnuiTableImportData(ActionEvent e)
-    {
-        if (isTableSelected())
-        {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setCurrentDirectory(new File("."));
-            int returnval = fileChooser.showOpenDialog((JMenuItem) e.getSource());
-
-            if (returnval == JFileChooser.APPROVE_OPTION)
-            {
-                File file = fileChooser.getSelectedFile();
-
-                new Thread()
-                {
-                    public void run()
-                    {
-                        try
-                        {
-                            long startTime = System.nanoTime();
-                            readFile(file);
-                            long endTime = System.nanoTime();
-                            long duration = (endTime - startTime);
-                            System.out.println("miliseconds: " + duration / 1000000);
-                        }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-                }.start();
-
-            }
-
-        }
-    }
-
-    private void readFile(File file)
-    {
-        try
-        {
-            BufferedReader in = new BufferedReader(new FileReader(file));
-            String str = "";
-            TableMaker tableMaker = new TableMaker(dbLink);
-            TableDataObject tableDataObject = getSelectedTable();
-            int schemaId = tableDataObject.getSchemaId();
-            int tableId = tableDataObject.getTableId();
-            Table table = tableMaker.getTable(schemaId, tableId);
-            Replacer replacer = new Replacer();
-            StringBuilder sb = new StringBuilder();
-
-            while ((str = in.readLine()) != null)
-            {
-                replacer.replace(str);
-
-                PrintProcedureInsertCall printProcedureInsertCall = new PrintProcedureInsertCall(table);
-                printProcedureInsertCall.setStr(replacer.replace(str));
-                String code = printProcedureInsertCall.getCode();
-                sb.append(code);
-
-            }
-
-            StringBuilder sbFilename = new StringBuilder();
-            sbFilename.append(table.getName().toLowerCase());
-            sbFilename.append("_insert_calls.sql");
-            Write.writeToFile(sb.toString(), sbFilename.toString());
-            textArea.append(sb.toString());
-
-            in.close();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
     }
 
     private void eventActionPerformed_mnuiKeyCopy(ActionEvent e)
