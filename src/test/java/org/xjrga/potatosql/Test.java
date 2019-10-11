@@ -13,7 +13,7 @@ public class Test
 
     public Test()
     {
-        try
+        /*try
         {
             Class.forName("org.hsqldb.jdbcDriver");
             connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/database", "SA", "");
@@ -56,7 +56,7 @@ public class Test
             {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
 
