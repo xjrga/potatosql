@@ -23,10 +23,6 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.net.URL;
 
 public class Main
@@ -615,7 +611,7 @@ public class Main
         sb.append("\n");
         sb.append("- is available as free software");
         sb.append("\n\n");
-        sb.append("This is version 0.10");
+        sb.append("This is version 0.11");
         sb.append("\n\n");
         sb.append("Please send your comments and suggestions to jorge.r.garciadealba+potatosql@gmail.com");
         sb.append("\n\n");

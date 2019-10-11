@@ -16,10 +16,10 @@ Requirements
 
 Installing
 
-    1. Download PotatoSQL-10.zip from https://sourceforge.net/projects/potatosql
-    2. unzip PotatoSQL-10.zip
-    3. cd PotatoSQL-10
-    4. java -jar PotatoSQL-10.jar (if you are on windows double click on jar file)
+    1. Download PotatoSQL-11.zip from https://sourceforge.net/projects/potatosql
+    2. unzip PotatoSQL-11.zip
+    3. cd PotatoSQL-11
+    4. java -jar PotatoSQL-11.jar (if you are on windows double click on jar file)
     
 [Download](https://sourceforge.net/projects/potatosql "PotatoSQL: Software for Database Design")
 
@@ -27,7 +27,7 @@ Installing
 
 Version
  
-    v0.10
+    0.11
 
 Authors
 

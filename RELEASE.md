@@ -2,12 +2,17 @@
 
 RELEASE NOTES
 
-PotatoSql v0.04
+PotatoSql 0.04
 
     Released July 11, 2019
     Refactor java method generation (select and select all) 
  
-PotatoSql v0.10
+PotatoSql 0.10
 
     Released September 04, 2019
     User interface redesign 
+
+PotatoSql 0.11
+
+    Released October 11, 2019
+    Updated pom.xml 
