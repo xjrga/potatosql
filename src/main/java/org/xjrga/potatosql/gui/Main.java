@@ -607,10 +607,6 @@ public class Main
         sb.append("jgoodies-common-1.8.1.jar");
         sb.append("\n");
         sb.append("jgoodies-forms-1.8.0.jar");
-        sb.append("\n");
-        sb.append("jgoodies-looks-2.7.0.jar");
-        sb.append("\n\n");
-        sb.append("It was written using IntelliJ IDEA (Community Edition), SQL Workbench/J and PotatoSQL.");
 
         JTextArea textArea = new JTextArea(15, 90);
         textArea.setText(sb.toString());

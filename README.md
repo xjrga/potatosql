@@ -44,4 +44,3 @@ Snack uses the following libraries:
     hsqldb.jar (v2.5.0)
     jgoodies-common-1.8.1.jar
     jgoodies-forms-1.8.0.jar
-    jgoodies-looks-2.7.0.jar
