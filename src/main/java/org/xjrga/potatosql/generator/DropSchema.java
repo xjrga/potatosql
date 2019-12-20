@@ -10,7 +10,7 @@ public class DropSchema implements Code
     {
         StringBuilder sb = new StringBuilder();
         //sb.append("--");
-        sb.append("DROP SCHEMA");
+        sb.append("DROP SCHEMA IF EXISTS");
         sb.append(" ");
         sb.append(getSchemaDataObject().getSchemaName());
         sb.append(" ");
