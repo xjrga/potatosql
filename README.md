@@ -8,7 +8,7 @@ This software:
      • generates ddl and dml code
      • can be used as a learning/teaching tool for anyone with interest in database design
      • allows me to build prototypes faster and less expensively    
-     • is available as free software
+     • is free and open source software
       
 Requirements
 
@@ -16,18 +16,18 @@ Requirements
 
 Installing
 
-    1. Download PotatoSQL-11.zip from https://sourceforge.net/projects/potatosql
-    2. unzip PotatoSQL-11.zip
-    3. cd PotatoSQL-11
-    4. java -jar PotatoSQL-11.jar (if you are on windows double click on jar file)
+    1. Download PotatoSQL-12.zip from https://sourceforge.net/projects/potatosql
+    2. unzip PotatoSQL-12.zip
+    3. cd PotatoSQL-12
+    4. java -jar PotatoSQL-12.jar (if you are on windows double click on jar file)
     
 [Download](https://sourceforge.net/projects/potatosql "PotatoSQL: Software for Database Design")
 
 [User Guide](https://x-jrga.github.io/potatosql "PotatoSQL: Software for Database Design")
 
-Version
+Build Number
  
-    0.11
+    12
 
 Authors
 
@@ -44,14 +44,4 @@ Snack uses the following libraries:
     hsqldb.jar (v2.5.0)
     jgoodies-common-1.8.1.jar
     jgoodies-forms-1.8.0.jar
-    jgoodies-looks-2.7.0.jar   
-
-Software used:
-
-    IntelliJ IDEA (Community Edition)
-    SQL Workbench/J
-    PotatoSQL
-
-Todo:
-
-     • test and find bugs    
+    jgoodies-looks-2.7.0.jar

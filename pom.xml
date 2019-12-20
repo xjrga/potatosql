@@ -6,7 +6,7 @@
 
   <groupId>org.xjrga.potatosql</groupId>
   <artifactId>PotatoSQL</artifactId>
-  <version>11</version>
+  <version>12</version>
 
   <name>PotatoSql</name>
   <url>https://x-jrga.github.io/potatosql</url>

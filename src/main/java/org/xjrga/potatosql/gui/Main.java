@@ -581,9 +581,9 @@ public class Main
         sb.append("\n");
         sb.append("- can be used as a learning/teaching tool");
         sb.append("\n");
-        sb.append("- is available as free software");
+        sb.append("- is free and open source software");
         sb.append("\n\n");
-        sb.append("This is version 0.11");
+        sb.append("This is build number 12");
         sb.append("\n\n");
         sb.append("Please send your comments and suggestions to jorge.r.garciadealba+potatosql@gmail.com");
         sb.append("\n\n");

@@ -15,4 +15,9 @@ PotatoSql 0.10
 PotatoSql 0.11
 
     Released October 11, 2019
-    Updated pom.xml 
+    Updated pom.xml
+    
+PotatoSql 12
+
+    Changed look and feel
+     
