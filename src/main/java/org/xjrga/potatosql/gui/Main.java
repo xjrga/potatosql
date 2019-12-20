@@ -18,6 +18,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -125,44 +126,16 @@ public class Main
 
     private void setLookAndFeel()
     {
+
+        String operating_system = System.getProperty("os.name").toLowerCase();
+        String java_version = System.getProperty("java.version");
         try
         {
-            String operating_system = System.getProperty("os.name").toLowerCase();
-            String java_version = System.getProperty("java.version");
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-            //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-            //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-            //UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-            //UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-            //UIManager.setLookAndFeel ("com.jgoodies.looks.windows.WindowsLookAndFeel");
-            //UIManager.setLookAndFeel ("com.jgoodies.looks.plastic.PlasticXPLookAndFeel");
-            //UIManager.setLookAndFeel ("com.jgoodies.looks.plastic.PlasticLookAndFeel");
-            //UIManager.setLookAndFeel ("com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
-            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
+            MetalLookAndFeel.setCurrentTheme(new Minimal());
+            UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
         }
         catch (ClassNotFoundException e)
         {
-            try
-            {
-                UIManager.setLookAndFeel("com.jgoodies.looks.plastic.PlasticLookAndFeel");
-            }
-            catch (ClassNotFoundException ex)
-            {
-                ex.printStackTrace();
-            }
-            catch (InstantiationException ex)
-            {
-                ex.printStackTrace();
-            }
-            catch (IllegalAccessException ex)
-            {
-                ex.printStackTrace();
-            }
-            catch (UnsupportedLookAndFeelException ex)
-            {
-                ex.printStackTrace();
-            }
             e.printStackTrace();
         }
         catch (InstantiationException e)
@@ -178,7 +151,6 @@ public class Main
             e.printStackTrace();
         }
     }
-
 
     private void initialize()
     {
@@ -900,6 +872,11 @@ public class Main
 
     private void eventListSelection_listTable(ListSelectionEvent e)
     {
+        if (e.getValueIsAdjusting())
+        {
+            return;
+        }
+
         if (isTableSelected())
         {
             TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
@@ -1193,6 +1170,11 @@ public class Main
             return;
         }
 
+        reloadTableRelationshipKeyPair();
+    }
+
+    private void reloadTableRelationshipKeyPair()
+    {
         Integer selectedRow = tableRelationshipFacts.getSelectedRow();
 
         if (selectedRow != -1)
@@ -1207,6 +1189,7 @@ public class Main
             hideTableRelationshipKeyPairColumns();
         }
     }
+
 
 
     private void eventActionPerformed_btnRelationshipAdd(ActionEvent e)
@@ -1581,6 +1564,11 @@ public class Main
 
     private void eventListSelection_listSchema(ListSelectionEvent e)
     {
+        if (e.getValueIsAdjusting())
+        {
+            return;
+        }
+
         if (isSchemaSelected())
         {
 
@@ -1923,6 +1911,7 @@ public class Main
                         dbLink.TableKey_Update(schemaid, tableid, keyid, keyname, keylabel, keyispk, keytypeid, keyprecision, keyscale, keyorder);
                         tableModelKeys.reload(schemaid, tableid);
                         hideTableKeysColumns();
+                        reloadTableRelationshipKeyPair();
                     }
                 }
             } else
