@@ -41,7 +41,7 @@ public class CreateTableUsingSelect implements Code
             sqlbuild.append("\n) WITH DATA");
             sqlbuild.append(";");
             sqlbuild.append("\n");
-            sqlbuild.append("/");
+
         }
         return sqlbuild.toString();
     }

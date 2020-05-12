@@ -41,7 +41,7 @@ public class ProcedureDelete implements Code
             sqlbuild.append(statementDelete.getCode());
             sqlbuild.append("END;");
             sqlbuild.append("\n");
-            sqlbuild.append("/");
+
         }
         return sqlbuild.toString();
     }

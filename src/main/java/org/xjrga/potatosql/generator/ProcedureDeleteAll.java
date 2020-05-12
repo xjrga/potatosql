@@ -35,7 +35,7 @@ public class ProcedureDeleteAll implements Code
         sqlbuild.append(statementDeleteAll.getCode());
         sqlbuild.append("END;");
         sqlbuild.append("\n");
-        sqlbuild.append("/");
+
         return sqlbuild.toString();
     }
 

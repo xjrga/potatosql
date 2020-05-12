@@ -40,7 +40,7 @@ public class TriggerRowBeforeUpdate implements Code
             sqlbuild.append("\n");
             sqlbuild.append(triggerStuff.getTriggerSetNewRowNPKVariables());
             sqlbuild.append("\n");
-            sqlbuild.append("/");
+
         }
         return sqlbuild.toString();
     }

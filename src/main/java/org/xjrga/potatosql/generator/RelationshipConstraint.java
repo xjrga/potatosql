@@ -113,7 +113,6 @@ public class RelationshipConstraint implements Code
         sb.append(" ) ");
         sb.append(getAction());
         sb.append("\n");
-        sb.append("/");
 
         return sb.toString();
 

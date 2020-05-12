@@ -41,7 +41,7 @@ public class ProcedureMerge implements Code
             sqlbuild.append(statementMerge.getCode());
             sqlbuild.append("END;");
             sqlbuild.append("\n");
-            sqlbuild.append("/");
+
         }
         return sqlbuild.toString();
     }

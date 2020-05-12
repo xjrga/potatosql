@@ -50,7 +50,7 @@ public class CreateTableDup implements Code
             sqlbuild.append(")");
             sqlbuild.append(";");
             sqlbuild.append("\n");
-            sqlbuild.append("/");
+
         } else
         {
             sqlbuild.append("--Please add fields to ");

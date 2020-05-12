@@ -55,7 +55,7 @@ public class TriggerStatementAfterUpdate implements Code
             sqlbuild.append("\n");
             sqlbuild.append("END;");
             sqlbuild.append("\n");
-            sqlbuild.append("/");
+
         }
         return sqlbuild.toString();
     }

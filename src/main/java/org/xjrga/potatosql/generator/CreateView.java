@@ -36,7 +36,7 @@ public class CreateView implements Code
             sqlbuild.append("AS");
             sqlbuild.append("\n");
             sqlbuild.append(statementSelectAll.getCode());
-            sqlbuild.append("/");
+
         }
         return sqlbuild.toString();
     }

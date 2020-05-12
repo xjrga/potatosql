@@ -46,7 +46,7 @@ public class ProcedureInsert implements Code
             }
             sqlbuild.append("END;");
             sqlbuild.append("\n");
-            sqlbuild.append("/");
+
         }
         return sqlbuild.toString();
     }
