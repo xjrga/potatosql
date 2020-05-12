@@ -2,12 +2,10 @@ package org.xjrga.potatosql.generator;
 
 import org.xjrga.potatosql.dataobject.SchemaDataObject;
 
-public class DropSchema implements Code
-{
+public class DropSchema implements Code {
     private SchemaDataObject schemaDataObject;
 
-    public String getCode()
-    {
+    public String getCode() {
         StringBuilder sb = new StringBuilder();
         //sb.append("--");
         sb.append("DROP SCHEMA IF EXISTS");
@@ -21,13 +19,11 @@ public class DropSchema implements Code
         return sb.toString();
     }
 
-    public SchemaDataObject getSchemaDataObject()
-    {
+    public SchemaDataObject getSchemaDataObject() {
         return schemaDataObject;
     }
 
-    public void setSchemaDataObject(SchemaDataObject schemaDataObject)
-    {
+    public void setSchemaDataObject(SchemaDataObject schemaDataObject) {
         this.schemaDataObject = schemaDataObject;
     }
 

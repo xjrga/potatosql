@@ -2,14 +2,12 @@ package org.xjrga.potatosql.generator;
 
 import java.util.HashMap;
 
-public class HsqldbTypeToJavaType
-{
+public class HsqldbTypeToJavaType {
 
-    private HashMap map;
+    private final HashMap map;
 
 
-    public HsqldbTypeToJavaType()
-    {
+    public HsqldbTypeToJavaType() {
 
         map = new HashMap();
 
@@ -42,14 +40,12 @@ public class HsqldbTypeToJavaType
     }
 
 
-    public String getJavaType(String sqlType)
-    {
+    public String getJavaType(String sqlType) {
 
         Integer type = (Integer) map.get(sqlType);
         String javaType;
 
-        switch (type)
-        {
+        switch (type) {
 
             case 1:
             case 2:

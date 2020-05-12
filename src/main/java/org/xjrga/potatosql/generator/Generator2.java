@@ -4,10 +4,9 @@ import org.xjrga.potatosql.data.DbLink;
 import org.xjrga.potatosql.dataobject.SchemaDataObject;
 import org.xjrga.potatosql.dataobject.TableDataObject;
 
-public class Generator2 implements Code
-{
+public class Generator2 implements Code {
 
-    private DbLink dbLink;
+    private final DbLink dbLink;
     private boolean DataObject;
     private boolean TriggerStatementAfterInsert;
     private boolean TriggerStatementAfterUpdate;
@@ -54,249 +53,207 @@ public class Generator2 implements Code
     private SchemaDataObject schemaDataObject;
     private TableDataObject tableDataObject;
 
-    public Generator2(DbLink dbLink)
-    {
+    public Generator2(DbLink dbLink) {
         this.dbLink = dbLink;
     }
 
-    public void setTriggerStatementAfterUpdate(boolean triggerStatementAfterUpdate)
-    {
+    public void setTriggerStatementAfterUpdate(boolean triggerStatementAfterUpdate) {
         TriggerStatementAfterUpdate = triggerStatementAfterUpdate;
     }
 
 
-    public void setTriggerStatementAfterDelete(boolean triggerStatementAfterDelete)
-    {
+    public void setTriggerStatementAfterDelete(boolean triggerStatementAfterDelete) {
         TriggerStatementAfterDelete = triggerStatementAfterDelete;
     }
 
 
-    public void setTriggerRowBeforeInsert(boolean triggerRowBeforeInsert)
-    {
+    public void setTriggerRowBeforeInsert(boolean triggerRowBeforeInsert) {
         TriggerRowBeforeInsert = triggerRowBeforeInsert;
     }
 
 
-    public void setTriggerRowBeforeUpdate(boolean triggerRowBeforeUpdate)
-    {
+    public void setTriggerRowBeforeUpdate(boolean triggerRowBeforeUpdate) {
         TriggerRowBeforeUpdate = triggerRowBeforeUpdate;
     }
 
 
-    public void setTriggerRowBeforeDelete(boolean triggerRowBeforeDelete)
-    {
+    public void setTriggerRowBeforeDelete(boolean triggerRowBeforeDelete) {
         TriggerRowBeforeDelete = triggerRowBeforeDelete;
     }
 
 
-    public void setTriggerRowAfterInsert(boolean triggerRowAfterInsert)
-    {
+    public void setTriggerRowAfterInsert(boolean triggerRowAfterInsert) {
         TriggerRowAfterInsert = triggerRowAfterInsert;
     }
 
 
-    public void setTriggerRowAfterUpdate(boolean triggerRowAfterUpdate)
-    {
+    public void setTriggerRowAfterUpdate(boolean triggerRowAfterUpdate) {
         TriggerRowAfterUpdate = triggerRowAfterUpdate;
     }
 
 
-    public void setTriggerRowAfterDelete(boolean triggerRowAfterDelete)
-    {
+    public void setTriggerRowAfterDelete(boolean triggerRowAfterDelete) {
         TriggerRowAfterDelete = triggerRowAfterDelete;
     }
 
 
-    public void setViews(boolean views)
-    {
+    public void setViews(boolean views) {
         Views = views;
     }
 
 
-    public void setTables(boolean tables)
-    {
+    public void setTables(boolean tables) {
         Tables = tables;
     }
 
 
-    public void setStmtInsert(boolean stmtInsert)
-    {
+    public void setStmtInsert(boolean stmtInsert) {
         StmtInsert = stmtInsert;
     }
 
 
-    public void setStmtUpdate(boolean stmtUpdate)
-    {
+    public void setStmtUpdate(boolean stmtUpdate) {
         StmtUpdate = stmtUpdate;
     }
 
 
-    public void setStmtDelete(boolean stmtDelete)
-    {
+    public void setStmtDelete(boolean stmtDelete) {
         StmtDelete = stmtDelete;
     }
 
 
-    public void setStmtMerge(boolean stmtMerge)
-    {
+    public void setStmtMerge(boolean stmtMerge) {
         StmtMerge = stmtMerge;
     }
 
 
-    public void setStmtSelect(boolean stmtSelect)
-    {
+    public void setStmtSelect(boolean stmtSelect) {
         StmtSelect = stmtSelect;
     }
 
 
-    public void setStmtDeleteAll(boolean stmtDeleteAll)
-    {
+    public void setStmtDeleteAll(boolean stmtDeleteAll) {
         StmtDeleteAll = stmtDeleteAll;
     }
 
 
-    public void setStmtSelectAll(boolean stmtSelectAll)
-    {
+    public void setStmtSelectAll(boolean stmtSelectAll) {
         StmtSelectAll = stmtSelectAll;
     }
 
 
-    public void setStmtCount(boolean stmtCount)
-    {
+    public void setStmtCount(boolean stmtCount) {
         StmtCount = stmtCount;
     }
 
 
-    public void setStmtCreateSelect(boolean stmtCreateSelect)
-    {
+    public void setStmtCreateSelect(boolean stmtCreateSelect) {
         StmtCreateSelect = stmtCreateSelect;
     }
 
-    public void setProcInsert(boolean procInsert)
-    {
+    public void setProcInsert(boolean procInsert) {
         ProcInsert = procInsert;
     }
 
 
-    public void setProcUpdate(boolean procUpdate)
-    {
+    public void setProcUpdate(boolean procUpdate) {
         ProcUpdate = procUpdate;
     }
 
 
-    public void setProcDelete(boolean procDelete)
-    {
+    public void setProcDelete(boolean procDelete) {
         ProcDelete = procDelete;
     }
 
 
-    public void setProcMerge(boolean procMerge)
-    {
+    public void setProcMerge(boolean procMerge) {
         ProcMerge = procMerge;
     }
 
 
-    public void setProcSelect(boolean procSelect)
-    {
+    public void setProcSelect(boolean procSelect) {
         ProcSelect = procSelect;
     }
 
 
-    public void setProcDeleteAll(boolean procDeleteAll)
-    {
+    public void setProcDeleteAll(boolean procDeleteAll) {
         ProcDeleteAll = procDeleteAll;
     }
 
 
-    public void setProcSelectAll(boolean procSelectAll)
-    {
+    public void setProcSelectAll(boolean procSelectAll) {
         ProcSelectAll = procSelectAll;
     }
 
 
-    public void setFunctionCount(boolean functionCount)
-    {
+    public void setFunctionCount(boolean functionCount) {
         FunctionCount = functionCount;
     }
 
 
-    public void setMethodInsert(boolean methodInsert)
-    {
+    public void setMethodInsert(boolean methodInsert) {
         MethodInsert = methodInsert;
     }
 
 
-    public void setMethodUpdate(boolean methodUpdate)
-    {
+    public void setMethodUpdate(boolean methodUpdate) {
         MethodUpdate = methodUpdate;
     }
 
 
-    public void setMethodDelete(boolean methodDelete)
-    {
+    public void setMethodDelete(boolean methodDelete) {
         MethodDelete = methodDelete;
     }
 
 
-    public void setMethodMerge(boolean methodMerge)
-    {
+    public void setMethodMerge(boolean methodMerge) {
         MethodMerge = methodMerge;
     }
 
 
-    public void setMethodSelect(boolean methodSelect)
-    {
+    public void setMethodSelect(boolean methodSelect) {
         MethodSelect = methodSelect;
     }
 
 
-    public void setMethodDeleteAll(boolean methodDeleteAll)
-    {
+    public void setMethodDeleteAll(boolean methodDeleteAll) {
         MethodDeleteAll = methodDeleteAll;
     }
 
 
-    public void setMethodSelectAll(boolean methodSelectAll)
-    {
+    public void setMethodSelectAll(boolean methodSelectAll) {
         MethodSelectAll = methodSelectAll;
     }
 
 
-    public void setMethodFunctionCount(boolean methodFunctionCount)
-    {
+    public void setMethodFunctionCount(boolean methodFunctionCount) {
         MethodFunctionCount = methodFunctionCount;
     }
 
-    public void setTriggerStatementAfterInsert(boolean triggerStatementAfterInsert)
-    {
+    public void setTriggerStatementAfterInsert(boolean triggerStatementAfterInsert) {
         TriggerStatementAfterInsert = triggerStatementAfterInsert;
     }
 
-    public void setDataObject(boolean dataObject)
-    {
+    public void setDataObject(boolean dataObject) {
         DataObject = dataObject;
     }
 
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
         StringBuilder sb = new StringBuilder();
 
-        if (isHsqldb)
-        {
+        if (isHsqldb) {
             sb.append(getHsqldb());
 
-        } else if (isMysql)
-        {
+        } else if (isMysql) {
             sb.append(getMysql());
         }
         return sb.toString();
     }
 
 
-    public String getHsqldb()
-    {
+    public String getHsqldb() {
         StringBuilder sb = new StringBuilder();
         TableMaker tableMaker = new TableMaker(dbLink);
         Table table = tableMaker.getTable(getSchemaDataObject().getSchemaId(), getTableDataObject().getTableId());
@@ -314,8 +271,7 @@ public class Generator2 implements Code
             sb.append("\n");
         }*/
 
-        if (TablesDup)
-        {
+        if (TablesDup) {
             CreateTableDup createTableDup = new CreateTableDup(table, sqlStuff);
             sb.append(createTableDup.getCode());
             sb.append("\n");
@@ -323,8 +279,7 @@ public class Generator2 implements Code
         }
 
         //statement insert
-        if (StmtInsert)
-        {
+        if (StmtInsert) {
             StatementInsert statementInsert = new StatementInsert(table, sqlStuff);
             sb.append(statementInsert.getCode());
             sb.append("\n");
@@ -332,8 +287,7 @@ public class Generator2 implements Code
         }
 
         //statement update
-        if (StmtUpdate)
-        {
+        if (StmtUpdate) {
             StatementUpdate statementUpdate = new StatementUpdate(table, sqlStuff);
             sb.append(statementUpdate.getCode());
             sb.append("\n");
@@ -341,8 +295,7 @@ public class Generator2 implements Code
         }
 
         //statement delete
-        if (StmtDelete)
-        {
+        if (StmtDelete) {
             StatementDelete statementDelete = new StatementDelete(table, sqlStuff);
             sb.append(statementDelete.getCode());
             sb.append("\n");
@@ -350,8 +303,7 @@ public class Generator2 implements Code
         }
 
         //statement merge
-        if (StmtMerge)
-        {
+        if (StmtMerge) {
             StatementMerge statementMerge = new StatementMerge(table, sqlStuff);
             sb.append(statementMerge.getCode());
             sb.append("\n");
@@ -359,8 +311,7 @@ public class Generator2 implements Code
         }
 
         //statement select
-        if (StmtSelect)
-        {
+        if (StmtSelect) {
             StatementSelect statementSelect = new StatementSelect(table, sqlStuff);
             sb.append(statementSelect.getCode());
             sb.append("\n");
@@ -368,8 +319,7 @@ public class Generator2 implements Code
         }
 
         //statement deleteall
-        if (StmtDeleteAll)
-        {
+        if (StmtDeleteAll) {
             StatementDeleteAll statementDeleteAll = new StatementDeleteAll(table, sqlStuff);
             sb.append(statementDeleteAll.getCode());
             sb.append("\n");
@@ -377,8 +327,7 @@ public class Generator2 implements Code
         }
 
         //statement select all
-        if (StmtSelectAll)
-        {
+        if (StmtSelectAll) {
             StatementSelectAll statementSelectAll = new StatementSelectAll(table, sqlStuff);
             sb.append(statementSelectAll.getCode());
             sb.append("\n");
@@ -386,56 +335,49 @@ public class Generator2 implements Code
         }
 
         //statement select count
-        if (StmtCount)
-        {
+        if (StmtCount) {
             StatementSelectCount statementSelectCount = new StatementSelectCount(table);
             sb.append(statementSelectCount.getCode());
             sb.append("\n");
             sb.append("\n");
         }
         //statement create select
-        if (StmtCreateSelect)
-        {
+        if (StmtCreateSelect) {
             CreateTableUsingSelect createTableUsingSelect = new CreateTableUsingSelect(table, sqlStuff);
             sb.append(createTableUsingSelect.getCode());
             sb.append("\n");
             sb.append("\n");
         }
         //statement insert select
-        if (StmtInsertSelect)
-        {
+        if (StmtInsertSelect) {
             StatementInsertUsingSelect statementInsertUsingSelect = new StatementInsertUsingSelect(table, sqlStuff);
             sb.append(statementInsertUsingSelect.getCode());
             sb.append("\n");
             sb.append("\n");
         }
         //procinsert
-        if (ProcInsert)
-        {
+        if (ProcInsert) {
             ProcedureInsert procedureInsert = new ProcedureInsert(table, sqlStuff);
             sb.append(procedureInsert.getCode());
             sb.append("\n");
             sb.append("\n");
         }
         //procupdate
-        if (ProcUpdate)
-        {
+        if (ProcUpdate) {
             ProcedureUpdate procedureUpdate = new ProcedureUpdate(table, sqlStuff);
             sb.append(procedureUpdate.getCode());
             sb.append("\n");
             sb.append("\n");
         }
         //procdelete
-        if (ProcDelete)
-        {
+        if (ProcDelete) {
             ProcedureDelete procedureDelete = new ProcedureDelete(table, sqlStuff);
             sb.append(procedureDelete.getCode());
             sb.append("\n");
             sb.append("\n");
         }
         //procmerge
-        if (ProcMerge)
-        {
+        if (ProcMerge) {
             ProcedureMerge procedureMerge = new ProcedureMerge(table, sqlStuff);
             sb.append(procedureMerge.getCode());
             sb.append("\n");
@@ -443,32 +385,28 @@ public class Generator2 implements Code
         }
 
         //procedure select
-        if (ProcSelect)
-        {
+        if (ProcSelect) {
             ProcedureSelect procedureSelect = new ProcedureSelect(table, sqlStuff);
             sb.append(procedureSelect.getCode());
             sb.append("\n");
             sb.append("\n");
         }
         //procdeleteall
-        if (ProcDeleteAll)
-        {
+        if (ProcDeleteAll) {
             ProcedureDeleteAll procedureDeleteAll = new ProcedureDeleteAll(table, sqlStuff);
             sb.append(procedureDeleteAll.getCode());
             sb.append("\n");
             sb.append("\n");
         }
         //procselectall
-        if (ProcSelectAll)
-        {
+        if (ProcSelectAll) {
             ProcedureSelectAll procedureSelectAll = new ProcedureSelectAll(table, sqlStuff);
             sb.append(procedureSelectAll.getCode());
             sb.append("\n");
             sb.append("\n");
         }
         //functioncount
-        if (FunctionCount)
-        {
+        if (FunctionCount) {
             FunctionCount functionCount = new FunctionCount(table);
             sb.append(functionCount.getCode());
             sb.append("\n");
@@ -476,8 +414,7 @@ public class Generator2 implements Code
         }
 
         //method insert
-        if (MethodInsert)
-        {
+        if (MethodInsert) {
             MethodProcedureInsert methodProcedureInsert = new MethodProcedureInsert(table);
             String code = methodProcedureInsert.getCode();
             sb.append(code);
@@ -485,8 +422,7 @@ public class Generator2 implements Code
             sb.append("\n");
         }
         //method update
-        if (MethodUpdate)
-        {
+        if (MethodUpdate) {
             MethodProcedureUpdate methodProcedureUpdate = new MethodProcedureUpdate(table);
             String code = methodProcedureUpdate.getCode();
             sb.append(code);
@@ -494,8 +430,7 @@ public class Generator2 implements Code
             sb.append("\n");
         }
         //method delete
-        if (MethodDelete)
-        {
+        if (MethodDelete) {
             MethodProcedureDelete methodProcedureDelete = new MethodProcedureDelete(table);
             String code = methodProcedureDelete.getCode();
             sb.append(code);
@@ -503,8 +438,7 @@ public class Generator2 implements Code
             sb.append("\n");
         }
         //method merge
-        if (MethodMerge)
-        {
+        if (MethodMerge) {
             MethodProcedureMerge methodProcedureMerge = new MethodProcedureMerge(table);
             String code = methodProcedureMerge.getCode();
             sb.append(code);
@@ -512,8 +446,7 @@ public class Generator2 implements Code
             sb.append("\n");
         }
         //method select
-        if (MethodSelect)
-        {
+        if (MethodSelect) {
             MethodProcedureSelect methodProcedureSelect = new MethodProcedureSelect(table);
             String code = methodProcedureSelect.getCode();
             sb.append(code);
@@ -521,8 +454,7 @@ public class Generator2 implements Code
             sb.append("\n");
         }
         //method select print
-        if (MethodSelectPrint)
-        {
+        if (MethodSelectPrint) {
             MethodProcedureSelectPrint methodProcedureSelectPrint = new MethodProcedureSelectPrint(table);
             String code = methodProcedureSelectPrint.getCode();
             sb.append(code);
@@ -530,8 +462,7 @@ public class Generator2 implements Code
             sb.append("\n");
         }
         //method delete all
-        if (MethodDeleteAll)
-        {
+        if (MethodDeleteAll) {
             MethodProcedureDeleteAll methodProcedureDeleteAll = new MethodProcedureDeleteAll(table);
             String code = methodProcedureDeleteAll.getCode();
             sb.append(code);
@@ -539,8 +470,7 @@ public class Generator2 implements Code
             sb.append("\n");
         }
         //method select all
-        if (MethodSelectAll)
-        {
+        if (MethodSelectAll) {
             MethodProcedureSelectAll methodProcedureSelectAll = new MethodProcedureSelectAll(table);
             String code = methodProcedureSelectAll.getCode();
             sb.append(code);
@@ -548,8 +478,7 @@ public class Generator2 implements Code
             sb.append("\n");
         }
         //method select all print
-        if (MethodSelectAllPrint)
-        {
+        if (MethodSelectAllPrint) {
             MethodProcedureSelectAllPrint methodProcedureSelectAllPrint = new MethodProcedureSelectAllPrint(table);
             String code = methodProcedureSelectAllPrint.getCode();
             sb.append(code);
@@ -557,8 +486,7 @@ public class Generator2 implements Code
             sb.append("\n");
         }
         //method function count
-        if (MethodFunctionCount)
-        {
+        if (MethodFunctionCount) {
             MethodFunctionCount methodFunctionCount = new MethodFunctionCount(table);
             String code = methodFunctionCount.getCode();
             sb.append(code);
@@ -566,88 +494,77 @@ public class Generator2 implements Code
             sb.append("\n");
         }
         //views
-        if (Views)
-        {
+        if (Views) {
             CreateView createView = new CreateView(table, sqlStuff);
             sb.append(createView.getCode());
             sb.append("\n");
             sb.append("\n");
         }
         //trigger row before insert
-        if (TriggerRowBeforeInsert)
-        {
+        if (TriggerRowBeforeInsert) {
             TriggerRowBeforeInsert triggerRowBeforeInsert = new TriggerRowBeforeInsert(table, triggerStuff);
             sb.append(triggerRowBeforeInsert.getCode());
             sb.append("\n");
             sb.append("\n");
         }
         //trigger row before update
-        if (TriggerRowBeforeUpdate)
-        {
+        if (TriggerRowBeforeUpdate) {
             TriggerRowBeforeUpdate triggerRowBeforeUpdate = new TriggerRowBeforeUpdate(table, triggerStuff);
             sb.append(triggerRowBeforeUpdate.getCode());
             sb.append("\n");
             sb.append("\n");
         }
         //trigger row before delete
-        if (TriggerRowBeforeDelete)
-        {
+        if (TriggerRowBeforeDelete) {
             TriggerRowBeforeDelete triggerRowBeforeDelete = new TriggerRowBeforeDelete(table, triggerStuff);
             sb.append(triggerRowBeforeDelete.getCode());
             sb.append("\n");
             sb.append("\n");
         }
         //trigger row after insert
-        if (TriggerRowAfterInsert)
-        {
+        if (TriggerRowAfterInsert) {
             TriggerRowAfterInsert triggerRowAfterInsert = new TriggerRowAfterInsert(table, triggerStuff);
             sb.append(triggerRowAfterInsert.getCode());
             sb.append("\n");
             sb.append("\n");
         }
         //trigger row after update
-        if (TriggerRowAfterUpdate)
-        {
+        if (TriggerRowAfterUpdate) {
             TriggerRowAfterUpdate triggerRowAfterUpdate = new TriggerRowAfterUpdate(table, triggerStuff);
             sb.append(triggerRowAfterUpdate.getCode());
             sb.append("\n");
             sb.append("\n");
         }
         //trigger row after delete
-        if (TriggerRowAfterDelete)
-        {
+        if (TriggerRowAfterDelete) {
             TriggerRowAfterDelete triggerRowAfterDelete = new TriggerRowAfterDelete(table, triggerStuff);
             sb.append(triggerRowAfterDelete.getCode());
             sb.append("\n");
             sb.append("\n");
         }
         //trigger statement after insert
-        if (TriggerStatementAfterInsert)
-        {
+        if (TriggerStatementAfterInsert) {
             TriggerStatementAfterInsert triggerStatementAfterInsert = new TriggerStatementAfterInsert(table, triggerStuff);
             sb.append(triggerStatementAfterInsert.getCode());
             sb.append("\n");
             sb.append("\n");
         }
         //trigger statement after update
-        if (TriggerStatementAfterUpdate)
-        {
+        if (TriggerStatementAfterUpdate) {
             TriggerStatementAfterUpdate triggerStatementAfterUpdate = new TriggerStatementAfterUpdate(table, triggerStuff);
             sb.append(triggerStatementAfterUpdate.getCode());
             sb.append("\n");
             sb.append("\n");
         }
         //trigger statement after delete
-        if (TriggerStatementAfterDelete)
-        {
+        if (TriggerStatementAfterDelete) {
             TriggerStatementAfterDelete triggerStatementAfterDelete = new TriggerStatementAfterDelete(table, triggerStuff);
             sb.append(triggerStatementAfterDelete.getCode());
             sb.append("\n");
             sb.append("\n");
         }
 
-        if (DataObject)
-        {
+        if (DataObject) {
             DataObject dataObject = new DataObject(table, dataObjectStuff);
             sb.append(dataObject.getCode());
             sb.append("\n");
@@ -658,8 +575,7 @@ public class Generator2 implements Code
     }
 
 
-    public String getMysql()
-    {
+    public String getMysql() {
 
         StringBuilder sb = new StringBuilder();
         sb.append("Not implemented yet.");
@@ -667,55 +583,45 @@ public class Generator2 implements Code
     }
 
 
-    public void setMysql(boolean mysql)
-    {
+    public void setMysql(boolean mysql) {
 
         isMysql = mysql;
     }
 
-    public SchemaDataObject getSchemaDataObject()
-    {
+    public SchemaDataObject getSchemaDataObject() {
         return schemaDataObject;
     }
 
-    public void setSchemaDataObject(SchemaDataObject schemaDataObject)
-    {
+    public void setSchemaDataObject(SchemaDataObject schemaDataObject) {
         this.schemaDataObject = schemaDataObject;
     }
 
-    public TableDataObject getTableDataObject()
-    {
+    public TableDataObject getTableDataObject() {
         return tableDataObject;
     }
 
-    public void setTableDataObject(TableDataObject tableDataObject)
-    {
+    public void setTableDataObject(TableDataObject tableDataObject) {
         this.tableDataObject = tableDataObject;
     }
 
-    public void setHsqldb(boolean hsqldb)
-    {
+    public void setHsqldb(boolean hsqldb) {
 
         isHsqldb = hsqldb;
     }
 
-    public void setTablesDup(boolean tablesdup)
-    {
+    public void setTablesDup(boolean tablesdup) {
         TablesDup = tablesdup;
     }
 
-    public void setMethodSelectAllPrint(boolean selected)
-    {
+    public void setMethodSelectAllPrint(boolean selected) {
         MethodSelectAllPrint = selected;
     }
 
-    public void setMethodSelectPrint(boolean selected)
-    {
+    public void setMethodSelectPrint(boolean selected) {
         MethodSelectPrint = selected;
     }
 
-    public void setStmtInsertSelect(boolean stmtInsertSelect)
-    {
+    public void setStmtInsertSelect(boolean stmtInsertSelect) {
         this.StmtInsertSelect = stmtInsertSelect;
     }
 }

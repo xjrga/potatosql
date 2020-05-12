@@ -2,27 +2,22 @@ package org.xjrga.potatosql.generator;
 
 import java.util.Iterator;
 
-public class JavaStuff
-{
-    private Table table;
+public class JavaStuff {
+    private final Table table;
 
-    public JavaStuff(Table table)
-    {
+    public JavaStuff(Table table) {
         this.table = table;
     }
 
-    public String getMethodParametersAllMinusIdent()
-    {
+    public String getMethodParametersAllMinusIdent() {
         HsqldbTypeToJavaType hsqldbTypeToJavaType = new HsqldbTypeToJavaType();
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
 
-            if (!column.isIdentity())
-            {
+            if (!column.isIdentity()) {
                 sb.append(hsqldbTypeToJavaType.getJavaType(column.getTypeName()));
                 sb.append(" ");
                 sb.append(column.getName());
@@ -31,22 +26,19 @@ public class JavaStuff
             }
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
 
         return sb.toString();
     }
 
-    public String getMethodParametersAll()
-    {
+    public String getMethodParametersAll() {
         HsqldbTypeToJavaType hsqldbTypeToJavaType = new HsqldbTypeToJavaType();
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append(hsqldbTypeToJavaType.getJavaType(column.getTypeName()));
             sb.append(" ");
@@ -55,26 +47,22 @@ public class JavaStuff
             sb.append(" ");
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
 
         return sb.toString();
     }
 
-    public String getMethodParametersPrimaryKeyOnly()
-    {
+    public String getMethodParametersPrimaryKeyOnly() {
         HsqldbTypeToJavaType hsqldbTypeToJavaType = new HsqldbTypeToJavaType();
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
 
-            if (column.isPrimaryKey())
-            {
+            if (column.isPrimaryKey()) {
                 sb.append(hsqldbTypeToJavaType.getJavaType(column.getTypeName()));
                 sb.append(" ");
                 sb.append(column.getName());
@@ -83,23 +71,20 @@ public class JavaStuff
             }
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
 
         return sb.toString();
     }
 
-    public String getRowGetAllKeys()
-    {
+    public String getRowGetAllKeys() {
 
         HsqldbTypeToJavaType hsqldbTypeToJavaType = new HsqldbTypeToJavaType();
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append(hsqldbTypeToJavaType.getJavaType(column.getTypeName()));
             sb.append(" ");
@@ -120,18 +105,15 @@ public class JavaStuff
         return sb.toString();
     }
 
-    public String getRowGetNonPrimaryKeys()
-    {
+    public String getRowGetNonPrimaryKeys() {
 
         HsqldbTypeToJavaType hsqldbTypeToJavaType = new HsqldbTypeToJavaType();
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
-            if (!column.isPrimaryKey())
-            {
+            if (!column.isPrimaryKey()) {
                 sb.append(hsqldbTypeToJavaType.getJavaType(column.getTypeName()));
                 sb.append(" ");
                 sb.append(column.getName());
@@ -147,24 +129,21 @@ public class JavaStuff
             }
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 1);
         }
 
         return sb.toString();
     }
 
-    public String getSout()
-    {
+    public String getSout() {
 
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
         sb.append("System.out.println(");
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append(column.getName());
             sb.append("+");
@@ -178,17 +157,14 @@ public class JavaStuff
         return sb.toString();
     }
 
-    public String getMethodVariablesPrimaryKeyOnly()
-    {
+    public String getMethodVariablesPrimaryKeyOnly() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
 
-            if (column.isPrimaryKey())
-            {
+            if (column.isPrimaryKey()) {
                 sb.append(column.getName());
                 sb.append(",");
             }
@@ -199,12 +175,10 @@ public class JavaStuff
         return sb.toString();
     }
 
-    public String getResultSetObjectString()
-    {
+    public String getResultSetObjectString() {
         StringBuilder sb = new StringBuilder();
         int count = table.getCountKey();
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             Column column = table.getColumn(i);
             sb.append("row.put(");
             sb.append(getParam(i + 1, column));
@@ -214,8 +188,7 @@ public class JavaStuff
         return sb.toString();
     }
 
-    private String getParam(int count, Column column)
-    {
+    private String getParam(int count, Column column) {
         StringBuilder sb = new StringBuilder();
 
         /*
@@ -231,8 +204,7 @@ public class JavaStuff
             call keytype_insert(9,'BLOB',false,false);
             call keytype_insert(10,'CLOB',false,false);
         * */
-        switch (column.getTypeName())
-        {
+        switch (column.getTypeName()) {
             case "INTEGER":
             case "IDENTITY":
                 sb.append("\"");

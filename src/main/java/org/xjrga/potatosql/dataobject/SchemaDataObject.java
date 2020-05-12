@@ -20,52 +20,45 @@
 
 package org.xjrga.potatosql.dataobject;
 
-public class SchemaDataObject
-{
+public class SchemaDataObject {
 
     private int schemaid;
     private String schemaname;
 
 
-    public SchemaDataObject(int tableid, String tablename)
-    {
+    public SchemaDataObject(int tableid, String tablename) {
 
         this.setSchemaId(tableid);
         this.setSchemaName(tablename);
     }
 
 
-    public int getSchemaId()
-    {
+    public int getSchemaId() {
 
         return schemaid;
     }
 
 
-    public void setSchemaId(int schemaid)
-    {
+    public void setSchemaId(int schemaid) {
 
         this.schemaid = schemaid;
     }
 
 
-    public String getSchemaName()
-    {
+    public String getSchemaName() {
 
         return schemaname;
     }
 
 
-    public void setSchemaName(String schemaname)
-    {
+    public void setSchemaName(String schemaname) {
 
         this.schemaname = schemaname;
     }
 
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         //return "{"+schemaid+":"+schemaname+"}";
         return schemaname;
     }

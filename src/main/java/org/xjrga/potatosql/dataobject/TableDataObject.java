@@ -20,16 +20,14 @@
 
 package org.xjrga.potatosql.dataobject;
 
-public class TableDataObject
-{
+public class TableDataObject {
 
     private int schemaid;
     private int tableid;
     private String tablename;
 
 
-    public TableDataObject(int schemaid, int tableid, String tablename)
-    {
+    public TableDataObject(int schemaid, int tableid, String tablename) {
 
         this.setSchemaId(schemaid);
         this.setTableId(tableid);
@@ -37,64 +35,54 @@ public class TableDataObject
     }
 
 
-    public int getSchemaId()
-    {
+    public int getSchemaId() {
 
         return schemaid;
     }
 
 
-    public void setSchemaId(int schemaid)
-    {
+    public void setSchemaId(int schemaid) {
 
         this.schemaid = schemaid;
     }
 
 
-    public int getTableId()
-    {
+    public int getTableId() {
 
         return tableid;
     }
 
 
-    public void setTableId(int tableid)
-    {
+    public void setTableId(int tableid) {
 
         this.tableid = tableid;
     }
 
 
-    public String getTableName()
-    {
+    public String getTableName() {
 
         return tablename;
     }
 
 
-    public void setTableName(String tablename)
-    {
+    public void setTableName(String tablename) {
 
         this.tablename = tablename;
     }
 
 
     @Override
-    public String toString()
-    {
+    public String toString() {
 
         return tablename;
     }
 
 
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
 
         boolean flag = false;
-        if (object instanceof TableDataObject)
-        {
-            if (getString().equals(((TableDataObject) object).getString()))
-            {
+        if (object instanceof TableDataObject) {
+            if (getString().equals(((TableDataObject) object).getString())) {
                 flag = true;
             }
         }
@@ -102,8 +90,7 @@ public class TableDataObject
     }
 
 
-    public String getString()
-    {
+    public String getString() {
 
         return "{" + schemaid + ":" + tableid + ":" + tablename + "}";
     }

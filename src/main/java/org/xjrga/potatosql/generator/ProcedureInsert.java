@@ -1,16 +1,14 @@
 package org.xjrga.potatosql.generator;
 
-public class ProcedureInsert implements Code
-{
+public class ProcedureInsert implements Code {
 
-    private Table table;
-    private Code statementInsert;
-    private SqlStuff sqlStuff;
-    private StringBuilder sqlbuild;
+    private final Table table;
+    private final Code statementInsert;
+    private final SqlStuff sqlStuff;
+    private final StringBuilder sqlbuild;
 
 
-    public ProcedureInsert(Table table, SqlStuff sqlStuff)
-    {
+    public ProcedureInsert(Table table, SqlStuff sqlStuff) {
 
         this.table = table;
         this.statementInsert = new StatementInsert(table, sqlStuff);
@@ -20,11 +18,9 @@ public class ProcedureInsert implements Code
 
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
 
-        if (!table.isEmpty())
-        {
+        if (!table.isEmpty()) {
             sqlbuild.append("CREATE PROCEDURE");
             sqlbuild.append(" ");
             sqlbuild.append(table.getSchema());
@@ -39,8 +35,7 @@ public class ProcedureInsert implements Code
             sqlbuild.append("MODIFIES SQL DATA BEGIN ATOMIC");
             sqlbuild.append("\n");
             sqlbuild.append(statementInsert.getCode());
-            if (table.identityExists())
-            {
+            if (table.identityExists()) {
                 sqlbuild.append("SET newid = IDENTITY();");
                 sqlbuild.append("\n");
             }

@@ -1,15 +1,13 @@
 package org.xjrga.potatosql.generator;
 
-public class CreateTableDup implements Code
-{
+public class CreateTableDup implements Code {
 
-    private Table table;
-    private SqlStuff sqlStuff;
-    private StringBuilder sqlbuild;
+    private final Table table;
+    private final SqlStuff sqlStuff;
+    private final StringBuilder sqlbuild;
 
 
-    public CreateTableDup(Table table, SqlStuff sqlStuff)
-    {
+    public CreateTableDup(Table table, SqlStuff sqlStuff) {
 
         this.table = table;
         this.sqlStuff = sqlStuff;
@@ -18,11 +16,9 @@ public class CreateTableDup implements Code
 
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
 
-        if (!table.isEmpty())
-        {
+        if (!table.isEmpty()) {
             sqlbuild.append("CREATE TABLE");
             sqlbuild.append(" ");
             sqlbuild.append(table.getSchema());
@@ -51,8 +47,7 @@ public class CreateTableDup implements Code
             sqlbuild.append(";");
             sqlbuild.append("\n");
 
-        } else
-        {
+        } else {
             sqlbuild.append("--Please add fields to ");
             sqlbuild.append(table.getName());
             sqlbuild.append("2");

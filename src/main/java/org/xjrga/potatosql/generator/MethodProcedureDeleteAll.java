@@ -1,12 +1,10 @@
 package org.xjrga.potatosql.generator;
 
-public class MethodProcedureDeleteAll implements Code
-{
-    private Table table;
-    private ProcedureStuff procedureStuff;
+public class MethodProcedureDeleteAll implements Code {
+    private final Table table;
+    private final ProcedureStuff procedureStuff;
 
-    public MethodProcedureDeleteAll(Table table)
-    {
+    public MethodProcedureDeleteAll(Table table) {
 
         this.table = table;
         this.procedureStuff = new ProcedureStuff(table);
@@ -14,8 +12,7 @@ public class MethodProcedureDeleteAll implements Code
 
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
         String procedureKind = "Delete_All";
         String methodName = table.getName() + "_" + procedureKind;
         String methodParameters = "";

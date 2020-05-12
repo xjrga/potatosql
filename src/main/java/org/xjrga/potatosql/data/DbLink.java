@@ -25,14 +25,12 @@ import java.util.List;
 import java.util.Map;
 
 
-public class DbLink
-{
+public class DbLink {
 
-    private ProcRunner procRunner;
+    private final ProcRunner procRunner;
 
 
-    public DbLink()
-    {
+    public DbLink() {
 
         procRunner = new ProcRunner();
     }
@@ -41,8 +39,7 @@ public class DbLink
     //DatabaseSchema Table
 
 
-    public void DatabaseSchema_Insert(String Name)
-    {
+    public void DatabaseSchema_Insert(String Name) {
 
         String sql = "{CALL public.DatabaseSchema_Insert(?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -51,8 +48,7 @@ public class DbLink
     }
 
 
-    public void DatabaseSchema_Update(Integer SchemaId, String Name)
-    {
+    public void DatabaseSchema_Update(Integer SchemaId, String Name) {
 
         String sql = "{CALL public.DatabaseSchema_Update(?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -62,8 +58,7 @@ public class DbLink
     }
 
 
-    public void DatabaseSchema_Delete(Integer SchemaId)
-    {
+    public void DatabaseSchema_Delete(Integer SchemaId) {
 
         String sql = "{CALL public.DatabaseSchema_Delete(?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -72,8 +67,7 @@ public class DbLink
     }
 
 
-    public List<Map<String, Object>> DatabaseSchema_Select_All()
-    {
+    public List<Map<String, Object>> DatabaseSchema_Select_All() {
 
         String sql = "{CALL public.DatabaseSchema_Select_All()}";
         return procRunner.callProcedureR(sql, new LinkedList().toArray());
@@ -83,8 +77,7 @@ public class DbLink
     //DatabaseTable Table
 
 
-    public void DatabaseTable_Insert(Integer SchemaId, String Name)
-    {
+    public void DatabaseTable_Insert(Integer SchemaId, String Name) {
 
         String sql = "{CALL public.DatabaseTable_Insert(?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -94,8 +87,7 @@ public class DbLink
     }
 
 
-    public void DatabaseTable_Update(Integer SchemaId, Integer TableId, String Name)
-    {
+    public void DatabaseTable_Update(Integer SchemaId, Integer TableId, String Name) {
 
         String sql = "{CALL public.DatabaseTable_Update(?,?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -106,8 +98,7 @@ public class DbLink
     }
 
 
-    public void DatabaseTable_Delete(Integer SchemaId, Integer TableId)
-    {
+    public void DatabaseTable_Delete(Integer SchemaId, Integer TableId) {
 
         String sql = "{CALL public.DatabaseTable_Delete(?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -117,8 +108,7 @@ public class DbLink
     }
 
 
-    public List<Map<String, Object>> DatabaseTable_Select(Integer SchemaId)
-    {
+    public List<Map<String, Object>> DatabaseTable_Select(Integer SchemaId) {
 
         String sql = "{CALL public.DatabaseTable_Select(?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -126,8 +116,7 @@ public class DbLink
         return procRunner.callProcedureR(sql, parameterList.toArray());
     }
 
-    public List<Map<String, Object>> DatabaseTable_Select(Integer SchemaId, Integer TableId)
-    {
+    public List<Map<String, Object>> DatabaseTable_Select(Integer SchemaId, Integer TableId) {
 
         String sql = "{CALL public.DatabaseTable_Select(?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -137,8 +126,7 @@ public class DbLink
     }
 
 
-    public void TableKey_Insert(Integer SchemaId, Integer TableId, String Name, String Label, Boolean IsPk, Integer TypeId, Integer Precision, Integer Scale, Integer Order)
-    {
+    public void TableKey_Insert(Integer SchemaId, Integer TableId, String Name, String Label, Boolean IsPk, Integer TypeId, Integer Precision, Integer Scale, Integer Order) {
 
         String sql = "{CALL public.TableKey_Insert(?,?,?,?,?,?,?,?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -155,8 +143,7 @@ public class DbLink
     }
 
 
-    public void TableKey_Update(Integer SchemaId, Integer TableId, Integer KeyId, String Name, String Label, Boolean IsPk, Integer TypeId, Integer Precision, Integer Scale, Integer Order)
-    {
+    public void TableKey_Update(Integer SchemaId, Integer TableId, Integer KeyId, String Name, String Label, Boolean IsPk, Integer TypeId, Integer Precision, Integer Scale, Integer Order) {
 
         String sql = "{CALL public.TableKey_Update(?,?,?,?,?,?,?,?,?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -174,8 +161,7 @@ public class DbLink
     }
 
 
-    public void TableKey_Delete(Integer SchemaId, Integer TableId, Integer KeyId)
-    {
+    public void TableKey_Delete(Integer SchemaId, Integer TableId, Integer KeyId) {
 
         String sql = "{CALL public.TableKey_Delete(?,?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -186,8 +172,7 @@ public class DbLink
     }
 
 
-    public List<Map<String, Object>> TableKey_Select(Integer SchemaId, Integer TableId)
-    {
+    public List<Map<String, Object>> TableKey_Select(Integer SchemaId, Integer TableId) {
 
         String sql = "{CALL public.TableKey_Select(?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -197,8 +182,7 @@ public class DbLink
     }
 
 
-    public List<Map<String, Object>> TableKey_Select_PK(Integer SchemaId, Integer TableId)
-    {
+    public List<Map<String, Object>> TableKey_Select_PK(Integer SchemaId, Integer TableId) {
 
         String sql = "{CALL public.TableKey_Select_PK(?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -208,8 +192,7 @@ public class DbLink
     }
 
 
-    public List<Map<String, Object>> TableKey_Select_NPK(Integer SchemaId, Integer TableId)
-    {
+    public List<Map<String, Object>> TableKey_Select_NPK(Integer SchemaId, Integer TableId) {
 
         String sql = "{CALL public.TableKey_Select_NPK(?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -222,8 +205,7 @@ public class DbLink
     //KeyType Table
 
 
-    public void KeyType_Insert(Integer typeId, String Name, Boolean PrecisionRequired, Boolean ScaleRequired)
-    {
+    public void KeyType_Insert(Integer typeId, String Name, Boolean PrecisionRequired, Boolean ScaleRequired) {
 
         String sql = "{CALL public.KeyType_Insert(?,?,?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -235,8 +217,7 @@ public class DbLink
     }
 
 
-    public void KeyType_Update(Integer TypeId, String Name, Boolean PrecisionRequired)
-    {
+    public void KeyType_Update(Integer TypeId, String Name, Boolean PrecisionRequired) {
 
         String sql = "{CALL public.KeyType_Update(?,?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -247,8 +228,7 @@ public class DbLink
     }
 
 
-    public void KeyType_Delete(Integer TypeId)
-    {
+    public void KeyType_Delete(Integer TypeId) {
 
         String sql = "{CALL public.KeyType_Delete(?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -257,8 +237,7 @@ public class DbLink
     }
 
 
-    public List<Map<String, Object>> KeyType_Select_All()
-    {
+    public List<Map<String, Object>> KeyType_Select_All() {
 
         String sql = "{CALL public.KeyType_Select_All()}";
         return procRunner.callProcedureR(sql, new LinkedList().toArray());
@@ -268,8 +247,7 @@ public class DbLink
     //RelationshipType Table
 
 
-    public void RelationshipType_Insert(Integer relationshipTypeId, String Name)
-    {
+    public void RelationshipType_Insert(Integer relationshipTypeId, String Name) {
 
         String sql = "{CALL public.RelationshipType_Insert(?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -279,8 +257,7 @@ public class DbLink
     }
 
 
-    public void RelationshipType_Update(Integer RelationshipTypeId, String Name)
-    {
+    public void RelationshipType_Update(Integer RelationshipTypeId, String Name) {
 
         String sql = "{CALL public.RelationshipType_Update(?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -290,8 +267,7 @@ public class DbLink
     }
 
 
-    public void RelationshipType_Delete(Integer RelationshipTypeId)
-    {
+    public void RelationshipType_Delete(Integer RelationshipTypeId) {
 
         String sql = "{CALL public.RelationshipType_Delete(?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -300,8 +276,7 @@ public class DbLink
     }
 
 
-    public List<Map<String, Object>> RelationshipType_Select_All()
-    {
+    public List<Map<String, Object>> RelationshipType_Select_All() {
 
         String sql = "{CALL public.RelationshipType_Select_All()}";
         return procRunner.callProcedureR(sql, new LinkedList().toArray());
@@ -309,8 +284,7 @@ public class DbLink
 
 
     //Relationship Table
-    public void Relationship_Insert(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipTypeId, String relationshipName, String forwardVerbPhrase, String reverseVerbPhrase)
-    {
+    public void Relationship_Insert(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipTypeId, String relationshipName, String forwardVerbPhrase, String reverseVerbPhrase) {
 
         String sql = "{CALL public.Relationship_Insert(?,?,?,?,?,?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -325,8 +299,7 @@ public class DbLink
     }
 
 
-    public void Relationship_Delete(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId)
-    {
+    public void Relationship_Delete(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId) {
 
         String sql = "{CALL public.Relationship_Delete(?,?,?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -338,8 +311,7 @@ public class DbLink
     }
 
 
-    public void Relationship_Update(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId, Integer RelationshipTypeId, String relationshipName, String forwardVerbPhrase, String reverseVerbPhrase)
-    {
+    public void Relationship_Update(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId, Integer RelationshipTypeId, String relationshipName, String forwardVerbPhrase, String reverseVerbPhrase) {
 
         String sql = "{CALL public.Relationship_Update(?,?,?,?,?,?,?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -355,8 +327,7 @@ public class DbLink
     }
 
 
-    public List<Map<String, Object>> Relationship_Select(Integer SchemaId)
-    {
+    public List<Map<String, Object>> Relationship_Select(Integer SchemaId) {
 
         String sql = "{CALL public.Relationship_Select(?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -365,8 +336,7 @@ public class DbLink
     }
 
 
-    public List<Map<String, Object>> Relationship_Multiple_Select(Integer SchemaId)
-    {
+    public List<Map<String, Object>> Relationship_Multiple_Select(Integer SchemaId) {
 
         String sql = "{CALL public.Relationship_Multiple_Select(?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -374,8 +344,7 @@ public class DbLink
         return procRunner.callProcedureR(sql, parameterList.toArray());
     }
 
-    public List<Map<String, Object>> Relationship_Multiple_Select_2(Integer SchemaId, Integer TableId)
-    {
+    public List<Map<String, Object>> Relationship_Multiple_Select_2(Integer SchemaId, Integer TableId) {
 
         String sql = "{CALL public.Relationship_Multiple_Select_2(?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -384,8 +353,7 @@ public class DbLink
         return procRunner.callProcedureR(sql, parameterList.toArray());
     }
 
-    public void RelationshipKeyPair_Insert(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId, Integer Parent_KeyId, Integer Child_KeyId)
-    {
+    public void RelationshipKeyPair_Insert(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId, Integer Parent_KeyId, Integer Child_KeyId) {
 
         String sql = "{CALL public.RelationshipKeyPair_Insert(?,?,?,?,?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -399,8 +367,7 @@ public class DbLink
     }
 
 
-    public void RelationshipKeyPair_Delete(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId, Integer Parent_KeyId, Integer Child_KeyId)
-    {
+    public void RelationshipKeyPair_Delete(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId, Integer Parent_KeyId, Integer Child_KeyId) {
 
         String sql = "{CALL public.RelationshipKeyPair_Delete(?,?,?,?,?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -413,8 +380,7 @@ public class DbLink
         procRunner.callProcedure(sql, parameterList.toArray());
     }
 
-    public void RelationshipKeyPair_Delete(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId)
-    {
+    public void RelationshipKeyPair_Delete(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId) {
 
         String sql = "{CALL public.RelationshipKeyPair_Delete(?,?,?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -425,8 +391,7 @@ public class DbLink
         procRunner.callProcedure(sql, parameterList.toArray());
     }
 
-    public List<Map<String, Object>> RelationshipKeyPair_Select(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId)
-    {
+    public List<Map<String, Object>> RelationshipKeyPair_Select(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId) {
 
         String sql = "{CALL public.RelationshipKeyPair_Select(?,?,?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -440,16 +405,14 @@ public class DbLink
     //Other
 
 
-    public void resetDB()
-    {
+    public void resetDB() {
 
         procRunner.resetDB();
     }
 
 
     //TableKey_KeyType
-    public List<Map<String, Object>> TableKey_KeyType_Select(Integer SchemaId, Integer TableId)
-    {
+    public List<Map<String, Object>> TableKey_KeyType_Select(Integer SchemaId, Integer TableId) {
 
         String sql = "{CALL public.TableKey_KeyType_Select(?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -459,8 +422,7 @@ public class DbLink
     }
 
 
-    public List<Map<String, Object>> RelationshipKeyPair_Multiple_Select(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId)
-    {
+    public List<Map<String, Object>> RelationshipKeyPair_Multiple_Select(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId) {
 
         String sql = "{CALL public.RelationshipKeyPair_Multiple_Select(?,?,?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -472,8 +434,7 @@ public class DbLink
     }
 
 
-    public List<Map<String, Object>> Relationship_SelectWithNames(Integer SchemaId)
-    {
+    public List<Map<String, Object>> Relationship_SelectWithNames(Integer SchemaId) {
 
         String sql = "{CALL public.Relationship_SelectWithNames(?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -482,8 +443,7 @@ public class DbLink
     }
 
 
-    public List<Map<String, Object>> Relationship_SelectOnlyNames(Integer SchemaId)
-    {
+    public List<Map<String, Object>> Relationship_SelectOnlyNames(Integer SchemaId) {
 
         String sql = "{CALL public.Relationship_SelectOnlyNames(?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -492,15 +452,13 @@ public class DbLink
     }
 
 
-    public void Shutdown()
-    {
+    public void Shutdown() {
 
         procRunner.Shutdown();
     }
 
 
-    public void DatabaseSchema_Copy(Integer SchemaId, String SchemaName)
-    {
+    public void DatabaseSchema_Copy(Integer SchemaId, String SchemaName) {
 
         String sql = "{CALL public.DatabaseSchema_Copy(?,?)}";
         LinkedList<Object> parameterList = new LinkedList<>();
@@ -510,8 +468,7 @@ public class DbLink
     }
 
 
-    public void PotatoSql_Table_Copy(Integer SchemaId, Integer TableId_Old, String Name)
-    {
+    public void PotatoSql_Table_Copy(Integer SchemaId, Integer TableId_Old, String Name) {
 
         String sql = "{CALL public.PotatoSql_Table_Copy(?, ?, ? )}";
         LinkedList parameterList = new LinkedList();
@@ -521,8 +478,7 @@ public class DbLink
         procRunner.callProcedure(sql, parameterList.toArray());
     }
 
-    public void PotatoSql_TableKey_Copy(Integer SchemaId, Integer TableId, Integer KeyId, String Name)
-    {
+    public void PotatoSql_TableKey_Copy(Integer SchemaId, Integer TableId, Integer KeyId, String Name) {
         String sql = "{CALL public.PotatoSql_TableKey_Copy(?, ?, ?,? )}";
         LinkedList parameterList = new LinkedList();
         parameterList.add(SchemaId);

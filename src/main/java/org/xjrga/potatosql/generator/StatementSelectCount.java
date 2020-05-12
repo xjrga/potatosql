@@ -1,14 +1,12 @@
 package org.xjrga.potatosql.generator;
 
-public class StatementSelectCount implements Code
-{
+public class StatementSelectCount implements Code {
 
-    private Table table;
-    private StringBuilder sqlbuild;
+    private final Table table;
+    private final StringBuilder sqlbuild;
 
 
-    public StatementSelectCount(Table table)
-    {
+    public StatementSelectCount(Table table) {
 
         this.table = table;
         sqlbuild = new StringBuilder();
@@ -16,11 +14,9 @@ public class StatementSelectCount implements Code
 
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
 
-        if (!table.isEmpty())
-        {
+        if (!table.isEmpty()) {
             sqlbuild.append("SELECT COUNT(*)");
             sqlbuild.append("\n");
             sqlbuild.append("FROM");

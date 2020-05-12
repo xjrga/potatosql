@@ -3,19 +3,17 @@ package org.xjrga.potatosql.generator;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class RelationshipConstraint implements Code
-{
+public class RelationshipConstraint implements Code {
     private String schema;
     private String parent;
-    private LinkedList<String> parentkeys;
+    private final LinkedList<String> parentkeys;
     private String child;
-    private LinkedList<String> childkeys;
+    private final LinkedList<String> childkeys;
     private Integer count;
     private int relationshiptypeid;
 
 
-    public RelationshipConstraint()
-    {
+    public RelationshipConstraint() {
 
         parent = "";
         parentkeys = new LinkedList();
@@ -25,41 +23,35 @@ public class RelationshipConstraint implements Code
     }
 
 
-    public void setParent(String parent)
-    {
+    public void setParent(String parent) {
 
         this.parent = parent;
     }
 
 
-    public void setChild(String child)
-    {
+    public void setChild(String child) {
 
         this.child = child;
     }
 
 
-    public void addParentKey(String parent_key)
-    {
+    public void addParentKey(String parent_key) {
 
         parentkeys.add(parent_key);
     }
 
 
-    public void addChildKey(String child_key)
-    {
+    public void addChildKey(String child_key) {
 
         childkeys.add(child_key);
     }
 
 
-    public Boolean isEmpty()
-    {
+    public Boolean isEmpty() {
 
         Boolean flag = false;
 
-        if (parent == "")
-        {
+        if (parent == "") {
             flag = true;
         }
 
@@ -68,8 +60,7 @@ public class RelationshipConstraint implements Code
 
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
 
         StringBuilder sb = new StringBuilder();
         sb.append("ALTER TABLE ");
@@ -89,8 +80,7 @@ public class RelationshipConstraint implements Code
         sb.append(" ");
         sb.append("FOREIGN KEY ( ");
         Iterator it = childkeys.iterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             String childkey = (String) it.next();
             sb.append(childkey);
             sb.append(",");
@@ -103,8 +93,7 @@ public class RelationshipConstraint implements Code
         sb.append(parent);
         sb.append(" ( ");
         Iterator it2 = parentkeys.iterator();
-        while (it2.hasNext())
-        {
+        while (it2.hasNext()) {
             String parentkey = (String) it2.next();
             sb.append(parentkey);
             sb.append(",");
@@ -125,30 +114,25 @@ public class RelationshipConstraint implements Code
             * */
     }
 
-    public String getSchema()
-    {
+    public String getSchema() {
         return schema;
     }
 
-    public Integer getCount()
-    {
+    public Integer getCount() {
 
         return count;
     }
 
-    public void setCount(Integer count)
-    {
+    public void setCount(Integer count) {
 
         this.count = count;
     }
 
-    public String getAction()
-    {
+    public String getAction() {
 
         StringBuilder sb = new StringBuilder();
 
-        switch (relationshiptypeid)
-        {
+        switch (relationshiptypeid) {
             case 0:
                 sb.append("ON DELETE CASCADE;");
                 break;
@@ -160,13 +144,11 @@ public class RelationshipConstraint implements Code
         return sb.toString();
     }
 
-    public void setSchema(String schema)
-    {
+    public void setSchema(String schema) {
         this.schema = schema;
     }
 
-    public void setRelationshipType(Integer relationshiptypeid)
-    {
+    public void setRelationshipType(Integer relationshiptypeid) {
         this.relationshiptypeid = relationshiptypeid;
     }
 

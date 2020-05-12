@@ -1,14 +1,12 @@
 package org.xjrga.potatosql.generator;
 
-public class CreateTableUsingSelect implements Code
-{
+public class CreateTableUsingSelect implements Code {
 
-    private Table table;
-    private SqlStuff sqlStuff;
-    private StringBuilder sqlbuild;
+    private final Table table;
+    private final SqlStuff sqlStuff;
+    private final StringBuilder sqlbuild;
 
-    public CreateTableUsingSelect(Table table, SqlStuff sqlStuff)
-    {
+    public CreateTableUsingSelect(Table table, SqlStuff sqlStuff) {
         this.table = table;
         this.sqlStuff = sqlStuff;
         sqlbuild = new StringBuilder();
@@ -16,10 +14,8 @@ public class CreateTableUsingSelect implements Code
 
 
     @Override
-    public String getCode()
-    {
-        if (!table.isEmpty())
-        {
+    public String getCode() {
+        if (!table.isEmpty()) {
             sqlbuild.append("CREATE TABLE");
             sqlbuild.append(" ");
             sqlbuild.append(table.getSchema());

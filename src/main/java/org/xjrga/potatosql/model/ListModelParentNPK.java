@@ -28,30 +28,26 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class ListModelParentNPK extends DefaultListModel
-{
+public class ListModelParentNPK extends DefaultListModel {
 
-    private DbLink dbLink;
+    private final DbLink dbLink;
 
 
-    public ListModelParentNPK(DbLink dbLink)
-    {
+    public ListModelParentNPK(DbLink dbLink) {
 
         this.dbLink = dbLink;
 
     }
 
 
-    public void reload(int schemaid, int tableid)
-    {
+    public void reload(int schemaid, int tableid) {
 
         this.clear();
 
         LinkedList list = (LinkedList) dbLink.TableKey_Select_NPK(schemaid, tableid);
         Iterator it = list.iterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
 
             HashMap row = (HashMap) it.next();
             schemaid = (Integer) row.get("SCHEMAID");

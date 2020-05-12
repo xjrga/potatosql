@@ -1,16 +1,14 @@
 package org.xjrga.potatosql.generator;
 
-public class ProcedureDelete implements Code
-{
+public class ProcedureDelete implements Code {
 
-    private Table table;
-    private Code statementDelete;
-    private SqlStuff sqlStuff;
-    private StringBuilder sqlbuild;
+    private final Table table;
+    private final Code statementDelete;
+    private final SqlStuff sqlStuff;
+    private final StringBuilder sqlbuild;
 
 
-    public ProcedureDelete(Table table, SqlStuff sqlStuff)
-    {
+    public ProcedureDelete(Table table, SqlStuff sqlStuff) {
 
         this.table = table;
         this.statementDelete = new StatementDelete(table, sqlStuff);
@@ -20,11 +18,9 @@ public class ProcedureDelete implements Code
 
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
 
-        if (!table.isEmpty())
-        {
+        if (!table.isEmpty()) {
             sqlbuild.append("CREATE PROCEDURE");
             sqlbuild.append(" ");
             sqlbuild.append(table.getSchema());

@@ -28,30 +28,26 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class ListModelTable extends DefaultListModel
-{
+public class ListModelTable extends DefaultListModel {
 
-    private DbLink dbLink;
+    private final DbLink dbLink;
 
 
-    public ListModelTable(DbLink dbLink)
-    {
+    public ListModelTable(DbLink dbLink) {
 
         this.dbLink = dbLink;
 
     }
 
 
-    public void reload(Integer schemaId)
-    {
+    public void reload(Integer schemaId) {
 
         this.clear();
 
         LinkedList list = (LinkedList) dbLink.DatabaseTable_Select(schemaId);
         Iterator it = list.iterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
 
             HashMap row = (HashMap) it.next();
             Integer schemaid = (Integer) row.get("SCHEMAID");
@@ -64,16 +60,14 @@ public class ListModelTable extends DefaultListModel
 
     }
 
-    public void reload(Integer schemaId, Integer tableId)
-    {
+    public void reload(Integer schemaId, Integer tableId) {
 
         this.clear();
 
         LinkedList list = (LinkedList) dbLink.DatabaseTable_Select(schemaId, tableId);
         Iterator it = list.iterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
 
             HashMap row = (HashMap) it.next();
             Integer schemaid = (Integer) row.get("SCHEMAID");

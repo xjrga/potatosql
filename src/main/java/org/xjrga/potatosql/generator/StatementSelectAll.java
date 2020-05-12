@@ -1,15 +1,13 @@
 package org.xjrga.potatosql.generator;
 
-public class StatementSelectAll implements Code
-{
+public class StatementSelectAll implements Code {
 
-    private Table table;
-    private SqlStuff sqlStuff;
-    private StringBuilder sqlbuild;
+    private final Table table;
+    private final SqlStuff sqlStuff;
+    private final StringBuilder sqlbuild;
 
 
-    public StatementSelectAll(Table table, SqlStuff sqlStuff)
-    {
+    public StatementSelectAll(Table table, SqlStuff sqlStuff) {
 
         this.table = table;
         this.sqlStuff = sqlStuff;
@@ -18,11 +16,9 @@ public class StatementSelectAll implements Code
 
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
 
-        if (!table.isEmpty())
-        {
+        if (!table.isEmpty()) {
             sqlbuild.append("SELECT");
             sqlbuild.append("\n");
             sqlbuild.append(sqlStuff.getSqlParametersAll());

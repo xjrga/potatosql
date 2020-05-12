@@ -1,15 +1,13 @@
 package org.xjrga.potatosql.generator;
 
-public class TriggerRowAfterDelete implements Code
-{
+public class TriggerRowAfterDelete implements Code {
 
-    private Table table;
-    private TriggerStuff triggerStuff;
-    private StringBuilder sqlbuild;
+    private final Table table;
+    private final TriggerStuff triggerStuff;
+    private final StringBuilder sqlbuild;
 
 
-    public TriggerRowAfterDelete(Table table, TriggerStuff triggerStuff)
-    {
+    public TriggerRowAfterDelete(Table table, TriggerStuff triggerStuff) {
         this.table = table;
         this.triggerStuff = triggerStuff;
         sqlbuild = new StringBuilder();
@@ -17,10 +15,8 @@ public class TriggerRowAfterDelete implements Code
 
 
     @Override
-    public String getCode()
-    {
-        if (!table.isEmpty())
-        {
+    public String getCode() {
+        if (!table.isEmpty()) {
             sqlbuild.append("CREATE TRIGGER");
             sqlbuild.append(" ");
             sqlbuild.append(table.getSchema());

@@ -1,23 +1,20 @@
 package org.xjrga.potatosql.generator;
 
 
-public class MethodProcedureInsert implements Code
-{
+public class MethodProcedureInsert implements Code {
 
-    private Table table;
-    private JavaStuff javaStuff;
-    private ProcedureStuff procedureStuff;
+    private final Table table;
+    private final JavaStuff javaStuff;
+    private final ProcedureStuff procedureStuff;
 
-    public MethodProcedureInsert(Table table)
-    {
+    public MethodProcedureInsert(Table table) {
         this.table = table;
         this.javaStuff = new JavaStuff(table);
         this.procedureStuff = new ProcedureStuff(table);
     }
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
         String procedureKind = "Insert";
         String methodName = table.getName() + "_" + procedureKind;
         String methodParameters = "";
@@ -26,8 +23,7 @@ public class MethodProcedureInsert implements Code
         String ident = "";
         String method = "";
 
-        if (table.identityExists())
-        {
+        if (table.identityExists()) {
             methodParameters = javaStuff.getMethodParametersAllMinusIdent();
             setParameters = procedureStuff.getSetParametersAllMinusIdentity();
             ident = procedureStuff.getIdent();
@@ -41,8 +37,7 @@ public class MethodProcedureInsert implements Code
                     "            " + ident + "\n" +
                     "        return ident;\n" +
                     "    }";
-        } else
-        {
+        } else {
             methodParameters = javaStuff.getMethodParametersAll();
             setParameters = procedureStuff.getSetParametersAll();
             method = "public void " + methodName + "(" + methodParameters + ") throws SQLException\n" +

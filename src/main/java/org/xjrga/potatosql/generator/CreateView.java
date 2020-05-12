@@ -1,16 +1,14 @@
 package org.xjrga.potatosql.generator;
 
-public class CreateView implements Code
-{
+public class CreateView implements Code {
 
-    private Table table;
-    private Code statementSelectAll;
-    private SqlStuff sqlStuff;
-    private StringBuilder sqlbuild;
+    private final Table table;
+    private final Code statementSelectAll;
+    private final SqlStuff sqlStuff;
+    private final StringBuilder sqlbuild;
 
 
-    public CreateView(Table table, SqlStuff sqlStuff)
-    {
+    public CreateView(Table table, SqlStuff sqlStuff) {
 
         this.table = table;
         statementSelectAll = new StatementSelectAll(table, sqlStuff);
@@ -20,11 +18,9 @@ public class CreateView implements Code
 
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
 
-        if (!table.isEmpty())
-        {
+        if (!table.isEmpty()) {
             sqlbuild.append("CREATE View");
             sqlbuild.append(" ");
             sqlbuild.append(table.getSchema());

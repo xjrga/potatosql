@@ -7,13 +7,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class CreateRelationship implements Code
-{
+public class CreateRelationship implements Code {
 
-    private StringBuilder sqlbuild;
+    private final StringBuilder sqlbuild;
 
-    public CreateRelationship(DbLink dbLink, SchemaDataObject schemaDataObject)
-    {
+    public CreateRelationship(DbLink dbLink, SchemaDataObject schemaDataObject) {
         sqlbuild = new StringBuilder();
         RelationshipConstraint relationshipConstraint = new RelationshipConstraint();
         LinkedList list = (LinkedList) dbLink.Relationship_SelectOnlyNames(schemaDataObject.getSchemaId());
@@ -21,8 +19,7 @@ public class CreateRelationship implements Code
         int count = 0;
         int relationshipid_old = -1;
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             HashMap row_hashmap = (HashMap) it.next();
             String parent = (String) row_hashmap.get("PARENT");
             String child = (String) row_hashmap.get("CHILD");
@@ -31,10 +28,8 @@ public class CreateRelationship implements Code
             String parent_key = (String) row_hashmap.get("PARENT_KEY");
             String child_key = (String) row_hashmap.get("CHILD_KEY");
 
-            if (relationshipid != relationshipid_old)
-            {
-                if (!relationshipConstraint.isEmpty())
-                {
+            if (relationshipid != relationshipid_old) {
+                if (!relationshipConstraint.isEmpty()) {
                     sqlbuild.append(relationshipConstraint.getCode());
                     sqlbuild.append("\n");
                 }
@@ -51,8 +46,7 @@ public class CreateRelationship implements Code
             relationshipid_old = relationshipid;
         }
 
-        if (count > 0)
-        {
+        if (count > 0) {
             sqlbuild.append(relationshipConstraint.getCode());
             sqlbuild.append("\n");
         }
@@ -60,8 +54,7 @@ public class CreateRelationship implements Code
 
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
         return sqlbuild.toString();
     }
 

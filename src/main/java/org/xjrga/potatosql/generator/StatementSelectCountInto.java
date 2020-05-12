@@ -1,14 +1,12 @@
 package org.xjrga.potatosql.generator;
 
-public class StatementSelectCountInto implements Code
-{
+public class StatementSelectCountInto implements Code {
 
-    private Table table;
-    private StringBuilder sqlbuild;
+    private final Table table;
+    private final StringBuilder sqlbuild;
 
 
-    public StatementSelectCountInto(Table table)
-    {
+    public StatementSelectCountInto(Table table) {
 
         this.table = table;
         sqlbuild = new StringBuilder();
@@ -16,11 +14,9 @@ public class StatementSelectCountInto implements Code
 
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
 
-        if (!table.isEmpty())
-        {
+        if (!table.isEmpty()) {
             sqlbuild.append("SELECT COUNT(*)");
             sqlbuild.append(" ");
             sqlbuild.append("INTO v_count");

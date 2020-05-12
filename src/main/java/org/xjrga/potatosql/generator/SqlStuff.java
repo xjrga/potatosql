@@ -2,34 +2,28 @@ package org.xjrga.potatosql.generator;
 
 import java.util.Iterator;
 
-public class SqlStuff
-{
-    private Table table;
+public class SqlStuff {
+    private final Table table;
 
-    public SqlStuff(Table table)
-    {
+    public SqlStuff(Table table) {
         this.table = table;
     }
 
 
-    public String getSqlColumnDefinitionsForTable()
-    {
+    public String getSqlColumnDefinitionsForTable() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append(column.getName());
             sb.append(" ");
             sb.append(column.getTypeName());
 
-            if (column.isPrecisionRequired())
-            {
+            if (column.isPrecisionRequired()) {
                 sb.append("(");
                 sb.append(column.getPrecision());
-                if (column.isScaleRequired())
-                {
+                if (column.isScaleRequired()) {
                     sb.append(",");
                     sb.append(column.getScale());
                 }
@@ -39,8 +33,7 @@ public class SqlStuff
             sb.append("\n");
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
 
@@ -48,32 +41,26 @@ public class SqlStuff
     }
 
 
-    public String getSqlProcedureVariablesPrimary()
-    {
+    public String getSqlProcedureVariablesPrimary() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
 
-            if (column.isPrimaryKey())
-            {
+            if (column.isPrimaryKey()) {
                 sb.append("IN");
                 sb.append(" ");
                 sb.append("v_" + column.getName());
                 sb.append(" ");
 
-                if (column.isIdentity())
-                {
+                if (column.isIdentity()) {
                     sb.append("INTEGER");
-                } else
-                {
+                } else {
                     sb.append(column.getTypeName());
                 }
 
-                if (column.isPrecisionRequired())
-                {
+                if (column.isPrecisionRequired()) {
                     sb.append("(");
                     sb.append(column.getPrecision());
                     sb.append(")");
@@ -83,8 +70,7 @@ public class SqlStuff
             }
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
 
@@ -92,29 +78,24 @@ public class SqlStuff
     }
 
 
-    public String getSqlProcedureVariablesAll()
-    {
+    public String getSqlProcedureVariablesAll() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append("IN");
             sb.append(" ");
             sb.append("v_" + column.getName());
             sb.append(" ");
 
-            if (column.isIdentity())
-            {
+            if (column.isIdentity()) {
                 sb.append("INTEGER");
-            } else
-            {
+            } else {
                 sb.append(column.getTypeName());
             }
 
-            if (column.isPrecisionRequired())
-            {
+            if (column.isPrecisionRequired()) {
                 sb.append("(");
                 sb.append(column.getPrecision());
                 sb.append(")");
@@ -123,8 +104,7 @@ public class SqlStuff
             sb.append("\n");
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
 
@@ -132,31 +112,26 @@ public class SqlStuff
     }
 
 
-    public String getSqlProcedureVariablesAllMinusIdent()
-    {
+    public String getSqlProcedureVariablesAllMinusIdent() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
-            if (column.isIdentity())
-            {
+            if (column.isIdentity()) {
                 sb.append("OUT newid INTEGER");
                 sb.append(",");
                 sb.append("\n");
             }
 
-            if (!column.isIdentity())
-            {
+            if (!column.isIdentity()) {
                 sb.append("IN");
                 sb.append(" ");
                 sb.append("v_" + column.getName());
                 sb.append(" ");
                 sb.append(column.getTypeName());
 
-                if (column.isPrecisionRequired())
-                {
+                if (column.isPrecisionRequired()) {
                     sb.append("(");
                     sb.append(column.getPrecision());
                     sb.append(")");
@@ -166,8 +141,7 @@ public class SqlStuff
             }
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
 
@@ -175,25 +149,21 @@ public class SqlStuff
     }
 
 
-    public String getSqlParametersPrimary()
-    {
+    public String getSqlParametersPrimary() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
 
-            if (column.isPrimaryKey())
-            {
+            if (column.isPrimaryKey()) {
                 sb.append(column.getName());
                 sb.append(",");
                 sb.append(" ");
             }
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
 
@@ -201,25 +171,21 @@ public class SqlStuff
     }
 
 
-    public String getSqlParametersNonPrimary()
-    {
+    public String getSqlParametersNonPrimary() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
 
-            if (!column.isPrimaryKey())
-            {
+            if (!column.isPrimaryKey()) {
                 sb.append(column.getName());
                 sb.append(",");
                 sb.append("\n");
             }
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
 
@@ -227,13 +193,11 @@ public class SqlStuff
     }
 
 
-    public String getSqlParametersAll()
-    {
+    public String getSqlParametersAll() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append(column.getName());
             sb.append(",");
@@ -241,8 +205,7 @@ public class SqlStuff
 
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
 
@@ -250,17 +213,14 @@ public class SqlStuff
     }
 
 
-    public String getSqlWhereStuff_Primary()
-    {
+    public String getSqlWhereStuff_Primary() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
 
-            if (column.isPrimaryKey())
-            {
+            if (column.isPrimaryKey()) {
                 sb.append(column.getName());
                 sb.append(" = ");
                 sb.append("v_" + column.getName());
@@ -270,8 +230,7 @@ public class SqlStuff
             }
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 5);
         }
 
@@ -279,17 +238,14 @@ public class SqlStuff
     }
 
 
-    public String getSqlWhereStuff_NonPrimary()
-    {
+    public String getSqlWhereStuff_NonPrimary() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
 
-            if (!column.isPrimaryKey())
-            {
+            if (!column.isPrimaryKey()) {
                 sb.append(column.getName());
                 sb.append(" = ");
                 sb.append("v_" + column.getName());
@@ -299,8 +255,7 @@ public class SqlStuff
             }
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 5);
         }
 
@@ -308,17 +263,14 @@ public class SqlStuff
     }
 
 
-    public String getSqlWhereStuff_All()
-    {
+    public String getSqlWhereStuff_All() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
 
-            if (column.isPrimaryKey())
-            {
+            if (column.isPrimaryKey()) {
                 sb.append(column.getName());
                 sb.append(" = ");
                 sb.append("v_" + column.getName());
@@ -330,12 +282,10 @@ public class SqlStuff
 
         it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
 
-            if (!column.isPrimaryKey())
-            {
+            if (!column.isPrimaryKey()) {
                 sb.append(column.getName());
                 sb.append(" = ");
                 sb.append("v_" + column.getName());
@@ -345,8 +295,7 @@ public class SqlStuff
             }
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 5);
         }
 
@@ -354,13 +303,11 @@ public class SqlStuff
     }
 
 
-    public String getSqlVariablesAll()
-    {
+    public String getSqlVariablesAll() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append("v_" + column.getName());
             sb.append(",");
@@ -368,63 +315,53 @@ public class SqlStuff
 
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
 
         return sb.toString();
     }
 
-    public String getSqlVariablesAllSubIdent()
-    {
+    public String getSqlVariablesAllSubIdent() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
 
-            if (!column.isIdentity())
-            {
+            if (!column.isIdentity()) {
                 sb.append("v_" + column.getName());
                 sb.append(",");
                 sb.append("\n");
-            } else
-            {
+            } else {
                 sb.append("DEFAULT");
                 sb.append(",");
                 sb.append("\n");
             }
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
 
         return sb.toString();
     }
 
-    public String getSqlProcedureMarksPrimary()
-    {
+    public String getSqlProcedureMarksPrimary() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
 
-            if (column.isPrimaryKey())
-            {
+            if (column.isPrimaryKey()) {
                 sb.append("?");
                 sb.append(",");
                 sb.append(" ");
             }
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
 
@@ -432,21 +369,18 @@ public class SqlStuff
     }
 
 
-    public String getSqlProcedureMarksAll()
-    {
+    public String getSqlProcedureMarksAll() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append("?");
             sb.append(",");
             sb.append(" ");
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
 
@@ -454,42 +388,35 @@ public class SqlStuff
     }
 
 
-    public String getSqlProcedureMarksAllMinusIdent()
-    {
+    public String getSqlProcedureMarksAllMinusIdent() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
 
-            if (!column.isIdentity())
-            {
+            if (!column.isIdentity()) {
                 sb.append("?");
                 sb.append(",");
                 sb.append(" ");
             }
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
 
         return sb.toString();
     }
 
-    public String getSqlSetStuff_NonPrimary()
-    {
+    public String getSqlSetStuff_NonPrimary() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
 
-            if (!column.isPrimaryKey())
-            {
+            if (!column.isPrimaryKey()) {
                 sb.append(column.getName());
                 sb.append(" = ");
                 sb.append("v_" + column.getName());
@@ -498,8 +425,7 @@ public class SqlStuff
             }
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
 

@@ -1,7 +1,6 @@
 package org.xjrga.potatosql.generator;
 
-public class Column
-{
+public class Column {
 
     private String name;
     private String label;
@@ -16,8 +15,7 @@ public class Column
     private Integer order;
 
 
-    public Column(String name, String label, boolean isPrimaryKey, Integer typeid, String typename, boolean isIdentity, boolean isPrecisionRequired, Integer precision, boolean isScaleRequired, Integer scale,Integer order)
-    {
+    public Column(String name, String label, boolean isPrimaryKey, Integer typeid, String typename, boolean isIdentity, boolean isPrecisionRequired, Integer precision, boolean isScaleRequired, Integer scale, Integer order) {
 
         this.name = name;
         this.label = label;
@@ -34,161 +32,138 @@ public class Column
     }
 
 
-    public Column(String name)
-    {
+    public Column(String name) {
 
         this.name = name;
     }
 
 
-    public String getName()
-    {
+    public String getName() {
 
         return name;
     }
 
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
 
         this.name = name;
     }
 
 
-    public String getLabel()
-    {
+    public String getLabel() {
 
         return label;
     }
 
 
-    public void setLabel(String label)
-    {
+    public void setLabel(String label) {
 
         this.label = label;
     }
 
 
-    public boolean isPrimaryKey()
-    {
+    public boolean isPrimaryKey() {
 
         return isPrimaryKey;
     }
 
 
-    public void setPrimaryKey(Boolean ispk)
-    {
+    public void setPrimaryKey(Boolean ispk) {
 
         this.isPrimaryKey = ispk;
     }
 
 
-    public Integer getTypeid()
-    {
+    public Integer getTypeid() {
 
         return typeid;
     }
 
 
-    public void setTypeId(Integer typeid)
-    {
+    public void setTypeId(Integer typeid) {
 
         this.typeid = typeid;
     }
 
 
-    public String getTypeName()
-    {
+    public String getTypeName() {
 
         return typename;
     }
 
 
-    public void setTypeName(String typename)
-    {
+    public void setTypeName(String typename) {
 
         this.typename = typename;
     }
 
 
-    public boolean isIdentity()
-    {
+    public boolean isIdentity() {
 
         return isIdentity;
     }
 
 
-    public void setIdentity(Boolean isidentity)
-    {
+    public void setIdentity(Boolean isidentity) {
 
         isIdentity = isidentity;
     }
 
 
-    public boolean isPrecisionRequired()
-    {
+    public boolean isPrecisionRequired() {
 
         return isPrecisionRequired;
     }
 
 
-    public void setPrecisionRequired(Boolean sizerequired)
-    {
+    public void setPrecisionRequired(Boolean sizerequired) {
 
         isPrecisionRequired = sizerequired;
     }
 
 
-    public Integer getPrecision()
-    {
+    public Integer getPrecision() {
 
         return precision;
     }
 
 
-    public void setPrecision(Integer precision)
-    {
+    public void setPrecision(Integer precision) {
 
         this.precision = precision;
     }
 
 
-    public boolean isScaleRequired()
-    {
+    public boolean isScaleRequired() {
 
         return isScaleRequired;
     }
 
 
-    public void setScaleRequired(Boolean scalerequired)
-    {
+    public void setScaleRequired(Boolean scalerequired) {
 
         isScaleRequired = scalerequired;
     }
 
-    public Integer getScale()
-    {
+    public Integer getScale() {
 
         return scale;
     }
 
 
-    public void setScale(Integer scale)
-    {
+    public void setScale(Integer scale) {
 
         this.scale = scale;
     }
 
 
-    public Integer getOrder()
-    {
+    public Integer getOrder() {
 
         return order;
     }
 
 
-    public void setOrder(Integer attributeorder)
-    {
+    public void setOrder(Integer attributeorder) {
 
         this.order = attributeorder;
     }

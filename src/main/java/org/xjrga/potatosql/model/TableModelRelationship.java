@@ -29,23 +29,20 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Vector;
 
-public class TableModelRelationship extends DefaultTableModel
-{
+public class TableModelRelationship extends DefaultTableModel {
 
     private Vector columns;
-    private DbLink dbLink;
+    private final DbLink dbLink;
 
 
-    public TableModelRelationship(DbLink dbLink)
-    {
+    public TableModelRelationship(DbLink dbLink) {
 
         this.setColumnIdentifiers();
         this.dbLink = dbLink;
     }
 
 
-    private void setColumnIdentifiers()
-    {
+    private void setColumnIdentifiers() {
 
         columns = new Vector();
 
@@ -65,12 +62,10 @@ public class TableModelRelationship extends DefaultTableModel
     }
 
 
-    public Class getColumnClass(int i)
-    {
+    public Class getColumnClass(int i) {
 
         Class returnValue = Object.class;
-        switch (i)
-        {
+        switch (i) {
 
             case 0:
                 //Id
@@ -119,15 +114,13 @@ public class TableModelRelationship extends DefaultTableModel
 
 
     @Override
-    public boolean isCellEditable(int i, int i1)
-    {
+    public boolean isCellEditable(int i, int i1) {
 
         return false;
     }
 
 
-    public void reload(int schemaid)
-    {
+    public void reload(int schemaid) {
 
         Vector table = new Vector();
 
@@ -135,8 +128,7 @@ public class TableModelRelationship extends DefaultTableModel
 
         Iterator it = list.iterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
 
             HashMap row_hashmap = (HashMap) it.next();
 
@@ -187,8 +179,7 @@ public class TableModelRelationship extends DefaultTableModel
 
     }
 
-    public void reload(int schemaid, int tableid)
-    {
+    public void reload(int schemaid, int tableid) {
 
         Vector table = new Vector();
 
@@ -196,8 +187,7 @@ public class TableModelRelationship extends DefaultTableModel
 
         Iterator it = list.iterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
 
             HashMap row_hashmap = (HashMap) it.next();
 
@@ -248,8 +238,7 @@ public class TableModelRelationship extends DefaultTableModel
 
     }
 
-    public void clear()
-    {
+    public void clear() {
 
         Vector table = new Vector();
         this.setDataVector(table, columns);

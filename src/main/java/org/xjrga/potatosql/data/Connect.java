@@ -27,10 +27,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class Connect
-{
+public class Connect {
 
-    private static Connect instance = new Connect();
+    private static final Connect instance = new Connect();
     private static String JDBC_DRIVER = "";
     private static String DB_URL = "";
     private static String DB_USER = "";
@@ -40,61 +39,46 @@ public class Connect
     private static Connection connection = null;
 
 
-    private Connect()
-    {
+    private Connect() {
 
     }
 
 
-    public static Connect getInstance()
-    {
+    public static Connect getInstance() {
 
         return instance;
     }
 
 
-    public Connection getConnection()
-    {
+    public Connection getConnection() {
 
         prop = new Properties();
 
-        try
-        {
+        try {
             input = new FileInputStream("resources/connection.properties");
-        }
-        catch (FileNotFoundException ex)
-        {
+        } catch (FileNotFoundException ex) {
 
         }
 
-        try
-        {
+        try {
             prop.load(input);
             JDBC_DRIVER = prop.getProperty("jdbc.driver");
             DB_URL = prop.getProperty("jdbc.url");
             DB_USER = prop.getProperty("jdbc.username");
             DB_PASS = prop.getProperty("jdbc.password");
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
 
         }
 
-        try
-        {
+        try {
             Class.forName(JDBC_DRIVER);
-        }
-        catch (ClassNotFoundException ex)
-        {
+        } catch (ClassNotFoundException ex) {
 
         }
 
-        try
-        {
+        try {
             connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
 
         }
 

@@ -2,28 +2,24 @@ package org.xjrga.potatosql.generator;
 
 import java.util.Iterator;
 
-public class TriggerStuff
-{
+public class TriggerStuff {
 
-    private Table table;
+    private final Table table;
 
 
-    public TriggerStuff(Table table)
-    {
+    public TriggerStuff(Table table) {
 
         this.table = table;
 
     }
 
 
-    public String getTriggerSetRow()
-    {
+    public String getTriggerSetRow() {
         StringBuilder sb = new StringBuilder();
         sb.append("SET");
         sb.append("\n");
         Iterator it = table.getIterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append("oldrow.");
             sb.append(column.getName());
@@ -34,8 +30,7 @@ public class TriggerStuff
             sb.append("\n");
         }
         it = table.getIterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append("newrow.");
             sb.append(column.getName());
@@ -45,8 +40,7 @@ public class TriggerStuff
             sb.append(",");
             sb.append("\n");
         }
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
         sb.append(";");
@@ -54,33 +48,28 @@ public class TriggerStuff
     }
 
 
-    public String getTriggerNewRowFields()
-    {
+    public String getTriggerNewRowFields() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append("newrow.");
             sb.append(column.getName());
             sb.append(",");
         }
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 1);
         }
         return sb.toString();
     }
 
 
-    public String getTriggerSetNewRowAllVariables()
-    {
+    public String getTriggerSetNewRowAllVariables() {
         StringBuilder sb = new StringBuilder();
         sb.append("SET");
         sb.append("\n");
         Iterator it = table.getIterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append("newrow.");
             sb.append(column.getName());
@@ -90,25 +79,21 @@ public class TriggerStuff
             sb.append(",");
             sb.append("\n");
         }
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
         sb.append(";");
         return sb.toString();
     }
 
-    public String getTriggerSetNewRowNPKVariables()
-    {
+    public String getTriggerSetNewRowNPKVariables() {
         StringBuilder sb = new StringBuilder();
         sb.append("SET");
         sb.append("\n");
         Iterator it = table.getIterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
-            if (!column.isPrimaryKey())
-            {
+            if (!column.isPrimaryKey()) {
                 sb.append("row.");
                 sb.append(column.getName());
                 sb.append(" = ");
@@ -118,8 +103,7 @@ public class TriggerStuff
                 sb.append("\n");
             }
         }
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
         sb.append(";");
@@ -127,15 +111,12 @@ public class TriggerStuff
     }
 
 
-    public String getSqlWhereStuff_Primary()
-    {
+    public String getSqlWhereStuff_Primary() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
-            if (column.isPrimaryKey())
-            {
+            if (column.isPrimaryKey()) {
                 sb.append(column.getName());
                 sb.append(" = ");
                 sb.append("row." + column.getName());
@@ -144,22 +125,18 @@ public class TriggerStuff
                 sb.append("\n");
             }
         }
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 5);
         }
         return sb.toString();
     }
 
-    public String getSqlSetStuff_NonPrimary()
-    {
+    public String getSqlSetStuff_NonPrimary() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
-            if (!column.isPrimaryKey())
-            {
+            if (!column.isPrimaryKey()) {
                 sb.append(column.getName());
                 sb.append(" = ");
                 sb.append("row." + column.getName());
@@ -167,8 +144,7 @@ public class TriggerStuff
                 sb.append("\n");
             }
         }
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
         return sb.toString();

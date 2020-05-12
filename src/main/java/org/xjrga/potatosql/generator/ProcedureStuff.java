@@ -2,32 +2,26 @@ package org.xjrga.potatosql.generator;
 
 import java.util.Iterator;
 
-public class ProcedureStuff
-{
-    private Table table;
+public class ProcedureStuff {
+    private final Table table;
 
 
-    public ProcedureStuff(Table table)
-    {
+    public ProcedureStuff(Table table) {
         this.table = table;
     }
 
 
-    public String getSetParametersAllMinusIdentity()
-    {
+    public String getSetParametersAllMinusIdentity() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
         int count = 1;
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
 
-            if (!column.isIdentity())
-            {
+            if (!column.isIdentity()) {
                 sb.append(setParam(count, column));
-            } else
-            {
+            } else {
                 sb.append("proc.registerOutParameter(");
                 sb.append(count);
                 sb.append(",Types.INTEGER)");
@@ -39,16 +33,14 @@ public class ProcedureStuff
             count++;
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 1);
         }
 
         return sb.toString();
     }
 
-    private String setParam(int count, Column column)
-    {
+    private String setParam(int count, Column column) {
         StringBuilder sb = new StringBuilder();
 
         /*
@@ -64,8 +56,7 @@ public class ProcedureStuff
             call keytype_insert(9,'BLOB',false,false);
             call keytype_insert(10,'CLOB',false,false);
         * */
-        switch (column.getTypeName())
-        {
+        switch (column.getTypeName()) {
             case "INTEGER":
             case "IDENTITY":
                 sb.append("proc.setInt(");
@@ -143,18 +134,15 @@ public class ProcedureStuff
         return sb.toString();
     }
 
-    public String getSetParametersPrimaryKeyOnly()
-    {
+    public String getSetParametersPrimaryKeyOnly() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
         int count = 1;
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
 
-            if (column.isPrimaryKey())
-            {
+            if (column.isPrimaryKey()) {
                 sb.append(setParam(count, column));
                 sb.append(";");
                 sb.append("\n");
@@ -163,22 +151,19 @@ public class ProcedureStuff
             count++;
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 1);
         }
 
         return sb.toString();
     }
 
-    public String getSetParametersAll()
-    {
+    public String getSetParametersAll() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
         int count = 1;
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append(setParam(count, column));
             sb.append(";");
@@ -186,26 +171,22 @@ public class ProcedureStuff
             count++;
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 1);
         }
 
         return sb.toString();
     }
 
-    public String getIdent()
-    {
+    public String getIdent() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
         int count = 1;
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
 
-            if (column.isIdentity())
-            {
+            if (column.isIdentity()) {
                 sb.append("ident = proc.getInt(");
                 sb.append(count);
                 sb.append(")");
@@ -218,8 +199,7 @@ public class ProcedureStuff
         return sb.toString();
     }
 
-    public String getProcedureSqlStringPrimaryKeyOnly(String addName)
-    {
+    public String getProcedureSqlStringPrimaryKeyOnly(String addName) {
 
         StringBuilder sqlb = new StringBuilder();
         sqlb.append("\"{CALL ");
@@ -234,33 +214,28 @@ public class ProcedureStuff
         return sqlb.toString();
     }
 
-    public String getSqlProcedureMarksPrimary()
-    {
+    public String getSqlProcedureMarksPrimary() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
 
-            if (column.isPrimaryKey())
-            {
+            if (column.isPrimaryKey()) {
                 sb.append("?");
                 sb.append(",");
                 sb.append(" ");
             }
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
 
         return sb.toString();
     }
 
-    public String getProcedureSqlStringAllMinusIdent(String addName)
-    {
+    public String getProcedureSqlStringAllMinusIdent(String addName) {
 
         StringBuilder sqlb = new StringBuilder();
         sqlb.append("\"{CALL ");
@@ -275,33 +250,28 @@ public class ProcedureStuff
         return sqlb.toString();
     }
 
-    public String getSqlProcedureMarksAllMinusIdent()
-    {
+    public String getSqlProcedureMarksAllMinusIdent() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
 
-            if (!column.isIdentity())
-            {
+            if (!column.isIdentity()) {
                 sb.append("?");
                 sb.append(",");
                 sb.append(" ");
             }
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
 
         return sb.toString();
     }
 
-    public String getProcedureSqlStringAll(String addName)
-    {
+    public String getProcedureSqlStringAll(String addName) {
 
         StringBuilder sqlb = new StringBuilder();
         sqlb.append("\"{CALL ");
@@ -316,29 +286,25 @@ public class ProcedureStuff
         return sqlb.toString();
     }
 
-    public String getSqlProcedureMarksAll()
-    {
+    public String getSqlProcedureMarksAll() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append("?");
             sb.append(",");
             sb.append(" ");
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
 
         return sb.toString();
     }
 
-    public String getProcedureSqlStringNone(String addName)
-    {
+    public String getProcedureSqlStringNone(String addName) {
 
         StringBuilder sqlb = new StringBuilder();
         sqlb.append("\"{CALL ");

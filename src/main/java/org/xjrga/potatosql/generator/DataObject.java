@@ -1,15 +1,13 @@
 package org.xjrga.potatosql.generator;
 
-public class DataObject implements Code
-{
+public class DataObject implements Code {
 
-    private Table table;
-    private DataObjectStuff dataObjectStuff;
-    private StringBuilder sqlbuild;
+    private final Table table;
+    private final DataObjectStuff dataObjectStuff;
+    private final StringBuilder sqlbuild;
 
 
-    public DataObject(Table table, DataObjectStuff dataObjectStuff)
-    {
+    public DataObject(Table table, DataObjectStuff dataObjectStuff) {
         this.table = table;
         this.dataObjectStuff = dataObjectStuff;
         sqlbuild = new StringBuilder();
@@ -17,10 +15,8 @@ public class DataObject implements Code
 
 
     @Override
-    public String getCode()
-    {
-        if (!table.isEmpty())
-        {
+    public String getCode() {
+        if (!table.isEmpty()) {
             sqlbuild.append("public class ");
             sqlbuild.append(table.getName() + "Object");
             sqlbuild.append("\n");

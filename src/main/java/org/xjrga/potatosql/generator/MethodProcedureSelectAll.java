@@ -1,14 +1,12 @@
 package org.xjrga.potatosql.generator;
 
-public class MethodProcedureSelectAll implements Code
-{
+public class MethodProcedureSelectAll implements Code {
 
-    private Table table;
-    private ProcedureStuff procedureStuff;
-    private JavaStuff javaStuff;
+    private final Table table;
+    private final ProcedureStuff procedureStuff;
+    private final JavaStuff javaStuff;
 
-    public MethodProcedureSelectAll(Table table)
-    {
+    public MethodProcedureSelectAll(Table table) {
 
         this.table = table;
         this.procedureStuff = new ProcedureStuff(table);
@@ -17,8 +15,7 @@ public class MethodProcedureSelectAll implements Code
 
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
         String procedureKind = "Select_All";
         String methodName = table.getName() + "_" + procedureKind;
         String methodParameters = "";

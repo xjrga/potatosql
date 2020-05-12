@@ -6,22 +6,19 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class TableMaker
-{
+public class TableMaker {
 
-    private DbLink dbLink;
+    private final DbLink dbLink;
     private Table table;
 
 
-    public TableMaker(DbLink dbLink)
-    {
+    public TableMaker(DbLink dbLink) {
 
         this.dbLink = dbLink;
     }
 
 
-    public Table getTable(Integer schemaid, Integer tableid)
-    {
+    public Table getTable(Integer schemaid, Integer tableid) {
 
         LinkedList list = (LinkedList) dbLink.DatabaseTable_Select(schemaid, tableid);
         Iterator it = list.iterator();
@@ -30,8 +27,7 @@ public class TableMaker
         list = (LinkedList) dbLink.TableKey_KeyType_Select(schemaid, tableid);
         it = list.iterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
 
             row = (HashMap) it.next();
             schemaid = (Integer) row.get("SCHEMAID");

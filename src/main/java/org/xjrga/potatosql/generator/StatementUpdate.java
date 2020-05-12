@@ -1,15 +1,13 @@
 package org.xjrga.potatosql.generator;
 
-public class StatementUpdate implements Code
-{
+public class StatementUpdate implements Code {
 
-    private Table table;
-    private SqlStuff sqlStuff;
-    private StringBuilder sqlbuild;
+    private final Table table;
+    private final SqlStuff sqlStuff;
+    private final StringBuilder sqlbuild;
 
 
-    public StatementUpdate(Table table, SqlStuff sqlStuff)
-    {
+    public StatementUpdate(Table table, SqlStuff sqlStuff) {
 
         this.table = table;
         this.sqlStuff = sqlStuff;
@@ -18,11 +16,9 @@ public class StatementUpdate implements Code
 
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
 
-        if (table.containsNonPrimaryKeys())
-        {
+        if (table.containsNonPrimaryKeys()) {
             sqlbuild.append("UPDATE");
             sqlbuild.append("\n");
             sqlbuild.append(table.getSchema());

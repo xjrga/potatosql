@@ -7,12 +7,10 @@ import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public class Test
-{
+public class Test {
     private Connection connection;
 
-    public Test()
-    {
+    public Test() {
         /*try
         {
             Class.forName("org.hsqldb.jdbcDriver");
@@ -63,51 +61,44 @@ public class Test
     //paste generated methodNames here
 
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         Test test = new Test();
     }
 
-    private Date createDate(String dateastxt) throws ParseException
-    {
+    private Date createDate(String dateastxt) throws ParseException {
         //"2019/09/06 19:00:00"
         long millis = getMillis(dateastxt);
         Date date = new Date(millis);
         return date;
     }
 
-    private Time createTime(String dateastxt) throws ParseException
-    {
+    private Time createTime(String dateastxt) throws ParseException {
         //"2019/09/06 19:00:00"
         long millis = getMillis(dateastxt);
         Time time = new Time(millis);
         return time;
     }
 
-    private Timestamp createTimestamp(String dateastxt) throws ParseException
-    {
+    private Timestamp createTimestamp(String dateastxt) throws ParseException {
         //"2019/09/06 19:00:00"
         long millis = getMillis(dateastxt);
         Timestamp timestamp = new Timestamp(millis);
         return timestamp;
     }
 
-    private long getMillis(String timestamp) throws ParseException
-    {
+    private long getMillis(String timestamp) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         return sdf.parse(timestamp).getTime();
     }
 
-    private Blob createBlob(String filepath) throws SQLException, IOException
-    {
+    private Blob createBlob(String filepath) throws SQLException, IOException {
         Blob blob = connection.createBlob();
         byte[] bytes = Files.readAllBytes(Paths.get(filepath));
         blob.setBytes(1, bytes);
         return blob;
     }
 
-    private Clob createClob(String filepath) throws SQLException, IOException
-    {
+    private Clob createClob(String filepath) throws SQLException, IOException {
         Clob clob = connection.createClob();
         byte[] bytes = Files.readAllBytes(Paths.get(filepath));
         clob.setString(1, new String(bytes));

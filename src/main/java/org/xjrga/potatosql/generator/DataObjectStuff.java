@@ -2,17 +2,14 @@ package org.xjrga.potatosql.generator;
 
 import java.util.Iterator;
 
-public class DataObjectStuff
-{
-    private Table table;
+public class DataObjectStuff {
+    private final Table table;
 
-    public DataObjectStuff(Table table)
-    {
+    public DataObjectStuff(Table table) {
         this.table = table;
     }
 
-    public String getConstructor()
-    {
+    public String getConstructor() {
         StringBuilder sb = new StringBuilder();
         sb.append("public ");
         sb.append(table.getName());
@@ -25,13 +22,11 @@ public class DataObjectStuff
         return sb.toString();
     }
 
-    public String getFields()
-    {
+    public String getFields() {
         HsqldbTypeToJavaType hsqldbTypeToJavaType = new HsqldbTypeToJavaType();
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append("private ");
             sb.append(hsqldbTypeToJavaType.getJavaType(column.getTypeName()));
@@ -40,20 +35,17 @@ public class DataObjectStuff
             sb.append(";");
             sb.append("\n");
         }
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 1);
         }
         return sb.toString();
     }
 
-    public String getSetters()
-    {
+    public String getSetters() {
         HsqldbTypeToJavaType hsqldbTypeToJavaType = new HsqldbTypeToJavaType();
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append("public void set");
             sb.append(column.getName());
@@ -72,20 +64,17 @@ public class DataObjectStuff
             sb.append("\n");
             sb.append("\n");
         }
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
         return sb.toString();
     }
 
-    public String getGetters()
-    {
+    public String getGetters() {
         HsqldbTypeToJavaType hsqldbTypeToJavaType = new HsqldbTypeToJavaType();
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append("public ");
             sb.append(hsqldbTypeToJavaType.getJavaType(column.getTypeName()));
@@ -102,15 +91,13 @@ public class DataObjectStuff
             sb.append("\n");
             sb.append("\n");
         }
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
         return sb.toString();
     }
 
-    public String getToString()
-    {
+    public String getToString() {
         StringBuilder sb = new StringBuilder();
         sb.append("public String toString()");
         sb.append("\n");
@@ -119,8 +106,7 @@ public class DataObjectStuff
         sb.append("StringBuilder sb = new StringBuilder();");
         sb.append("\n");
         Iterator it = table.getIterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append("sb.append(");
             sb.append(column.getName());

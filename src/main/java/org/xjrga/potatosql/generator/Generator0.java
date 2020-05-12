@@ -1,24 +1,20 @@
 package org.xjrga.potatosql.generator;
 
-public class Generator0 implements Code
-{
+public class Generator0 implements Code {
 
     private boolean isHsqldb;
     private CreateTestClass createTestClass;
     private boolean isTestClassSelected;
 
 
-    public Generator0()
-    {
+    public Generator0() {
     }
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
         StringBuilder sb = new StringBuilder();
 
-        if (isHsqldb)
-        {
+        if (isHsqldb) {
             sb.append(getHsqldb());
 
         }
@@ -27,12 +23,10 @@ public class Generator0 implements Code
     }
 
 
-    public String getHsqldb()
-    {
+    public String getHsqldb() {
         StringBuilder sb = new StringBuilder();
 
-        if (isTestClassSelected())
-        {
+        if (isTestClassSelected()) {
             createTestClass = new CreateTestClass();
             String code = createTestClass.getCode();
             sb.append(code);
@@ -45,19 +39,16 @@ public class Generator0 implements Code
     }
 
 
-    public void setHsqldb(boolean hsqldb)
-    {
+    public void setHsqldb(boolean hsqldb) {
 
         isHsqldb = hsqldb;
     }
 
-    public boolean isTestClassSelected()
-    {
+    public boolean isTestClassSelected() {
         return isTestClassSelected;
     }
 
-    public void setTestClassSelected(boolean selected)
-    {
+    public void setTestClassSelected(boolean selected) {
         isTestClassSelected = selected;
     }
 

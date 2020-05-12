@@ -1,15 +1,13 @@
 package org.xjrga.potatosql.generator;
 
-public class StatementInsert implements Code
-{
+public class StatementInsert implements Code {
 
-    private Table table;
-    private SqlStuff sqlStuff;
-    private StringBuilder sqlbuild;
+    private final Table table;
+    private final SqlStuff sqlStuff;
+    private final StringBuilder sqlbuild;
 
 
-    public StatementInsert(Table table, SqlStuff sqlStuff)
-    {
+    public StatementInsert(Table table, SqlStuff sqlStuff) {
 
         this.table = table;
         this.sqlStuff = sqlStuff;
@@ -18,11 +16,9 @@ public class StatementInsert implements Code
 
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
 
-        if (!table.isEmpty())
-        {
+        if (!table.isEmpty()) {
             sqlbuild.append("INSERT INTO");
             sqlbuild.append(" ");
             sqlbuild.append(table.getSchema());

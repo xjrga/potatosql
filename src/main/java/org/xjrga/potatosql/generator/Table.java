@@ -3,49 +3,43 @@ package org.xjrga.potatosql.generator;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class Table
-{
+public class Table {
 
-    private String name;
-    private LinkedList columns;
+    private final String name;
+    private final LinkedList columns;
     private int keyCount;
     private int primaryKeyCount;
     private int nonPrimaryKeyCount;
     private String schema;
 
 
-    public Table(String name)
-    {
+    public Table(String name) {
 
         this.name = name;
         columns = new LinkedList();
     }
 
 
-    public void addColumn(Column column)
-    {
+    public void addColumn(Column column) {
 
         columns.add(column);
     }
 
 
-    public Column getColumn(int position)
-    {
+    public Column getColumn(int position) {
 
         return (Column) columns.get(position);
     }
 
 
-    public String getName()
-    {
+    public String getName() {
 
         return name;
     }
 
 
     @Override
-    public String toString()
-    {
+    public String toString() {
 
         StringBuilder sb = new StringBuilder();
         sb.append(name);
@@ -54,8 +48,7 @@ public class Table
         LinkedList list = columns;
         Iterator it = list.iterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
 
             Column column = (Column) it.next();
             sb.append(",");
@@ -66,20 +59,17 @@ public class Table
     }
 
 
-    public Integer getLargestColumnSize()
-    {
+    public Integer getLargestColumnSize() {
 
         Integer largestColumnNameSize = 0;
         Iterator it = columns.listIterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
 
             Column column = (Column) it.next();
             Integer columnNameSize = column.getName().length();
 
-            if (columnNameSize > largestColumnNameSize)
-            {
+            if (columnNameSize > largestColumnNameSize) {
                 largestColumnNameSize = columnNameSize;
             }
 
@@ -88,112 +78,93 @@ public class Table
         return largestColumnNameSize;
     }
 
-    public Boolean isEmpty()
-    {
+    public Boolean isEmpty() {
 
         Boolean flag = false;
 
-        if (getCountKey() == 0)
-        {
+        if (getCountKey() == 0) {
             flag = true;
         }
 
         return flag;
     }
 
-    public int getCountKey()
-    {
+    public int getCountKey() {
 
         keyCount = columns.size();
         return keyCount;
     }
 
-    public Boolean containsNonPrimaryKeys()
-    {
+    public Boolean containsNonPrimaryKeys() {
 
         Boolean flag = false;
 
-        if (getCountNonPrimaryKey() > 0)
-        {
+        if (getCountNonPrimaryKey() > 0) {
             flag = true;
         }
 
         return flag;
     }
 
-    private int getCountNonPrimaryKey()
-    {
+    private int getCountNonPrimaryKey() {
 
         nonPrimaryKeyCount = 0;
         Iterator it = columns.iterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
-            if (!column.isPrimaryKey())
-            {
+            if (!column.isPrimaryKey()) {
                 nonPrimaryKeyCount++;
             }
         }
         return nonPrimaryKeyCount;
     }
 
-    public Iterator getIterator()
-    {
+    public Iterator getIterator() {
 
         return columns.iterator();
     }
 
-    public Boolean identityExists()
-    {
+    public Boolean identityExists() {
 
         Boolean flag = false;
         Iterator it = columns.iterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
-            if (column.isIdentity())
-            {
+            if (column.isIdentity()) {
                 flag = true;
             }
         }
         return flag;
     }
 
-    public boolean containsPrimaryKeys()
-    {
+    public boolean containsPrimaryKeys() {
         Boolean flag = false;
 
-        if (getCountPrimaryKey() > 0)
-        {
+        if (getCountPrimaryKey() > 0) {
             flag = true;
         }
 
         return flag;
     }
 
-    private int getCountPrimaryKey()
-    {
+    private int getCountPrimaryKey() {
 
         primaryKeyCount = 0;
         Iterator it = columns.iterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Column column = (Column) it.next();
-            if (column.isPrimaryKey())
-            {
+            if (column.isPrimaryKey()) {
                 primaryKeyCount++;
             }
         }
         return primaryKeyCount;
     }
 
-    public String getSchema()
-    {
+    public String getSchema() {
         return schema;
     }
 
-    public void setSchema(String schema)
-    {
+    public void setSchema(String schema) {
         this.schema = schema;
     }
 

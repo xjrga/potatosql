@@ -20,8 +20,7 @@
 
 package org.xjrga.potatosql.dataobject;
 
-public class KeyDataObject
-{
+public class KeyDataObject {
 
     private Integer SchemaId;
     private Integer TableId;
@@ -35,8 +34,7 @@ public class KeyDataObject
     private Integer Orden;
 
 
-    public KeyDataObject(Integer SchemaId, Integer TableId, Integer KeyId, String Name, String Label, Boolean IsPk, Integer TypeId, Integer Precision, Integer Scale, Integer Orden)
-    {
+    public KeyDataObject(Integer SchemaId, Integer TableId, Integer KeyId, String Name, String Label, Boolean IsPk, Integer TypeId, Integer Precision, Integer Scale, Integer Orden) {
 
         this.setSchemaId(SchemaId);
         this.setTableId(TableId);
@@ -51,132 +49,112 @@ public class KeyDataObject
     }
 
 
-    public KeyDataObject()
-    {
+    public KeyDataObject() {
 
     }
 
 
-    public Integer getSchemaId()
-    {
+    public Integer getSchemaId() {
 
         return SchemaId;
     }
 
 
-    public void setSchemaId(Integer schemaId)
-    {
+    public void setSchemaId(Integer schemaId) {
 
         SchemaId = schemaId;
     }
 
 
-    public Integer getTableId()
-    {
+    public Integer getTableId() {
 
         return TableId;
     }
 
 
-    public void setTableId(Integer tableId)
-    {
+    public void setTableId(Integer tableId) {
 
         TableId = tableId;
     }
 
 
-    public Integer getKeyId()
-    {
+    public Integer getKeyId() {
 
         return KeyId;
     }
 
 
-    public void setKeyId(Integer keyId)
-    {
+    public void setKeyId(Integer keyId) {
 
         KeyId = keyId;
     }
 
 
-    public String getLabel()
-    {
+    public String getLabel() {
 
         return Label;
     }
 
 
-    public void setLabel(String label)
-    {
+    public void setLabel(String label) {
 
         Label = label;
     }
 
 
-    public Boolean getIsPk()
-    {
+    public Boolean getIsPk() {
 
         return IsPk;
     }
 
 
-    public void setIsPk(Boolean isPk)
-    {
+    public void setIsPk(Boolean isPk) {
 
         IsPk = isPk;
     }
 
 
-    public Integer getTypeId()
-    {
+    public Integer getTypeId() {
 
         return TypeId;
     }
 
 
-    public void setTypeId(Integer typeId)
-    {
+    public void setTypeId(Integer typeId) {
 
         TypeId = typeId;
     }
 
 
-    public Integer getPrecision()
-    {
+    public Integer getPrecision() {
 
         return Precision;
     }
 
 
-    public void setPrecision(Integer precision)
-    {
+    public void setPrecision(Integer precision) {
 
         Precision = precision;
     }
 
 
-    public Integer getOrden()
-    {
+    public Integer getOrden() {
 
         return Orden;
     }
 
 
-    public void setOrden(Integer orden)
-    {
+    public void setOrden(Integer orden) {
 
         Orden = orden;
     }
 
 
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
 
         boolean flag = false;
-        if (object instanceof KeyDataObject)
-        {
-            if (toString().equals(object.toString()))
-            {
+        if (object instanceof KeyDataObject) {
+            if (toString().equals(object.toString())) {
                 flag = true;
             }
         }
@@ -185,36 +163,31 @@ public class KeyDataObject
 
 
     @Override
-    public String toString()
-    {
+    public String toString() {
 
         return getName();
     }
 
 
-    public String getName()
-    {
+    public String getName() {
 
         return Name;
     }
 
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
 
         Name = name;
     }
 
 
-    public Integer getScale()
-    {
+    public Integer getScale() {
 
         return Scale;
     }
 
 
-    public void setScale(Integer scale)
-    {
+    public void setScale(Integer scale) {
 
         Scale = scale;
     }

@@ -1,16 +1,14 @@
 package org.xjrga.potatosql.generator;
 
-public class ProcedureSelect implements Code
-{
+public class ProcedureSelect implements Code {
 
-    private Table table;
-    private Code statementSelect;
-    private SqlStuff sqlStuff;
-    private StringBuilder sqlbuild;
+    private final Table table;
+    private final Code statementSelect;
+    private final SqlStuff sqlStuff;
+    private final StringBuilder sqlbuild;
 
 
-    public ProcedureSelect(Table table, SqlStuff sqlStuff)
-    {
+    public ProcedureSelect(Table table, SqlStuff sqlStuff) {
 
         this.table = table;
         statementSelect = new StatementSelect(table, sqlStuff);
@@ -20,11 +18,9 @@ public class ProcedureSelect implements Code
 
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
 
-        if (!table.isEmpty())
-        {
+        if (!table.isEmpty()) {
             sqlbuild.append("CREATE PROCEDURE");
             sqlbuild.append(" ");
             sqlbuild.append(table.getSchema());

@@ -1,20 +1,17 @@
 package org.xjrga.potatosql.generator;
 
-public class MethodProcedureSelectPrint implements Code
-{
-    private Table table;
-    private JavaStuff javaStuff;
+public class MethodProcedureSelectPrint implements Code {
+    private final Table table;
+    private final JavaStuff javaStuff;
 
-    public MethodProcedureSelectPrint(Table table)
-    {
+    public MethodProcedureSelectPrint(Table table) {
         this.table = table;
         this.javaStuff = new JavaStuff(table);
     }
 
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
         String methodName1 = table.getName() + "_Select_Print";
         String methodName2 = table.getName() + "_Select";
         String methodParameters = javaStuff.getMethodParametersPrimaryKeyOnly();

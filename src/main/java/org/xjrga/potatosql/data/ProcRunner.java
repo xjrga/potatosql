@@ -26,15 +26,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class ProcRunner
-{
+public class ProcRunner {
 
-    private Connection connection;
-    private LinkedList<String> columnLabelList;
+    private final Connection connection;
+    private final LinkedList<String> columnLabelList;
 
 
-    public ProcRunner()
-    {
+    public ProcRunner() {
 
         connection = Connect.getInstance().getConnection();
         columnLabelList = new LinkedList<>();
@@ -46,29 +44,24 @@ public class ProcRunner
      * @param parameters - input parameters
      * @return - list containing table rows
      */
-    public List<Map<String, Object>> callProcedureR(String sql, Object[] parameters)
-    {
+    public List<Map<String, Object>> callProcedureR(String sql, Object[] parameters) {
 
         LinkedList<Map<String, Object>> list = new LinkedList<>();
         CallableStatement proc;
         columnLabelList.clear();
-        try
-        {
+        try {
             proc = connection.prepareCall(sql);
             setParameters(parameters, proc);
             ResultSet rs = proc.executeQuery();
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();
-            for (int columnPos = 0; columnPos < columnCount; columnPos++)
-            {
+            for (int columnPos = 0; columnPos < columnCount; columnPos++) {
                 String columnName = metaData.getColumnLabel(columnPos + 1);
                 columnLabelList.add(columnName);
             }
-            while (rs.next())
-            {
+            while (rs.next()) {
                 Map<String, Object> row = new HashMap<>();
-                for (int columnPos = 0; columnPos < columnCount; columnPos++)
-                {
+                for (int columnPos = 0; columnPos < columnCount; columnPos++) {
                     Object columnValue = rs.getObject(columnPos + 1);
                     row.put(columnLabelList.get(columnPos), columnValue);
                 }
@@ -76,26 +69,20 @@ public class ProcRunner
             }
             proc.close();
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return list;
     }
 
 
-    private void setParameters(Object[] parameters, CallableStatement proc) throws SQLException
-    {
+    private void setParameters(Object[] parameters, CallableStatement proc) throws SQLException {
 
-        for (int i = 0; i < parameters.length; i++)
-        {
+        for (int i = 0; i < parameters.length; i++) {
             Object parameter = parameters[i];
-            if (parameter != null)
-            {
+            if (parameter != null) {
                 String classType = parameter.getClass().getSimpleName();
-                switch (classType)
-                {
+                switch (classType) {
                     case "String":
                         proc.setString(i + 1, (String) parameter);
                         break;
@@ -120,8 +107,7 @@ public class ProcRunner
                     default:
                         proc.setObject(i + 1, parameter);
                 }
-            } else
-            {
+            } else {
                 proc.setNull(i + 1, Types.NULL);
             }
         }
@@ -132,19 +118,15 @@ public class ProcRunner
      * @param sql        , sql = "{ call  public.procedure( ?, ? )}";
      * @param parameters - input parameters
      */
-    public void callProcedure(String sql, Object[] parameters)
-    {
+    public void callProcedure(String sql, Object[] parameters) {
 
         CallableStatement proc;
-        try
-        {
+        try {
             proc = connection.prepareCall(sql);
             setParameters(parameters, proc);
             proc.execute();
             proc.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -155,13 +137,11 @@ public class ProcRunner
      * @param parameters - input parameters
      * @return - object containing function result
      */
-    public Object callFunction(String sql, Object[] parameters)
-    {
+    public Object callFunction(String sql, Object[] parameters) {
 
         CallableStatement proc;
         Object out = null;
-        try
-        {
+        try {
             proc = connection.prepareCall(sql);
             setParameters(parameters, proc);
             proc.execute();
@@ -169,87 +149,69 @@ public class ProcRunner
             resultSet.next();
             out = resultSet.getObject(1);
             proc.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return out;
     }
 
 
-    public void resetDB()
-    {
+    public void resetDB() {
 
         //TRUNCATE SCHEMA PUBLIC RESTART IDENTITY AND COMMIT NO CHECK - clear all data, restart identities, keep tables, bypass referential integrity
 
         String sql = "TRUNCATE SCHEMA PUBLIC RESTART IDENTITY AND COMMIT NO CHECK;";
         Statement stmt;
-        try
-        {
+        try {
             stmt = connection.createStatement();
             stmt.executeUpdate(sql);
             stmt.close();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
 
-    public void executeUpdate(String sql)
-    {
+    public void executeUpdate(String sql) {
 
         Statement stmt;
-        try
-        {
+        try {
             stmt = connection.createStatement();
             stmt.executeUpdate(sql);
             stmt.close();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
 
-    public void dropTables()
-    {
+    public void dropTables() {
 
         //DROP SCHEMA PUBLIC CASCADE - clear all data and drop all tables
 
         String sql = "DROP SCHEMA PUBLIC CASCADE;";
         Statement stmt;
-        try
-        {
+        try {
             stmt = connection.createStatement();
             stmt.executeUpdate(sql);
             stmt.close();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
 
-    public void Shutdown()
-    {
+    public void Shutdown() {
 
         //SHUTDOWN COMPACT
 
         String sql = "SHUTDOWN COMPACT;";
         Statement stmt;
-        try
-        {
+        try {
             stmt = connection.createStatement();
             stmt.executeUpdate(sql);
             stmt.close();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

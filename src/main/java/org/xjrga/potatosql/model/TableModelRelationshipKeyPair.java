@@ -29,23 +29,20 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Vector;
 
-public class TableModelRelationshipKeyPair extends DefaultTableModel
-{
+public class TableModelRelationshipKeyPair extends DefaultTableModel {
 
     private Vector columns;
-    private DbLink dbLink;
+    private final DbLink dbLink;
 
 
-    public TableModelRelationshipKeyPair(DbLink dbLink)
-    {
+    public TableModelRelationshipKeyPair(DbLink dbLink) {
 
         this.setColumnIdentifiers();
         this.dbLink = dbLink;
     }
 
 
-    private void setColumnIdentifiers()
-    {
+    private void setColumnIdentifiers() {
 
         columns = new Vector();
         /*
@@ -68,8 +65,7 @@ public class TableModelRelationshipKeyPair extends DefaultTableModel
     }
 
 
-    public Class getColumnClass(int i)
-    {
+    public Class getColumnClass(int i) {
 
         Class returnValue = Object.class;
         /*
@@ -83,8 +79,7 @@ public class TableModelRelationshipKeyPair extends DefaultTableModel
                 b.Name as Parent,
                 c.Name as Child
          */
-        switch (i)
-        {
+        switch (i) {
 
             case 0:
                 //SchemaId
@@ -115,15 +110,13 @@ public class TableModelRelationshipKeyPair extends DefaultTableModel
 
 
     @Override
-    public boolean isCellEditable(int i, int i1)
-    {
+    public boolean isCellEditable(int i, int i1) {
 
         return false;
     }
 
 
-    public void reload(Integer schemaid, Integer parent_tableid, Integer child_tableid, Integer relationshipid)
-    {
+    public void reload(Integer schemaid, Integer parent_tableid, Integer child_tableid, Integer relationshipid) {
 
         Vector table = new Vector();
 
@@ -131,8 +124,7 @@ public class TableModelRelationshipKeyPair extends DefaultTableModel
 
         Iterator it = list.iterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
 
             HashMap row_hashmap = (HashMap) it.next();
             /*
@@ -174,8 +166,7 @@ public class TableModelRelationshipKeyPair extends DefaultTableModel
     }
 
 
-    public void clear()
-    {
+    public void clear() {
 
         Vector table = new Vector();
         this.setDataVector(table, columns);

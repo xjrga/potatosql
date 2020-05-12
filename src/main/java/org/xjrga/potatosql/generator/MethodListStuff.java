@@ -1,19 +1,16 @@
 package org.xjrga.potatosql.generator;
 
-public class MethodListStuff
-{
-    private Table table;
-    private JavaStuff javaStuff;
+public class MethodListStuff {
+    private final Table table;
+    private final JavaStuff javaStuff;
 
 
-    public MethodListStuff(Table table)
-    {
+    public MethodListStuff(Table table) {
         this.table = table;
         this.javaStuff = new JavaStuff(table);
     }
 
-    public String getToString()
-    {
+    public String getToString() {
         StringBuilder sb = new StringBuilder();
         String methodName = table.getName() + "_Delete";
         String methodParameters = javaStuff.getMethodParametersPrimaryKeyOnly();

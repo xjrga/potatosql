@@ -3,56 +3,47 @@ package org.xjrga.potatosql.generator;
 import org.xjrga.potatosql.data.DbLink;
 import org.xjrga.potatosql.dataobject.SchemaDataObject;
 
-public class Generator1 implements Code
-{
+public class Generator1 implements Code {
 
-    private DbLink dbLink;
+    private final DbLink dbLink;
     private boolean Tables;
     private int[] TableIds;
     private boolean isHsqldb;
     private boolean isMysql;
     private SchemaDataObject schemaDataObject;
 
-    public Generator1(DbLink dbLink)
-    {
+    public Generator1(DbLink dbLink) {
         this.dbLink = dbLink;
     }
 
-    public void setTableIds(int[] tableIds)
-    {
+    public void setTableIds(int[] tableIds) {
         this.TableIds = tableIds;
     }
 
-    public void setTablesAndRelationshipsSelected(boolean tables)
-    {
+    public void setTablesAndRelationshipsSelected(boolean tables) {
         Tables = tables;
     }
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
         StringBuilder sb = new StringBuilder();
 
-        if (isHsqldb)
-        {
+        if (isHsqldb) {
             sb.append(getHsqldb());
 
-        } else if (isMysql)
-        {
+        } else if (isMysql) {
             sb.append(getMysql());
         }
         return sb.toString();
     }
 
 
-    public String getHsqldb()
-    {
+    public String getHsqldb() {
         StringBuilder sb = new StringBuilder();
 
         TableMaker tableMaker = new TableMaker(dbLink);
 
-        if (Tables)
-        {
+        if (Tables) {
             DropSchema dropSchema = new DropSchema();
             dropSchema.setSchemaDataObject(getSchemaDataObject());
             sb.append(dropSchema.getCode());
@@ -61,8 +52,7 @@ public class Generator1 implements Code
             createSchema.setSchemaDataObject(getSchemaDataObject());
             sb.append(createSchema.getCode());
 
-            for (int i = 0; i < TableIds.length; i++)
-            {
+            for (int i = 0; i < TableIds.length; i++) {
                 Integer tableId = TableIds[i];
                 Table table = tableMaker.getTable(getSchemaDataObject().getSchemaId(), tableId);
                 table.setSchema(getSchemaDataObject().getSchemaName());
@@ -87,8 +77,7 @@ public class Generator1 implements Code
     }
 
 
-    public String getMysql()
-    {
+    public String getMysql() {
 
         StringBuilder sb = new StringBuilder();
         sb.append("Not implemented yet.");
@@ -96,24 +85,20 @@ public class Generator1 implements Code
     }
 
 
-    public void setMysql(boolean mysql)
-    {
+    public void setMysql(boolean mysql) {
 
         isMysql = mysql;
     }
 
-    public SchemaDataObject getSchemaDataObject()
-    {
+    public SchemaDataObject getSchemaDataObject() {
         return schemaDataObject;
     }
 
-    public void setSchemaDataObject(SchemaDataObject schemaDataObject)
-    {
+    public void setSchemaDataObject(SchemaDataObject schemaDataObject) {
         this.schemaDataObject = schemaDataObject;
     }
 
-    public void setHsqldb(boolean hsqldb)
-    {
+    public void setHsqldb(boolean hsqldb) {
         isHsqldb = hsqldb;
     }
 

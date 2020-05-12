@@ -7,9 +7,10 @@ import org.xjrga.potatosql.dataobject.KeyDataObject;
 import org.xjrga.potatosql.dataobject.KeyTypeDataObject;
 import org.xjrga.potatosql.dataobject.SchemaDataObject;
 import org.xjrga.potatosql.dataobject.TableDataObject;
-import org.xjrga.potatosql.generator.*;
+import org.xjrga.potatosql.generator.Generator0;
+import org.xjrga.potatosql.generator.Generator1;
+import org.xjrga.potatosql.generator.Generator2;
 import org.xjrga.potatosql.model.*;
-import org.xjrga.potatosql.other.Replacer;
 import org.xjrga.potatosql.other.Write;
 
 import javax.swing.*;
@@ -26,8 +27,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.net.URL;
 
-public class Main
-{
+public class Main {
     private CellConstraints cc;
     private DbLink dbLink;
     private JButton clear;
@@ -111,49 +111,36 @@ public class Main
     private JRadioButtonMenuItem mnuiDialectMysql;
     private ListModelKeyTypes listModelKeyTypes;
 
-    public Main()
-    {
+    public Main() {
         setLookAndFeel();
         initialize();
     }
 
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         Main main = new Main();
     }
 
 
-    private void setLookAndFeel()
-    {
+    private void setLookAndFeel() {
 
         String operating_system = System.getProperty("os.name").toLowerCase();
         String java_version = System.getProperty("java.version");
-        try
-        {
+        try {
             MetalLookAndFeel.setCurrentTheme(new Minimal());
             UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
-        catch (InstantiationException e)
-        {
+        } catch (InstantiationException e) {
             e.printStackTrace();
-        }
-        catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
-        }
-        catch (UnsupportedLookAndFeelException e)
-        {
+        } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
     }
 
-    private void initialize()
-    {
+    private void initialize() {
         cboxTablesDup = new JCheckBox("Duplicate Table To Test Trigger");
         cboxStmtCreateSelect = new JCheckBox("Create Table As Select");
         cboxStmtInsertSelect = new JCheckBox("Insert Using Select");
@@ -262,8 +249,7 @@ public class Main
     }
 
 
-    private JFrame getFrame()
-    {
+    private JFrame getFrame() {
         JFrame frame = new JFrame();
 
         frame.setSize(new Dimension(1132, 700));
@@ -273,19 +259,15 @@ public class Main
         frame.setJMenuBar(getMenuBar());
         frame.add(getMainPanel());
 
-        frame.addWindowListener(new WindowAdapter()
-        {
-            public void windowClosing(WindowEvent e)
-            {
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
                 frame.dispose();
                 dbLink.Shutdown();
             }
         });
 
-        frame.addComponentListener(new ComponentAdapter()
-        {
-            public void componentResized(ComponentEvent e)
-            {
+        frame.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
                 Dimension size = frame.getSize();
             }
         });
@@ -294,8 +276,7 @@ public class Main
     }
 
 
-    private JPanel getMainPanel()
-    {
+    private JPanel getMainPanel() {
         FormLayout layout = new FormLayout("min,min,min:grow", //columns
                 "fill:min:grow" //rows
         );
@@ -329,8 +310,7 @@ public class Main
     }
 
 
-    private void btnGenerate_actionPerformed()
-    {
+    private void btnGenerate_actionPerformed() {
         StringBuilder sb = new StringBuilder();
 
         Generator0 generator0 = new Generator0();
@@ -338,8 +318,7 @@ public class Main
         generator0.setTestClassSelected(cboxTestClass.isSelected());
         sb.append(generator0.getCode());
 
-        if (isSchemaSelected())
-        {
+        if (isSchemaSelected()) {
             Generator1 generator1 = new Generator1(dbLink);
             SchemaDataObject schemaDataObject = getSelectedSchema();
             int numberOfTables = listModelTable.getSize();
@@ -349,8 +328,7 @@ public class Main
             generator1.setTablesAndRelationshipsSelected(cboxTables.isSelected());
             generator1.setSchemaDataObject(schemaDataObject);
 
-            for (int i = 0; i < numberOfTables; i++)
-            {
+            for (int i = 0; i < numberOfTables; i++) {
                 TableDataObject tableDataObject = (TableDataObject) listModelTable.getElementAt(i);
                 tableIds[i] = tableDataObject.getTableId();
             }
@@ -358,8 +336,7 @@ public class Main
             generator1.setTableIds(tableIds);
             sb.append(generator1.getCode());
 
-            if (isTableSelected())
-            {
+            if (isTableSelected()) {
                 TableDataObject tableDataObject = getSelectedTable();
                 Generator2 generator2 = new Generator2(dbLink);
                 generator2.setSchemaDataObject(schemaDataObject);
@@ -418,29 +395,24 @@ public class Main
 
     }
 
-    private SchemaDataObject getSelectedSchema()
-    {
+    private SchemaDataObject getSelectedSchema() {
         return (SchemaDataObject) listSchema.getSelectedValue();
     }
 
 
-    private boolean isSchemaSelected()
-    {
+    private boolean isSchemaSelected() {
         return !listSchema.isSelectionEmpty();
     }
 
-    private TableDataObject getSelectedTable()
-    {
+    private TableDataObject getSelectedTable() {
         return (TableDataObject) listTable.getSelectedValue();
     }
 
-    private boolean isTableSelected()
-    {
+    private boolean isTableSelected() {
         return !listTable.isSelectionEmpty();
     }
 
-    private JMenuBar getMenuBar()
-    {
+    private JMenuBar getMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu mnuProgram = new JMenu();
         JMenu mnuSchema = new JMenu();
@@ -500,66 +472,50 @@ public class Main
         mnuiCredits.setText("Credits");
         mnuiAbout.setText("About");
 
-        mnuiOptions.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        mnuiOptions.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 selectOptions();
             }
         });
 
-        mnuiExit.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        mnuiExit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_mnuiExit(e);
             }
         });
 
-        mnuiSchemaCopy.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        mnuiSchemaCopy.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_mnuiSchemaCopy(e);
             }
         });
 
-        mnuiTableCopy.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        mnuiTableCopy.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_mnuiTableCopy(e);
             }
         });
 
-        mnuiKeyCopy.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        mnuiKeyCopy.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_mnuiKeyCopy(e);
             }
         });
 
-        mnuiGuide.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        mnuiGuide.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_mnuiGuide(e);
             }
         });
 
-        mnuiCredits.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        mnuiCredits.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_mnuiCredits(e);
             }
         });
 
-        mnuiAbout.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        mnuiAbout.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_mnuiAbout(e);
             }
         });
@@ -567,8 +523,7 @@ public class Main
         return menuBar;
     }
 
-    private void eventActionPerformed_mnuiAbout(ActionEvent e)
-    {
+    private void eventActionPerformed_mnuiAbout(ActionEvent e) {
         StringBuffer sb = new StringBuffer();
 
         sb.append("This software:");
@@ -596,8 +551,7 @@ public class Main
         JOptionPane.showMessageDialog(null, scrollPane, "PotatoSQL: Software for Database Design", JOptionPane.PLAIN_MESSAGE);
     }
 
-    private void eventActionPerformed_mnuiCredits(ActionEvent e)
-    {
+    private void eventActionPerformed_mnuiCredits(ActionEvent e) {
         StringBuffer sb = new StringBuffer();
 
         sb.append("PotatoSQL uses the following libraries:");
@@ -616,17 +570,14 @@ public class Main
 
     }
 
-    private void eventActionPerformed_mnuiGuide(ActionEvent e)
-    {
+    private void eventActionPerformed_mnuiGuide(ActionEvent e) {
         openUrl("http://x-jrga.github.io/potatosql");
     }
 
-    private void eventActionPerformed_mnuiKeyCopy(ActionEvent e)
-    {
+    private void eventActionPerformed_mnuiKeyCopy(ActionEvent e) {
         int selectedRow = tableKeys.getSelectedRow();
 
-        if (selectedRow != -1)
-        {
+        if (selectedRow != -1) {
             int schemaid = (int) tableModelKeys.getValueAt(selectedRow, 0);
             int tableid = (int) tableModelKeys.getValueAt(selectedRow, 1);
             int keyid = (int) tableModelKeys.getValueAt(selectedRow, 2);
@@ -634,8 +585,7 @@ public class Main
 
             String s = (String) JOptionPane.showInputDialog(null, "What is your key name?", "New Key", -1, null, null, keyname);
 
-            if (isAlphaNumeric(s))
-            {
+            if (isAlphaNumeric(s)) {
                 dbLink.PotatoSql_TableKey_Copy(schemaid, tableid, keyid, s);
                 tableModelKeys.reload(schemaid, tableid);
                 hideTableKeysColumns();
@@ -645,17 +595,14 @@ public class Main
     }
 
 
-    private void eventActionPerformed_mnuiSchemaCopy(ActionEvent e)
-    {
-        if (isSchemaSelected())
-        {
+    private void eventActionPerformed_mnuiSchemaCopy(ActionEvent e) {
+        if (isSchemaSelected()) {
             SchemaDataObject schemaDataObject = getSelectedSchema();
             Integer schemaId = schemaDataObject.getSchemaId();
             String schemaName = schemaDataObject.getSchemaName();
             String s = (String) JOptionPane.showInputDialog(null, "What is your new schema name?", "New Schema", -1, null, null, schemaName);
 
-            if (isAlphaNumeric(s))
-            {
+            if (isAlphaNumeric(s)) {
                 dbLink.DatabaseSchema_Copy(schemaId, s);
                 listModelSchema.reload();
             }
@@ -663,12 +610,9 @@ public class Main
     }
 
 
-    private void eventActionPerformed_mnuiTableCopy(ActionEvent e)
-    {
-        if (isSchemaSelected())
-        {
-            if (isTableSelected())
-            {
+    private void eventActionPerformed_mnuiTableCopy(ActionEvent e) {
+        if (isSchemaSelected()) {
+            if (isTableSelected()) {
                 SchemaDataObject schemaDataObject = getSelectedSchema();
                 Integer schemaId = schemaDataObject.getSchemaId();
                 String schemaName = schemaDataObject.getSchemaName();
@@ -678,8 +622,7 @@ public class Main
                 String tableName = tableDataObject.getTableName();
                 String s = (String) JOptionPane.showInputDialog(null, "What is your new table name?", "New Table", -1, null, null, tableName);
 
-                if (isAlphaNumeric(s))
-                {
+                if (isAlphaNumeric(s)) {
                     dbLink.PotatoSql_Table_Copy(schemaId, tableId_Old, s);
                     listModelTable.reload(schemaId);
                 }
@@ -687,8 +630,7 @@ public class Main
         }
     }
 
-    private JPanel getPanelInput2()
-    {
+    private JPanel getPanelInput2() {
         FormLayout layout = new FormLayout("min:grow", //columns
                 "fill:min:grow,fill:min:grow" //rows
         );
@@ -703,8 +645,7 @@ public class Main
     }
 
 
-    private JPanel getPanelRelationshipKeyInput(String parent_name, String child_name)
-    {
+    private JPanel getPanelRelationshipKeyInput(String parent_name, String child_name) {
         FormLayout layout = new FormLayout("min:grow,min:grow", //columns
                 "fill:min:grow" //rows
         );
@@ -719,8 +660,7 @@ public class Main
     }
 
 
-    private JPanel getPanelRelationshipInput()
-    {
+    private JPanel getPanelRelationshipInput() {
         FormLayout layout = new FormLayout("min:grow,min:grow", //columns
                 "fill:min:grow,min,min" //rows
         );
@@ -738,8 +678,7 @@ public class Main
     }
 
 
-    private JPanel getPanelVerbPhrase()
-    {
+    private JPanel getPanelVerbPhrase() {
         FormLayout layout = new FormLayout("min:grow", //columns
                 "min,min,min" //rows
         );
@@ -787,8 +726,7 @@ public class Main
     }
 
 
-    private JPanel getPanelType()
-    {
+    private JPanel getPanelType() {
         JPanel panel = new JPanel();
         ButtonGroup buttonGroup = new ButtonGroup();
 
@@ -807,8 +745,7 @@ public class Main
     }
 
 
-    private JPanel getPanelOutput()
-    {
+    private JPanel getPanelOutput() {
         FormLayout layout = new FormLayout("min:grow,min", //columns
                 "fill:min:grow,min" //rows
         );
@@ -821,11 +758,9 @@ public class Main
         panel.add(new JScrollPane(textArea), cc.xyw(1, 1, 2));
         panel.add(btnCopy, cc.xy(2, 2));
 
-        btnCopy.addActionListener(new ActionListener()
-        {
+        btnCopy.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
 
                 String text = textArea.getText();
                 StringSelection stringSelection = new StringSelection(text);
@@ -838,8 +773,7 @@ public class Main
     }
 
 
-    private JPanel getPanelTable()
-    {
+    private JPanel getPanelTable() {
         FormLayout layout = new FormLayout("min:grow", //columns
                 "fill:min:grow,min" //rows
         );
@@ -853,10 +787,8 @@ public class Main
         panel.add(scrollTable, cc.xy(1, 1));
         panel.add(getPanelTableButtons(), cc.xy(1, 2));
 
-        listTable.addListSelectionListener(new ListSelectionListener()
-        {
-            public void valueChanged(ListSelectionEvent e)
-            {
+        listTable.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
 
                 eventListSelection_listTable(e);
             }
@@ -866,15 +798,12 @@ public class Main
     }
 
 
-    private void eventListSelection_listTable(ListSelectionEvent e)
-    {
-        if (e.getValueIsAdjusting())
-        {
+    private void eventListSelection_listTable(ListSelectionEvent e) {
+        if (e.getValueIsAdjusting()) {
             return;
         }
 
-        if (isTableSelected())
-        {
+        if (isTableSelected()) {
             TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
             Integer schemaId = tableDataObject.getSchemaId();
             Integer tableId = tableDataObject.getTableId();
@@ -888,8 +817,7 @@ public class Main
     }
 
 
-    private JPanel getPanelTableKeyInput()
-    {
+    private JPanel getPanelTableKeyInput() {
         FormLayout layout = new FormLayout("min,min:grow", //columns
                 "min,min,min,min,4dlu,min" //rows
         );
@@ -932,28 +860,23 @@ public class Main
         panel.add(labelOrder, cc.xy(1, 4));
         panel.add(keyOrder, cc.xy(2, 4));
 
-        keyName.getDocument().addDocumentListener(new DocumentListener()
-        {
-            public void changedUpdate(DocumentEvent e)
-            {
+        keyName.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
                 //setText(e);
             }
 
 
-            public void removeUpdate(DocumentEvent e)
-            {
+            public void removeUpdate(DocumentEvent e) {
                 setText(e);
             }
 
 
-            public void setText(DocumentEvent e)
-            {
+            public void setText(DocumentEvent e) {
                 checkForAlphaNumeric(e);
             }
 
 
-            public void insertUpdate(DocumentEvent e)
-            {
+            public void insertUpdate(DocumentEvent e) {
                 setText(e);
             }
 
@@ -963,28 +886,22 @@ public class Main
 
     }
 
-    private void checkForAlphaNumeric(DocumentEvent e)
-    {
+    private void checkForAlphaNumeric(DocumentEvent e) {
         StringBuilder sb = new StringBuilder();
 
-        if (!keyName.getText().matches("^$|^[a-zA-Z][a-zA-Z0-9_]*"))
-        {
-            try
-            {
+        if (!keyName.getText().matches("^$|^[a-zA-Z][a-zA-Z0-9_]*")) {
+            try {
                 sb.append("• Takes alphanumeric characters\n\n");
                 sb.append("  Character is ");
                 sb.append(e.getDocument().getText(e.getOffset(), 1));
                 JOptionPane.showMessageDialog(null, sb.toString(), "Error Message", JOptionPane.PLAIN_MESSAGE);
-            }
-            catch (BadLocationException ex)
-            {
+            } catch (BadLocationException ex) {
                 ex.printStackTrace();
             }
         }
     }
 
-    private JPanel getPanelTableKeys()
-    {
+    private JPanel getPanelTableKeys() {
         FormLayout layout = new FormLayout("min:grow", //columns
                 "fill:min:grow,min" //rows
         );
@@ -1002,12 +919,10 @@ public class Main
     }
 
 
-    private void fillPanelTableKeyInput()
-    {
+    private void fillPanelTableKeyInput() {
         Integer selectedRow = tableKeys.getSelectedRow();
 
-        if (selectedRow != -1)
-        {
+        if (selectedRow != -1) {
             String keyname = (String) tableModelKeys.getValueAt(selectedRow, 3);
             //String keylabel = (String) tableModelKeys.getValueAt(selectedRow, 4);
             Boolean ispk = (Boolean) tableModelKeys.getValueAt(selectedRow, 5);
@@ -1029,8 +944,7 @@ public class Main
         }
     }
 
-    private void clearPanelTableKeyInput()
-    {
+    private void clearPanelTableKeyInput() {
         keyName.setText("");
         KeyTypeDataObject keyTypeDataObject = new KeyTypeDataObject(1, "INTEGER", false);
         listKeyTypes.setSelectedValue(keyTypeDataObject, true);
@@ -1040,8 +954,7 @@ public class Main
     }
 
 
-    private JPanel getPanelParent()
-    {
+    private JPanel getPanelParent() {
         FormLayout layout = new FormLayout("min:grow", //columns
                 "fill:min:grow" //rows
         );
@@ -1056,8 +969,7 @@ public class Main
     }
 
 
-    private JPanel getPanelChild()
-    {
+    private JPanel getPanelChild() {
         FormLayout layout = new FormLayout("min:grow", //columns
                 "fill:min:grow" //rows
         );
@@ -1072,8 +984,7 @@ public class Main
     }
 
 
-    private JPanel getPanelRelationship()
-    {
+    private JPanel getPanelRelationship() {
         FormLayout layout = new FormLayout("min:grow", //columns
                 "fill:min:grow,min" //rows
         );
@@ -1102,46 +1013,36 @@ public class Main
 
         hideTableRelationshipColumns();
 
-        tableRelationshipFacts.getSelectionModel().addListSelectionListener(new ListSelectionListener()
-        {
-            public void valueChanged(ListSelectionEvent e)
-            {
+        tableRelationshipFacts.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
 
                 eventListSelection_tableRelationship(e);
             }
         });
 
-        btnRelationshipAdd.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        btnRelationshipAdd.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
 
                 eventActionPerformed_btnRelationshipAdd(e);
             }
         });
 
-        btnRelationshipDelete.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        btnRelationshipDelete.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
 
                 eventActionPerformed_btnRelationshipDelete(e);
             }
         });
 
-        btnRelationshipUpdate.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        btnRelationshipUpdate.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
 
                 eventActionPerformed_btnRelationshipUpdate(e);
             }
         });
 
-        btnRelationshipShow.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        btnRelationshipShow.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
 
                 eventActionPerformed_btnRelationshipShow(e);
             }
@@ -1150,8 +1051,7 @@ public class Main
         return panel;
     }
 
-    private void eventActionPerformed_btnRelationshipShow(ActionEvent e)
-    {
+    private void eventActionPerformed_btnRelationshipShow(ActionEvent e) {
         SchemaDataObject schemaDataObject = getSelectedSchema();
         tableModelRelationship.reload(schemaDataObject.getSchemaId());
         hideTableRelationshipColumns();
@@ -1159,22 +1059,18 @@ public class Main
         hideTableRelationshipKeyPairColumns();
     }
 
-    private void eventListSelection_tableRelationship(ListSelectionEvent e)
-    {
-        if (e.getValueIsAdjusting())
-        {
+    private void eventListSelection_tableRelationship(ListSelectionEvent e) {
+        if (e.getValueIsAdjusting()) {
             return;
         }
 
         reloadTableRelationshipKeyPair();
     }
 
-    private void reloadTableRelationshipKeyPair()
-    {
+    private void reloadTableRelationshipKeyPair() {
         Integer selectedRow = tableRelationshipFacts.getSelectedRow();
 
-        if (selectedRow != -1)
-        {
+        if (selectedRow != -1) {
             Integer schemaid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 1);
             Integer parent_tableid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 2);
             Integer child_tableid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 4);
@@ -1187,11 +1083,8 @@ public class Main
     }
 
 
-
-    private void eventActionPerformed_btnRelationshipAdd(ActionEvent e)
-    {
-        if (isTableSelected())
-        {
+    private void eventActionPerformed_btnRelationshipAdd(ActionEvent e) {
+        if (isTableSelected()) {
 
             clearPanelRelationshipInput();
 
@@ -1206,8 +1099,7 @@ public class Main
 
             int i = JOptionPane.showOptionDialog(null, panelRelationshipInput, "Relationship", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{"Cancel", "  Ok  "}, null);
 
-            if (i == 1)
-            {
+            if (i == 1) {
                 TableDataObject parent = (TableDataObject) listParent.getSelectedValue();
                 TableDataObject child = (TableDataObject) listChild.getSelectedValue();
                 Integer schemaid = parent.getSchemaId();
@@ -1218,11 +1110,9 @@ public class Main
                 String reverseVerbPhrase = txtReverse.getText();
                 String relationShipName = txtRelationshipName.getText();
 
-                if (btnIdentifying.isSelected())
-                {
+                if (btnIdentifying.isSelected()) {
                     relationshiptypeid = 0;
-                } else
-                {
+                } else {
                     relationshiptypeid = 1;
                 }
 
@@ -1230,15 +1120,13 @@ public class Main
                 tableModelRelationship.reload(schemaid, parent_tableid);
                 hideTableRelationshipColumns();
             }
-        } else
-        {
+        } else {
             showMessage("Please select table.");
         }
 
     }
 
-    private void clearPanelRelationshipInput()
-    {
+    private void clearPanelRelationshipInput() {
         txtRelationshipName.setText("");
         txtForward.setText("");
         txtReverse.setText("");
@@ -1247,12 +1135,10 @@ public class Main
     }
 
 
-    private void eventActionPerformed_btnRelationshipUpdate(ActionEvent e)
-    {
+    private void eventActionPerformed_btnRelationshipUpdate(ActionEvent e) {
         Integer selectedRow = tableRelationshipFacts.getSelectedRow();
 
-        if (selectedRow != -1)
-        {
+        if (selectedRow != -1) {
             Integer schemaid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 1);
             Integer parent_tableid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 2);
             String parent = (String) tableRelationshipFacts.getValueAt(selectedRow, 3);
@@ -1272,11 +1158,9 @@ public class Main
             txtForward.setText(forwardVerbPhrase);
             txtReverse.setText(reverseVerbPhrase);
 
-            if (relationshiptypeid == 0)
-            {
+            if (relationshiptypeid == 0) {
                 btnIdentifying.setSelected(true);
-            } else
-            {
+            } else {
                 btnNonIdentifying.setSelected(true);
             }
 
@@ -1286,24 +1170,20 @@ public class Main
 
             int i = JOptionPane.showOptionDialog(null, panelRelationshipInput, "Relationship", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{"Cancel", "  Ok  "}, null);
 
-            if (i == 1)
-            {
+            if (i == 1) {
                 relationshipname = txtRelationshipName.getText();
                 forwardVerbPhrase = txtForward.getText();
                 reverseVerbPhrase = txtReverse.getText();
 
                 Integer relationshiptypeid_new;
 
-                if (btnIdentifying.isSelected())
-                {
+                if (btnIdentifying.isSelected()) {
                     relationshiptypeid_new = 0;
-                } else
-                {
+                } else {
                     relationshiptypeid_new = 1;
                 }
 
-                if (relationshiptypeid != relationshiptypeid_new)
-                {
+                if (relationshiptypeid != relationshiptypeid_new) {
                     dbLink.RelationshipKeyPair_Delete(schemaid, parent_tableid, child_tableid, relationshipid);
                 }
 
@@ -1313,19 +1193,16 @@ public class Main
                 hideTableRelationshipColumns();
                 hideTableRelationshipKeyPairColumns();
             }
-        } else
-        {
+        } else {
             showMessage("Please select row to update.");
         }
 
     }
 
-    private void eventActionPerformed_btnRelationshipDelete(ActionEvent e)
-    {
+    private void eventActionPerformed_btnRelationshipDelete(ActionEvent e) {
         Integer selectedRow = tableRelationshipFacts.getSelectedRow();
 
-        if (selectedRow != -1)
-        {
+        if (selectedRow != -1) {
             Integer relationshipid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 0);
             Integer schemaid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 1);
             Integer parent_tableid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 2);
@@ -1337,15 +1214,13 @@ public class Main
             tableModelRelationshipKeyPair.reload(schemaid, parent_tableid, child_tableid, relationshipid);
             hideTableRelationshipColumns();
             hideTableRelationshipKeyPairColumns();
-        } else
-        {
+        } else {
             showMessage("Please select row to delete.");
         }
     }
 
 
-    private JPanel getPanelParentKeys(String parent_name)
-    {
+    private JPanel getPanelParentKeys(String parent_name) {
         FormLayout layout = new FormLayout("min:grow", //columns
                 "fill:min:grow,fill:min:grow" //rows
         );
@@ -1365,8 +1240,7 @@ public class Main
     }
 
 
-    private JPanel getPanelChildKeys(String child_name)
-    {
+    private JPanel getPanelChildKeys(String child_name) {
         FormLayout layout = new FormLayout("min:grow", //columns
                 "fill:min:grow,fill:min:grow" //rows
         );
@@ -1386,8 +1260,7 @@ public class Main
     }
 
 
-    private JPanel getPanelRelationshipPairKeys()
-    {
+    private JPanel getPanelRelationshipPairKeys() {
         FormLayout layout = new FormLayout("min:grow", //columns
                 "fill:min:grow,fill:min" //rows
         );
@@ -1414,19 +1287,15 @@ public class Main
 
         hideTableRelationshipKeyPairColumns();
 
-        btnRelationshipKeyAdd.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        btnRelationshipKeyAdd.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
 
                 eventActionPerformed_btnRelationshipKeyAdd(e);
             }
         });
 
-        btnRelationshipKeyDelete.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        btnRelationshipKeyDelete.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
 
                 eventActionPerformed_btnRelationshipKeyDelete(e);
             }
@@ -1436,12 +1305,10 @@ public class Main
     }
 
 
-    private void eventActionPerformed_btnRelationshipKeyAdd(ActionEvent e)
-    {
+    private void eventActionPerformed_btnRelationshipKeyAdd(ActionEvent e) {
         Integer selectedRow = tableRelationshipFacts.getSelectedRow();
 
-        if (selectedRow != -1)
-        {
+        if (selectedRow != -1) {
             Integer relationshipid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 0);
             Integer schemaid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 1);
             Integer parent_tableid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 2);
@@ -1458,12 +1325,10 @@ public class Main
             listModelChildPK.reload(schemaid, child_tableid);
             listModelChildNPK.reload(schemaid, child_tableid);
 
-            if (relationshiptypeid == 0)
-            {
+            if (relationshiptypeid == 0) {
                 listParentNPK.setBackground(Color.lightGray);
                 listChildNPK.setBackground(Color.lightGray);
-            } else
-            {
+            } else {
                 listParentNPK.setBackground(Color.lightGray);
                 listChildPK.setBackground(Color.lightGray);
             }
@@ -1474,10 +1339,8 @@ public class Main
             listChildPK.setBackground(Color.white);
             listChildNPK.setBackground(Color.white);
 
-            if (i == 1)
-            {
-                if (relationshiptypeid == 0)
-                {
+            if (i == 1) {
+                if (relationshiptypeid == 0) {
                     KeyDataObject keyDataObjectParent = (KeyDataObject) listParentPK.getSelectedValue();
                     KeyDataObject keyDataObjectChild = (KeyDataObject) listChildPK.getSelectedValue();
                     Integer parent_keyid = keyDataObjectParent.getKeyId();
@@ -1486,8 +1349,7 @@ public class Main
                     dbLink.RelationshipKeyPair_Insert(schemaid, parent_tableid, child_tableid, relationshipid, parent_keyid, child_keyid);
                     tableModelRelationshipKeyPair.reload(schemaid, parent_tableid, child_tableid, relationshipid);
                     hideTableRelationshipKeyPairColumns();
-                } else
-                {
+                } else {
                     KeyDataObject keyDataObjectParent = (KeyDataObject) listParentPK.getSelectedValue();
                     KeyDataObject keyDataObjectChild = (KeyDataObject) listChildNPK.getSelectedValue();
                     Integer parent_keyid = keyDataObjectParent.getKeyId();
@@ -1498,19 +1360,16 @@ public class Main
                     hideTableRelationshipKeyPairColumns();
                 }
             }
-        } else
-        {
+        } else {
             showMessage("Select relationship.");
         }
     }
 
 
-    private void eventActionPerformed_btnRelationshipKeyDelete(ActionEvent e)
-    {
+    private void eventActionPerformed_btnRelationshipKeyDelete(ActionEvent e) {
         Integer selectedRow = tableRelationshipFacts.getSelectedRow();
 
-        if (selectedRow != -1)
-        {
+        if (selectedRow != -1) {
             Integer relationshipid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 0);
             Integer schemaid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 1);
             Integer parent_tableid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 2);
@@ -1518,8 +1377,7 @@ public class Main
             Integer relationshiptypeid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 6);
             selectedRow = tableRelationshipPairKeys.getSelectedRow();
 
-            if (selectedRow != -1)
-            {
+            if (selectedRow != -1) {
                 Integer parent_keyid = (Integer) tableRelationshipPairKeys.getValueAt(selectedRow, 0);
                 Integer child_keyid = (Integer) tableRelationshipPairKeys.getValueAt(selectedRow, 1);
 
@@ -1531,8 +1389,7 @@ public class Main
     }
 
 
-    private JPanel getPanelSchema()
-    {
+    private JPanel getPanelSchema() {
         FormLayout layout = new FormLayout("min:grow", //columns
                 "fill:min:grow,min" //rows
         );
@@ -1545,10 +1402,8 @@ public class Main
         panel.add(new JScrollPane(listSchema), cc.xy(1, 1));
         panel.add(getPanelSchemaButtons(), cc.xy(1, 2));
 
-        listSchema.addListSelectionListener(new ListSelectionListener()
-        {
-            public void valueChanged(ListSelectionEvent e)
-            {
+        listSchema.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
 
                 eventListSelection_listSchema(e);
             }
@@ -1558,15 +1413,12 @@ public class Main
     }
 
 
-    private void eventListSelection_listSchema(ListSelectionEvent e)
-    {
-        if (e.getValueIsAdjusting())
-        {
+    private void eventListSelection_listSchema(ListSelectionEvent e) {
+        if (e.getValueIsAdjusting()) {
             return;
         }
 
-        if (isSchemaSelected())
-        {
+        if (isSchemaSelected()) {
 
             SchemaDataObject schemaDataObject = getSelectedSchema();
             Integer schemaId = schemaDataObject.getSchemaId();
@@ -1583,8 +1435,7 @@ public class Main
     }
 
 
-    private JPanel getPanelSchemaButtons()
-    {
+    private JPanel getPanelSchemaButtons() {
         FormLayout layout = new FormLayout("min:grow,min,min,min,min:grow", //columns
                 "min" //rows
         );
@@ -1600,26 +1451,20 @@ public class Main
         panel.add(btnSchemaDelete, cc.xy(3, 1));
         panel.add(btnSchemaUpdate, cc.xy(4, 1));
 
-        btnSchemaAdd.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        btnSchemaAdd.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_btnSchemaAdd(e);
             }
         });
 
-        btnSchemaDelete.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        btnSchemaDelete.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_btnSchemaDelete(e);
             }
         });
 
-        btnSchemaUpdate.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        btnSchemaUpdate.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_btnSchemaUpdate(e);
             }
         });
@@ -1628,26 +1473,21 @@ public class Main
     }
 
 
-    private void eventActionPerformed_btnSchemaAdd(ActionEvent e)
-    {
+    private void eventActionPerformed_btnSchemaAdd(ActionEvent e) {
         String s = (String) JOptionPane.showInputDialog(null, "What is your new schema name?", "New Schema", -1, null, null, "");
 
-        if (isAlphaNumeric(s))
-        {
+        if (isAlphaNumeric(s)) {
             dbLink.DatabaseSchema_Insert(s);
             listModelSchema.reload();
         }
     }
 
 
-    private void eventActionPerformed_btnSchemaUpdate(ActionEvent e)
-    {
-        if (isSchemaSelected())
-        {
+    private void eventActionPerformed_btnSchemaUpdate(ActionEvent e) {
+        if (isSchemaSelected()) {
             SchemaDataObject schemaDataObject = getSelectedSchema();
             String s = (String) JOptionPane.showInputDialog(null, "What is your new schema name?", "New Schema", -1, null, null, schemaDataObject.getSchemaName());
-            if (isAlphaNumeric(s))
-            {
+            if (isAlphaNumeric(s)) {
                 Integer schemaId = schemaDataObject.getSchemaId();
                 dbLink.DatabaseSchema_Update(schemaId, s);
                 listModelSchema.reload();
@@ -1657,10 +1497,8 @@ public class Main
     }
 
 
-    private void eventActionPerformed_btnSchemaDelete(ActionEvent e)
-    {
-        if (isSchemaSelected())
-        {
+    private void eventActionPerformed_btnSchemaDelete(ActionEvent e) {
+        if (isSchemaSelected()) {
             SchemaDataObject schemaDataObject = getSelectedSchema();
             Integer schemaId = schemaDataObject.getSchemaId();
             dbLink.DatabaseSchema_Delete(schemaId);
@@ -1676,8 +1514,7 @@ public class Main
     }
 
 
-    private JPanel getPanelTableButtons()
-    {
+    private JPanel getPanelTableButtons() {
         FormLayout layout = new FormLayout("min:grow,min,min,min,min:grow", //columns
                 "min" //rows
         );
@@ -1693,26 +1530,20 @@ public class Main
         panel.add(btnTableDelete, cc.xy(3, 1));
         panel.add(btnTableUpdate, cc.xy(4, 1));
 
-        btnTableAdd.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        btnTableAdd.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_btnTableAdd(e);
             }
         });
 
-        btnTableDelete.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        btnTableDelete.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_btnTableDelete(e);
             }
         });
 
-        btnTableUpdate.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        btnTableUpdate.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_btnTableUpdate(e);
             }
         });
@@ -1721,14 +1552,11 @@ public class Main
     }
 
 
-    private void eventActionPerformed_btnTableUpdate(ActionEvent e)
-    {
-        if (isSchemaSelected())
-        {
+    private void eventActionPerformed_btnTableUpdate(ActionEvent e) {
+        if (isSchemaSelected()) {
             TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
             String s = (String) JOptionPane.showInputDialog(null, "What is your new table name?", "New Table", -1, null, null, tableDataObject.getTableName());
-            if (isAlphaNumeric(s))
-            {
+            if (isAlphaNumeric(s)) {
                 Integer schemaId = tableDataObject.getSchemaId();
                 Integer tableId = tableDataObject.getTableId();
 
@@ -1741,10 +1569,8 @@ public class Main
     }
 
 
-    private void eventActionPerformed_btnTableDelete(ActionEvent e)
-    {
-        if (isSchemaSelected())
-        {
+    private void eventActionPerformed_btnTableDelete(ActionEvent e) {
+        if (isSchemaSelected()) {
             TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
             Integer schemaId = tableDataObject.getSchemaId();
             Integer tableId = tableDataObject.getTableId();
@@ -1761,14 +1587,11 @@ public class Main
     }
 
 
-    private void eventActionPerformed_btnTableAdd(ActionEvent e)
-    {
-        if (isSchemaSelected())
-        {
+    private void eventActionPerformed_btnTableAdd(ActionEvent e) {
+        if (isSchemaSelected()) {
             String s = (String) JOptionPane.showInputDialog(null, "What is your new table name?", "New Table", -1, null, null, "");
 
-            if (isAlphaNumeric(s))
-            {
+            if (isAlphaNumeric(s)) {
                 SchemaDataObject schemaDataObject = getSelectedSchema();
                 Integer schemaId = schemaDataObject.getSchemaId();
 
@@ -1781,13 +1604,11 @@ public class Main
     }
 
 
-    private boolean isAlphaNumeric(String s)
-    {
+    private boolean isAlphaNumeric(String s) {
         return s != null && s.length() > 0 && s.matches("^$|^[a-zA-Z][a-zA-Z0-9_]*");
     }
 
-    private JPanel getPanelTableKeyButtons()
-    {
+    private JPanel getPanelTableKeyButtons() {
         FormLayout layout = new FormLayout("min:grow,min,min,min,min:grow", //columns
                 "min" //rows
         );
@@ -1803,26 +1624,20 @@ public class Main
         buttonPanel.add(btnKeyDelete, cc.xy(3, 1));
         buttonPanel.add(btnKeyUpdate, cc.xy(4, 1));
 
-        btnKeyAdd.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        btnKeyAdd.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_btnKeyAdd(e);
             }
         });
 
-        btnKeyDelete.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        btnKeyDelete.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_btnKeyDelete(e);
             }
         });
 
-        btnKeyUpdate.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        btnKeyUpdate.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_btnKeyUpdate(e);
             }
         });
@@ -1831,22 +1646,18 @@ public class Main
     }
 
 
-    private void eventActionPerformed_btnKeyAdd(ActionEvent e)
-    {
-        if (isTableSelected())
-        {
+    private void eventActionPerformed_btnKeyAdd(ActionEvent e) {
+        if (isTableSelected()) {
             clearPanelTableKeyInput();
             JPanel panelTableKeyInput = getPanelTableKeyInput();
             panelTableKeyInput.setPreferredSize(new Dimension(404, 250));
 
             int i = JOptionPane.showOptionDialog(null, panelTableKeyInput, "Table Key", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{"Cancel", "  Ok  "}, null);
 
-            if (i == 1)
-            {
+            if (i == 1) {
                 TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
 
-                if (isKeyTypesListSelected())
-                {
+                if (isKeyTypesListSelected()) {
                     KeyTypeDataObject keyTypeDataObject = (KeyTypeDataObject) listKeyTypes.getSelectedValue();
                     String keyOrderText = keyOrder.getText();
                     Integer schemaid = tableDataObject.getSchemaId();
@@ -1863,38 +1674,31 @@ public class Main
                     tableModelKeys.reload(schemaid, tableid);
                     hideTableKeysColumns();
                 }
-            } else
-            {
+            } else {
                 hideTableKeysColumns();
             }
-        } else
-        {
+        } else {
             showMessage("Please select table.");
         }
     }
 
-    private void eventActionPerformed_btnKeyUpdate(ActionEvent e)
-    {
-        if (isTableSelected())
-        {
+    private void eventActionPerformed_btnKeyUpdate(ActionEvent e) {
+        if (isTableSelected()) {
             fillPanelTableKeyInput();
             JPanel panelTableKeyInput = getPanelTableKeyInput();
             panelTableKeyInput.setPreferredSize(new Dimension(404, 250));
 
             int i = JOptionPane.showOptionDialog(null, panelTableKeyInput, "Table Key", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{"Cancel", "  Ok  "}, null);
 
-            if (i == 1)
-            {
+            if (i == 1) {
                 TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
-                if (isKeyTypesListSelected())
-                {
+                if (isKeyTypesListSelected()) {
                     KeyTypeDataObject keyTypeDataObject = (KeyTypeDataObject) listKeyTypes.getSelectedValue();
                     String keyOrderText = keyOrder.getText();
                     Integer schemaid = tableDataObject.getSchemaId();
                     Integer tableid = tableDataObject.getTableId();
                     Integer selectedRow = tableKeys.getSelectedRow();
-                    if (selectedRow != -1)
-                    {
+                    if (selectedRow != -1) {
                         Integer keyid = (Integer) tableModelKeys.getValueAt(selectedRow, 2);
                         String keyname = keyName.getText();
                         String keylabel = keyname;
@@ -1910,31 +1714,26 @@ public class Main
                         reloadTableRelationshipKeyPair();
                     }
                 }
-            } else
-            {
+            } else {
                 hideTableKeysColumns();
             }
         }
     }
 
 
-    private boolean isKeyTypesListSelected()
-    {
+    private boolean isKeyTypesListSelected() {
         return !listKeyTypes.isSelectionEmpty();
     }
 
 
-    private void eventActionPerformed_btnKeyDelete(ActionEvent e)
-    {
-        if (isTableSelected())
-        {
+    private void eventActionPerformed_btnKeyDelete(ActionEvent e) {
+        if (isTableSelected()) {
             TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
             Integer schemaid = tableDataObject.getSchemaId();
             Integer tableid = tableDataObject.getTableId();
             Integer selectedRow = tableKeys.getSelectedRow();
 
-            if (selectedRow != -1)
-            {
+            if (selectedRow != -1) {
                 Integer keyid = (Integer) tableModelKeys.getValueAt(selectedRow, 2);
 
                 dbLink.TableKey_Delete(schemaid, tableid, keyid);
@@ -1945,8 +1744,7 @@ public class Main
     }
 
 
-    private Integer getKeyPrecision(Integer keytypeid)
-    {
+    private Integer getKeyPrecision(Integer keytypeid) {
         /* *
             call keytype_insert(0,'IDENTITY',false,false);
             call keytype_insert(1,'INTEGER',false,false);
@@ -1963,8 +1761,7 @@ public class Main
 
         Integer precision = null;
 
-        switch (keytypeid)
-        {
+        switch (keytypeid) {
             case 3:
                 precision = 8000;
                 break;
@@ -1980,8 +1777,7 @@ public class Main
     }
 
 
-    private Integer getKeyScale(Integer keytypeid)
-    {
+    private Integer getKeyScale(Integer keytypeid) {
         /* *
             call keytype_insert(0,'IDENTITY',false,false);
             call keytype_insert(1,'INTEGER',false,false);
@@ -1998,8 +1794,7 @@ public class Main
 
         Integer scale = null;
 
-        switch (keytypeid)
-        {
+        switch (keytypeid) {
             case 7:
                 scale = 2;
                 break;
@@ -2012,15 +1807,13 @@ public class Main
     }
 
 
-    private void eventActionPerformed_mnuiExit(ActionEvent e)
-    {
+    private void eventActionPerformed_mnuiExit(ActionEvent e) {
         frame.dispose();
         dbLink.Shutdown();
     }
 
 
-    private void hideTableKeysColumns()
-    {
+    private void hideTableKeysColumns() {
         tableKeys.getColumnModel().getColumn(0).setMinWidth(0);
         tableKeys.getColumnModel().getColumn(0).setMaxWidth(0);
         tableKeys.getColumnModel().getColumn(0).setWidth(0);
@@ -2045,8 +1838,7 @@ public class Main
     }
 
 
-    private void hideTableRelationshipColumns()
-    {
+    private void hideTableRelationshipColumns() {
         tableRelationshipFacts.getColumnModel().getColumn(0).setMinWidth(0);
         tableRelationshipFacts.getColumnModel().getColumn(0).setMaxWidth(0);
         tableRelationshipFacts.getColumnModel().getColumn(0).setWidth(0);
@@ -2065,8 +1857,7 @@ public class Main
     }
 
 
-    private void hideTableRelationshipKeyPairColumns()
-    {
+    private void hideTableRelationshipKeyPairColumns() {
         tableRelationshipPairKeys.getColumnModel().getColumn(0).setMinWidth(0);
         tableRelationshipPairKeys.getColumnModel().getColumn(0).setMaxWidth(0);
         tableRelationshipPairKeys.getColumnModel().getColumn(0).setWidth(0);
@@ -2077,14 +1868,12 @@ public class Main
     }
 
 
-    private void showMessage(String message)
-    {
+    private void showMessage(String message) {
         JOptionPane.showMessageDialog(null, message, "PotatoSQL", JOptionPane.INFORMATION_MESSAGE);
     }
 
 
-    private void selectOptions()
-    {
+    private void selectOptions() {
 
         FormLayout layoutJava01 = new FormLayout("min", //columns
                 "min,10dlu,min,10dlu" //rows
@@ -2264,10 +2053,8 @@ public class Main
 
         int i = JOptionPane.showOptionDialog(null, panel, "Output", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{"Cancel", "  Ok  "}, null);
 
-        clear.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        clear.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 Boolean flag = false;
 
                 cboxTriggerStatementAfterInsert.setSelected(flag);
@@ -2317,14 +2104,10 @@ public class Main
         });
     }
 
-    private void openUrl(String url)
-    {
-        try
-        {
+    private void openUrl(String url) {
+        try {
             Desktop.getDesktop().browse(new URL(url).toURI());
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
         }
     }
 }

@@ -20,16 +20,14 @@
 
 package org.xjrga.potatosql.dataobject;
 
-public class KeyTypeDataObject
-{
+public class KeyTypeDataObject {
 
     private int typeid;
     private String name;
     private Boolean sizerequired;
 
 
-    public KeyTypeDataObject(int typeid, String name, Boolean sizerequired)
-    {
+    public KeyTypeDataObject(int typeid, String name, Boolean sizerequired) {
 
         this.setTypeId(typeid);
         this.setName(name);
@@ -37,56 +35,47 @@ public class KeyTypeDataObject
     }
 
 
-    public int getTypeId()
-    {
+    public int getTypeId() {
 
         return typeid;
     }
 
 
-    public void setTypeId(int schemaid)
-    {
+    public void setTypeId(int schemaid) {
 
         this.typeid = schemaid;
     }
 
 
-    public String getName()
-    {
+    public String getName() {
 
         return name;
     }
 
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
 
         this.name = name;
     }
 
 
-    public Boolean getSizerequired()
-    {
+    public Boolean getSizerequired() {
 
         return sizerequired;
     }
 
 
-    public void setSizerequired(Boolean sizerequired)
-    {
+    public void setSizerequired(Boolean sizerequired) {
 
         this.sizerequired = sizerequired;
     }
 
 
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
 
         boolean flag = false;
-        if (object instanceof KeyTypeDataObject)
-        {
-            if (toString().equals(object.toString()))
-            {
+        if (object instanceof KeyTypeDataObject) {
+            if (toString().equals(object.toString())) {
                 flag = true;
             }
         }
@@ -95,8 +84,7 @@ public class KeyTypeDataObject
 
 
     @Override
-    public String toString()
-    {
+    public String toString() {
 
         return name;
     }

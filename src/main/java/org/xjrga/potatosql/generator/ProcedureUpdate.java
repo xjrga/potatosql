@@ -1,16 +1,14 @@
 package org.xjrga.potatosql.generator;
 
-public class ProcedureUpdate implements Code
-{
+public class ProcedureUpdate implements Code {
 
-    private Table table;
-    private Code statementUpdate;
-    private SqlStuff sqlStuff;
-    private StringBuilder sqlbuild;
+    private final Table table;
+    private final Code statementUpdate;
+    private final SqlStuff sqlStuff;
+    private final StringBuilder sqlbuild;
 
 
-    public ProcedureUpdate(Table table, SqlStuff sqlStuff)
-    {
+    public ProcedureUpdate(Table table, SqlStuff sqlStuff) {
 
         this.table = table;
         this.statementUpdate = new StatementUpdate(table, sqlStuff);
@@ -20,11 +18,9 @@ public class ProcedureUpdate implements Code
 
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
 
-        if (table.containsNonPrimaryKeys())
-        {
+        if (table.containsNonPrimaryKeys()) {
             sqlbuild.append("CREATE PROCEDURE");
             sqlbuild.append(" ");
             sqlbuild.append(table.getSchema());

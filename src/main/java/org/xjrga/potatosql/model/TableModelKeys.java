@@ -29,23 +29,20 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Vector;
 
-public class TableModelKeys extends DefaultTableModel
-{
+public class TableModelKeys extends DefaultTableModel {
 
     private Vector columns;
-    private DbLink dbLink;
+    private final DbLink dbLink;
 
 
-    public TableModelKeys(DbLink dbLink)
-    {
+    public TableModelKeys(DbLink dbLink) {
 
         this.setColumnIdentifiers();
         this.dbLink = dbLink;
     }
 
 
-    private void setColumnIdentifiers()
-    {
+    private void setColumnIdentifiers() {
 
         columns = new Vector();
 
@@ -65,12 +62,10 @@ public class TableModelKeys extends DefaultTableModel
     }
 
 
-    public Class getColumnClass(int i)
-    {
+    public Class getColumnClass(int i) {
 
         Class returnValue = Object.class;
-        switch (i)
-        {
+        switch (i) {
 
             case 0:
                 //SchemaId
@@ -113,15 +108,13 @@ public class TableModelKeys extends DefaultTableModel
 
 
     @Override
-    public boolean isCellEditable(int i, int i1)
-    {
+    public boolean isCellEditable(int i, int i1) {
 
         return false;
     }
 
 
-    public void reload(int schemaid, int tableid)
-    {
+    public void reload(int schemaid, int tableid) {
 
         Vector table = new Vector();
 
@@ -129,8 +122,7 @@ public class TableModelKeys extends DefaultTableModel
 
         Iterator it = list.iterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
 
             HashMap row_hashmap = (HashMap) it.next();
 
@@ -171,8 +163,7 @@ public class TableModelKeys extends DefaultTableModel
     }
 
 
-    public void clear()
-    {
+    public void clear() {
 
         Vector table = new Vector();
         this.setDataVector(table, columns);

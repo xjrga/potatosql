@@ -28,27 +28,23 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class ListModelSchema extends DefaultListModel
-{
+public class ListModelSchema extends DefaultListModel {
 
-    private DbLink dbLink;
+    private final DbLink dbLink;
 
 
-    public ListModelSchema(DbLink dbLink)
-    {
+    public ListModelSchema(DbLink dbLink) {
         this.dbLink = dbLink;
     }
 
 
-    public void reload()
-    {
+    public void reload() {
         this.clear();
 
         LinkedList list = (LinkedList) dbLink.DatabaseSchema_Select_All();
         Iterator it = list.iterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
 
             HashMap row = (HashMap) it.next();
             int schemaid = (int) row.get("SCHEMAID");

@@ -1,19 +1,16 @@
 package org.xjrga.potatosql.generator;
 
-public class MethodFunctionCount implements Code
-{
-    private Table table;
-    private ProcedureStuff procedureStuff;
+public class MethodFunctionCount implements Code {
+    private final Table table;
+    private final ProcedureStuff procedureStuff;
 
-    public MethodFunctionCount(Table table)
-    {
+    public MethodFunctionCount(Table table) {
         this.table = table;
         this.procedureStuff = new ProcedureStuff(table);
     }
 
     @Override
-    public String getCode()
-    {
+    public String getCode() {
         String procedureKind = "Count";
         String methodName = table.getName() + "_" + procedureKind;
         String methodParameters = "";
