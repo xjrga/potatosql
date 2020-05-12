@@ -49,6 +49,7 @@ public class MethodProcedureInsert implements Code
                     "        CallableStatement proc = connection.prepareCall(" + sql + ");\n" +
                     "        " + setParameters + "\n" +
                     "        proc.execute();\n" +
+                    "        proc.close();\n" +
                     "    }";
         }
 

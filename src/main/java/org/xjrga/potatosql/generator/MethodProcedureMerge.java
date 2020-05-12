@@ -31,6 +31,7 @@ public class MethodProcedureMerge implements Code
                     "            CallableStatement proc = connection.prepareCall(" + sql + ");\n" +
                     "            " + setParameters + "\n" +
                     "            proc.execute();\n" +
+                    "            proc.close();\n" +
                     "    }\n";
             sqlbuild.append(method);
 

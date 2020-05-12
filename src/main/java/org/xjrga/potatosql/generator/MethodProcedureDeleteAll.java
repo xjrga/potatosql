@@ -26,6 +26,7 @@ public class MethodProcedureDeleteAll implements Code
                 "    {\n" +
                 "            CallableStatement proc = connection.prepareCall(" + sql + ");\n" +
                 "            proc.execute();\n" +
+                "            proc.close();\n" +
                 "    }";
         sqlbuild.append(method);
         return sqlbuild.toString();
