@@ -110,7 +110,7 @@ public class JavaStuff
             sb.append(")");
             sb.append("row.get(");
             sb.append("\"");
-            sb.append(column.getName().toUpperCase());
+            sb.append(column.getName());
             sb.append("\"");
             sb.append(");\n");
         }
@@ -141,7 +141,7 @@ public class JavaStuff
                 sb.append(")");
                 sb.append("row.get(");
                 sb.append("\"");
-                sb.append(column.getName().toUpperCase());
+                sb.append(column.getName());
                 sb.append("\"");
                 sb.append(");\n");
             }
