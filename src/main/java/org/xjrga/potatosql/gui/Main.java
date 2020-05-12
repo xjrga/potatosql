@@ -583,7 +583,7 @@ public class Main
         sb.append("\n");
         sb.append("- is free and open source software");
         sb.append("\n\n");
-        sb.append("This is build number 12");
+        sb.append("This is build number 14");
         sb.append("\n\n");
         sb.append("Please send your comments and suggestions to jorge.r.garciadealba+potatosql@gmail.com");
         sb.append("\n\n");

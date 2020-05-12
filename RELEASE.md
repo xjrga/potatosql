@@ -21,3 +21,6 @@ PotatoSql 12
 
     Changed look and feel
      
+Build 14
+
+    Various fixes

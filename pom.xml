@@ -6,7 +6,7 @@
 
   <groupId>org.xjrga.potatosql</groupId>
   <artifactId>PotatoSQL</artifactId>
-  <version>12</version>
+  <version>Build14</version>
 
   <name>PotatoSql</name>
   <url>https://x-jrga.github.io/potatosql</url>
@@ -147,13 +147,13 @@
                 <copy file="target/${project.artifactId}-${project.version}.jar"
                       todir="${project.basedir}/tmp/${project.artifactId}-${project.version}"/>
                 <!-- zip files up -->
-                <zip destfile="/opt/repo/Test/${project.artifactId}-${project.version}.zip"
+                <zip destfile="product/${project.artifactId}-${project.version}.zip"
                      basedir="${project.basedir}/tmp"/>
                 <!-- unzip files-->
-                <unzip src="/opt/repo/Test/${project.artifactId}-${project.version}.zip"
-                       dest="/opt/repo/Test" overwrite="true"/>
+                <unzip src="product/${project.artifactId}-${project.version}.zip"
+                       dest="product" overwrite="true"/>
                 <!-- run app -->
-                <!--java jar="/opt/repo/Test/${project.artifactId}-${project.version}/${project.artifactId}-${project.version}.jar" fork="true" failonerror="true"/-->
+                <!--java jar="product/${project.artifactId}-${project.version}/${project.artifactId}-${project.version}.jar" fork="true" failonerror="true"/-->
               </target>
             </configuration>
             <goals>

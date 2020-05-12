@@ -12,14 +12,14 @@ This software:
       
 Requirements
 
-    It needs java. I used openjdk-8-jdk (1.8.0_222)
+    It needs java. I used openjdk 11.
 
 Installing
 
-    1. Download PotatoSQL-12.zip from https://sourceforge.net/projects/potatosql
-    2. unzip PotatoSQL-12.zip
-    3. cd PotatoSQL-12
-    4. java -jar PotatoSQL-12.jar (if you are on windows double click on jar file)
+    1. Download PotatoSQL-Build14.zip from https://sourceforge.net/projects/potatosql
+    2. unzip PotatoSQL-Build14.zip
+    3. cd PotatoSQL-Build14
+    4. java -jar PotatoSQL-Build14.jar (if you are on windows double click on jar file)
     
 [Download](https://sourceforge.net/projects/potatosql "PotatoSQL: Software for Database Design")
 
@@ -27,7 +27,7 @@ Installing
 
 Build Number
  
-    12
+    14
 
 Authors
 
