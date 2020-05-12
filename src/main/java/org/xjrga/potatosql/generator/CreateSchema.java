@@ -10,7 +10,7 @@ public class CreateSchema implements Code {
         sb.append("CREATE SCHEMA");
         sb.append(" ");
         sb.append(getSchemaDataObject().getSchemaName());
-        sb.append(";\n/\n\n");
+        sb.append(";\n\n");
         return sb.toString();
     }
 

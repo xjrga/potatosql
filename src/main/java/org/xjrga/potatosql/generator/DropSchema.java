@@ -7,15 +7,12 @@ public class DropSchema implements Code {
 
     public String getCode() {
         StringBuilder sb = new StringBuilder();
-        //sb.append("--");
         sb.append("DROP SCHEMA IF EXISTS");
         sb.append(" ");
         sb.append(getSchemaDataObject().getSchemaName());
         sb.append(" ");
         sb.append("CASCADE");
-        sb.append(";\n");
-        //sb.append("--");
-        sb.append("/\n\n");
+        sb.append(";\n\n");
         return sb.toString();
     }
 
