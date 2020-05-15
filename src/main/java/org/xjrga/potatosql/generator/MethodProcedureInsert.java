@@ -24,7 +24,9 @@ public class MethodProcedureInsert implements Code {
         String method = "";
 
         if (table.identityExists()) {
-            methodParameters = javaStuff.getMethodParametersAllMinusIdent();
+
+            methodParameters = javaStuff.getDataObject();
+
             setParameters = procedureStuff.getSetParametersAllMinusIdentity();
             ident = procedureStuff.getIdent();
             method = "public Integer " + methodName + "(" + methodParameters + ") throws SQLException\n" +

@@ -9,6 +9,19 @@ public class JavaStuff {
         this.table = table;
     }
 
+    public String getDataObject() {
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(table.getName());
+        sb.append("DataObject");
+        sb.append(" ");
+        sb.append(table.getName().toLowerCase());
+        sb.append("DataObject");
+
+        return sb.toString();
+    }
+
     public String getMethodParametersAllMinusIdent() {
         HsqldbTypeToJavaType hsqldbTypeToJavaType = new HsqldbTypeToJavaType();
         StringBuilder sb = new StringBuilder();
