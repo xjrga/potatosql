@@ -221,6 +221,12 @@ public class ProcedureStuff {
                 sb.append(count);
                 sb.append(")");
                 sb.append(";");
+                sb.append("\n");
+                sb.append(table.getName().toLowerCase());
+                sb.append("DataObject.set");
+                sb.append(column.getName());
+                sb.append("(ident)");
+                sb.append(";");
             }
 
             count++;
