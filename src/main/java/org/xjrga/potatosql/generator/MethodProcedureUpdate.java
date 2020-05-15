@@ -18,7 +18,7 @@ public class MethodProcedureUpdate implements Code {
         if (table.containsNonPrimaryKeys()) {
             String procedureKind = "Update";
             String methodName = table.getName() + "_" + procedureKind;
-            String methodParameters = javaStuff.getMethodParametersAll();
+            String methodParameters = javaStuff.getDataObject();
             String sql = procedureStuff.getProcedureSqlStringAll(procedureKind);
             String setParameters = procedureStuff.getSetParametersAll();
 
