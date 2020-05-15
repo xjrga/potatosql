@@ -16,7 +16,7 @@ public class MethodProcedureDelete implements Code {
     public String getCode() {
         String procedureKind = "Delete";
         String methodName = table.getName() + "_" + procedureKind;
-        String methodParameters = javaStuff.getMethodParametersPrimaryKeyOnly();
+        String methodParameters = javaStuff.getDataObject();
         String sql = procedureStuff.getProcedureSqlStringPrimaryKeyOnly(procedureKind);
         String setParameters = procedureStuff.getSetParametersPrimaryKeyOnly();
         StringBuilder sqlbuild = new StringBuilder();

@@ -19,7 +19,7 @@ public class MethodProcedureMerge implements Code {
         if (table.containsNonPrimaryKeys()) {
             String procedureKind = "Merge";
             String methodName = table.getName() + "_" + procedureKind;
-            String methodParameters = javaStuff.getMethodParametersAll();
+            String methodParameters = javaStuff.getDataObject();
             String sql = procedureStuff.getProcedureSqlStringAll(procedureKind);
             String setParameters = procedureStuff.getSetParametersAll();
             String method = "public void " + methodName + "(" + methodParameters + ") throws SQLException\n" +

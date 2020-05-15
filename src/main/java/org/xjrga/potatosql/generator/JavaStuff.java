@@ -32,6 +32,16 @@ public class JavaStuff {
         return sb.toString();
     }
 
+    public String getDataObjectName() {
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(table.getName().toLowerCase());
+        sb.append("DataObject");
+
+        return sb.toString();
+    }
+
     public String getMethodParametersAllMinusIdent() {
         HsqldbTypeToJavaType hsqldbTypeToJavaType = new HsqldbTypeToJavaType();
         StringBuilder sb = new StringBuilder();
@@ -203,8 +213,11 @@ public class JavaStuff {
         int count = table.getCountKey();
         for (int i = 0; i < count; i++) {
             Column column = table.getColumn(i);
-            sb.append("row.put(");
-            sb.append(getParam(i + 1, column));
+            sb.append(this.getDataObjectName());
+            sb.append(".set");
+            sb.append(column.getName());
+            sb.append("(");
+            sb.append(getParam02(i + 1, column));
             sb.append(");");
             sb.append("\n");
         }
@@ -316,6 +329,80 @@ public class JavaStuff {
                 sb.append(column.getName());
                 sb.append("\"");
                 sb.append(",");
+                sb.append("rs.getObject(");
+                sb.append(count);
+                sb.append(")");
+                break;
+        }
+
+        return sb.toString();
+    }
+
+    private String getParam02(int count, Column column) {
+        StringBuilder sb = new StringBuilder();
+
+        /*
+        *   call keytype_insert(0,'IDENTITY',false,false);
+            call keytype_insert(1,'INTEGER',false,false);
+            call keytype_insert(2,'DOUBLE',false,false);
+            call keytype_insert(3,'VARCHAR',true,false);
+            call keytype_insert(4,'DATE',false,false);
+            call keytype_insert(5,'TIME',false,false);
+            call keytype_insert(6,'TIMESTAMP',false,false);
+            call keytype_insert(7,'DECIMAL',true,true);
+            call keytype_insert(8,'LONGVARCHAR',false,false);
+            call keytype_insert(9,'BLOB',false,false);
+            call keytype_insert(10,'CLOB',false,false);
+        * */
+        switch (column.getTypeName()) {
+            case "INTEGER":
+            case "IDENTITY":
+                sb.append("rs.getInt(");
+                sb.append(count);
+                sb.append(")");
+                break;
+            case "DOUBLE":
+                sb.append("rs.getDouble(");
+                sb.append(count);
+                sb.append(")");
+                break;
+            case "VARCHAR":
+            case "LONGVARCHAR":
+                sb.append("rs.getString(");
+                sb.append(count);
+                sb.append(")");
+                break;
+            case "DATE":
+                sb.append("rs.getDate(");
+                sb.append(count);
+                sb.append(")");
+                break;
+            case "TIME":
+                sb.append("rs.getTime(");
+                sb.append(count);
+                sb.append(")");
+                break;
+            case "TIMESTAMP":
+                sb.append("rs.getTimestamp(");
+                sb.append(count);
+                sb.append(")");
+                break;
+            case "DECIMAL":
+                sb.append("rs.getBigDecimal(");
+                sb.append(count);
+                sb.append(")");
+                break;
+            case "BLOB":
+                sb.append("rs.getBlob(");
+                sb.append(count);
+                sb.append(")");
+                break;
+            case "CLOB":
+                sb.append("rs.getClob(");
+                sb.append(count);
+                sb.append(")");
+                break;
+            default:
                 sb.append("rs.getObject(");
                 sb.append(count);
                 sb.append(")");

@@ -16,12 +16,15 @@ public class MethodProcedureSelect implements Code {
     public String getCode() {
         String procedureKind = "Select";
         String methodName = table.getName() + "_" + procedureKind;
-        String methodParameters = javaStuff.getMethodParametersPrimaryKeyOnly();
+        String methodParameters = javaStuff.getDataObject();
         String sql = procedureStuff.getProcedureSqlStringPrimaryKeyOnly(procedureKind);
         String setParameters = procedureStuff.getSetParametersPrimaryKeyOnly();
         StringBuilder sqlbuild = new StringBuilder();
         String rowput = javaStuff.getResultSetObjectString();
-        String method = "    public List<Map<String, Object>> " + methodName + "(" + methodParameters + ") throws SQLException\n" +
+        String methodType = javaStuff.getMethodType();
+        String objectName = javaStuff.getDataObjectName();
+
+        String method = "    public List<" + methodType + "> " + methodName + "(" + methodParameters + ") throws SQLException\n" +
                 "    {\n" +
                 "        LinkedList<Map<String, Object>> list = new LinkedList<>();\n" +
                 "        CallableStatement proc;\n" +
@@ -31,9 +34,8 @@ public class MethodProcedureSelect implements Code {
                 "            ResultSet rs = proc.executeQuery();\n" +
                 "            while (rs.next())\n" +
                 "            {\n" +
-                "                Map<String, Object> row = new HashMap<>();\n" +
                 rowput +
-                "                list.add(row);\n" +
+                "                list.add(" + objectName + ");\n" +
                 "            }\n" +
                 "            proc.close();\n" +
                 "        return list;\n" +
