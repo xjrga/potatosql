@@ -62,14 +62,20 @@ public class ProcedureStuff {
                 sb.append("proc.setInt(");
                 sb.append(count);
                 sb.append(",");
+                sb.append(table.getName().toLowerCase());
+                sb.append("DataObject.get");
                 sb.append(column.getName());
+                sb.append("()");
                 sb.append(")");
                 break;
             case "DOUBLE":
                 sb.append("proc.setDouble(");
                 sb.append(count);
                 sb.append(",");
+                sb.append(table.getName().toLowerCase());
+                sb.append("DataObject.get");
                 sb.append(column.getName());
+                sb.append("()");
                 sb.append(")");
                 break;
             case "VARCHAR":
@@ -77,56 +83,80 @@ public class ProcedureStuff {
                 sb.append("proc.setString(");
                 sb.append(count);
                 sb.append(",");
+                sb.append(table.getName().toLowerCase());
+                sb.append("DataObject.get");
                 sb.append(column.getName());
+                sb.append("()");
                 sb.append(")");
                 break;
             case "DATE":
                 sb.append("proc.setDate(");
                 sb.append(count);
                 sb.append(",");
+                sb.append(table.getName().toLowerCase());
+                sb.append("DataObject.get");
                 sb.append(column.getName());
+                sb.append("()");
                 sb.append(")");
                 break;
             case "TIME":
                 sb.append("proc.setTime(");
                 sb.append(count);
                 sb.append(",");
+                sb.append(table.getName().toLowerCase());
+                sb.append("DataObject.get");
                 sb.append(column.getName());
+                sb.append("()");
                 sb.append(")");
                 break;
             case "TIMESTAMP":
                 sb.append("proc.setTimestamp(");
                 sb.append(count);
                 sb.append(",");
+                sb.append(table.getName().toLowerCase());
+                sb.append("DataObject.get");
                 sb.append(column.getName());
+                sb.append("()");
                 sb.append(")");
                 break;
             case "DECIMAL":
                 sb.append("proc.setBigDecimal(");
                 sb.append(count);
                 sb.append(",");
+                sb.append(table.getName().toLowerCase());
+                sb.append("DataObject.get");
                 sb.append(column.getName());
+                sb.append("()");
                 sb.append(")");
                 break;
             case "BLOB":
                 sb.append("proc.setBlob(");
                 sb.append(count);
                 sb.append(",");
+                sb.append(table.getName().toLowerCase());
+                sb.append("DataObject.get");
                 sb.append(column.getName());
+                sb.append("()");
                 sb.append(")");
                 break;
             case "CLOB":
                 sb.append("proc.setClob(");
                 sb.append(count);
                 sb.append(",");
+                sb.append(table.getName().toLowerCase());
+                sb.append("DataObject.get");
                 sb.append(column.getName());
+                sb.append("()");
                 sb.append(")");
                 break;
             default:
                 sb.append("proc.setObject(");
                 sb.append(count);
                 sb.append(",");
+                sb.append(table.getName().toLowerCase());
+                sb.append("DataObject.get");
                 sb.append(column.getName());
+                sb.append("()");
                 sb.append(")");
                 break;
         }
