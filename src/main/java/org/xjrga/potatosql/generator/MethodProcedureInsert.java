@@ -22,6 +22,7 @@ public class MethodProcedureInsert implements Code {
         String setParameters = "";
         String ident = "";
         String method = "";
+        String methodType = "";
 
         if (table.identityExists()) {
 
@@ -29,7 +30,9 @@ public class MethodProcedureInsert implements Code {
 
             setParameters = procedureStuff.getSetParametersAllMinusIdentity();
             ident = procedureStuff.getIdent();
-            method = "public Integer " + methodName + "(" + methodParameters + ") throws SQLException\n" +
+            methodType = javaStuff.getMethodType();
+
+            method = "public " + methodType + " " + methodName + "(" + methodParameters + ") throws SQLException\n" +
                     "    {\n" +
                     "        Integer ident = null;\n" +
                     "        CallableStatement proc = connection.prepareCall(" + sql + ");\n" +
@@ -40,7 +43,7 @@ public class MethodProcedureInsert implements Code {
                     "        return ident;\n" +
                     "    }";
         } else {
-            methodParameters = javaStuff.getMethodParametersAll();
+            methodParameters = javaStuff.getDataObject();
             setParameters = procedureStuff.getSetParametersAll();
             method = "public void " + methodName + "(" + methodParameters + ") throws SQLException\n" +
                     "    {\n" +

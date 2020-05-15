@@ -22,6 +22,16 @@ public class JavaStuff {
         return sb.toString();
     }
 
+    public String getMethodType() {
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(table.getName());
+        sb.append("DataObject");
+
+        return sb.toString();
+    }
+
     public String getMethodParametersAllMinusIdent() {
         HsqldbTypeToJavaType hsqldbTypeToJavaType = new HsqldbTypeToJavaType();
         StringBuilder sb = new StringBuilder();
