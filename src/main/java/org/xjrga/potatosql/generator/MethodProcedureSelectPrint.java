@@ -16,7 +16,7 @@ public class MethodProcedureSelectPrint implements Code {
         String methodName2 = table.getName() + "_Select";
         String methodParameters = javaStuff.getDataObject();
         String methodVariables = javaStuff.getDataObjectName();
-        String rowGetNonPrimaryKeys = javaStuff.getRowGetNonPrimaryKeys();
+        String rowAllKeys = javaStuff.getRowGetAllKeys();
         StringBuilder sqlbuild = new StringBuilder();
         String sout = javaStuff.getSout();
         String methodType = javaStuff.getMethodType();
@@ -28,7 +28,7 @@ public class MethodProcedureSelectPrint implements Code {
                 "        Iterator it = list.listIterator();\n" +
                 "        while(it.hasNext()){\n" +
                 "            " + methodType + " " + objectName + " = (" + methodType + ") it.next();\n" +
-                "            " + rowGetNonPrimaryKeys + "\n" +
+                "            " + rowAllKeys + "\n" +
                 "            " + sout + "\n" +
                 "        }\n" +
                 "    }";

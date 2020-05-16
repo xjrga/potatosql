@@ -123,13 +123,10 @@ public class JavaStuff {
             sb.append(" ");
             sb.append(column.getName());
             sb.append(" = ");
-            sb.append("(");
-            sb.append(hsqldbTypeToJavaType.getJavaType(column.getTypeName()));
-            sb.append(")");
-            sb.append("row.get(");
-            sb.append("\"");
+            sb.append(getDataObjectName());
+            sb.append(".get");
             sb.append(column.getName());
-            sb.append("\"");
+            sb.append("(");
             sb.append(");\n");
         }
 
