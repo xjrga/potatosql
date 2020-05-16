@@ -25,7 +25,7 @@ public class MethodProcedureSelectAllPrint implements Code {
 
         String method = "public void " + methodName1 + "() throws SQLException\n" +
                 "    {\n" +
-                "        LinkedList<" + methodType + "> list = (LinkedList) this." + methodName2 + "(" + methodVariables + ");\n" +
+                "        LinkedList<" + methodType + "> list = (LinkedList) this." + methodName2 + "();\n" +
                 "        Iterator it = list.listIterator();\n" +
                 "        while(it.hasNext()){\n" +
                 "            " + methodType + " " + objectName + " = (" + methodType + ") it.next();\n" +
