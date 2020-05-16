@@ -36,7 +36,6 @@ public class MethodProcedureInsert implements Code {
 
             method = "public " + methodType + " " + methodName + "(" + methodParameters + ") throws SQLException\n" +
                     "    {\n" +
-                    "        Integer ident = null;\n" +
                     "        CallableStatement proc = connection.prepareCall(" + sql + ");\n" +
                     "        " + setParameters + "\n" +
                     "        proc.execute();\n" +
