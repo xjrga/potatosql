@@ -413,8 +413,6 @@ public class Generator2 implements Code {
             sb.append("\n");
         }
 
-        //todo fix methods
-
         //method insert
         if (MethodInsert) {
             MethodProcedureInsert methodProcedureInsert = new MethodProcedureInsert(table);
