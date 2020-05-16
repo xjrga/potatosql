@@ -35,7 +35,7 @@ public class MethodProcedureSelectAll implements Code {
                 "        ResultSet rs = proc.executeQuery();\n" +
                 "        while (rs.next())\n" +
                 "        {\n" +
-                "                " + instance +
+                "                " + instance + "\n" +
                 "                " + rowput + "\n" +
                 "                list.add(" + objectName + ");\n" +
                 "        }\n" +
