@@ -115,6 +115,7 @@ public class DataObjectStuff {
             sb.append("sb.append(\":\");");
             sb.append("\n");
         }
+        sb.setLength(sb.length()-16);
         sb.append("return sb.toString();");
         sb.append("\n");
         sb.append("}");
