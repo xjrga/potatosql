@@ -26,7 +26,7 @@ public class MethodProcedureSelect implements Code {
 
         String method = "    public List<" + methodType + "> " + methodName + "(" + methodParameters + ") throws SQLException\n" +
                 "    {\n" +
-                "        LinkedList<Map<String, Object>> list = new LinkedList<>();\n" +
+                "        LinkedList<" + methodType + "> list = new LinkedList<>();\n" +
                 "        CallableStatement proc;\n" +
                 "        LinkedList<String> columnLabelList = new LinkedList();\n" +
                 "            proc = connection.prepareCall(" + sql + ");\n" +

@@ -23,17 +23,19 @@ public class MethodProcedureSelectAll implements Code {
         String setParameters = "";
         StringBuilder sqlbuild = new StringBuilder();
         String rowput = javaStuff.getResultSetObjectString();
-        String method = "public List<Map<String, Object>> " + methodName + "() throws SQLException\n" +
+        String methodType = javaStuff.getMethodType();
+        String objectName = javaStuff.getDataObjectName();
+
+        String method = "public List<" + methodType + "> " + methodName + "() throws SQLException\n" +
                 "    {\n" +
-                "        LinkedList<Map<String, Object>> list = new LinkedList<>();\n" +
+                "        LinkedList<" + methodType + "> list = new LinkedList<>();\n" +
                 "        CallableStatement proc;\n" +
                 "        proc = connection.prepareCall(" + sql + ");\n" +
                 "        ResultSet rs = proc.executeQuery();\n" +
                 "        while (rs.next())\n" +
                 "        {\n" +
-                "            Map<String, Object> row = new HashMap<>();\n" +
                 "                " + rowput + "\n" +
-                "            list.add(row);\n" +
+                "                list.add(" + objectName + ");\n" +
                 "        }\n" +
                 "        proc.close();\n" +
                 "        return list;\n" +
