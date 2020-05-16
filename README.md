@@ -16,10 +16,10 @@ Requirements
 
 Installing
 
-    1. Download PotatoSQL-Build14.zip from https://sourceforge.net/projects/potatosql
-    2. unzip PotatoSQL-Build14.zip
-    3. cd PotatoSQL-Build14
-    4. java -jar PotatoSQL-Build14.jar (if you are on windows double click on jar file)
+    1. Download PotatoSQL-Build20.zip from https://sourceforge.net/projects/potatosql
+    2. unzip PotatoSQL-Build20.zip
+    3. cd PotatoSQL-Build20
+    4. java -jar PotatoSQL-Build20.jar (if you are on windows double click on jar file)
     
 [Download](https://sourceforge.net/projects/potatosql "PotatoSQL: Software for Database Design")
 
@@ -27,7 +27,7 @@ Installing
 
 Build Number
  
-    14
+    20
 
 Authors
 

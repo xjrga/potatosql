@@ -23,14 +23,16 @@ public class MethodProcedureInsert implements Code {
         String ident = "";
         String method = "";
         String methodType = "";
+        String objectName = "";
 
         if (table.identityExists()) {
 
             methodParameters = javaStuff.getDataObject();
 
             setParameters = procedureStuff.getSetParametersAllMinusIdentity();
-            ident = procedureStuff.getIdent();
+            ident = javaStuff.getIdent02();
             methodType = javaStuff.getMethodType();
+            objectName = javaStuff.getDataObjectName();
 
             method = "public " + methodType + " " + methodName + "(" + methodParameters + ") throws SQLException\n" +
                     "    {\n" +
@@ -40,7 +42,7 @@ public class MethodProcedureInsert implements Code {
                     "        proc.execute();\n" +
                     "        proc.close();\n" +
                     "            " + ident + "\n" +
-                    "        return ident;\n" +
+                    "        return " + objectName + ";\n" +
                     "    }";
         } else {
             methodParameters = javaStuff.getDataObject();

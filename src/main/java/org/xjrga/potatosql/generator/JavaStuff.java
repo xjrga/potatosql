@@ -405,4 +405,30 @@ public class JavaStuff {
 
         return sb.toString();
     }
+
+    public String getIdent02() {
+        StringBuilder sb = new StringBuilder();
+        Iterator it = table.getIterator();
+        int count = 1;
+
+        while (it.hasNext()) {
+            Column column = (Column) it.next();
+
+            if (column.isIdentity()) {
+                sb.append(table.getName().toLowerCase());
+                sb.append("DataObject.set");
+                sb.append(column.getName());
+                sb.append("(");
+                sb.append("proc.getInt(");
+                sb.append(count);
+                sb.append(")");
+                sb.append(")");
+                sb.append(";");
+            }
+
+            count++;
+        }
+
+        return sb.toString();
+    }
 }

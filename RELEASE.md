@@ -24,3 +24,7 @@ PotatoSql 12
 Build 14
 
     Various fixes
+
+Build 20
+
+    Changed java method generation code
