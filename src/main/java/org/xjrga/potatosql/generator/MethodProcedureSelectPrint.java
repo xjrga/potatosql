@@ -27,7 +27,7 @@ public class MethodProcedureSelectPrint implements Code {
                 "        LinkedList<" + methodType + "> list = (LinkedList) this." + methodName2 + "(" + methodVariables + ");\n" +
                 "        Iterator it = list.listIterator();\n" +
                 "        while(it.hasNext()){\n" +
-                "            " + methodType + " " + objectName + " = (" + methodType + ") it.next();\n" +
+                "            " + objectName + " = (" + methodType + ") it.next();\n" +
                 "            " + rowGetAllKeys + "\n" +
                 "            " + sout + "\n" +
                 "        }\n" +
