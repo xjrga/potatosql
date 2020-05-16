@@ -25,6 +25,7 @@ public class MethodProcedureSelectAll implements Code {
         String rowput = javaStuff.getResultSetObjectString();
         String methodType = javaStuff.getMethodType();
         String objectName = javaStuff.getDataObjectName();
+        String instance = javaStuff.getDataObjectInstance();
 
         String method = "public List<" + methodType + "> " + methodName + "() throws SQLException\n" +
                 "    {\n" +
@@ -34,6 +35,7 @@ public class MethodProcedureSelectAll implements Code {
                 "        ResultSet rs = proc.executeQuery();\n" +
                 "        while (rs.next())\n" +
                 "        {\n" +
+                "                " + instance +
                 "                " + rowput + "\n" +
                 "                list.add(" + objectName + ");\n" +
                 "        }\n" +

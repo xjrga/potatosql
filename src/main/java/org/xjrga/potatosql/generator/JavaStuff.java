@@ -22,6 +22,26 @@ public class JavaStuff {
         return sb.toString();
     }
 
+    public String getDataObjectInstance() {
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(table.getName());
+        sb.append("DataObject");
+        sb.append(" ");
+        sb.append(table.getName().toLowerCase());
+        sb.append("DataObject");
+        sb.append(" = ");
+        sb.append("new");
+        sb.append(" ");
+        sb.append(table.getName());
+        sb.append("DataObject");
+        sb.append("()");
+        sb.append(";");
+
+        return sb.toString();
+    }
+
     public String getMethodType() {
 
         StringBuilder sb = new StringBuilder();
