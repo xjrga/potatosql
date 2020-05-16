@@ -16,7 +16,7 @@ public class MethodProcedureSelectPrint implements Code {
         String methodName2 = table.getName() + "_Select";
         String methodParameters = javaStuff.getDataObject();
         String methodVariables = javaStuff.getDataObjectName();
-        String rowAllKeys = javaStuff.getRowGetAllKeys();
+        String rowGetAllKeys = javaStuff.getRowGetAllKeys();
         StringBuilder sqlbuild = new StringBuilder();
         String sout = javaStuff.getSout();
         String methodType = javaStuff.getMethodType();
@@ -24,11 +24,11 @@ public class MethodProcedureSelectPrint implements Code {
 
         String method = "public void " + methodName1 + "(" + methodParameters + ") throws SQLException\n" +
                 "    {\n" +
-                "        LinkedList list = (LinkedList) this." + methodName2 + "(" + methodVariables + ");\n" +
+                "        LinkedList<" + methodType + "> list = (LinkedList) this." + methodName2 + "(" + methodVariables + ");\n" +
                 "        Iterator it = list.listIterator();\n" +
                 "        while(it.hasNext()){\n" +
                 "            " + methodType + " " + objectName + " = (" + methodType + ") it.next();\n" +
-                "            " + rowAllKeys + "\n" +
+                "            " + rowGetAllKeys + "\n" +
                 "            " + sout + "\n" +
                 "        }\n" +
                 "    }";

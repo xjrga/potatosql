@@ -19,12 +19,16 @@ public class MethodProcedureSelectAllPrint implements Code {
         String rowGetAllKeys = javaStuff.getRowGetAllKeys();
         StringBuilder sqlbuild = new StringBuilder();
         String sout = javaStuff.getSout();
+        String methodVariables = javaStuff.getDataObjectName();
+        String methodType = javaStuff.getMethodType();
+        String objectName = javaStuff.getDataObjectName();
+
         String method = "public void " + methodName1 + "() throws SQLException\n" +
                 "    {\n" +
-                "        LinkedList list = (LinkedList) this." + methodName2 + "();\n" +
+                "        LinkedList<" + methodType + "> list = (LinkedList) this." + methodName2 + "(" + methodVariables + ");\n" +
                 "        Iterator it = list.listIterator();\n" +
                 "        while(it.hasNext()){\n" +
-                "            HashMap row = (HashMap) it.next();\n" +
+                "            " + methodType + " " + objectName + " = (" + methodType + ") it.next();\n" +
                 "            " + rowGetAllKeys + "\n" +
                 "            " + sout + "\n" +
                 "        }\n" +
