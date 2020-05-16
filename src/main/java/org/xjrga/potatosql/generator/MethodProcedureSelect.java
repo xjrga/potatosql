@@ -28,7 +28,6 @@ public class MethodProcedureSelect implements Code {
                 "    {\n" +
                 "        LinkedList<" + methodType + "> list = new LinkedList<>();\n" +
                 "        CallableStatement proc;\n" +
-                "        LinkedList<String> columnLabelList = new LinkedList();\n" +
                 "            proc = connection.prepareCall(" + sql + ");\n" +
                 "            " + setParameters + "\n" +
                 "            ResultSet rs = proc.executeQuery();\n" +
