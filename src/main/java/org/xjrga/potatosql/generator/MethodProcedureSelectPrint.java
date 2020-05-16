@@ -20,13 +20,14 @@ public class MethodProcedureSelectPrint implements Code {
         StringBuilder sqlbuild = new StringBuilder();
         String sout = javaStuff.getSout();
         String methodType = javaStuff.getMethodType();
+        String objectName = javaStuff.getDataObjectName();
 
         String method = "public void " + methodName1 + "(" + methodParameters + ") throws SQLException\n" +
                 "    {\n" +
                 "        LinkedList list = (LinkedList) this." + methodName2 + "(" + methodVariables + ");\n" +
                 "        Iterator it = list.listIterator();\n" +
                 "        while(it.hasNext()){\n" +
-                "            " + methodType + " row = (" + methodType + ") it.next();\n" +
+                "            " + methodType + " " + objectName + " = (" + methodType + ") it.next();\n" +
                 "            " + rowGetNonPrimaryKeys + "\n" +
                 "            " + sout + "\n" +
                 "        }\n" +
