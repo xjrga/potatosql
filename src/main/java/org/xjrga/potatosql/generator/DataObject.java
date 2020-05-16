@@ -18,7 +18,7 @@ public class DataObject implements Code {
     public String getCode() {
         if (!table.isEmpty()) {
             sqlbuild.append("public class ");
-            sqlbuild.append(table.getName() + "Object");
+            sqlbuild.append(table.getName() + "DataObject");
             sqlbuild.append("\n");
             sqlbuild.append("{");
             sqlbuild.append("\n");
