@@ -33,7 +33,7 @@ public class MethodProcedureSelect implements Code {
                 "            ResultSet rs = proc.executeQuery();\n" +
                 "            while (rs.next())\n" +
                 "            {\n" +
-                rowput +
+                rowput + "\n" +
                 "                list.add(" + objectName + ");\n" +
                 "            }\n" +
                 "            proc.close();\n" +
