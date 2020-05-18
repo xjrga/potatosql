@@ -29,9 +29,16 @@ public class DataObjectStuff {
         while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append("private ");
-            sb.append(hsqldbTypeToJavaType.getJavaType(column.getTypeName()));
+            String javaType = hsqldbTypeToJavaType.getJavaType(column.getTypeName());
+            sb.append(javaType);
             sb.append(" ");
             sb.append(column.getName());
+            if (javaType == "Integer") {
+                sb.append(" = -1");
+            }
+            if (javaType == "Double") {
+                sb.append(" = -1.0");
+            }
             sb.append(";");
             sb.append("\n");
         }
@@ -115,7 +122,7 @@ public class DataObjectStuff {
             sb.append("sb.append(\":\");");
             sb.append("\n");
         }
-        sb.setLength(sb.length()-16);
+        sb.setLength(sb.length() - 16);
         sb.append("return sb.toString();");
         sb.append("\n");
         sb.append("}");
