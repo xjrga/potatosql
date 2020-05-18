@@ -29,7 +29,7 @@ public class MethodProcedureSelectAll implements Code {
 
         String method = "public List<" + methodType + "> " + methodName + "() throws SQLException\n" +
                 "    {\n" +
-                "        LinkedList<" + methodType + "> list = new LinkedList<>();\n" +
+                "        List<" + methodType + "> list = new LinkedList<>();\n" +
                 "        CallableStatement proc;\n" +
                 "        proc = connection.prepareCall(" + sql + ");\n" +
                 "        ResultSet rs = proc.executeQuery();\n" +
