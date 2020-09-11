@@ -5,20 +5,16 @@ import java.util.Iterator;
 public class ProcedureStuff {
     private final Table table;
 
-
     public ProcedureStuff(Table table) {
         this.table = table;
     }
-
 
     public String getSetParametersAllMinusIdentity() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
         int count = 1;
-
         while (it.hasNext()) {
             Column column = (Column) it.next();
-
             if (!column.isIdentity()) {
                 sb.append(setParam(count, column));
             } else {
@@ -26,24 +22,19 @@ public class ProcedureStuff {
                 sb.append(count);
                 sb.append(",Types.INTEGER)");
             }
-
             sb.append(";");
             sb.append("\n");
-
             count++;
         }
-
         if (sb.length() > 0) {
             sb.setLength(sb.length() - 1);
         }
-
         return sb.toString();
     }
 
     private String setParam(int count, Column column) {
         StringBuilder sb = new StringBuilder();
-
-        /*
+/*
         *   call keytype_insert(0,'IDENTITY',false,false);
             call keytype_insert(1,'INTEGER',false,false);
             call keytype_insert(2,'DOUBLE',false,false);
@@ -160,7 +151,6 @@ public class ProcedureStuff {
                 sb.append(")");
                 break;
         }
-
         return sb.toString();
     }
 
@@ -168,23 +158,18 @@ public class ProcedureStuff {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
         int count = 1;
-
         while (it.hasNext()) {
             Column column = (Column) it.next();
-
             if (column.isPrimaryKey()) {
                 sb.append(setParam(count, column));
                 sb.append(";");
                 sb.append("\n");
             }
-
             count++;
         }
-
         if (sb.length() > 0) {
             sb.setLength(sb.length() - 1);
         }
-
         return sb.toString();
     }
 
@@ -192,7 +177,6 @@ public class ProcedureStuff {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
         int count = 1;
-
         while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append(setParam(count, column));
@@ -200,11 +184,9 @@ public class ProcedureStuff {
             sb.append("\n");
             count++;
         }
-
         if (sb.length() > 0) {
             sb.setLength(sb.length() - 1);
         }
-
         return sb.toString();
     }
 
@@ -212,10 +194,8 @@ public class ProcedureStuff {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
         int count = 1;
-
         while (it.hasNext()) {
             Column column = (Column) it.next();
-
             if (column.isIdentity()) {
                 sb.append("ident = proc.getInt(");
                 sb.append(count);
@@ -228,16 +208,12 @@ public class ProcedureStuff {
                 sb.append("(ident)");
                 sb.append(";");
             }
-
             count++;
         }
-
         return sb.toString();
     }
 
-
     public String getProcedureSqlStringPrimaryKeyOnly(String addName) {
-
         StringBuilder sqlb = new StringBuilder();
         sqlb.append("\"{CALL ");
         sqlb.append(table.getSchema());
@@ -254,26 +230,21 @@ public class ProcedureStuff {
     public String getSqlProcedureMarksPrimary() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
-
         while (it.hasNext()) {
             Column column = (Column) it.next();
-
             if (column.isPrimaryKey()) {
                 sb.append("?");
                 sb.append(",");
                 sb.append(" ");
             }
         }
-
         if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
-
         return sb.toString();
     }
 
     public String getProcedureSqlStringAllMinusIdent(String addName) {
-
         StringBuilder sqlb = new StringBuilder();
         sqlb.append("\"{CALL ");
         sqlb.append(table.getSchema());
@@ -290,26 +261,21 @@ public class ProcedureStuff {
     public String getSqlProcedureMarksAllMinusIdent() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
-
         while (it.hasNext()) {
             Column column = (Column) it.next();
-
             if (!column.isIdentity()) {
                 sb.append("?");
                 sb.append(",");
                 sb.append(" ");
             }
         }
-
         if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
-
         return sb.toString();
     }
 
     public String getProcedureSqlStringAll(String addName) {
-
         StringBuilder sqlb = new StringBuilder();
         sqlb.append("\"{CALL ");
         sqlb.append(table.getSchema());
@@ -326,23 +292,19 @@ public class ProcedureStuff {
     public String getSqlProcedureMarksAll() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
-
         while (it.hasNext()) {
             Column column = (Column) it.next();
             sb.append("?");
             sb.append(",");
             sb.append(" ");
         }
-
         if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);
         }
-
         return sb.toString();
     }
 
     public String getProcedureSqlStringNone(String addName) {
-
         StringBuilder sqlb = new StringBuilder();
         sqlb.append("\"{CALL ");
         sqlb.append(table.getSchema());

@@ -1,8 +1,6 @@
 package org.xjrga.potatosql.generator;
 
-
 public class MethodProcedureInsert implements Code {
-
     private final Table table;
     private final JavaStuff javaStuff;
     private final ProcedureStuff procedureStuff;
@@ -24,16 +22,12 @@ public class MethodProcedureInsert implements Code {
         String method = "";
         String methodType = "";
         String objectName = "";
-
         if (table.identityExists()) {
-
             methodParameters = javaStuff.getDataObject();
-
             setParameters = procedureStuff.getSetParametersAllMinusIdentity();
             ident = javaStuff.getIdent02();
             methodType = javaStuff.getMethodType();
             objectName = javaStuff.getDataObjectName();
-
             method = "public " + methodType + " " + methodName + "(" + methodParameters + ") throws SQLException\n" +
                     "    {\n" +
                     "        CallableStatement proc = connection.prepareCall(" + sql + ");\n" +
@@ -54,10 +48,8 @@ public class MethodProcedureInsert implements Code {
                     "        proc.close();\n" +
                     "    }";
         }
-
         StringBuilder sqlbuild = new StringBuilder();
         sqlbuild.append(method);
         return sqlbuild.toString();
     }
-
 }

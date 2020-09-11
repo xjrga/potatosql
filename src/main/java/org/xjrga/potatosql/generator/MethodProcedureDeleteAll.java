@@ -5,11 +5,9 @@ public class MethodProcedureDeleteAll implements Code {
     private final ProcedureStuff procedureStuff;
 
     public MethodProcedureDeleteAll(Table table) {
-
         this.table = table;
         this.procedureStuff = new ProcedureStuff(table);
     }
-
 
     @Override
     public String getCode() {
@@ -28,5 +26,4 @@ public class MethodProcedureDeleteAll implements Code {
         sqlbuild.append(method);
         return sqlbuild.toString();
     }
-
 }

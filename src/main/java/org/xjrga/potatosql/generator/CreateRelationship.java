@@ -1,61 +1,55 @@
 package org.xjrga.potatosql.generator;
 
 import org.xjrga.potatosql.data.DbLink;
-import org.xjrga.potatosql.dataobject.SchemaDataObject;
+import org.xjrga.potatosql.dataobject.DatabaseSchemaDataObject;
+import org.xjrga.potatosql.dataobject.TableKeyRelationshipKeyPairDataObject;
 
-import java.util.HashMap;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 public class CreateRelationship implements Code {
-
     private final StringBuilder sqlbuild;
 
-    public CreateRelationship(DbLink dbLink, SchemaDataObject schemaDataObject) {
+    public CreateRelationship(DbLink dbLink, DatabaseSchemaDataObject databaseSchemaDataObject) {
         sqlbuild = new StringBuilder();
         RelationshipConstraint relationshipConstraint = new RelationshipConstraint();
-        LinkedList list = (LinkedList) dbLink.Relationship_SelectOnlyNames(schemaDataObject.getSchemaId());
-        Iterator it = list.iterator();
-        int count = 0;
-        int relationshipid_old = -1;
-
-        while (it.hasNext()) {
-            HashMap row_hashmap = (HashMap) it.next();
-            String parent = (String) row_hashmap.get("PARENT");
-            String child = (String) row_hashmap.get("CHILD");
-            Integer relationshipid = (Integer) row_hashmap.get("RELATIONSHIPID");
-            Integer relationshiptypeid = (Integer) row_hashmap.get("RELATIONSHIPTYPEID");
-            String parent_key = (String) row_hashmap.get("PARENT_KEY");
-            String child_key = (String) row_hashmap.get("CHILD_KEY");
-
-            if (relationshipid != relationshipid_old) {
-                if (!relationshipConstraint.isEmpty()) {
-                    sqlbuild.append(relationshipConstraint.getCode());
-                    sqlbuild.append("\n");
+        List<TableKeyRelationshipKeyPairDataObject> list = null;
+        try {
+            list = dbLink.Relationship_SelectOnlyNames(databaseSchemaDataObject);
+            Iterator it = list.iterator();
+            int count = 0;
+            int relationshipid_old = -1;
+            while (it.hasNext()) {
+                TableKeyRelationshipKeyPairDataObject next = (TableKeyRelationshipKeyPairDataObject) it.next();
+                if (next.getRelationshipId() != relationshipid_old) {
+                    if (!relationshipConstraint.isEmpty()) {
+                        sqlbuild.append(relationshipConstraint.getCode());
+                        sqlbuild.append("\n");
+                    }
+                    relationshipConstraint = new RelationshipConstraint();
+                    relationshipConstraint.setSchema(databaseSchemaDataObject.getName());
+                    relationshipConstraint.setParent(next.getParentName());
+                    relationshipConstraint.setChild(next.getChildName());
+                    relationshipConstraint.setRelationshipType(next.getRelationshipId());
+                    relationshipConstraint.setCount(count++);
                 }
-                relationshipConstraint = new RelationshipConstraint();
-                relationshipConstraint.setSchema(schemaDataObject.getSchemaName());
-                relationshipConstraint.setParent(parent);
-                relationshipConstraint.setChild(child);
-                relationshipConstraint.setRelationshipType(relationshiptypeid);
-                relationshipConstraint.setCount(count++);
+                relationshipConstraint.addParentKey(next.getParentKeyName());
+                relationshipConstraint.addChildKey(next.getChildKeyName());
+                relationshipid_old = next.getRelationshipId();
             }
-
-            relationshipConstraint.addParentKey(parent_key);
-            relationshipConstraint.addChildKey(child_key);
-            relationshipid_old = relationshipid;
-        }
-
-        if (count > 0) {
-            sqlbuild.append(relationshipConstraint.getCode());
-            sqlbuild.append("\n");
+            if (count > 0) {
+                sqlbuild.append(relationshipConstraint.getCode());
+                sqlbuild.append("\n");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
-
 
     @Override
     public String getCode() {
         return sqlbuild.toString();
     }
-
 }

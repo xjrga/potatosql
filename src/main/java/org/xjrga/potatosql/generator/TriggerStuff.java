@@ -3,16 +3,11 @@ package org.xjrga.potatosql.generator;
 import java.util.Iterator;
 
 public class TriggerStuff {
-
     private final Table table;
 
-
     public TriggerStuff(Table table) {
-
         this.table = table;
-
     }
-
 
     public String getTriggerSetRow() {
         StringBuilder sb = new StringBuilder();
@@ -47,7 +42,6 @@ public class TriggerStuff {
         return sb.toString();
     }
 
-
     public String getTriggerNewRowFields() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
@@ -62,7 +56,6 @@ public class TriggerStuff {
         }
         return sb.toString();
     }
-
 
     public String getTriggerSetNewRowAllVariables() {
         StringBuilder sb = new StringBuilder();
@@ -110,7 +103,6 @@ public class TriggerStuff {
         return sb.toString();
     }
 
-
     public String getSqlWhereStuff_Primary() {
         StringBuilder sb = new StringBuilder();
         Iterator it = table.getIterator();
@@ -149,5 +141,4 @@ public class TriggerStuff {
         }
         return sb.toString();
     }
-
 }

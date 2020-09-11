@@ -32,6 +32,5 @@ public class StatementInsertUsingSelect implements Code {
             sqlbuild.append("\n");
         }
         return sqlbuild.toString();
-
     }
 }

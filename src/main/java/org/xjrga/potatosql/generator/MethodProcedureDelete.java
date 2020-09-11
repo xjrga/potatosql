@@ -11,7 +11,6 @@ public class MethodProcedureDelete implements Code {
         this.procedureStuff = new ProcedureStuff(table);
     }
 
-
     @Override
     public String getCode() {
         String procedureKind = "Delete";
@@ -30,5 +29,4 @@ public class MethodProcedureDelete implements Code {
         sqlbuild.append(method);
         return sqlbuild.toString();
     }
-
 }

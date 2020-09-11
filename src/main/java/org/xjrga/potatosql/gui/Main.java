@@ -3,14 +3,13 @@ package org.xjrga.potatosql.gui;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import org.xjrga.potatosql.data.DbLink;
-import org.xjrga.potatosql.dataobject.KeyDataObject;
-import org.xjrga.potatosql.dataobject.KeyTypeDataObject;
-import org.xjrga.potatosql.dataobject.SchemaDataObject;
-import org.xjrga.potatosql.dataobject.TableDataObject;
+import org.xjrga.potatosql.dataobject.*;
 import org.xjrga.potatosql.generator.Generator0;
 import org.xjrga.potatosql.generator.Generator1;
 import org.xjrga.potatosql.generator.Generator2;
 import org.xjrga.potatosql.model.*;
+import org.xjrga.potatosql.other.GoldenRatio;
+import org.xjrga.potatosql.other.ImageUtilities;
 import org.xjrga.potatosql.other.Write;
 
 import javax.swing.*;
@@ -25,12 +24,14 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.sql.SQLException;
 
 public class Main {
     private CellConstraints cc;
     private DbLink dbLink;
-    private JButton clear;
+    private JButton btnClear;
     private JCheckBox cboxTablesDup;
     private JCheckBox cboxStmtCreateSelect;
     private JCheckBox cboxStmtInsertSelect;
@@ -110,22 +111,19 @@ public class Main {
     private JRadioButtonMenuItem mnuiDialectHsqldb;
     private JRadioButtonMenuItem mnuiDialectMysql;
     private ListModelKeyTypes listModelKeyTypes;
+    private final BufferedImage logo = ImageUtilities.readImage("resources/potato.jpeg");
 
     public Main() {
         setLookAndFeel();
         initialize();
+        cboxTables.setSelected(true);
     }
-
 
     public static void main(String[] args) {
         Main main = new Main();
     }
 
-
     private void setLookAndFeel() {
-
-        String operating_system = System.getProperty("os.name").toLowerCase();
-        String java_version = System.getProperty("java.version");
         try {
             MetalLookAndFeel.setCurrentTheme(new Minimal());
             UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
@@ -185,7 +183,7 @@ public class Main {
         cboxMethodSelectAllPrint = new JCheckBox("");
         cc = new CellConstraints();
         dbLink = new DbLink();
-        clear = new JButton("Clear");
+        btnClear = new JButton("Clear");
         keyName = new JTextField();
         listKeyTypes = new JList<>();
         btnPK_Yes = new JRadioButton();
@@ -246,101 +244,85 @@ public class Main {
         Dimension size = frame.getSize();
         Dimension newsize = new Dimension(size.width + 1, size.height + 1);
         frame.setSize(newsize);
+        frame.setIconImage(logo);
     }
-
 
     private JFrame getFrame() {
         JFrame frame = new JFrame();
-
-        frame.setSize(new Dimension(1132, 700));
+        frame.setSize(new Dimension(1300, GoldenRatio.getShortSide(1300)));
         frame.setVisible(true);
         frame.setDefaultCloseOperation(3);
         frame.setTitle("PotatoSQL: Software for Database Design");
         frame.setJMenuBar(getMenuBar());
-        frame.add(getMainPanel());
-
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setViewportView(getMainPanel(790));
+        frame.add(scrollPane);
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 frame.dispose();
                 dbLink.Shutdown();
             }
         });
-
         frame.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
                 Dimension size = frame.getSize();
             }
         });
-
         return frame;
     }
 
-
-    private JPanel getMainPanel() {
-        FormLayout layout = new FormLayout("min,min,min:grow", //columns
+    private JPanel getMainPanel(int width) {
+        FormLayout layout = new FormLayout("min,min,min", //columns
                 "fill:min:grow" //rows
-        );
-        FormLayout panelWrapperLayout = new FormLayout("min:grow,min", //columns
-                "fill:min:grow,min,4dlu" //rows
         );
         JPanel panel = new JPanel();
         JTabbedPane tabbedPane = new JTabbedPane();
-        JPanel panelWrapper = new JPanel();
-        JButton btnGenerate = new JButton("Generate");
-        btnGenerate.setToolTipText("Generate source code");
-        panelWrapper.setLayout(panelWrapperLayout);
+        tabbedPane.setMinimumSize(new Dimension(width, 0));
+        JPanel panelDiagram = new JPanel();
+        panelDiagram.setBorder(new TitledBorder("Diagram"));
+        panelDiagram.add(new JLabel("Not implemented"));
         panel.setLayout(layout);
         tabbedPane.setTabPlacement(SwingConstants.BOTTOM);
-
         tabbedPane.add(getPanelTableKeys());
         tabbedPane.add(getPanelInput2());
         tabbedPane.add(getPanelOutput());
+        tabbedPane.add(panelDiagram);
         tabbedPane.setTitleAt(0, "Keys");
         tabbedPane.setTitleAt(1, "Relationships");
         tabbedPane.setTitleAt(2, "Output");
-        panelWrapper.add(tabbedPane, cc.xyw(1, 1, 2));
-        panelWrapper.add(btnGenerate, cc.xy(2, 2));
+        tabbedPane.setTitleAt(3, "Diagram");
         panel.add(getPanelSchema(), cc.xy(1, 1));
         panel.add(getPanelTable(), cc.xy(2, 1));
-        panel.add(panelWrapper, cc.xy(3, 1));
-
-        btnGenerate.addActionListener(e -> btnGenerate_actionPerformed());
-
+        panel.add(tabbedPane, cc.xy(3, 1));
         return panel;
     }
 
-
     private void btnGenerate_actionPerformed() {
         StringBuilder sb = new StringBuilder();
-
         Generator0 generator0 = new Generator0();
         generator0.setHsqldb(mnuiDialectHsqldb.isSelected());
         generator0.setTestClassSelected(cboxTestClass.isSelected());
         sb.append(generator0.getCode());
-
         if (isSchemaSelected()) {
             Generator1 generator1 = new Generator1(dbLink);
-            SchemaDataObject schemaDataObject = getSelectedSchema();
+            DatabaseSchemaDataObject databaseSchemaDataObject = getSelectedSchema();
             int numberOfTables = listModelTable.getSize();
             int[] tableIds = new int[numberOfTables];
             generator1.setHsqldb(mnuiDialectHsqldb.isSelected());
             generator1.setMysql(mnuiDialectMysql.isSelected());
             generator1.setTablesAndRelationshipsSelected(cboxTables.isSelected());
-            generator1.setSchemaDataObject(schemaDataObject);
-
+            generator1.setDatabaseSchemaDataObject(databaseSchemaDataObject);
             for (int i = 0; i < numberOfTables; i++) {
-                TableDataObject tableDataObject = (TableDataObject) listModelTable.getElementAt(i);
-                tableIds[i] = tableDataObject.getTableId();
+                DatabaseTableDataObject databaseTableDataObject = (DatabaseTableDataObject) listModelTable.getElementAt(i);
+                tableIds[i] = databaseTableDataObject.getTableId();
             }
-
             generator1.setTableIds(tableIds);
             sb.append(generator1.getCode());
-
             if (isTableSelected()) {
-                TableDataObject tableDataObject = getSelectedTable();
+                DatabaseTableDataObject databaseTableDataObject = getSelectedTable();
                 Generator2 generator2 = new Generator2(dbLink);
-                generator2.setSchemaDataObject(schemaDataObject);
-                generator2.setTableDataObject(tableDataObject);
+                generator2.setDatabaseSchemaDataObject(databaseSchemaDataObject);
+                generator2.setDatabaseTableDataObject(databaseTableDataObject);
                 generator2.setHsqldb(mnuiDialectHsqldb.isSelected());
                 generator2.setMysql(mnuiDialectMysql.isSelected());
                 generator2.setStmtCreateSelect(cboxStmtCreateSelect.isSelected());
@@ -386,26 +368,22 @@ public class Main {
                 generator2.setMethodSelectAllPrint(cboxMethodSelectAllPrint.isSelected());
                 sb.append(generator2.getCode());
             }
-
         }
-
         String toString = sb.toString();
         textArea.setText(toString);
         Write.writeToFile(toString, "script.sql");
-
     }
 
-    private SchemaDataObject getSelectedSchema() {
-        return (SchemaDataObject) listSchema.getSelectedValue();
+    private DatabaseSchemaDataObject getSelectedSchema() {
+        return (DatabaseSchemaDataObject) listSchema.getSelectedValue();
     }
-
 
     private boolean isSchemaSelected() {
         return !listSchema.isSelectionEmpty();
     }
 
-    private TableDataObject getSelectedTable() {
-        return (TableDataObject) listTable.getSelectedValue();
+    private DatabaseTableDataObject getSelectedTable() {
+        return (DatabaseTableDataObject) listTable.getSelectedValue();
     }
 
     private boolean isTableSelected() {
@@ -420,6 +398,7 @@ public class Main {
         JMenu mnuKey = new JMenu();
         JMenu mnuOutput = new JMenu();
         JMenu mnuDialect = new JMenu();
+        JMenu mnuTools = new JMenu();
         JMenu mnuHelp = new JMenu();
         JMenuItem mnuiExit = new JMenuItem();
         JMenuItem mnuiSchemaCopy = new JMenuItem();
@@ -431,15 +410,15 @@ public class Main {
         JMenuItem mnuiGuide = new JMenuItem();
         JMenuItem mnuiCredits = new JMenuItem();
         JMenuItem mnuiAbout = new JMenuItem();
-
+        JMenuItem mnuiDataObject = new JMenuItem();
         menuBar.add(mnuProgram);
         menuBar.add(mnuSchema);
         menuBar.add(mnuTable);
         menuBar.add(mnuKey);
         menuBar.add(mnuOutput);
         menuBar.add(mnuDialect);
+        //menuBar.add(mnuTools);
         menuBar.add(mnuHelp);
-
         mnuProgram.add(mnuiExit);
         mnuSchema.add(mnuiSchemaCopy);
         mnuTable.add(mnuiTableCopy);
@@ -447,19 +426,19 @@ public class Main {
         mnuKey.add(mnuiKeyCopy);
         mnuOutput.add(mnuiOptions);
         mnuDialect.add(mnuiDialectHsqldb);
-        mnuDialect.add(mnuiDialectMysql);
+        //mnuDialect.add(mnuiDialectMysql);
+        mnuTools.add(mnuiDataObject);
         mnuHelp.add(mnuiGuide);
         mnuHelp.add(mnuiCredits);
         mnuHelp.add(mnuiAbout);
-
         mnuProgram.setText("Program");
         mnuSchema.setText("Schema");
         mnuTable.setText("Table");
         mnuKey.setText("Key");
         mnuOutput.setText("Output");
         mnuDialect.setText("Dialect");
+        mnuTools.setText("Tools");
         mnuHelp.setText("Help");
-
         mnuiExit.setText("Exit");
         mnuiSchemaCopy.setText("Duplicate");
         mnuiTableCopy.setText("Duplicate");
@@ -471,61 +450,64 @@ public class Main {
         mnuiGuide.setText("Guide");
         mnuiCredits.setText("Credits");
         mnuiAbout.setText("About");
-
+        mnuiDataObject.setText("Data Object Generator");
         mnuiOptions.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 selectOptions();
             }
         });
-
         mnuiExit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_mnuiExit(e);
             }
         });
-
         mnuiSchemaCopy.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_mnuiSchemaCopy(e);
             }
         });
-
         mnuiTableCopy.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_mnuiTableCopy(e);
             }
         });
-
         mnuiKeyCopy.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_mnuiKeyCopy(e);
             }
         });
-
         mnuiGuide.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_mnuiGuide(e);
             }
         });
-
         mnuiCredits.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_mnuiCredits(e);
             }
         });
-
         mnuiAbout.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_mnuiAbout(e);
             }
         });
-
+        mnuiDataObject.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                eventActionPerformed_mnuiDataObject();
+            }
+        });
         return menuBar;
+    }
+
+    private void eventActionPerformed_mnuiDataObject() {
+        JComponent[] inputs = new JComponent[]{
+                getPanelDataObject()
+        };
+        Message.showOptionDialog(inputs, "Data Object Generator");
     }
 
     private void eventActionPerformed_mnuiAbout(ActionEvent e) {
         StringBuffer sb = new StringBuffer();
-
         sb.append("This software:");
         sb.append("\n\n");
         sb.append("- allows me to design database schemas");
@@ -538,12 +520,11 @@ public class Main {
         sb.append("\n");
         sb.append("- is free and open source software");
         sb.append("\n\n");
-        sb.append("This is build 20");
+        sb.append("This is build 30");
         sb.append("\n\n");
         sb.append("Please send your comments and suggestions to jorge.r.garciadealba+potatosql@gmail.com");
         sb.append("\n\n");
         sb.append("Software can be downloaded at https://sourceforge.net/projects/potatosql/");
-
         JTextArea textArea = new JTextArea(15, 90);
         textArea.setText(sb.toString());
         textArea.setEditable(false);
@@ -553,21 +534,18 @@ public class Main {
 
     private void eventActionPerformed_mnuiCredits(ActionEvent e) {
         StringBuffer sb = new StringBuffer();
-
         sb.append("PotatoSQL uses the following libraries:");
         sb.append("\n\n");
-        sb.append("hsqldb.jar (v2.5.0)");
+        sb.append("hsqldb-2.5.1.jar");
         sb.append("\n");
         sb.append("jgoodies-common-1.8.1.jar");
         sb.append("\n");
         sb.append("jgoodies-forms-1.8.0.jar");
-
         JTextArea textArea = new JTextArea(15, 90);
         textArea.setText(sb.toString());
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
         JOptionPane.showMessageDialog(null, scrollPane, "PotatoSQL: Software for Database Design", JOptionPane.PLAIN_MESSAGE);
-
     }
 
     private void eventActionPerformed_mnuiGuide(ActionEvent e) {
@@ -576,55 +554,60 @@ public class Main {
 
     private void eventActionPerformed_mnuiKeyCopy(ActionEvent e) {
         int selectedRow = tableKeys.getSelectedRow();
-
         if (selectedRow != -1) {
             int schemaid = (int) tableModelKeys.getValueAt(selectedRow, 0);
             int tableid = (int) tableModelKeys.getValueAt(selectedRow, 1);
             int keyid = (int) tableModelKeys.getValueAt(selectedRow, 2);
             String keyname = (String) tableModelKeys.getValueAt(selectedRow, 3);
-
             String s = (String) JOptionPane.showInputDialog(null, "What is your key name?", "New Key", -1, null, null, keyname);
-
             if (isAlphaNumeric(s)) {
-                dbLink.PotatoSql_TableKey_Copy(schemaid, tableid, keyid, s);
-                tableModelKeys.reload(schemaid, tableid);
-                hideTableKeysColumns();
+                TableKeyDataObject tableKeyDataObject = new TableKeyDataObject();
+                tableKeyDataObject.setSchemaId(schemaid);
+                tableKeyDataObject.setTableId(tableid);
+                tableKeyDataObject.setKeyId(keyid);
+                try {
+                    dbLink.PotatoSql_TableKey_Copy(tableKeyDataObject, s);
+                    DatabaseTableDataObject databaseTableDataObject = new DatabaseTableDataObject();
+                    databaseTableDataObject.setSchemaId(schemaid);
+                    databaseTableDataObject.setTableId(tableid);
+                    tableModelKeys.reload(databaseTableDataObject);
+                    hideTableKeysColumns();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
-
         }
     }
 
-
     private void eventActionPerformed_mnuiSchemaCopy(ActionEvent e) {
         if (isSchemaSelected()) {
-            SchemaDataObject schemaDataObject = getSelectedSchema();
-            Integer schemaId = schemaDataObject.getSchemaId();
-            String schemaName = schemaDataObject.getSchemaName();
+            DatabaseSchemaDataObject databaseSchemaDataObject = getSelectedSchema();
+            String schemaName = databaseSchemaDataObject.getName();
             String s = (String) JOptionPane.showInputDialog(null, "What is your new schema name?", "New Schema", -1, null, null, schemaName);
-
             if (isAlphaNumeric(s)) {
-                dbLink.DatabaseSchema_Copy(schemaId, s);
+                try {
+                    dbLink.DatabaseSchema_Copy(databaseSchemaDataObject.getSchemaId(), s);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
                 listModelSchema.reload();
             }
         }
     }
 
-
     private void eventActionPerformed_mnuiTableCopy(ActionEvent e) {
         if (isSchemaSelected()) {
             if (isTableSelected()) {
-                SchemaDataObject schemaDataObject = getSelectedSchema();
-                Integer schemaId = schemaDataObject.getSchemaId();
-                String schemaName = schemaDataObject.getSchemaName();
-                TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
-                schemaId = tableDataObject.getSchemaId();
-                Integer tableId_Old = tableDataObject.getTableId();
-                String tableName = tableDataObject.getTableName();
-                String s = (String) JOptionPane.showInputDialog(null, "What is your new table name?", "New Table", -1, null, null, tableName);
-
+                DatabaseSchemaDataObject databaseSchemaDataObject = getSelectedSchema();
+                DatabaseTableDataObject databaseTableDataObject = (DatabaseTableDataObject) listTable.getSelectedValue();
+                String s = (String) JOptionPane.showInputDialog(null, "What is your new table name?", "New Table", -1, null, null, databaseTableDataObject.getName());
                 if (isAlphaNumeric(s)) {
-                    dbLink.PotatoSql_Table_Copy(schemaId, tableId_Old, s);
-                    listModelTable.reload(schemaId);
+                    try {
+                        dbLink.PotatoSql_Table_Copy(databaseTableDataObject, s);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    listModelTable.reload(databaseSchemaDataObject);
                 }
             }
         }
@@ -635,48 +618,36 @@ public class Main {
                 "fill:min:grow,fill:min:grow" //rows
         );
         JPanel panel = new JPanel();
-
         panel.setLayout(layout);
-
         panel.add(getPanelRelationship(), cc.xy(1, 1));
         panel.add(getPanelRelationshipPairKeys(), cc.xy(1, 2));
-
         return panel;
     }
-
 
     private JPanel getPanelRelationshipKeyInput(String parent_name, String child_name) {
         FormLayout layout = new FormLayout("min:grow,min:grow", //columns
                 "fill:min:grow" //rows
         );
         JPanel panel = new JPanel();
-
         panel.setLayout(layout);
-
         panel.add(getPanelParentKeys(parent_name), cc.xy(1, 1));
         panel.add(getPanelChildKeys(child_name), cc.xy(2, 1));
-
         return panel;
     }
-
 
     private JPanel getPanelRelationshipInput() {
         FormLayout layout = new FormLayout("min:grow,min:grow", //columns
                 "fill:min:grow,min,min" //rows
         );
         JPanel panel = new JPanel();
-
         panel.setLayout(layout);
         panel.setBorder(new TitledBorder("Relationship"));
-
         panel.add(getPanelParent(), cc.xy(1, 1));
         panel.add(getPanelChild(), cc.xy(2, 1));
         panel.add(getPanelVerbPhrase(), cc.xyw(1, 2, 2));
         panel.add(getPanelType(), cc.xyw(1, 3, 2));
-
         return panel;
     }
-
 
     private JPanel getPanelVerbPhrase() {
         FormLayout layout = new FormLayout("min:grow", //columns
@@ -689,89 +660,74 @@ public class Main {
         JPanel panelName = new JPanel();
         JPanel panelForwardVerb = new JPanel();
         JPanel panelInverseVerb = new JPanel();
-
         panel.setLayout(layout);
         panelName.setLayout(layout1);
         panelForwardVerb.setLayout(layout1);
         panelInverseVerb.setLayout(layout1);
-
         JLabel labelRelationshipName = new JLabel("Name:");
         JLabel labelForwardVerbPhrase = new JLabel("Forward:");
         JLabel labelInverseVerbPhrase = new JLabel("Inverse:");
-
         labelRelationshipName.setHorizontalAlignment(JLabel.RIGHT);
         labelForwardVerbPhrase.setHorizontalAlignment(JLabel.RIGHT);
         labelInverseVerbPhrase.setHorizontalAlignment(JLabel.RIGHT);
-
         panel.setToolTipText("Verb phrases explain how tables relate to each other");
         labelForwardVerbPhrase.setToolTipText("Read relationship from parent table to child table using an active verb phrase");
         labelInverseVerbPhrase.setToolTipText("Read relationship from child table to parent table using a passive verb phrase");
-
         panel.setBorder(new TitledBorder("Description"));
-
         panelName.add(labelRelationshipName, cc.xy(1, 1));
         panelName.add(txtRelationshipName, cc.xy(2, 1));
-
         panelForwardVerb.add(labelForwardVerbPhrase, cc.xy(1, 1));
         panelForwardVerb.add(txtForward, cc.xy(2, 1));
-
         panelInverseVerb.add(labelInverseVerbPhrase, cc.xy(1, 1));
         panelInverseVerb.add(txtReverse, cc.xy(2, 1));
-
         panel.add(panelName, cc.xy(1, 1));
         panel.add(panelForwardVerb, cc.xy(1, 2));
         panel.add(panelInverseVerb, cc.xy(1, 3));
-
         return panel;
     }
-
 
     private JPanel getPanelType() {
         JPanel panel = new JPanel();
         ButtonGroup buttonGroup = new ButtonGroup();
-
         panel.setBorder(new TitledBorder("Type"));
-
         btnIdentifying.setText("Identifying");
         btnNonIdentifying.setText("Non-Identifying");
-
         buttonGroup.add(btnIdentifying);
         buttonGroup.add(btnNonIdentifying);
-
         panel.add(btnIdentifying);
         panel.add(btnNonIdentifying);
-
         return panel;
     }
 
-
     private JPanel getPanelOutput() {
-        FormLayout layout = new FormLayout("min:grow,min", //columns
+        FormLayout layout = new FormLayout("min:grow,min,min,min", //columns
                 "fill:min:grow,min" //rows
         );
         JPanel panel = new JPanel();
+        JButton btnGenerate = new JButton("Generate");
+        btnGenerate.setToolTipText("Generate source code");
         JButton btnCopy = new JButton("Copy");
         btnCopy.setToolTipText("Copy output to clipboard");
+        JButton btnClear = new JButton("Clear");
+        btnClear.setToolTipText("Clear output text");
         panel.setLayout(layout);
         panel.setBorder(new TitledBorder("Output"));
-
-        panel.add(new JScrollPane(textArea), cc.xyw(1, 1, 2));
-        panel.add(btnCopy, cc.xy(2, 2));
-
-        btnCopy.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                String text = textArea.getText();
-                StringSelection stringSelection = new StringSelection(text);
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(stringSelection, null);
-            }
+        panel.add(new JScrollPane(textArea), cc.xyw(1, 1, 4));
+        panel.add(btnClear, cc.xy(2, 2));
+        panel.add(btnGenerate, cc.xy(3, 2));
+        panel.add(btnCopy, cc.xy(4, 2));
+        btnGenerate.addActionListener(e -> btnGenerate_actionPerformed());
+        btnCopy.addActionListener(e -> {
+            String text = textArea.getText();
+            StringSelection stringSelection = new StringSelection(text);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(stringSelection, null);
         });
-
+        btnClear.addActionListener(e -> {
+            textArea.setText("");
+        });
         return panel;
     }
-
 
     private JPanel getPanelTable() {
         FormLayout layout = new FormLayout("min:grow", //columns
@@ -779,43 +735,33 @@ public class Main {
         );
         JPanel panel = new JPanel();
         JScrollPane scrollTable = new JScrollPane(listTable);
-
         panel.setLayout(layout);
         panel.setBorder(new TitledBorder("Table"));
         panel.setMinimumSize(new Dimension(250, 0));
-
         panel.add(scrollTable, cc.xy(1, 1));
         panel.add(getPanelTableButtons(), cc.xy(1, 2));
-
         listTable.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
-
                 eventListSelection_listTable(e);
             }
         });
-
         return panel;
     }
-
 
     private void eventListSelection_listTable(ListSelectionEvent e) {
         if (e.getValueIsAdjusting()) {
             return;
         }
-
         if (isTableSelected()) {
-            TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
-            Integer schemaId = tableDataObject.getSchemaId();
-            Integer tableId = tableDataObject.getTableId();
-            tableModelKeys.reload(schemaId, tableId);
+            DatabaseTableDataObject databaseTableDataObject = (DatabaseTableDataObject) listTable.getSelectedValue();
+            tableModelKeys.reload(databaseTableDataObject);
             hideTableKeysColumns();
-            tableModelRelationship.reload(schemaId, tableId);
+            tableModelRelationship.reload(databaseTableDataObject);
             hideTableRelationshipColumns();
             tableModelRelationshipKeyPair.clear();
             hideTableRelationshipKeyPairColumns();
         }
     }
-
 
     private JPanel getPanelTableKeyInput() {
         FormLayout layout = new FormLayout("min,min:grow", //columns
@@ -829,28 +775,21 @@ public class Main {
         JScrollPane scrollPaneForListAttributeTypes = new JScrollPane(listKeyTypes);
         ButtonGroup primaryKeyGroup = new ButtonGroup();
         JPanel panelForPrimaryKey = new JPanel();
-
         panel.setLayout(layout);
         panel.setBorder(new TitledBorder("Definition"));
-
         labelName.setAlignment(Label.RIGHT);
         labelType.setAlignment(Label.RIGHT);
         labelIsPrimaryKey.setAlignment(Label.RIGHT);
         labelOrder.setAlignment(Label.RIGHT);
-
         keyName.setMinimumSize(new Dimension(100, 26));
         scrollPaneForListAttributeTypes.setMinimumSize(new Dimension(0, 100));
         keyOrder.setMinimumSize(new Dimension(100, 26));
-
         btnPK_Yes.setText("Yes");
         btnPK_No.setText("No");
-
         primaryKeyGroup.add(btnPK_Yes);
         primaryKeyGroup.add(btnPK_No);
-
         panelForPrimaryKey.add(btnPK_Yes);
         panelForPrimaryKey.add(btnPK_No);
-
         panel.add(labelName, cc.xy(1, 1));
         panel.add(keyName, cc.xy(2, 1));
         panel.add(labelType, cc.xy(1, 2));
@@ -859,36 +798,28 @@ public class Main {
         panel.add(panelForPrimaryKey, cc.xy(2, 3));
         panel.add(labelOrder, cc.xy(1, 4));
         panel.add(keyOrder, cc.xy(2, 4));
-
         keyName.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
                 //setText(e);
             }
 
-
             public void removeUpdate(DocumentEvent e) {
                 setText(e);
             }
-
 
             public void setText(DocumentEvent e) {
                 checkForAlphaNumeric(e);
             }
 
-
             public void insertUpdate(DocumentEvent e) {
                 setText(e);
             }
-
         });
-
         return panel;
-
     }
 
     private void checkForAlphaNumeric(DocumentEvent e) {
         StringBuilder sb = new StringBuilder();
-
         if (!keyName.getText().matches("^$|^[a-zA-Z][a-zA-Z0-9_]*")) {
             try {
                 sb.append("• Takes alphanumeric characters\n\n");
@@ -906,22 +837,50 @@ public class Main {
                 "fill:min:grow,min" //rows
         );
         JPanel panel = new JPanel();
-
         panel.setLayout(layout);
         panel.setBorder(new TitledBorder("Table Keys"));
-
         panel.add(new JScrollPane(tableKeys), cc.xy(1, 1));
         panel.add(getPanelTableKeyButtons(), cc.xy(1, 2));
-
         hideTableKeysColumns();
+        JPopupMenu popMenu = new JPopupMenu();
+        JMenuItem item01 = new JMenuItem("Renumber");
+        popMenu.add(item01);
+        item01.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRowNo = tableKeys.getSelectedRow();
+                if (selectedRowNo != -1) {
+                    try {
+                        DatabaseTableDataObject databaseTableDataObject = (DatabaseTableDataObject) listTable.getSelectedValue();
+                        TableKeyDataObject tableKeyDataObject = new TableKeyDataObject();
+                        tableKeyDataObject.setSchemaId(databaseTableDataObject.getSchemaId());
+                        tableKeyDataObject.setTableId(databaseTableDataObject.getTableId());
+                        tableKeyDataObject.setKeyId((Integer) tableKeys.getValueAt(selectedRowNo, 2));
+                        dbLink.TableKey_Renumber(tableKeyDataObject);
+                        tableModelKeys.reload(databaseTableDataObject);
+                        hideTableKeysColumns();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                } else {
 
+                }
+            }
+        });
+        tableKeys.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
+                    Component component = e.getComponent();
+                    popMenu.show(component, e.getX(), e.getY());
+                }
+            }
+        });
         return panel;
     }
 
-
     private void fillPanelTableKeyInput() {
         Integer selectedRow = tableKeys.getSelectedRow();
-
         if (selectedRow != -1) {
             String keyname = (String) tableModelKeys.getValueAt(selectedRow, 3);
             //String keylabel = (String) tableModelKeys.getValueAt(selectedRow, 4);
@@ -934,8 +893,9 @@ public class Main {
             //String typeScaleInText = String.valueOf(typescale);
             Integer keyorder = (Integer) tableModelKeys.getValueAt(selectedRow, 10);
             String keyOrderInText = String.valueOf(keyorder);
-            KeyTypeDataObject keyTypeDataObject = new KeyTypeDataObject(typeid, typename, true);
-
+            KeyTypeDataObject keyTypeDataObject = new KeyTypeDataObject();
+            keyTypeDataObject.setTypeId(typeid);
+            keyTypeDataObject.setName(typename);
             keyName.setText(keyname);
             listKeyTypes.setSelectedValue(keyTypeDataObject, true);
             btnPK_Yes.setSelected(ispk);
@@ -946,43 +906,38 @@ public class Main {
 
     private void clearPanelTableKeyInput() {
         keyName.setText("");
-        KeyTypeDataObject keyTypeDataObject = new KeyTypeDataObject(1, "INTEGER", false);
+        KeyTypeDataObject keyTypeDataObject = new KeyTypeDataObject();
+        keyTypeDataObject.setTypeId(1);
+        keyTypeDataObject.setName("INTEGER");
+        keyTypeDataObject.setPrecisionRequired(false);
+        keyTypeDataObject.setScaleRequired(false);
         listKeyTypes.setSelectedValue(keyTypeDataObject, true);
         btnPK_Yes.setSelected(false);
         btnPK_No.setSelected(true);
         keyOrder.setText("");
     }
 
-
     private JPanel getPanelParent() {
         FormLayout layout = new FormLayout("min:grow", //columns
                 "fill:min:grow" //rows
         );
         JPanel panel = new JPanel();
-
         panel.setLayout(layout);
         panel.setBorder(new TitledBorder("Parent Table"));
-
         panel.add(new JScrollPane(listParent), cc.xy(1, 1));
-
         return panel;
     }
-
 
     private JPanel getPanelChild() {
         FormLayout layout = new FormLayout("min:grow", //columns
                 "fill:min:grow" //rows
         );
         JPanel panel = new JPanel();
-
         panel.setBorder(new TitledBorder("Child Table"));
         panel.setLayout(layout);
-
         panel.add(new JScrollPane(listChild), cc.xy(1, 1));
-
         return panel;
     }
-
 
     private JPanel getPanelRelationship() {
         FormLayout layout = new FormLayout("min:grow", //columns
@@ -994,136 +949,101 @@ public class Main {
         JButton btnRelationshipAdd = new JButton("+");
         JButton btnRelationshipDelete = new JButton("-");
         JButton btnRelationshipUpdate = new JButton("u");
-        JButton btnRelationshipShow = new JButton("a");
-
         btnRelationshipAdd.setToolTipText("Add table relationship");
         btnRelationshipDelete.setToolTipText("Delete table relationship");
         btnRelationshipUpdate.setToolTipText("Update table relationship");
-        btnRelationshipShow.setToolTipText("Show all relationships");
-
         panel.setLayout(layout);
         panel.setBorder(new TitledBorder("Relationship"));
-
         panel.add(panelRelationshipFacts, cc.xy(1, 1));
         panel.add(panelRelationshipButtons, cc.xy(1, 2));
         panelRelationshipButtons.add(btnRelationshipAdd);
         panelRelationshipButtons.add(btnRelationshipDelete);
         panelRelationshipButtons.add(btnRelationshipUpdate);
-        panelRelationshipButtons.add(btnRelationshipShow);
-
         hideTableRelationshipColumns();
-
         tableRelationshipFacts.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
-
                 eventListSelection_tableRelationship(e);
             }
         });
-
         btnRelationshipAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
                 eventActionPerformed_btnRelationshipAdd(e);
             }
         });
-
         btnRelationshipDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
                 eventActionPerformed_btnRelationshipDelete(e);
             }
         });
-
         btnRelationshipUpdate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
                 eventActionPerformed_btnRelationshipUpdate(e);
             }
         });
-
-        btnRelationshipShow.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-                eventActionPerformed_btnRelationshipShow(e);
-            }
-        });
-
         return panel;
-    }
-
-    private void eventActionPerformed_btnRelationshipShow(ActionEvent e) {
-        SchemaDataObject schemaDataObject = getSelectedSchema();
-        tableModelRelationship.reload(schemaDataObject.getSchemaId());
-        hideTableRelationshipColumns();
-        tableModelRelationshipKeyPair.clear();
-        hideTableRelationshipKeyPairColumns();
     }
 
     private void eventListSelection_tableRelationship(ListSelectionEvent e) {
         if (e.getValueIsAdjusting()) {
             return;
         }
-
         reloadTableRelationshipKeyPair();
     }
 
     private void reloadTableRelationshipKeyPair() {
         Integer selectedRow = tableRelationshipFacts.getSelectedRow();
-
         if (selectedRow != -1) {
-            Integer schemaid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 1);
-            Integer parent_tableid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 2);
-            Integer child_tableid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 4);
-            Integer relationshipid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 0);
-
-            tableModelRelationshipKeyPair.reload(schemaid, parent_tableid, child_tableid, relationshipid);
-
+            RelationshipDataObject relationshipDataObject = new RelationshipDataObject();
+            relationshipDataObject.setSchemaId((Integer) tableRelationshipFacts.getValueAt(selectedRow, 1));
+            relationshipDataObject.setParent_TableId((Integer) tableRelationshipFacts.getValueAt(selectedRow, 2));
+            relationshipDataObject.setChild_TableId((Integer) tableRelationshipFacts.getValueAt(selectedRow, 4));
+            relationshipDataObject.setRelationshipId((Integer) tableRelationshipFacts.getValueAt(selectedRow, 0));
+            tableModelRelationshipKeyPair.reload(relationshipDataObject);
             hideTableRelationshipKeyPairColumns();
         }
     }
 
-
     private void eventActionPerformed_btnRelationshipAdd(ActionEvent e) {
         if (isTableSelected()) {
-
             clearPanelRelationshipInput();
-
-            SchemaDataObject schemaDataObject = getSelectedSchema();
-            TableDataObject tableDataObject = getSelectedTable();
-            listModelTableOne.reload(schemaDataObject.getSchemaId(), tableDataObject.getTableId());
-            listParent.setSelectedValue(tableDataObject, true);
+            DatabaseSchemaDataObject databaseSchemaDataObject = getSelectedSchema();
+            DatabaseTableDataObject databaseTableDataObject = getSelectedTable();
+            listModelTableOne.reload(databaseSchemaDataObject.getSchemaId(), databaseTableDataObject.getTableId());
+            listParent.setSelectedValue(databaseTableDataObject, true);
             listChild.clearSelection();
             JPanel panelRelationshipInput = getPanelRelationshipInput();
-
             panelRelationshipInput.setPreferredSize(new Dimension(700, 433));
-
+            btnIdentifying.setEnabled(true);
+            btnNonIdentifying.setEnabled(true);
             int i = JOptionPane.showOptionDialog(null, panelRelationshipInput, "Relationship", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{"Cancel", "  Ok  "}, null);
-
             if (i == 1) {
-                TableDataObject parent = (TableDataObject) listParent.getSelectedValue();
-                TableDataObject child = (TableDataObject) listChild.getSelectedValue();
-                Integer schemaid = parent.getSchemaId();
-                Integer parent_tableid = parent.getTableId();
-                Integer child_tableid = child.getTableId();
-                Integer relationshiptypeid;
-                String forwardVerbPhrase = txtForward.getText();
-                String reverseVerbPhrase = txtReverse.getText();
-                String relationShipName = txtRelationshipName.getText();
-
+                DatabaseTableDataObject parent = (DatabaseTableDataObject) listParent.getSelectedValue();
+                DatabaseTableDataObject child = (DatabaseTableDataObject) listChild.getSelectedValue();
+                Integer relationshiptypeid = -1;
                 if (btnIdentifying.isSelected()) {
                     relationshiptypeid = 0;
                 } else {
                     relationshiptypeid = 1;
                 }
-
-                dbLink.Relationship_Insert(schemaid, parent_tableid, child_tableid, relationshiptypeid, relationShipName, forwardVerbPhrase, reverseVerbPhrase);
-                tableModelRelationship.reload(schemaid, parent_tableid);
+                RelationshipDataObject relationshipDataObject = new RelationshipDataObject();
+                relationshipDataObject.setSchemaId(parent.getSchemaId());
+                relationshipDataObject.setParent_TableId(parent.getTableId());
+                relationshipDataObject.setChild_TableId(child.getTableId());
+                relationshipDataObject.setRelationshipTypeId(relationshiptypeid);
+                relationshipDataObject.setName(txtRelationshipName.getText());
+                relationshipDataObject.setForwardVerbPhrase(txtForward.getText());
+                relationshipDataObject.setReverseVerbPhrase(txtReverse.getText());
+                try {
+                    dbLink.Relationship_Insert(relationshipDataObject);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                tableModelRelationship.reload(parent);
                 hideTableRelationshipColumns();
             }
         } else {
-            showMessage("Please select table.");
+            Message.showMessage("Please select table");
         }
-
     }
 
     private void clearPanelRelationshipInput() {
@@ -1134,91 +1054,88 @@ public class Main {
         btnNonIdentifying.setSelected(true);
     }
 
-
     private void eventActionPerformed_btnRelationshipUpdate(ActionEvent e) {
         Integer selectedRow = tableRelationshipFacts.getSelectedRow();
-
         if (selectedRow != -1) {
-            Integer schemaid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 1);
-            Integer parent_tableid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 2);
-            String parent = (String) tableRelationshipFacts.getValueAt(selectedRow, 3);
-            Integer child_tableid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 4);
-            String child = (String) tableRelationshipFacts.getValueAt(selectedRow, 5);
-            Integer relationshiptypeid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 6);
-            Integer relationshipid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 0);
-            String relationshipname = (String) tableRelationshipFacts.getValueAt(selectedRow, 8);
-            String forwardVerbPhrase = (String) tableRelationshipFacts.getValueAt(selectedRow, 9);
-            String reverseVerbPhrase = (String) tableRelationshipFacts.getValueAt(selectedRow, 10);
-            TableDataObject tableDataObject_Parent = new TableDataObject(schemaid, parent_tableid, parent);
-            TableDataObject tableDataObject_Child = new TableDataObject(schemaid, child_tableid, child);
-            listModelTableOne.reload(schemaid, parent_tableid);
+            DatabaseSchemaDataObject databaseSchemaDataObject = new DatabaseSchemaDataObject();
+            databaseSchemaDataObject.setSchemaId((Integer) tableRelationshipFacts.getValueAt(selectedRow, 1));
+            DatabaseTableDataObject tableDataObject_Parent = new DatabaseTableDataObject();
+            tableDataObject_Parent.setSchemaId(databaseSchemaDataObject.getSchemaId());
+            tableDataObject_Parent.setTableId((Integer) tableRelationshipFacts.getValueAt(selectedRow, 2));
+            tableDataObject_Parent.setName((String) tableRelationshipFacts.getValueAt(selectedRow, 3));
+            DatabaseTableDataObject tableDataObject_Child = new DatabaseTableDataObject();
+            tableDataObject_Child.setSchemaId(databaseSchemaDataObject.getSchemaId());
+            tableDataObject_Child.setTableId((Integer) tableRelationshipFacts.getValueAt(selectedRow, 4));
+            tableDataObject_Child.setName((String) tableRelationshipFacts.getValueAt(selectedRow, 5));
+            RelationshipDataObject relationshipDataObject = new RelationshipDataObject();
+            relationshipDataObject.setSchemaId(databaseSchemaDataObject.getSchemaId());
+            relationshipDataObject.setParent_TableId(tableDataObject_Parent.getTableId());
+            relationshipDataObject.setChild_TableId(tableDataObject_Child.getTableId());
+            relationshipDataObject.setRelationshipId((Integer) tableRelationshipFacts.getValueAt(selectedRow, 0));
+            relationshipDataObject.setRelationshipTypeId((Integer) tableRelationshipFacts.getValueAt(selectedRow, 6));
+            relationshipDataObject.setName((String) tableRelationshipFacts.getValueAt(selectedRow, 8));
+            relationshipDataObject.setForwardVerbPhrase((String) tableRelationshipFacts.getValueAt(selectedRow, 9));
+            relationshipDataObject.setReverseVerbPhrase((String) tableRelationshipFacts.getValueAt(selectedRow, 10));
+            listModelTableOne.reload(databaseSchemaDataObject.getSchemaId(), tableDataObject_Parent.getTableId());
             listParent.setSelectedValue(tableDataObject_Parent, true);
             listChild.setSelectedValue(tableDataObject_Child, true);
-            txtRelationshipName.setText(relationshipname);
-            txtForward.setText(forwardVerbPhrase);
-            txtReverse.setText(reverseVerbPhrase);
-
-            if (relationshiptypeid == 0) {
+            txtRelationshipName.setText(relationshipDataObject.getName());
+            txtForward.setText(relationshipDataObject.getForwardVerbPhrase());
+            txtReverse.setText(relationshipDataObject.getReverseVerbPhrase());
+            if (relationshipDataObject.getRelationshipTypeId() == 0) {
                 btnIdentifying.setSelected(true);
+                btnNonIdentifying.setEnabled(false);
             } else {
                 btnNonIdentifying.setSelected(true);
+                btnIdentifying.setEnabled(false);
             }
-
             JPanel panelRelationshipInput = getPanelRelationshipInput();
-
             panelRelationshipInput.setPreferredSize(new Dimension(700, 433));
-
             int i = JOptionPane.showOptionDialog(null, panelRelationshipInput, "Relationship", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{"Cancel", "  Ok  "}, null);
-
             if (i == 1) {
-                relationshipname = txtRelationshipName.getText();
-                forwardVerbPhrase = txtForward.getText();
-                reverseVerbPhrase = txtReverse.getText();
-
-                Integer relationshiptypeid_new;
-
-                if (btnIdentifying.isSelected()) {
-                    relationshiptypeid_new = 0;
-                } else {
-                    relationshiptypeid_new = 1;
+                relationshipDataObject.setName(txtRelationshipName.getText());
+                relationshipDataObject.setForwardVerbPhrase(txtForward.getText());
+                relationshipDataObject.setReverseVerbPhrase(txtReverse.getText());
+                try {
+                    dbLink.Relationship_Update(relationshipDataObject);
+                    tableModelRelationship.reload(tableDataObject_Parent);
+                    tableModelRelationshipKeyPair.reload(relationshipDataObject);
+                    hideTableRelationshipColumns();
+                    hideTableRelationshipKeyPairColumns();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
                 }
-
-                if (relationshiptypeid != relationshiptypeid_new) {
-                    dbLink.RelationshipKeyPair_Delete(schemaid, parent_tableid, child_tableid, relationshipid);
-                }
-
-                dbLink.Relationship_Update(schemaid, parent_tableid, child_tableid, relationshipid, relationshiptypeid_new, relationshipname, forwardVerbPhrase, reverseVerbPhrase);
-                tableModelRelationship.reload(schemaid);
-                tableModelRelationshipKeyPair.reload(schemaid, parent_tableid, child_tableid, relationshipid);
-                hideTableRelationshipColumns();
-                hideTableRelationshipKeyPairColumns();
             }
+            //todo - set tables selected
         } else {
-            showMessage("Please select row to update.");
+            Message.showMessage("Please select row to update");
         }
-
     }
 
     private void eventActionPerformed_btnRelationshipDelete(ActionEvent e) {
         Integer selectedRow = tableRelationshipFacts.getSelectedRow();
-
         if (selectedRow != -1) {
-            Integer relationshipid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 0);
-            Integer schemaid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 1);
-            Integer parent_tableid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 2);
-            Integer child_tableid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 4);
-            Integer relationshiptypeid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 6);
-
-            dbLink.Relationship_Delete(schemaid, parent_tableid, child_tableid, relationshipid);
-            tableModelRelationship.reload(schemaid, parent_tableid);
-            tableModelRelationshipKeyPair.reload(schemaid, parent_tableid, child_tableid, relationshipid);
+            RelationshipDataObject relationshipDataObject = new RelationshipDataObject();
+            relationshipDataObject.setSchemaId((Integer) tableRelationshipFacts.getValueAt(selectedRow, 1));
+            relationshipDataObject.setParent_TableId((Integer) tableRelationshipFacts.getValueAt(selectedRow, 2));
+            relationshipDataObject.setChild_TableId((Integer) tableRelationshipFacts.getValueAt(selectedRow, 4));
+            relationshipDataObject.setRelationshipId((Integer) tableRelationshipFacts.getValueAt(selectedRow, 0));
+            try {
+                dbLink.Relationship_Delete(relationshipDataObject);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            DatabaseTableDataObject databaseTableDataObject = new DatabaseTableDataObject();
+            databaseTableDataObject.setSchemaId(relationshipDataObject.getSchemaId());
+            databaseTableDataObject.setTableId(relationshipDataObject.getParent_TableId());
+            tableModelRelationship.reload(databaseTableDataObject);
+            tableModelRelationshipKeyPair.clear();
             hideTableRelationshipColumns();
             hideTableRelationshipKeyPairColumns();
         } else {
-            showMessage("Please select row to delete.");
+            Message.showMessage("Please select row to delete");
         }
     }
-
 
     private JPanel getPanelParentKeys(String parent_name) {
         FormLayout layout = new FormLayout("min:grow", //columns
@@ -1227,18 +1144,14 @@ public class Main {
         JPanel panel = new JPanel();
         JScrollPane scrollPane = new JScrollPane(listParentPK);
         JScrollPane scrollPane1 = new JScrollPane(listParentNPK);
-
         panel.setLayout(layout);
         panel.setBorder(new TitledBorder("Parent Table: " + parent_name));
         scrollPane.setBorder(new TitledBorder("Primary Keys"));
         scrollPane1.setBorder(new TitledBorder("Non-Primary Keys"));
-
         panel.add(scrollPane, cc.xy(1, 1));
         panel.add(scrollPane1, cc.xy(1, 2));
-
         return panel;
     }
-
 
     private JPanel getPanelChildKeys(String child_name) {
         FormLayout layout = new FormLayout("min:grow", //columns
@@ -1247,18 +1160,14 @@ public class Main {
         JPanel panel = new JPanel();
         JScrollPane scrollPane = new JScrollPane(listChildPK);
         JScrollPane scrollPane1 = new JScrollPane(listChildNPK);
-
         panel.setLayout(layout);
         panel.setBorder(new TitledBorder("Child Table: " + child_name));
         scrollPane.setBorder(new TitledBorder("Primary Keys"));
         scrollPane1.setBorder(new TitledBorder("Non-Primary Keys"));
-
         panel.add(scrollPane, cc.xy(1, 1));
         panel.add(scrollPane1, cc.xy(1, 2));
-
         return panel;
     }
-
 
     private JPanel getPanelRelationshipPairKeys() {
         FormLayout layout = new FormLayout("min:grow", //columns
@@ -1269,45 +1178,32 @@ public class Main {
         JScrollPane scrollPane2 = new JScrollPane(tableRelationshipPairKeys);
         JButton btnRelationshipKeyAdd = new JButton();
         JButton btnRelationshipKeyDelete = new JButton();
-
         btnRelationshipKeyAdd.setToolTipText("Add foreign key");
         btnRelationshipKeyDelete.setToolTipText("Delete foreign key");
-
         panel.setLayout(layout);
         panel.setBorder(new TitledBorder("Relationship Key Pair"));
-
         btnRelationshipKeyAdd.setText("+");
         btnRelationshipKeyDelete.setText("-");
-
         panel.add(scrollPane2, cc.xy(1, 1));
         panel.add(btnPanel, cc.xy(1, 2));
-
         btnPanel.add(btnRelationshipKeyAdd);
         btnPanel.add(btnRelationshipKeyDelete);
-
         hideTableRelationshipKeyPairColumns();
-
         btnRelationshipKeyAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
                 eventActionPerformed_btnRelationshipKeyAdd(e);
             }
         });
-
         btnRelationshipKeyDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
                 eventActionPerformed_btnRelationshipKeyDelete(e);
             }
         });
-
         return panel;
     }
 
-
     private void eventActionPerformed_btnRelationshipKeyAdd(ActionEvent e) {
         Integer selectedRow = tableRelationshipFacts.getSelectedRow();
-
         if (selectedRow != -1) {
             Integer relationshipid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 0);
             Integer schemaid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 1);
@@ -1317,14 +1213,17 @@ public class Main {
             String child_name = (String) tableRelationshipFacts.getValueAt(selectedRow, 5);
             Integer relationshiptypeid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 6);
             JPanel panel = getPanelRelationshipKeyInput(parent_name, child_name);
-
             panel.setPreferredSize(new Dimension(700, 433));
-
-            listModelParentPK.reload(schemaid, parent_tableid);
-            listModelParentNPK.reload(schemaid, parent_tableid);
-            listModelChildPK.reload(schemaid, child_tableid);
-            listModelChildNPK.reload(schemaid, child_tableid);
-
+            DatabaseTableDataObject databaseTableDataObjectParent = new DatabaseTableDataObject();
+            databaseTableDataObjectParent.setSchemaId(schemaid);
+            databaseTableDataObjectParent.setTableId(parent_tableid);
+            listModelParentPK.reload(databaseTableDataObjectParent);
+            listModelParentNPK.reload(databaseTableDataObjectParent);
+            DatabaseTableDataObject databaseTableDataObjectChild = new DatabaseTableDataObject();
+            databaseTableDataObjectChild.setSchemaId(schemaid);
+            databaseTableDataObjectChild.setTableId(child_tableid);
+            listModelChildPK.reload(databaseTableDataObjectChild);
+            listModelChildNPK.reload(databaseTableDataObjectChild);
             if (relationshiptypeid == 0) {
                 listParentNPK.setBackground(Color.lightGray);
                 listChildNPK.setBackground(Color.lightGray);
@@ -1332,108 +1231,133 @@ public class Main {
                 listParentNPK.setBackground(Color.lightGray);
                 listChildPK.setBackground(Color.lightGray);
             }
-
             int i = JOptionPane.showOptionDialog(null, panel, "Relationship Key Pair", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{"Cancel", "  Ok  "}, null);
-
             listParentNPK.setBackground(Color.white);
             listChildPK.setBackground(Color.white);
             listChildNPK.setBackground(Color.white);
-
             if (i == 1) {
                 if (relationshiptypeid == 0) {
-                    KeyDataObject keyDataObjectParent = (KeyDataObject) listParentPK.getSelectedValue();
-                    KeyDataObject keyDataObjectChild = (KeyDataObject) listChildPK.getSelectedValue();
+                    TableKeyDataObject keyDataObjectParent = (TableKeyDataObject) listParentPK.getSelectedValue();
+                    TableKeyDataObject keyDataObjectChild = (TableKeyDataObject) listChildPK.getSelectedValue();
                     Integer parent_keyid = keyDataObjectParent.getKeyId();
                     Integer child_keyid = keyDataObjectChild.getKeyId();
-
-                    dbLink.RelationshipKeyPair_Insert(schemaid, parent_tableid, child_tableid, relationshipid, parent_keyid, child_keyid);
-                    tableModelRelationshipKeyPair.reload(schemaid, parent_tableid, child_tableid, relationshipid);
-                    hideTableRelationshipKeyPairColumns();
+                    try {
+                        TableKeyRelationshipKeyPairDataObject tableKeyRelationshipKeyPairDataObject = new TableKeyRelationshipKeyPairDataObject();
+                        tableKeyRelationshipKeyPairDataObject.setSchemaId(schemaid);
+                        tableKeyRelationshipKeyPairDataObject.setParent_TableId(parent_tableid);
+                        tableKeyRelationshipKeyPairDataObject.setChild_TableId(child_tableid);
+                        tableKeyRelationshipKeyPairDataObject.setRelationshipId(relationshipid);
+                        tableKeyRelationshipKeyPairDataObject.setParent_KeyId(parent_keyid);
+                        tableKeyRelationshipKeyPairDataObject.setChild_KeyId(child_keyid);
+                        dbLink.RelationshipKeyPair_Insert(tableKeyRelationshipKeyPairDataObject);
+                        RelationshipDataObject relationshipDataObject = new RelationshipDataObject();
+                        relationshipDataObject.setSchemaId(schemaid);
+                        relationshipDataObject.setParent_TableId(parent_tableid);
+                        relationshipDataObject.setChild_TableId(child_tableid);
+                        relationshipDataObject.setRelationshipId(relationshipid);
+                        tableModelRelationshipKeyPair.reload(relationshipDataObject);
+                        hideTableRelationshipKeyPairColumns();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
                 } else {
-                    KeyDataObject keyDataObjectParent = (KeyDataObject) listParentPK.getSelectedValue();
-                    KeyDataObject keyDataObjectChild = (KeyDataObject) listChildNPK.getSelectedValue();
+                    TableKeyDataObject keyDataObjectParent = (TableKeyDataObject) listParentPK.getSelectedValue();
+                    TableKeyDataObject keyDataObjectChild = (TableKeyDataObject) listChildNPK.getSelectedValue();
                     Integer parent_keyid = keyDataObjectParent.getKeyId();
                     Integer child_keyid = keyDataObjectChild.getKeyId();
-
-                    dbLink.RelationshipKeyPair_Insert(schemaid, parent_tableid, child_tableid, relationshipid, parent_keyid, child_keyid);
-                    tableModelRelationshipKeyPair.reload(schemaid, parent_tableid, child_tableid, relationshipid);
-                    hideTableRelationshipKeyPairColumns();
+                    try {
+                        TableKeyRelationshipKeyPairDataObject tableKeyRelationshipKeyPairDataObject = new TableKeyRelationshipKeyPairDataObject();
+                        tableKeyRelationshipKeyPairDataObject.setSchemaId(schemaid);
+                        tableKeyRelationshipKeyPairDataObject.setParent_TableId(parent_tableid);
+                        tableKeyRelationshipKeyPairDataObject.setChild_TableId(child_tableid);
+                        tableKeyRelationshipKeyPairDataObject.setRelationshipId(relationshipid);
+                        tableKeyRelationshipKeyPairDataObject.setParent_KeyId(parent_keyid);
+                        tableKeyRelationshipKeyPairDataObject.setChild_KeyId(child_keyid);
+                        dbLink.RelationshipKeyPair_Insert(tableKeyRelationshipKeyPairDataObject);
+                        RelationshipDataObject relationshipDataObject = new RelationshipDataObject();
+                        relationshipDataObject.setSchemaId(schemaid);
+                        relationshipDataObject.setParent_TableId(parent_tableid);
+                        relationshipDataObject.setChild_TableId(child_tableid);
+                        relationshipDataObject.setRelationshipId(relationshipid);
+                        tableModelRelationshipKeyPair.reload(relationshipDataObject);
+                        hideTableRelationshipKeyPairColumns();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
                 }
             }
         } else {
-            showMessage("Select relationship.");
+            Message.showMessage("Select relationship");
         }
     }
 
-
     private void eventActionPerformed_btnRelationshipKeyDelete(ActionEvent e) {
         Integer selectedRow = tableRelationshipFacts.getSelectedRow();
-
         if (selectedRow != -1) {
             Integer relationshipid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 0);
             Integer schemaid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 1);
             Integer parent_tableid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 2);
             Integer child_tableid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 4);
-            Integer relationshiptypeid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 6);
             selectedRow = tableRelationshipPairKeys.getSelectedRow();
-
             if (selectedRow != -1) {
                 Integer parent_keyid = (Integer) tableRelationshipPairKeys.getValueAt(selectedRow, 0);
                 Integer child_keyid = (Integer) tableRelationshipPairKeys.getValueAt(selectedRow, 1);
-
-                dbLink.RelationshipKeyPair_Delete(schemaid, parent_tableid, child_tableid, relationshipid, parent_keyid, child_keyid);
-                tableModelRelationshipKeyPair.reload(schemaid, parent_tableid, child_tableid, relationshipid);
-                hideTableRelationshipKeyPairColumns();
+                try {
+                    TableKeyRelationshipKeyPairDataObject tableKeyRelationshipKeyPairDataObject = new TableKeyRelationshipKeyPairDataObject();
+                    tableKeyRelationshipKeyPairDataObject.setSchemaId(schemaid);
+                    tableKeyRelationshipKeyPairDataObject.setParent_TableId(parent_tableid);
+                    tableKeyRelationshipKeyPairDataObject.setChild_TableId(child_tableid);
+                    tableKeyRelationshipKeyPairDataObject.setRelationshipId((Integer) tableRelationshipFacts.getValueAt(selectedRow, 0));
+                    tableKeyRelationshipKeyPairDataObject.setParent_KeyId(parent_keyid);
+                    tableKeyRelationshipKeyPairDataObject.setChild_KeyId(child_keyid);
+                    dbLink.RelationshipKeyPair_Delete(tableKeyRelationshipKeyPairDataObject);
+                    RelationshipDataObject relationshipDataObject = new RelationshipDataObject();
+                    relationshipDataObject.setSchemaId(schemaid);
+                    relationshipDataObject.setParent_TableId(parent_tableid);
+                    relationshipDataObject.setChild_TableId(child_tableid);
+                    relationshipDataObject.setRelationshipId(relationshipid);
+                    tableModelRelationshipKeyPair.reload(relationshipDataObject);
+                    hideTableRelationshipKeyPairColumns();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
         }
     }
-
 
     private JPanel getPanelSchema() {
         FormLayout layout = new FormLayout("min:grow", //columns
                 "fill:min:grow,min" //rows
         );
         JPanel panel = new JPanel();
-
         panel.setLayout(layout);
         panel.setMinimumSize(new Dimension(250, 0));
         panel.setBorder(new TitledBorder("Schema"));
-
         panel.add(new JScrollPane(listSchema), cc.xy(1, 1));
         panel.add(getPanelSchemaButtons(), cc.xy(1, 2));
-
         listSchema.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
-
                 eventListSelection_listSchema(e);
             }
         });
-
         return panel;
     }
-
 
     private void eventListSelection_listSchema(ListSelectionEvent e) {
         if (e.getValueIsAdjusting()) {
             return;
         }
-
         if (isSchemaSelected()) {
-
-            SchemaDataObject schemaDataObject = getSelectedSchema();
-            Integer schemaId = schemaDataObject.getSchemaId();
-
-            listModelTable.reload(schemaId);
+            DatabaseSchemaDataObject databaseSchemaDataObject = getSelectedSchema();
+            listModelTable.reload(databaseSchemaDataObject);
             tableModelKeys.clear();
             hideTableKeysColumns();
-            tableModelRelationship.reload(schemaId);
+            tableModelRelationship.clear();
             hideTableRelationshipColumns();
             tableModelRelationshipKeyPair.clear();
             hideTableRelationshipKeyPairColumns();
-
         }
     }
-
 
     private JPanel getPanelSchemaButtons() {
         FormLayout layout = new FormLayout("min:grow,min,min,min,min:grow", //columns
@@ -1450,58 +1374,66 @@ public class Main {
         panel.add(btnSchemaAdd, cc.xy(2, 1));
         panel.add(btnSchemaDelete, cc.xy(3, 1));
         panel.add(btnSchemaUpdate, cc.xy(4, 1));
-
         btnSchemaAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_btnSchemaAdd(e);
             }
         });
-
         btnSchemaDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_btnSchemaDelete(e);
             }
         });
-
         btnSchemaUpdate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_btnSchemaUpdate(e);
             }
         });
-
         return panel;
     }
 
-
     private void eventActionPerformed_btnSchemaAdd(ActionEvent e) {
         String s = (String) JOptionPane.showInputDialog(null, "What is your new schema name?", "New Schema", -1, null, null, "");
-
         if (isAlphaNumeric(s)) {
-            dbLink.DatabaseSchema_Insert(s);
+            DatabaseSchemaDataObject databaseSchemaDataObject = new DatabaseSchemaDataObject();
+            databaseSchemaDataObject.setName(s);
+            //dbLink.DatabaseSchema_Insert(s);
+            try {
+                dbLink.DatabaseSchema_Insert(databaseSchemaDataObject);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             listModelSchema.reload();
         }
     }
 
-
     private void eventActionPerformed_btnSchemaUpdate(ActionEvent e) {
         if (isSchemaSelected()) {
-            SchemaDataObject schemaDataObject = getSelectedSchema();
-            String s = (String) JOptionPane.showInputDialog(null, "What is your new schema name?", "New Schema", -1, null, null, schemaDataObject.getSchemaName());
+            DatabaseSchemaDataObject databaseSchemaDataObject = getSelectedSchema();
+            String s = (String) JOptionPane.showInputDialog(null, "What is your new schema name?", "New Schema", -1, null, null, databaseSchemaDataObject.getName());
             if (isAlphaNumeric(s)) {
-                Integer schemaId = schemaDataObject.getSchemaId();
-                dbLink.DatabaseSchema_Update(schemaId, s);
+                Integer schemaId = databaseSchemaDataObject.getSchemaId();
+                databaseSchemaDataObject.setSchemaId(schemaId);
+                databaseSchemaDataObject.setName(s);
+                try {
+                    dbLink.DatabaseSchema_Update(databaseSchemaDataObject);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
                 listModelSchema.reload();
             }
         }
-
     }
-
 
     private void eventActionPerformed_btnSchemaDelete(ActionEvent e) {
         if (isSchemaSelected()) {
-            SchemaDataObject schemaDataObject = getSelectedSchema();
-            Integer schemaId = schemaDataObject.getSchemaId();
-            dbLink.DatabaseSchema_Delete(schemaId);
+            DatabaseSchemaDataObject databaseSchemaDataObject = new DatabaseSchemaDataObject();
+            databaseSchemaDataObject.setSchemaId(getSelectedSchema().getSchemaId());
+            try {
+                dbLink.DatabaseSchema_Delete(databaseSchemaDataObject);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             listModelSchema.reload();
             listModelTable.clear();
             tableModelKeys.clear();
@@ -1512,7 +1444,6 @@ public class Main {
             hideTableRelationshipKeyPairColumns();
         }
     }
-
 
     private JPanel getPanelTableButtons() {
         FormLayout layout = new FormLayout("min:grow,min,min,min,min:grow", //columns
@@ -1529,80 +1460,84 @@ public class Main {
         panel.add(btnTableAdd, cc.xy(2, 1));
         panel.add(btnTableDelete, cc.xy(3, 1));
         panel.add(btnTableUpdate, cc.xy(4, 1));
-
         btnTableAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_btnTableAdd(e);
             }
         });
-
         btnTableDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_btnTableDelete(e);
             }
         });
-
         btnTableUpdate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_btnTableUpdate(e);
             }
         });
-
         return panel;
     }
 
-
     private void eventActionPerformed_btnTableUpdate(ActionEvent e) {
         if (isSchemaSelected()) {
-            TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
-            String s = (String) JOptionPane.showInputDialog(null, "What is your new table name?", "New Table", -1, null, null, tableDataObject.getTableName());
+            DatabaseTableDataObject databaseTableDataObject = (DatabaseTableDataObject) listTable.getSelectedValue();
+            String s = (String) JOptionPane.showInputDialog(null, "What is your new table name?", "New Table", -1, null, null, databaseTableDataObject.getName());
             if (isAlphaNumeric(s)) {
-                Integer schemaId = tableDataObject.getSchemaId();
-                Integer tableId = tableDataObject.getTableId();
-
-                dbLink.DatabaseTable_Update(schemaId, tableId, s);
-                listModelTable.reload(schemaId);
-                tableModelRelationship.reload(schemaId);
+                databaseTableDataObject.setName(s);
+                try {
+                    dbLink.DatabaseTable_Update(databaseTableDataObject);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                DatabaseSchemaDataObject databaseSchemaDataObject = new DatabaseSchemaDataObject();
+                databaseSchemaDataObject.setSchemaId(databaseTableDataObject.getSchemaId());
+                listModelTable.reload(databaseSchemaDataObject);
+                tableModelRelationship.reload(databaseTableDataObject);
                 hideTableRelationshipColumns();
             }
         }
     }
 
-
     private void eventActionPerformed_btnTableDelete(ActionEvent e) {
         if (isSchemaSelected()) {
-            TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
-            Integer schemaId = tableDataObject.getSchemaId();
-            Integer tableId = tableDataObject.getTableId();
-
-            dbLink.DatabaseTable_Delete(schemaId, tableId);
-            listModelTable.reload(schemaId);
+            DatabaseTableDataObject databaseTableDataObject = (DatabaseTableDataObject) listTable.getSelectedValue();
+            try {
+                dbLink.DatabaseTable_Delete(databaseTableDataObject);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            DatabaseSchemaDataObject databaseSchemaDataObject = new DatabaseSchemaDataObject();
+            databaseSchemaDataObject.setSchemaId(databaseTableDataObject.getSchemaId());
+            listModelTable.reload(databaseSchemaDataObject);
             tableModelKeys.clear();
             hideTableKeysColumns();
-            tableModelRelationship.reload(schemaId);
+            tableModelRelationship.clear();
             hideTableRelationshipColumns();
             tableModelRelationshipKeyPair.clear();
             hideTableRelationshipKeyPairColumns();
         }
     }
 
-
     private void eventActionPerformed_btnTableAdd(ActionEvent e) {
         if (isSchemaSelected()) {
             String s = (String) JOptionPane.showInputDialog(null, "What is your new table name?", "New Table", -1, null, null, "");
-
             if (isAlphaNumeric(s)) {
-                SchemaDataObject schemaDataObject = getSelectedSchema();
-                Integer schemaId = schemaDataObject.getSchemaId();
-
-                dbLink.DatabaseTable_Insert(schemaId, s);
-                listModelTable.reload(schemaId);
+                DatabaseSchemaDataObject databaseSchemaDataObject = getSelectedSchema();
+                Integer schemaId = databaseSchemaDataObject.getSchemaId();
+                DatabaseTableDataObject databaseTableDataObject = new DatabaseTableDataObject();
+                databaseTableDataObject.setSchemaId(schemaId);
+                databaseTableDataObject.setName(s);
+                try {
+                    dbLink.DatabaseTable_Insert(databaseTableDataObject);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                listModelTable.reload(databaseSchemaDataObject);
                 tableModelKeys.clear();
                 hideTableKeysColumns();
             }
         }
     }
-
 
     private boolean isAlphaNumeric(String s) {
         return s != null && s.length() > 0 && s.matches("^$|^[a-zA-Z][a-zA-Z0-9_]*");
@@ -1623,62 +1558,57 @@ public class Main {
         buttonPanel.add(btnKeyAdd, cc.xy(2, 1));
         buttonPanel.add(btnKeyDelete, cc.xy(3, 1));
         buttonPanel.add(btnKeyUpdate, cc.xy(4, 1));
-
         btnKeyAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_btnKeyAdd(e);
             }
         });
-
         btnKeyDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_btnKeyDelete(e);
             }
         });
-
         btnKeyUpdate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 eventActionPerformed_btnKeyUpdate(e);
             }
         });
-
         return buttonPanel;
     }
-
 
     private void eventActionPerformed_btnKeyAdd(ActionEvent e) {
         if (isTableSelected()) {
             clearPanelTableKeyInput();
             JPanel panelTableKeyInput = getPanelTableKeyInput();
             panelTableKeyInput.setPreferredSize(new Dimension(404, 250));
-
             int i = JOptionPane.showOptionDialog(null, panelTableKeyInput, "Table Key", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{"Cancel", "  Ok  "}, null);
-
             if (i == 1) {
-                TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
-
+                DatabaseTableDataObject databaseTableDataObject = (DatabaseTableDataObject) listTable.getSelectedValue();
                 if (isKeyTypesListSelected()) {
                     KeyTypeDataObject keyTypeDataObject = (KeyTypeDataObject) listKeyTypes.getSelectedValue();
-                    String keyOrderText = keyOrder.getText();
-                    Integer schemaid = tableDataObject.getSchemaId();
-                    Integer tableid = tableDataObject.getTableId();
-                    String keyname = keyName.getText();
-                    String keylabel = keyname;
-                    Boolean keyispk = btnPK_Yes.isSelected();
-                    Integer keytypeid = keyTypeDataObject.getTypeId();
-                    Integer keyprecision = getKeyPrecision(keytypeid);
-                    Integer keyscale = getKeyScale(keytypeid);
-                    Integer keyorder = Integer.parseInt(keyOrderText);
-
-                    dbLink.TableKey_Insert(schemaid, tableid, keyname, keylabel, keyispk, keytypeid, keyprecision, keyscale, keyorder);
-                    tableModelKeys.reload(schemaid, tableid);
-                    hideTableKeysColumns();
+                    TableKeyDataObject tableKeyDataObject = new TableKeyDataObject();
+                    tableKeyDataObject.setSchemaId(databaseTableDataObject.getSchemaId());
+                    tableKeyDataObject.setTableId(databaseTableDataObject.getTableId());
+                    tableKeyDataObject.setName(keyName.getText());
+                    tableKeyDataObject.setLabel(keyName.getText());
+                    tableKeyDataObject.setIsPK(btnPK_Yes.isSelected());
+                    tableKeyDataObject.setTypeId(keyTypeDataObject.getTypeId());
+                    tableKeyDataObject.setPrcsn(getKeyDefaultPrecision(keyTypeDataObject.getTypeId()));
+                    tableKeyDataObject.setScale(getKeyDefaultScale(keyTypeDataObject.getTypeId()));
+                    tableKeyDataObject.setOrden(Integer.parseInt(keyOrder.getText()));
+                    try {
+                        dbLink.TableKey_Insert(tableKeyDataObject);
+                        tableModelKeys.reload(databaseTableDataObject);
+                        hideTableKeysColumns();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
                 }
             } else {
                 hideTableKeysColumns();
             }
         } else {
-            showMessage("Please select table.");
+            Message.showMessage("Please select table");
         }
     }
 
@@ -1687,31 +1617,32 @@ public class Main {
             fillPanelTableKeyInput();
             JPanel panelTableKeyInput = getPanelTableKeyInput();
             panelTableKeyInput.setPreferredSize(new Dimension(404, 250));
-
             int i = JOptionPane.showOptionDialog(null, panelTableKeyInput, "Table Key", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{"Cancel", "  Ok  "}, null);
-
             if (i == 1) {
-                TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
+                DatabaseTableDataObject databaseTableDataObject = (DatabaseTableDataObject) listTable.getSelectedValue();
                 if (isKeyTypesListSelected()) {
                     KeyTypeDataObject keyTypeDataObject = (KeyTypeDataObject) listKeyTypes.getSelectedValue();
-                    String keyOrderText = keyOrder.getText();
-                    Integer schemaid = tableDataObject.getSchemaId();
-                    Integer tableid = tableDataObject.getTableId();
                     Integer selectedRow = tableKeys.getSelectedRow();
                     if (selectedRow != -1) {
-                        Integer keyid = (Integer) tableModelKeys.getValueAt(selectedRow, 2);
-                        String keyname = keyName.getText();
-                        String keylabel = keyname;
-                        Boolean keyispk = btnPK_Yes.isSelected();
-                        Integer keytypeid = keyTypeDataObject.getTypeId();
-                        Integer keyprecision = getKeyPrecision(keytypeid);
-                        Integer keyscale = getKeyScale(keytypeid);
-                        Integer keyorder = Integer.parseInt(keyOrderText);
-
-                        dbLink.TableKey_Update(schemaid, tableid, keyid, keyname, keylabel, keyispk, keytypeid, keyprecision, keyscale, keyorder);
-                        tableModelKeys.reload(schemaid, tableid);
-                        hideTableKeysColumns();
-                        reloadTableRelationshipKeyPair();
+                        TableKeyDataObject tableKeyDataObject = new TableKeyDataObject();
+                        tableKeyDataObject.setSchemaId(databaseTableDataObject.getSchemaId());
+                        tableKeyDataObject.setTableId(databaseTableDataObject.getTableId());
+                        tableKeyDataObject.setKeyId((Integer) tableKeys.getValueAt(selectedRow, 2));
+                        tableKeyDataObject.setName(keyName.getText());
+                        tableKeyDataObject.setLabel(keyName.getText());
+                        tableKeyDataObject.setIsPK(btnPK_Yes.isSelected());
+                        tableKeyDataObject.setTypeId(keyTypeDataObject.getTypeId());
+                        tableKeyDataObject.setPrcsn(getKeyDefaultPrecision(keyTypeDataObject.getTypeId()));
+                        tableKeyDataObject.setScale(getKeyDefaultScale(keyTypeDataObject.getTypeId()));
+                        tableKeyDataObject.setOrden(Integer.parseInt(keyOrder.getText()));
+                        try {
+                            dbLink.TableKey_Update(tableKeyDataObject);
+                            tableModelKeys.reload(databaseTableDataObject);
+                            hideTableKeysColumns();
+                            reloadTableRelationshipKeyPair();
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
                     }
                 }
             } else {
@@ -1720,98 +1651,68 @@ public class Main {
         }
     }
 
-
     private boolean isKeyTypesListSelected() {
         return !listKeyTypes.isSelectionEmpty();
     }
 
-
     private void eventActionPerformed_btnKeyDelete(ActionEvent e) {
         if (isTableSelected()) {
-            TableDataObject tableDataObject = (TableDataObject) listTable.getSelectedValue();
-            Integer schemaid = tableDataObject.getSchemaId();
-            Integer tableid = tableDataObject.getTableId();
+            DatabaseTableDataObject databaseTableDataObject = (DatabaseTableDataObject) listTable.getSelectedValue();
             Integer selectedRow = tableKeys.getSelectedRow();
-
             if (selectedRow != -1) {
-                Integer keyid = (Integer) tableModelKeys.getValueAt(selectedRow, 2);
-
-                dbLink.TableKey_Delete(schemaid, tableid, keyid);
-                tableModelKeys.reload(schemaid, tableid);
+                TableKeyDataObject tableKeyDataObject = new TableKeyDataObject();
+                tableKeyDataObject.setSchemaId(databaseTableDataObject.getSchemaId());
+                tableKeyDataObject.setTableId(databaseTableDataObject.getTableId());
+                tableKeyDataObject.setKeyId((Integer) tableModelKeys.getValueAt(selectedRow, 2));
+                try {
+                    dbLink.TableKey_Delete(tableKeyDataObject);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                databaseTableDataObject.setSchemaId(databaseTableDataObject.getSchemaId());
+                databaseTableDataObject.setTableId(databaseTableDataObject.getTableId());
+                tableModelKeys.reload(databaseTableDataObject);
                 hideTableKeysColumns();
             }
         }
     }
 
-
-    private Integer getKeyPrecision(Integer keytypeid) {
+    private Integer getKeyDefaultPrecision(Integer keytypeid) {
         /* *
-            call keytype_insert(0,'IDENTITY',false,false);
-            call keytype_insert(1,'INTEGER',false,false);
-            call keytype_insert(2,'DOUBLE',false,false);
-            call keytype_insert(3,'VARCHAR',true,false);
-            call keytype_insert(4,'DATE',false,false);
-            call keytype_insert(5,'TIME',false,false);
-            call keytype_insert(6,'TIMESTAMP',false,false);
-            call keytype_insert(7,'DECIMAL',true,true);
-            call keytype_insert(8,'LONGVARCHAR',false,false);
-            call keytype_insert(9,'BLOB',false,false);
-            call keytype_insert(10,'CLOB',false,false);
+            call keytype_insert(4,'DECIMAL',true,true);
         * */
-
         Integer precision = null;
-
         switch (keytypeid) {
-            case 3:
-                precision = 8000;
-                break;
-            case 7:
+            case 4:
                 precision = 10;
                 break;
             default:
                 precision = 0;
                 break;
         }
-
         return precision;
     }
 
-
-    private Integer getKeyScale(Integer keytypeid) {
+    private Integer getKeyDefaultScale(Integer keytypeid) {
         /* *
-            call keytype_insert(0,'IDENTITY',false,false);
-            call keytype_insert(1,'INTEGER',false,false);
-            call keytype_insert(2,'DOUBLE',false,false);
-            call keytype_insert(3,'VARCHAR',true,false);
-            call keytype_insert(4,'DATE',false,false);
-            call keytype_insert(5,'TIME',false,false);
-            call keytype_insert(6,'TIMESTAMP',false,false);
-            call keytype_insert(7,'DECIMAL',true,true);
-            call keytype_insert(8,'LONGVARCHAR',false,false);
-            call keytype_insert(9,'BLOB',false,false);
-            call keytype_insert(10,'CLOB',false,false);
+            call keytype_insert(4,'DECIMAL',true,true);
         * */
-
         Integer scale = null;
-
         switch (keytypeid) {
-            case 7:
-                scale = 2;
+            case 4:
+                scale = 5;
                 break;
             default:
                 scale = 0;
                 break;
         }
-
         return scale;
     }
-
 
     private void eventActionPerformed_mnuiExit(ActionEvent e) {
         frame.dispose();
         dbLink.Shutdown();
     }
-
 
     private void hideTableKeysColumns() {
         tableKeys.getColumnModel().getColumn(0).setMinWidth(0);
@@ -1837,7 +1738,6 @@ public class Main {
         tableKeys.getColumnModel().getColumn(9).setWidth(0);
     }
 
-
     private void hideTableRelationshipColumns() {
         tableRelationshipFacts.getColumnModel().getColumn(0).setMinWidth(0);
         tableRelationshipFacts.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -1856,7 +1756,6 @@ public class Main {
         tableRelationshipFacts.getColumnModel().getColumn(6).setWidth(0);
     }
 
-
     private void hideTableRelationshipKeyPairColumns() {
         tableRelationshipPairKeys.getColumnModel().getColumn(0).setMinWidth(0);
         tableRelationshipPairKeys.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -1864,50 +1763,33 @@ public class Main {
         tableRelationshipPairKeys.getColumnModel().getColumn(1).setMinWidth(0);
         tableRelationshipPairKeys.getColumnModel().getColumn(1).setMaxWidth(0);
         tableRelationshipPairKeys.getColumnModel().getColumn(1).setWidth(0);
-
     }
-
-
-    private void showMessage(String message) {
-        JOptionPane.showMessageDialog(null, message, "PotatoSQL", JOptionPane.INFORMATION_MESSAGE);
-    }
-
 
     private void selectOptions() {
-
         FormLayout layoutJava01 = new FormLayout("min", //columns
                 "min,10dlu,min,10dlu" //rows
         );
-
         FormLayout layoutJava02 = new FormLayout("min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu", //columns
                 "min,10dlu,min,10dlu,min,10dlu" //rows
         );
-
         FormLayout layoutSql01 = new FormLayout("min", //columns
                 "min,min,min,min,min" //rows
         );
-
         FormLayout layoutSql02 = new FormLayout("min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu", //columns
                 "min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu,min,10dlu" //rows
         );
-
         FormLayout layoutSchemaSql = new FormLayout("min", //columns
                 "min,min,min,min,min,min" //rows
         );
-
         FormLayout layoutOtherJava = new FormLayout("min", //columns
                 "min,10dlu,min,10dlu" //rows
         );
-
         FormLayout layoutJava = new FormLayout("20dlu,min:grow,20dlu", //columns
                 "20dlu,min,5dlu,min,20dlu" //rows
         );
-
-
         FormLayout layout = new FormLayout("min:grow,min", //columns
                 "min,min" //rows
         );
-
         JPanel pnlSchemaSql = new JPanel();
         JPanel pnlTableSql01 = new JPanel();
         JPanel pnlTableSql02 = new JPanel();
@@ -1916,10 +1798,8 @@ public class Main {
         JPanel pnlTableJava = new JPanel();
         JPanel pnlOtherJava = new JPanel();
         JPanel panel = new JPanel();
-
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
-
         pnlSchemaSql.setLayout(layoutSchemaSql);
         pnlJava01.setLayout(layoutJava01);
         pnlJava02.setLayout(layoutJava02);
@@ -1928,19 +1808,15 @@ public class Main {
         pnlTableJava.setLayout(layoutJava);
         pnlOtherJava.setLayout(layoutOtherJava);
         panel.setLayout(layout);
-
         pnlTableJava.add(pnlJava01, cc.xy(2, 2));
         pnlTableJava.add(pnlJava02, cc.xy(2, 4));
-
         tabbedPane.add(pnlSchemaSql, "Schema / Sql");
         tabbedPane.add(pnlTableSql01, "Table / Sql (1)");
         tabbedPane.add(pnlTableSql02, "Table / Sql (2)");
         tabbedPane.add(pnlTableJava, "Table / Java");
         tabbedPane.add(pnlOtherJava, "Other / Java");
-
         panel.add(tabbedPane, cc.xyw(1, 1, 2));
-        panel.add(clear, cc.xy(2, 2));
-
+        panel.add(btnClear, cc.xy(2, 2));
         JLabel label_Insert = new JLabel("Insert");
         JLabel label_Update = new JLabel("Update");
         JLabel label_Delete = new JLabel("Delete");
@@ -1956,7 +1832,6 @@ public class Main {
         JLabel label_Trigger_Statement_After = new JLabel("(Statement Level, After Event) Trigger");
         JLabel label_Trigger_Row_Before = new JLabel("(Row Level, Before Event) Trigger");
         JLabel label_Trigger_Row_After = new JLabel(" (Row Level, After Event) Trigger");
-
         label_Statement.setHorizontalAlignment(JLabel.RIGHT);
         label_Procedure.setHorizontalAlignment(JLabel.RIGHT);
         label_Method.setHorizontalAlignment(JLabel.RIGHT);
@@ -1964,7 +1839,6 @@ public class Main {
         label_Trigger_Statement_After.setHorizontalAlignment(JLabel.RIGHT);
         label_Trigger_Row_Before.setHorizontalAlignment(JLabel.RIGHT);
         label_Trigger_Row_After.setHorizontalAlignment(JLabel.RIGHT);
-
         JLabel label_Insert2 = new JLabel("Insert");
         JLabel label_Update2 = new JLabel("Update");
         JLabel label_Delete2 = new JLabel("Delete");
@@ -1975,16 +1849,12 @@ public class Main {
         JLabel label_Count2 = new JLabel("Count");
         JLabel label_Method2 = new JLabel("Method");
         JLabel label_MethodPrint2 = new JLabel("Method Print");
-
         pnlSchemaSql.add(cboxTables, cc.xy(1, 1));
-
         pnlOtherJava.add(cboxTestClass, cc.xy(1, 1));
-
         pnlTableSql01.add(cboxTablesDup, cc.xy(1, 1));
         pnlTableSql01.add(cboxViews, cc.xy(1, 2));
         pnlTableSql01.add(cboxStmtCreateSelect, cc.xy(1, 3));
         pnlTableSql01.add(cboxStmtInsertSelect, cc.xy(1, 4));
-
         pnlTableSql02.add(label_Insert, cc.xy(3, 1));
         pnlTableSql02.add(label_Update, cc.xy(5, 1));
         pnlTableSql02.add(label_Delete, cc.xy(7, 1));
@@ -2023,10 +1893,8 @@ public class Main {
         pnlTableSql02.add(cboxTriggerRowAfterInsert, cc.xy(3, 11));
         pnlTableSql02.add(cboxTriggerRowAfterUpdate, cc.xy(5, 11));
         pnlTableSql02.add(cboxTriggerRowAfterDelete, cc.xy(7, 11));
-
         pnlJava01.add(cboxDataObject, cc.xy(1, 3));
-
-        //first row
+//first row
         pnlJava02.add(label_Insert2, cc.xy(3, 1));
         pnlJava02.add(label_Update2, cc.xy(5, 1));
         pnlJava02.add(label_Delete2, cc.xy(7, 1));
@@ -2049,14 +1917,10 @@ public class Main {
         pnlJava02.add(label_MethodPrint2, cc.xy(1, 5));
         pnlJava02.add(cboxMethodSelectPrint, cc.xy(11, 5));
         pnlJava02.add(cboxMethodSelectAllPrint, cc.xy(15, 5));
-
-
         int i = JOptionPane.showOptionDialog(null, panel, "Output", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{"Cancel", "  Ok  "}, null);
-
-        clear.addActionListener(new ActionListener() {
+        btnClear.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Boolean flag = false;
-
                 cboxTriggerStatementAfterInsert.setSelected(flag);
                 cboxTriggerStatementAfterUpdate.setSelected(flag);
                 cboxTriggerStatementAfterDelete.setSelected(flag);
@@ -2099,7 +1963,6 @@ public class Main {
                 cboxMethodFunctionCount.setSelected(flag);
                 cboxMethodSelectPrint.setSelected(flag);
                 cboxMethodSelectAllPrint.setSelected(flag);
-                textArea.setText("");
             }
         });
     }
@@ -2110,4 +1973,16 @@ public class Main {
         } catch (Exception ex) {
         }
     }
+
+    private JPanel getPanelDataObject() {
+        FormLayout layout = new FormLayout("min:grow", //columns
+                "fill:min:grow" //rows
+        );
+        JPanel panel = new JPanel();
+        panel.setBorder(new TitledBorder("Data Object Generator"));
+        panel.setLayout(layout);
+        panel.add(new JButton("Data Object"), cc.xy(1, 1));
+        return panel;
+    }
+
 }

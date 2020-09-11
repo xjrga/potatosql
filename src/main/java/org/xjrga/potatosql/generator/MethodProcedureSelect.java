@@ -11,7 +11,6 @@ public class MethodProcedureSelect implements Code {
         this.procedureStuff = new ProcedureStuff(table);
     }
 
-
     @Override
     public String getCode() {
         String procedureKind = "Select";
@@ -23,7 +22,6 @@ public class MethodProcedureSelect implements Code {
         String rowput = javaStuff.getResultSetObjectString();
         String methodType = javaStuff.getMethodType();
         String objectName = javaStuff.getDataObjectName();
-
         String method = "    public List<" + methodType + "> " + methodName + "(" + methodParameters + ") throws SQLException\n" +
                 "    {\n" +
                 "        LinkedList<" + methodType + "> list = new LinkedList<>();\n" +
@@ -42,5 +40,4 @@ public class MethodProcedureSelect implements Code {
         sqlbuild.append(method);
         return sqlbuild.toString();
     }
-
 }

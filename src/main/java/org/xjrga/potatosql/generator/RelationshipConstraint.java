@@ -4,17 +4,15 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 public class RelationshipConstraint implements Code {
+    private final LinkedList<String> parentkeys;
+    private final LinkedList<String> childkeys;
     private String schema;
     private String parent;
-    private final LinkedList<String> parentkeys;
     private String child;
-    private final LinkedList<String> childkeys;
     private Integer count;
     private int relationshiptypeid;
 
-
     public RelationshipConstraint() {
-
         parent = "";
         parentkeys = new LinkedList();
         child = "";
@@ -22,46 +20,32 @@ public class RelationshipConstraint implements Code {
         relationshiptypeid = 0;
     }
 
-
     public void setParent(String parent) {
-
         this.parent = parent;
     }
 
-
     public void setChild(String child) {
-
         this.child = child;
     }
 
-
     public void addParentKey(String parent_key) {
-
         parentkeys.add(parent_key);
     }
 
-
     public void addChildKey(String child_key) {
-
         childkeys.add(child_key);
     }
 
-
     public Boolean isEmpty() {
-
         Boolean flag = false;
-
         if (parent == "") {
             flag = true;
         }
-
         return flag;
     }
 
-
     @Override
     public String getCode() {
-
         StringBuilder sb = new StringBuilder();
         sb.append("ALTER TABLE ");
         sb.append(getSchema());
@@ -102,10 +86,8 @@ public class RelationshipConstraint implements Code {
         sb.append(" ) ");
         sb.append(getAction());
         sb.append("\n");
-
         return sb.toString();
-
-        /* *
+/* *
             ALTER TABLE Child ADD CONSTRAINT Child_Relationship_1
             FOREIGN KEY (Child_TableId, Child_SchemaId)
             REFERENCES DatabaseTable (Parent_TableId, Parent_SchemaId)
@@ -118,20 +100,20 @@ public class RelationshipConstraint implements Code {
         return schema;
     }
 
-    public Integer getCount() {
+    public void setSchema(String schema) {
+        this.schema = schema;
+    }
 
+    public Integer getCount() {
         return count;
     }
 
     public void setCount(Integer count) {
-
         this.count = count;
     }
 
     public String getAction() {
-
         StringBuilder sb = new StringBuilder();
-
         switch (relationshiptypeid) {
             case 0:
                 sb.append("ON DELETE CASCADE;");
@@ -140,16 +122,10 @@ public class RelationshipConstraint implements Code {
                 sb.append("ON DELETE SET NULL;");
                 break;
         }
-
         return sb.toString();
-    }
-
-    public void setSchema(String schema) {
-        this.schema = schema;
     }
 
     public void setRelationshipType(Integer relationshiptypeid) {
         this.relationshiptypeid = relationshiptypeid;
     }
-
 }

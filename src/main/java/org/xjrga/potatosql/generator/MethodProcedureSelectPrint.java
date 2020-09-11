@@ -9,7 +9,6 @@ public class MethodProcedureSelectPrint implements Code {
         this.javaStuff = new JavaStuff(table);
     }
 
-
     @Override
     public String getCode() {
         String methodName1 = table.getName() + "_Select_Print";
@@ -21,7 +20,6 @@ public class MethodProcedureSelectPrint implements Code {
         String sout = javaStuff.getSout();
         String methodType = javaStuff.getMethodType();
         String objectName = javaStuff.getDataObjectName();
-
         String method = "public void " + methodName1 + "(" + methodParameters + ") throws SQLException\n" +
                 "    {\n" +
                 "        LinkedList<" + methodType + "> list = (LinkedList) this." + methodName2 + "(" + methodVariables + ");\n" +
@@ -35,5 +33,4 @@ public class MethodProcedureSelectPrint implements Code {
         sqlbuild.append(method);
         return sqlbuild.toString();
     }
-
 }

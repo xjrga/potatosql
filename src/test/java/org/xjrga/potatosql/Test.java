@@ -20,18 +20,13 @@ public class Test {
         }
         catch (ClassNotFoundException | SQLException ex)
         {
-
-        }
-
-        try
+}
+try
         {
             connection.setAutoCommit(false);
-
-            //call insert, update, delete or merge methodNames here
-
-            connection.commit();
-
-        }
+//call insert, update, delete or merge methodNames here
+connection.commit();
+}
         catch (Exception e)
         {
             e.printStackTrace();
@@ -57,10 +52,7 @@ public class Test {
         }*/
     }
 
-
     //paste generated methodNames here
-
-
     public static void main(String[] args) {
         Test test = new Test();
     }
@@ -105,4 +97,3 @@ public class Test {
         return clob;
     }
 }
-

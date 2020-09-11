@@ -1,7 +1,6 @@
 package org.xjrga.potatosql.generator;
 
 public class CreateTableUsingSelect implements Code {
-
     private final Table table;
     private final SqlStuff sqlStuff;
     private final StringBuilder sqlbuild;
@@ -11,7 +10,6 @@ public class CreateTableUsingSelect implements Code {
         this.sqlStuff = sqlStuff;
         sqlbuild = new StringBuilder();
     }
-
 
     @Override
     public String getCode() {
@@ -37,7 +35,6 @@ public class CreateTableUsingSelect implements Code {
             sqlbuild.append("\n) WITH DATA");
             sqlbuild.append(";");
             sqlbuild.append("\n");
-
         }
         return sqlbuild.toString();
     }

@@ -1,23 +1,18 @@
 package org.xjrga.potatosql.generator;
 
 public class CreateTable implements Code {
-
     private final Table table;
     private final SqlStuff sqlStuff;
     private final StringBuilder sqlbuild;
 
-
     public CreateTable(Table table, SqlStuff sqlStuff) {
-
         this.table = table;
         this.sqlStuff = sqlStuff;
         sqlbuild = new StringBuilder();
     }
 
-
     @Override
     public String getCode() {
-
         if (!table.isEmpty()) {
             sqlbuild.append("CREATE TABLE");
             sqlbuild.append(" ");
@@ -46,14 +41,11 @@ public class CreateTable implements Code {
             sqlbuild.append(")");
             sqlbuild.append(";");
             sqlbuild.append("\n");
-
         } else {
             sqlbuild.append("--Please add fields to ");
             sqlbuild.append(table.getName());
             sqlbuild.append(" table");
         }
-
         return sqlbuild.toString();
     }
-
 }

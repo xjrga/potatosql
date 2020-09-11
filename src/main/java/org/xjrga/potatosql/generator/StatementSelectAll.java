@@ -1,23 +1,18 @@
 package org.xjrga.potatosql.generator;
 
 public class StatementSelectAll implements Code {
-
     private final Table table;
     private final SqlStuff sqlStuff;
     private final StringBuilder sqlbuild;
 
-
     public StatementSelectAll(Table table, SqlStuff sqlStuff) {
-
         this.table = table;
         this.sqlStuff = sqlStuff;
         sqlbuild = new StringBuilder();
     }
 
-
     @Override
     public String getCode() {
-
         if (!table.isEmpty()) {
             sqlbuild.append("SELECT");
             sqlbuild.append("\n");
@@ -33,5 +28,4 @@ public class StatementSelectAll implements Code {
         }
         return sqlbuild.toString();
     }
-
 }

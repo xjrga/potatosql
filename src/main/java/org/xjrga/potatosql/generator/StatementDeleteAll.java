@@ -1,23 +1,18 @@
 package org.xjrga.potatosql.generator;
 
 public class StatementDeleteAll implements Code {
-
     private final Table table;
     private final SqlStuff sqlStuff;
     private final StringBuilder sqlbuild;
 
-
     public StatementDeleteAll(Table table, SqlStuff sqlStuff) {
-
         this.table = table;
         this.sqlStuff = sqlStuff;
         sqlbuild = new StringBuilder();
     }
 
-
     @Override
     public String getCode() {
-
         sqlbuild.append("DELETE FROM");
         sqlbuild.append(" ");
         sqlbuild.append(table.getSchema());
@@ -27,5 +22,4 @@ public class StatementDeleteAll implements Code {
         sqlbuild.append("\n");
         return sqlbuild.toString();
     }
-
 }

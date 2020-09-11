@@ -21,7 +21,6 @@ public class MethodProcedureUpdate implements Code {
             String methodParameters = javaStuff.getDataObject();
             String sql = procedureStuff.getProcedureSqlStringAll(procedureKind);
             String setParameters = procedureStuff.getSetParametersAll();
-
             String method = "public void " + methodName + "(" + methodParameters + ") throws SQLException\n" +
                     "    {\n" +
                     "            CallableStatement proc = connection.prepareCall(" + sql + ");\n" +
@@ -31,8 +30,6 @@ public class MethodProcedureUpdate implements Code {
                     "    }";
             sqlbuild.append(method);
         }
-
         return sqlbuild.toString();
     }
-
 }

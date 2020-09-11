@@ -1,18 +1,15 @@
 package org.xjrga.potatosql.generator;
 
 public class MethodProcedureSelectAll implements Code {
-
     private final Table table;
     private final ProcedureStuff procedureStuff;
     private final JavaStuff javaStuff;
 
     public MethodProcedureSelectAll(Table table) {
-
         this.table = table;
         this.procedureStuff = new ProcedureStuff(table);
         this.javaStuff = new JavaStuff(table);
     }
-
 
     @Override
     public String getCode() {
@@ -26,7 +23,6 @@ public class MethodProcedureSelectAll implements Code {
         String methodType = javaStuff.getMethodType();
         String objectName = javaStuff.getDataObjectName();
         String instance = javaStuff.getDataObjectInstance();
-
         String method = "public List<" + methodType + "> " + methodName + "() throws SQLException\n" +
                 "    {\n" +
                 "        List<" + methodType + "> list = new LinkedList<>();\n" +

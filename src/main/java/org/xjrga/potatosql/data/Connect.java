@@ -18,6 +18,8 @@ package org.xjrga.potatosql.data;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import org.xjrga.potatosql.other.Log;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,7 +30,6 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class Connect {
-
     private static final Connect instance = new Connect();
     private static String JDBC_DRIVER = "";
     private static String DB_URL = "";
@@ -38,50 +39,55 @@ public class Connect {
     private static InputStream input = null;
     private static Connection connection = null;
 
-
     private Connect() {
-
     }
 
-
     public static Connect getInstance() {
-
         return instance;
     }
 
-
     public Connection getConnection() {
-
         prop = new Properties();
-
         try {
             input = new FileInputStream("resources/connection.properties");
-        } catch (FileNotFoundException ex) {
-
+        } catch (FileNotFoundException e) {
+            Log.getLog().start("files/exception.log");
+            Log.getLog().logMessage(e.toString());
+            Log.getLog().write();
+            Log.getLog().close();
+            e.printStackTrace();
         }
-
         try {
             prop.load(input);
             JDBC_DRIVER = prop.getProperty("jdbc.driver");
             DB_URL = prop.getProperty("jdbc.url");
             DB_USER = prop.getProperty("jdbc.username");
             DB_PASS = prop.getProperty("jdbc.password");
-        } catch (IOException ex) {
-
+        } catch (IOException e) {
+            Log.getLog().start("files/exception.log");
+            Log.getLog().logMessage(e.toString());
+            Log.getLog().write();
+            Log.getLog().close();
+            e.printStackTrace();
         }
-
         try {
             Class.forName(JDBC_DRIVER);
-        } catch (ClassNotFoundException ex) {
-
+        } catch (ClassNotFoundException e) {
+            Log.getLog().start("files/exception.log");
+            Log.getLog().logMessage(e.toString());
+            Log.getLog().write();
+            Log.getLog().close();
+            e.printStackTrace();
         }
-
         try {
             connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-        } catch (SQLException ex) {
-
+        } catch (SQLException e) {
+            Log.getLog().start("files/exception.log");
+            Log.getLog().logMessage(e.toString());
+            Log.getLog().write();
+            Log.getLog().close();
+            e.printStackTrace();
         }
-
         return connection;
     }
 }

@@ -17,35 +17,29 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package org.xjrga.potatosql.model;
 
-
 import org.xjrga.potatosql.data.DbLink;
+import org.xjrga.potatosql.dataobject.DatabaseTableDataObject;
+import org.xjrga.potatosql.dataobject.RelationshipDataObjectExtra;
 
 import javax.swing.table.DefaultTableModel;
-import java.util.HashMap;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Vector;
 
 public class TableModelRelationship extends DefaultTableModel {
-
-    private Vector columns;
     private final DbLink dbLink;
-
+    private Vector columns;
 
     public TableModelRelationship(DbLink dbLink) {
-
         this.setColumnIdentifiers();
         this.dbLink = dbLink;
     }
 
-
     private void setColumnIdentifiers() {
-
         columns = new Vector();
-
         columns.add("Id");
         columns.add("SchemaId");
         columns.add("Parent_TableId");
@@ -57,16 +51,12 @@ public class TableModelRelationship extends DefaultTableModel {
         columns.add("Name");
         columns.add("ForwardVerbPhrase");
         columns.add("InverseVerbPhrase");
-
         this.setColumnIdentifiers(columns);
     }
 
-
     public Class getColumnClass(int i) {
-
         Class returnValue = Object.class;
         switch (i) {
-
             case 0:
                 //Id
             case 1:
@@ -107,142 +97,45 @@ public class TableModelRelationship extends DefaultTableModel {
                 //ReverseVerbPhrase
                 returnValue = String.class;
                 break;
-
         }
         return returnValue;
     }
 
-
     @Override
     public boolean isCellEditable(int i, int i1) {
-
         return false;
     }
 
-
-    public void reload(int schemaid) {
-
+    public void reload(DatabaseTableDataObject databaseTableDataObject) {
         Vector table = new Vector();
-
-        LinkedList list = (LinkedList) dbLink.Relationship_Multiple_Select(schemaid);
-
-        Iterator it = list.iterator();
-
-        while (it.hasNext()) {
-
-            HashMap row_hashmap = (HashMap) it.next();
-
-            /*
-            *   SchemaId,
-                Parent_TableId,
-                b.Name as Parent,
-                Child_TableId,
-                c.Name as Child,
-                RelationshipTypeId,
-                RelationshipId,
-                d.Name as RelationshipTypeName,
-                a.Nameas as RelationshipName,
-                a.ForwardVerbPhrase,
-                a.ReverseVerbPhrase
-            *
-            * */
-            //schemaid = (Integer)row_hashmap.get("SCHEMAID");
-            Integer parent_tableid = (Integer) row_hashmap.get("PARENT_TABLEID");
-            String parent = (String) row_hashmap.get("PARENT");
-            Integer child_tableid = (Integer) row_hashmap.get("CHILD_TABLEID");
-            String child = (String) row_hashmap.get("CHILD");
-            Integer relationshiptypeid = (Integer) row_hashmap.get("RELATIONSHIPTYPEID");
-            Integer relationshipid = (Integer) row_hashmap.get("RELATIONSHIPID");
-            String relationshiptypename = (String) row_hashmap.get("RELATIONSHIPTYPENAME");
-            String relationshipname = (String) row_hashmap.get("RELATIONSHIPNAME");
-            String forwardverbphrase = (String) row_hashmap.get("FORWARDVERBPHRASE");
-            String reverseverbphrase = (String) row_hashmap.get("REVERSEVERBPHRASE");
-
-            Vector row_vector = new Vector();
-
-            row_vector.add(relationshipid);
-            row_vector.add(schemaid);
-            row_vector.add(parent_tableid);
-            row_vector.add(parent);
-            row_vector.add(child_tableid);
-            row_vector.add(child);
-            row_vector.add(relationshiptypeid);
-            row_vector.add(relationshiptypename);
-            row_vector.add(relationshipname);
-            row_vector.add(forwardverbphrase);
-            row_vector.add(reverseverbphrase);
-
-            table.add(row_vector);
+        LinkedList list = null;
+        try {
+            list = (LinkedList) dbLink.Relationship_Multiple_Select(databaseTableDataObject);
+            Iterator it = list.iterator();
+            while (it.hasNext()) {
+                RelationshipDataObjectExtra next = (RelationshipDataObjectExtra) it.next();
+                Vector row_vector = new Vector();
+                row_vector.add(next.getRelationshipId());
+                row_vector.add(next.getSchemaId());
+                row_vector.add(next.getParent_TableId());
+                row_vector.add(next.getParentName());
+                row_vector.add(next.getChild_TableId());
+                row_vector.add(next.getChildName());
+                row_vector.add(next.getRelationshipTypeId());
+                row_vector.add(next.getRelationshipTypeName());
+                row_vector.add(next.getRelationshipName());
+                row_vector.add(next.getForwardVerbPhrase());
+                row_vector.add(next.getReverseVerbPhrase());
+                table.add(row_vector);
+            }
+            this.setDataVector(table, columns);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
-
-        this.setDataVector(table, columns);
-
-    }
-
-    public void reload(int schemaid, int tableid) {
-
-        Vector table = new Vector();
-
-        LinkedList list = (LinkedList) dbLink.Relationship_Multiple_Select_2(schemaid, tableid);
-
-        Iterator it = list.iterator();
-
-        while (it.hasNext()) {
-
-            HashMap row_hashmap = (HashMap) it.next();
-
-            /*
-            *   SchemaId,
-                Parent_TableId,
-                b.Name as Parent,
-                Child_TableId,
-                c.Name as Child,
-                RelationshipTypeId,
-                RelationshipId,
-                d.Name as RelationshipTypeName,
-                a.Nameas as RelationshipName,
-                a.ForwardVerbPhrase,
-                a.ReverseVerbPhrase
-            *
-            * */
-            //schemaid = (Integer)row_hashmap.get("SCHEMAID");
-            Integer parent_tableid = (Integer) row_hashmap.get("PARENT_TABLEID");
-            String parent = (String) row_hashmap.get("PARENT");
-            Integer child_tableid = (Integer) row_hashmap.get("CHILD_TABLEID");
-            String child = (String) row_hashmap.get("CHILD");
-            Integer relationshiptypeid = (Integer) row_hashmap.get("RELATIONSHIPTYPEID");
-            Integer relationshipid = (Integer) row_hashmap.get("RELATIONSHIPID");
-            String relationshiptypename = (String) row_hashmap.get("RELATIONSHIPTYPENAME");
-            String relationshipname = (String) row_hashmap.get("RELATIONSHIPNAME");
-            String forwardverbphrase = (String) row_hashmap.get("FORWARDVERBPHRASE");
-            String reverseverbphrase = (String) row_hashmap.get("REVERSEVERBPHRASE");
-
-            Vector row_vector = new Vector();
-
-            row_vector.add(relationshipid);
-            row_vector.add(schemaid);
-            row_vector.add(parent_tableid);
-            row_vector.add(parent);
-            row_vector.add(child_tableid);
-            row_vector.add(child);
-            row_vector.add(relationshiptypeid);
-            row_vector.add(relationshiptypename);
-            row_vector.add(relationshipname);
-            row_vector.add(forwardverbphrase);
-            row_vector.add(reverseverbphrase);
-
-            table.add(row_vector);
-        }
-
-        this.setDataVector(table, columns);
-
     }
 
     public void clear() {
-
         Vector table = new Vector();
         this.setDataVector(table, columns);
-
     }
-
 }

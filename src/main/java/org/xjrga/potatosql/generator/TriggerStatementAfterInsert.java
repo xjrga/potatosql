@@ -1,18 +1,15 @@
 package org.xjrga.potatosql.generator;
 
 public class TriggerStatementAfterInsert implements Code {
-
     private final Table table;
     private final TriggerStuff triggerStuff;
     private final StringBuilder sqlbuild;
-
 
     public TriggerStatementAfterInsert(Table table, TriggerStuff triggerStuff) {
         this.table = table;
         this.triggerStuff = triggerStuff;
         sqlbuild = new StringBuilder();
     }
-
 
     @Override
     public String getCode() {
@@ -51,9 +48,7 @@ public class TriggerStatementAfterInsert implements Code {
             sqlbuild.append("\n");
             sqlbuild.append("END;");
             sqlbuild.append("\n");
-
         }
         return sqlbuild.toString();
     }
-
 }

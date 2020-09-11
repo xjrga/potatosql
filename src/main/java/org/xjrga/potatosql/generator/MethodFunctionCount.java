@@ -32,5 +32,4 @@ public class MethodFunctionCount implements Code {
         sqlbuild.append(method);
         return sqlbuild.toString();
     }
-
 }

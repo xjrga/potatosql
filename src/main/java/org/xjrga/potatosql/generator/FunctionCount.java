@@ -1,23 +1,18 @@
 package org.xjrga.potatosql.generator;
 
 public class FunctionCount implements Code {
-
     private final Table table;
     private final Code statementSelectCountInto;
     private final StringBuilder sqlbuild;
 
-
     public FunctionCount(Table table) {
-
         this.table = table;
         this.statementSelectCountInto = new StatementSelectCountInto(table);
         sqlbuild = new StringBuilder();
     }
 
-
     @Override
     public String getCode() {
-
         if (!table.isEmpty()) {
             sqlbuild.append("CREATE FUNCTION");
             sqlbuild.append(" ");
@@ -35,9 +30,7 @@ public class FunctionCount implements Code {
             sqlbuild.append("\n");
             sqlbuild.append("END;");
             sqlbuild.append("\n");
-
         }
         return sqlbuild.toString();
     }
-
 }

@@ -1,24 +1,24 @@
 package org.xjrga.potatosql.generator;
 
-import org.xjrga.potatosql.dataobject.SchemaDataObject;
+import org.xjrga.potatosql.dataobject.DatabaseSchemaDataObject;
 
 public class CreateSchema implements Code {
-    private SchemaDataObject schemaDataObject;
+    private DatabaseSchemaDataObject databaseSchemaDataObject;
 
     public String getCode() {
         StringBuilder sb = new StringBuilder();
         sb.append("CREATE SCHEMA");
         sb.append(" ");
-        sb.append(getSchemaDataObject().getSchemaName());
+        sb.append(getDatabaseSchemaDataObject().getName());
         sb.append(";\n\n");
         return sb.toString();
     }
 
-    public SchemaDataObject getSchemaDataObject() {
-        return schemaDataObject;
+    public DatabaseSchemaDataObject getDatabaseSchemaDataObject() {
+        return databaseSchemaDataObject;
     }
 
-    public void setSchemaDataObject(SchemaDataObject schemaDataObject) {
-        this.schemaDataObject = schemaDataObject;
+    public void setDatabaseSchemaDataObject(DatabaseSchemaDataObject databaseSchemaDataObject) {
+        this.databaseSchemaDataObject = databaseSchemaDataObject;
     }
 }

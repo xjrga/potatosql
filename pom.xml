@@ -6,7 +6,7 @@
 
   <groupId>org.xjrga.potatosql</groupId>
   <artifactId>PotatoSQL</artifactId>
-  <version>Build20</version>
+  <version>30</version>
 
   <name>PotatoSql</name>
   <url>https://x-jrga.github.io/potatosql</url>
@@ -23,7 +23,7 @@
     <dependency>
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
-      <version>2.5.0</version>
+      <version>2.5.1</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/com.jgoodies/jgoodies-common -->

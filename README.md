@@ -16,10 +16,10 @@ Requirements
 
 Installing
 
-    1. Download PotatoSQL-Build20.zip from https://sourceforge.net/projects/potatosql
-    2. unzip PotatoSQL-Build20.zip
-    3. cd PotatoSQL-Build20
-    4. java -jar PotatoSQL-Build20.jar (if you are on windows double click on jar file)
+    1. Download PotatoSQL-30.zip from https://sourceforge.net/projects/potatosql
+    2. unzip PotatoSQL-30.zip
+    3. cd PotatoSQL-30
+    4. java -jar PotatoSQL-30.jar (if you are on windows double click on jar file)
     
 [Download](https://sourceforge.net/projects/potatosql "PotatoSQL: Software for Database Design")
 
@@ -27,7 +27,7 @@ Installing
 
 Build Number
  
-    20
+    30
 
 Authors
 
@@ -41,6 +41,6 @@ Acknowledgments
 
 Snack uses the following libraries:
 
-    hsqldb.jar (v2.5.0)
+    hsqldb-2.5.1.jar
     jgoodies-common-1.8.1.jar
     jgoodies-forms-1.8.0.jar

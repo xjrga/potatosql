@@ -1,18 +1,15 @@
 package org.xjrga.potatosql.generator;
 
 public class DataObject implements Code {
-
     private final Table table;
     private final DataObjectStuff dataObjectStuff;
     private final StringBuilder sqlbuild;
-
 
     public DataObject(Table table, DataObjectStuff dataObjectStuff) {
         this.table = table;
         this.dataObjectStuff = dataObjectStuff;
         sqlbuild = new StringBuilder();
     }
-
 
     @Override
     public String getCode() {
@@ -39,10 +36,7 @@ public class DataObject implements Code {
             sqlbuild.append("\n");
             sqlbuild.append("\n");
             sqlbuild.append("}");
-
-
         }
         return sqlbuild.toString();
     }
-
 }

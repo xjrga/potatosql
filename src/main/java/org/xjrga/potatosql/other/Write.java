@@ -5,14 +5,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Write {
-
     public Write() {
-
     }
 
-
     public static void writeToFile(String txt, String filename) {
-
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter("scripts/" + filename));
             out.write(txt);
@@ -21,5 +17,4 @@ public class Write {
             e.printStackTrace();
         }
     }
-
 }

@@ -13,7 +13,6 @@ public class MethodProcedureMerge implements Code {
         this.sqlbuild = new StringBuilder();
     }
 
-
     @Override
     public String getCode() {
         if (table.containsNonPrimaryKeys()) {
@@ -30,7 +29,6 @@ public class MethodProcedureMerge implements Code {
                     "            proc.close();\n" +
                     "    }\n";
             sqlbuild.append(method);
-
         }
         return sqlbuild.toString();
     }

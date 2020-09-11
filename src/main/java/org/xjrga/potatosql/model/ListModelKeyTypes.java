@@ -17,47 +17,35 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package org.xjrga.potatosql.model;
 
 import org.xjrga.potatosql.data.DbLink;
 import org.xjrga.potatosql.dataobject.KeyTypeDataObject;
 
 import javax.swing.*;
-import java.util.HashMap;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 public class ListModelKeyTypes extends DefaultListModel {
-
     private final DbLink dbLink;
 
-
     public ListModelKeyTypes(DbLink dbLink) {
-
         this.dbLink = dbLink;
-
     }
-
 
     public void reload() {
-
         this.clear();
-
-        LinkedList list = (LinkedList) dbLink.KeyType_Select_All();
-        Iterator it = list.iterator();
-
-        while (it.hasNext()) {
-
-            HashMap row = (HashMap) it.next();
-            int schemaid = (int) row.get("TYPEID");
-            String name = (String) row.get("NAME");
-            Boolean sizerequired = (Boolean) row.get("SIZEREQUIRED");
-            KeyTypeDataObject keyTypeDataObject = new KeyTypeDataObject(schemaid, name, sizerequired);
-
-            this.addElement(keyTypeDataObject);
+        LinkedList list = null;
+        try {
+            list = (LinkedList) dbLink.KeyType_Select_All();
+            Iterator it = list.iterator();
+            while (it.hasNext()) {
+                KeyTypeDataObject next = (KeyTypeDataObject) it.next();
+                this.addElement(next);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
-
     }
-
 }

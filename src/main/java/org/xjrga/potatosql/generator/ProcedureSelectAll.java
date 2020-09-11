@@ -1,25 +1,20 @@
 package org.xjrga.potatosql.generator;
 
 public class ProcedureSelectAll implements Code {
-
     private final Table table;
     private final Code statementSelectAll;
     private final SqlStuff sqlStuff;
     private final StringBuilder sqlbuild;
 
-
     public ProcedureSelectAll(Table table, SqlStuff sqlStuff) {
-
         this.table = table;
         statementSelectAll = new StatementSelectAll(table, sqlStuff);
         this.sqlStuff = sqlStuff;
         sqlbuild = new StringBuilder();
     }
 
-
     @Override
     public String getCode() {
-
         if (!table.isEmpty()) {
             sqlbuild.append("CREATE PROCEDURE");
             sqlbuild.append(" ");
@@ -39,9 +34,7 @@ public class ProcedureSelectAll implements Code {
             sqlbuild.append("\n");
             sqlbuild.append("END;");
             sqlbuild.append("\n");
-
         }
         return sqlbuild.toString();
     }
-
 }

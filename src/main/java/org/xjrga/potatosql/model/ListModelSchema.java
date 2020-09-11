@@ -17,41 +17,35 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package org.xjrga.potatosql.model;
 
 import org.xjrga.potatosql.data.DbLink;
-import org.xjrga.potatosql.dataobject.SchemaDataObject;
+import org.xjrga.potatosql.dataobject.DatabaseSchemaDataObject;
 
 import javax.swing.*;
-import java.util.HashMap;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 public class ListModelSchema extends DefaultListModel {
-
     private final DbLink dbLink;
-
 
     public ListModelSchema(DbLink dbLink) {
         this.dbLink = dbLink;
     }
 
-
     public void reload() {
         this.clear();
-
-        LinkedList list = (LinkedList) dbLink.DatabaseSchema_Select_All();
+        LinkedList list = null;
+        try {
+            list = (LinkedList) dbLink.DatabaseSchema_Select_All();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         Iterator it = list.iterator();
-
         while (it.hasNext()) {
-
-            HashMap row = (HashMap) it.next();
-            int schemaid = (int) row.get("SCHEMAID");
-            String name = (String) row.get("NAME");
-            SchemaDataObject schema = new SchemaDataObject(schemaid, name);
-
-            this.addElement(schema);
+            DatabaseSchemaDataObject databaseSchemaDataObject = (DatabaseSchemaDataObject) it.next();
+            this.addElement(databaseSchemaDataObject);
         }
     }
 }

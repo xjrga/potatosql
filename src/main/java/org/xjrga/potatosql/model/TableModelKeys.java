@@ -17,35 +17,29 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package org.xjrga.potatosql.model;
 
-
 import org.xjrga.potatosql.data.DbLink;
+import org.xjrga.potatosql.dataobject.DatabaseTableDataObject;
+import org.xjrga.potatosql.dataobject.TableKeyKeyTypeDataObject;
 
 import javax.swing.table.DefaultTableModel;
-import java.util.HashMap;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Vector;
 
 public class TableModelKeys extends DefaultTableModel {
-
-    private Vector columns;
     private final DbLink dbLink;
-
+    private Vector columns;
 
     public TableModelKeys(DbLink dbLink) {
-
         this.setColumnIdentifiers();
         this.dbLink = dbLink;
     }
 
-
     private void setColumnIdentifiers() {
-
         columns = new Vector();
-
         columns.add("SchemaId");
         columns.add("TableId");
         columns.add("KeyId");
@@ -57,16 +51,12 @@ public class TableModelKeys extends DefaultTableModel {
         columns.add("Precision");
         columns.add("Scale");
         columns.add("Order");
-
         this.setColumnIdentifiers(columns);
     }
 
-
     public Class getColumnClass(int i) {
-
         Class returnValue = Object.class;
         switch (i) {
-
             case 0:
                 //SchemaId
             case 1:
@@ -101,73 +91,45 @@ public class TableModelKeys extends DefaultTableModel {
                 //Order
                 returnValue = Integer.class;
                 break;
-
         }
         return returnValue;
     }
 
-
     @Override
     public boolean isCellEditable(int i, int i1) {
-
         return false;
     }
 
-
-    public void reload(int schemaid, int tableid) {
-
+    public void reload(DatabaseTableDataObject databaseTableDataObject) {
         Vector table = new Vector();
-
-        LinkedList list = (LinkedList) dbLink.TableKey_KeyType_Select(schemaid, tableid);
-
-        Iterator it = list.iterator();
-
-        while (it.hasNext()) {
-
-            HashMap row_hashmap = (HashMap) it.next();
-
-            schemaid = (Integer) row_hashmap.get("SCHEMAID");
-            tableid = (Integer) row_hashmap.get("TABLEID");
-            Integer keyid = (Integer) row_hashmap.get("KEYID");
-            String name = (String) row_hashmap.get("NAME");
-            String label = (String) row_hashmap.get("LABEL");
-            Boolean ispk = (Boolean) row_hashmap.get("ISPK");
-            Integer typeid = (Integer) row_hashmap.get("TYPEID");
-            String typename = (String) row_hashmap.get("TYPENAME");
-            Boolean isidentity = (Boolean) row_hashmap.get("ISIDENTITY");
-            Boolean precisionrequired = (Boolean) row_hashmap.get("PRECISIONREQUIRED");
-            Integer precision = (Integer) row_hashmap.get("PRECISION");
-            Boolean scalerequired = (Boolean) row_hashmap.get("SCALEREQUIRED");
-            Integer scale = (Integer) row_hashmap.get("SCALE");
-            Integer order = (Integer) row_hashmap.get("ORDEN");
-
-            Vector row_vector = new Vector();
-
-            row_vector.add(schemaid);
-            row_vector.add(tableid);
-            row_vector.add(keyid);
-            row_vector.add(name);
-            row_vector.add(label);
-            row_vector.add(ispk);
-            row_vector.add(typeid);
-            row_vector.add(typename);
-            row_vector.add(precision);
-            row_vector.add(scale);
-            row_vector.add(order);
-
-            table.add(row_vector);
+        LinkedList list = null;
+        try {
+            list = (LinkedList) dbLink.TableKey_KeyType_Select(databaseTableDataObject);
+            Iterator it = list.iterator();
+            while (it.hasNext()) {
+                TableKeyKeyTypeDataObject tableKeyKeyTypeDataObject = (TableKeyKeyTypeDataObject) it.next();
+                Vector row_vector = new Vector();
+                row_vector.add(tableKeyKeyTypeDataObject.getSchemaId());
+                row_vector.add(tableKeyKeyTypeDataObject.getTableId());
+                row_vector.add(tableKeyKeyTypeDataObject.getKeyId());
+                row_vector.add(tableKeyKeyTypeDataObject.getKeyName());
+                row_vector.add(tableKeyKeyTypeDataObject.getLabel());
+                row_vector.add(tableKeyKeyTypeDataObject.getIsPK());
+                row_vector.add(tableKeyKeyTypeDataObject.getTypeId());
+                row_vector.add(tableKeyKeyTypeDataObject.getTypeName());
+                row_vector.add(tableKeyKeyTypeDataObject.getPrcsn());
+                row_vector.add(tableKeyKeyTypeDataObject.getScale());
+                row_vector.add(tableKeyKeyTypeDataObject.getOrden());
+                table.add(row_vector);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
-
         this.setDataVector(table, columns);
-
     }
-
 
     public void clear() {
-
         Vector table = new Vector();
         this.setDataVector(table, columns);
-
     }
-
 }

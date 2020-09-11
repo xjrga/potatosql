@@ -1,18 +1,15 @@
 package org.xjrga.potatosql.generator;
 
 public class TriggerRowAfterDelete implements Code {
-
     private final Table table;
     private final TriggerStuff triggerStuff;
     private final StringBuilder sqlbuild;
-
 
     public TriggerRowAfterDelete(Table table, TriggerStuff triggerStuff) {
         this.table = table;
         this.triggerStuff = triggerStuff;
         sqlbuild = new StringBuilder();
     }
-
 
     @Override
     public String getCode() {
@@ -48,7 +45,6 @@ public class TriggerRowAfterDelete implements Code {
             sqlbuild.append("\n");
             sqlbuild.append("END;");
             sqlbuild.append("\n");
-
         }
         return sqlbuild.toString();
     }

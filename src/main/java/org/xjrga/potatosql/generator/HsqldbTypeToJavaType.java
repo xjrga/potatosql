@@ -3,14 +3,10 @@ package org.xjrga.potatosql.generator;
 import java.util.HashMap;
 
 public class HsqldbTypeToJavaType {
-
     private final HashMap map;
 
-
     public HsqldbTypeToJavaType() {
-
         map = new HashMap();
-
         map.put("IDENTITY", 1);
         map.put("INTEGER", 2);
         map.put("DOUBLE", 3);
@@ -23,8 +19,7 @@ public class HsqldbTypeToJavaType {
         map.put("LONGVARCHAR", 10);
         map.put("BLOB", 11);
         map.put("CLOB", 12);
-
-        /*  0	IDENTITY
+/*  0	IDENTITY
             1	INTEGER
             2	DOUBLE
             3	VARCHAR
@@ -39,14 +34,10 @@ public class HsqldbTypeToJavaType {
         */
     }
 
-
     public String getJavaType(String sqlType) {
-
         Integer type = (Integer) map.get(sqlType);
         String javaType;
-
         switch (type) {
-
             case 1:
             case 2:
                 javaType = "Integer";
@@ -85,8 +76,6 @@ public class HsqldbTypeToJavaType {
                 javaType = "Object";
                 break;
         }
-
         return javaType;
     }
-
 }

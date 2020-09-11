@@ -17,475 +17,448 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package org.xjrga.potatosql.data;
 
+import org.xjrga.potatosql.dataobject.*;
+import org.xjrga.potatosql.other.Log;
+
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
 
 public class DbLink {
-
-    private final ProcRunner procRunner;
-
+    private final Connection connection;
 
     public DbLink() {
-
-        procRunner = new ProcRunner();
+        connection = Connect.getInstance().getConnection();
     }
 
-
-    //DatabaseSchema Table
-
-
-    public void DatabaseSchema_Insert(String Name) {
-
-        String sql = "{CALL public.DatabaseSchema_Insert(?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(Name);
-        procRunner.callProcedure(sql, parameterList.toArray());
+    public DatabaseSchemaDataObject DatabaseSchema_Insert(DatabaseSchemaDataObject databaseschemaDataObject) throws SQLException {
+        CallableStatement proc = connection.prepareCall("{CALL Public.DatabaseSchema_Insert( ?, ? )}");
+        proc.registerOutParameter(1, Types.INTEGER);
+        proc.setString(2, databaseschemaDataObject.getName());
+        proc.execute();
+        databaseschemaDataObject.setSchemaId(proc.getInt(1));
+        proc.close();
+        return databaseschemaDataObject;
     }
 
-
-    public void DatabaseSchema_Update(Integer SchemaId, String Name) {
-
-        String sql = "{CALL public.DatabaseSchema_Update(?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(Name);
-        procRunner.callProcedure(sql, parameterList.toArray());
+    public void DatabaseSchema_Update(DatabaseSchemaDataObject databaseschemaDataObject) throws SQLException {
+        CallableStatement proc = connection.prepareCall("{CALL Public.DatabaseSchema_Update( ?, ? )}");
+        proc.setInt(1, databaseschemaDataObject.getSchemaId());
+        proc.setString(2, databaseschemaDataObject.getName());
+        proc.execute();
+        proc.close();
     }
 
-
-    public void DatabaseSchema_Delete(Integer SchemaId) {
-
-        String sql = "{CALL public.DatabaseSchema_Delete(?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        procRunner.callProcedure(sql, parameterList.toArray());
+    public void DatabaseSchema_Delete(DatabaseSchemaDataObject databaseschemaDataObject) throws SQLException {
+        CallableStatement proc = connection.prepareCall("{CALL Public.DatabaseSchema_Delete( ? )}");
+        proc.setInt(1, databaseschemaDataObject.getSchemaId());
+        proc.execute();
+        proc.close();
     }
 
-
-    public List<Map<String, Object>> DatabaseSchema_Select_All() {
-
-        String sql = "{CALL public.DatabaseSchema_Select_All()}";
-        return procRunner.callProcedureR(sql, new LinkedList().toArray());
+    public List<DatabaseSchemaDataObject> DatabaseSchema_Select_All() throws SQLException {
+        List<DatabaseSchemaDataObject> list = new LinkedList<>();
+        CallableStatement proc;
+        proc = connection.prepareCall("{CALL Public.DatabaseSchema_Select_All()}");
+        ResultSet rs = proc.executeQuery();
+        while (rs.next()) {
+            DatabaseSchemaDataObject databaseschemaDataObject = new DatabaseSchemaDataObject();
+            databaseschemaDataObject.setSchemaId(rs.getInt(1));
+            databaseschemaDataObject.setName(rs.getString(2));
+            list.add(databaseschemaDataObject);
+        }
+        proc.close();
+        return list;
     }
 
-
-    //DatabaseTable Table
-
-
-    public void DatabaseTable_Insert(Integer SchemaId, String Name) {
-
-        String sql = "{CALL public.DatabaseTable_Insert(?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(Name);
-        procRunner.callProcedure(sql, parameterList.toArray());
+    public DatabaseTableDataObject DatabaseTable_Insert(DatabaseTableDataObject databasetableDataObject) throws SQLException {
+        CallableStatement proc = connection.prepareCall("{CALL Public.DatabaseTable_Insert( ?, ?, ? )}");
+        proc.setInt(1, databasetableDataObject.getSchemaId());
+        proc.registerOutParameter(2, Types.INTEGER);
+        proc.setString(3, databasetableDataObject.getName());
+        proc.execute();
+        databasetableDataObject.setTableId(proc.getInt(2));
+        proc.close();
+        return databasetableDataObject;
     }
 
-
-    public void DatabaseTable_Update(Integer SchemaId, Integer TableId, String Name) {
-
-        String sql = "{CALL public.DatabaseTable_Update(?,?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(TableId);
-        parameterList.add(Name);
-        procRunner.callProcedure(sql, parameterList.toArray());
+    public void DatabaseTable_Update(DatabaseTableDataObject databasetableDataObject) throws SQLException {
+        CallableStatement proc = connection.prepareCall("{CALL Public.DatabaseTable_Update( ?, ?, ? )}");
+        proc.setInt(1, databasetableDataObject.getSchemaId());
+        proc.setInt(2, databasetableDataObject.getTableId());
+        proc.setString(3, databasetableDataObject.getName());
+        proc.execute();
+        proc.close();
     }
 
-
-    public void DatabaseTable_Delete(Integer SchemaId, Integer TableId) {
-
-        String sql = "{CALL public.DatabaseTable_Delete(?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(TableId);
-        procRunner.callProcedure(sql, parameterList.toArray());
+    public void DatabaseTable_Delete(DatabaseTableDataObject databasetableDataObject) throws SQLException {
+        CallableStatement proc = connection.prepareCall("{CALL Public.DatabaseTable_Delete( ?, ? )}");
+        proc.setInt(1, databasetableDataObject.getSchemaId());
+        proc.setInt(2, databasetableDataObject.getTableId());
+        proc.execute();
+        proc.close();
     }
 
-
-    public List<Map<String, Object>> DatabaseTable_Select(Integer SchemaId) {
-
-        String sql = "{CALL public.DatabaseTable_Select(?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        return procRunner.callProcedureR(sql, parameterList.toArray());
+    public List<DatabaseTableDataObject> DatabaseTable_Select(DatabaseSchemaDataObject databaseSchemaDataObject) throws SQLException {
+        LinkedList<DatabaseTableDataObject> list = new LinkedList<>();
+        CallableStatement proc;
+        proc = connection.prepareCall("{CALL Public.DatabaseTable_Select(?)}");
+        proc.setInt(1, databaseSchemaDataObject.getSchemaId());
+        ResultSet rs = proc.executeQuery();
+        while (rs.next()) {
+            DatabaseTableDataObject databaseTableDataObjectOut = new DatabaseTableDataObject();
+            databaseTableDataObjectOut.setSchemaId(rs.getInt(1));
+            databaseTableDataObjectOut.setTableId(rs.getInt(2));
+            databaseTableDataObjectOut.setName(rs.getString(3));
+            list.add(databaseTableDataObjectOut);
+        }
+        proc.close();
+        return list;
     }
 
-    public List<Map<String, Object>> DatabaseTable_Select(Integer SchemaId, Integer TableId) {
-
-        String sql = "{CALL public.DatabaseTable_Select(?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(TableId);
-        return procRunner.callProcedureR(sql, parameterList.toArray());
+    public List<DatabaseTableDataObject> DatabaseTable_Select(DatabaseTableDataObject databasetableDataObject) throws SQLException {
+        LinkedList<DatabaseTableDataObject> list = new LinkedList<>();
+        CallableStatement proc;
+        proc = connection.prepareCall("{CALL Public.DatabaseTable_Select( ?, ? )}");
+        proc.setInt(1, databasetableDataObject.getSchemaId());
+        proc.setInt(2, databasetableDataObject.getTableId());
+        ResultSet rs = proc.executeQuery();
+        while (rs.next()) {
+            databasetableDataObject.setSchemaId(rs.getInt(1));
+            databasetableDataObject.setTableId(rs.getInt(2));
+            databasetableDataObject.setName(rs.getString(3));
+            list.add(databasetableDataObject);
+        }
+        proc.close();
+        return list;
     }
 
-
-    public void TableKey_Insert(Integer SchemaId, Integer TableId, String Name, String Label, Boolean IsPk, Integer TypeId, Integer Precision, Integer Scale, Integer Order) {
-
-        String sql = "{CALL public.TableKey_Insert(?,?,?,?,?,?,?,?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(TableId);
-        parameterList.add(Name);
-        parameterList.add(Label);
-        parameterList.add(IsPk);
-        parameterList.add(TypeId);
-        parameterList.add(Precision);
-        parameterList.add(Scale);
-        parameterList.add(Order);
-        procRunner.callProcedure(sql, parameterList.toArray());
+    public TableKeyDataObject TableKey_Insert(TableKeyDataObject tablekeyDataObject) throws SQLException {
+        CallableStatement proc = connection.prepareCall("{CALL Public.TableKey_Insert(?,?,?,?,?,?,?,?,?,?)}");
+        proc.registerOutParameter(1, Types.INTEGER);
+        proc.setInt(2, tablekeyDataObject.getSchemaId());
+        proc.setInt(3, tablekeyDataObject.getTableId());
+        proc.setString(4, tablekeyDataObject.getName());
+        proc.setString(5, tablekeyDataObject.getLabel());
+        proc.setObject(6, tablekeyDataObject.getIsPK());
+        proc.setInt(7, tablekeyDataObject.getTypeId());
+        proc.setInt(8, tablekeyDataObject.getPrcsn());
+        proc.setInt(9, tablekeyDataObject.getScale());
+        proc.setInt(10, tablekeyDataObject.getOrden());
+        proc.execute();
+        tablekeyDataObject.setKeyId(proc.getInt(1));
+        proc.close();
+        return tablekeyDataObject;
     }
 
-
-    public void TableKey_Update(Integer SchemaId, Integer TableId, Integer KeyId, String Name, String Label, Boolean IsPk, Integer TypeId, Integer Precision, Integer Scale, Integer Order) {
-
-        String sql = "{CALL public.TableKey_Update(?,?,?,?,?,?,?,?,?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(TableId);
-        parameterList.add(KeyId);
-        parameterList.add(Name);
-        parameterList.add(Label);
-        parameterList.add(IsPk);
-        parameterList.add(TypeId);
-        parameterList.add(Precision);
-        parameterList.add(Scale);
-        parameterList.add(Order);
-        procRunner.callProcedure(sql, parameterList.toArray());
+    public void TableKey_Update(TableKeyDataObject tablekeyDataObject) throws SQLException {
+        CallableStatement proc = connection.prepareCall("{CALL Public.TableKey_Update(?,?,?,?,?,?,?,?,?,?)}");
+        proc.setInt(1, tablekeyDataObject.getSchemaId());
+        proc.setInt(2, tablekeyDataObject.getTableId());
+        proc.setInt(3, tablekeyDataObject.getKeyId());
+        proc.setString(4, tablekeyDataObject.getName());
+        proc.setString(5, tablekeyDataObject.getLabel());
+        proc.setBoolean(6, tablekeyDataObject.getIsPK());
+        proc.setInt(7, tablekeyDataObject.getTypeId());
+        proc.setInt(8, tablekeyDataObject.getPrcsn());
+        proc.setInt(9, tablekeyDataObject.getScale());
+        proc.setInt(10, tablekeyDataObject.getOrden());
+        proc.execute();
+        proc.close();
     }
 
-
-    public void TableKey_Delete(Integer SchemaId, Integer TableId, Integer KeyId) {
-
-        String sql = "{CALL public.TableKey_Delete(?,?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(TableId);
-        parameterList.add(KeyId);
-        procRunner.callProcedure(sql, parameterList.toArray());
+    public void TableKey_Delete(TableKeyDataObject tablekeyDataObject) throws SQLException {
+        CallableStatement proc = connection.prepareCall("{CALL Public.TableKey_Delete( ?, ?, ? )}");
+        proc.setInt(1, tablekeyDataObject.getSchemaId());
+        proc.setInt(2, tablekeyDataObject.getTableId());
+        proc.setInt(3, tablekeyDataObject.getKeyId());
+        proc.execute();
+        proc.close();
     }
 
-
-    public List<Map<String, Object>> TableKey_Select(Integer SchemaId, Integer TableId) {
-
-        String sql = "{CALL public.TableKey_Select(?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(TableId);
-        return procRunner.callProcedureR(sql, parameterList.toArray());
+    public List<TableKeyDataObject> TableKey_Select_PK(DatabaseTableDataObject databaseTableDataObject) throws SQLException {
+        LinkedList<TableKeyDataObject> list = new LinkedList<>();
+        CallableStatement proc;
+        proc = connection.prepareCall("{CALL Public.TableKey_Select_PK( ?, ?)}");
+        proc.setInt(1, databaseTableDataObject.getSchemaId());
+        proc.setInt(2, databaseTableDataObject.getTableId());
+        ResultSet rs = proc.executeQuery();
+        while (rs.next()) {
+            TableKeyDataObject tableKeyDataObject = new TableKeyDataObject();
+            tableKeyDataObject.setSchemaId(rs.getInt(1));
+            tableKeyDataObject.setTableId(rs.getInt(2));
+            tableKeyDataObject.setKeyId(rs.getInt(3));
+            tableKeyDataObject.setName(rs.getString(4));
+            tableKeyDataObject.setLabel(rs.getString(5));
+            tableKeyDataObject.setIsPK(rs.getBoolean(6));
+            tableKeyDataObject.setTypeId(rs.getInt(7));
+            tableKeyDataObject.setPrcsn(rs.getInt(8));
+            tableKeyDataObject.setScale(rs.getInt(9));
+            tableKeyDataObject.setOrden(rs.getInt(10));
+            list.add(tableKeyDataObject);
+        }
+        proc.close();
+        return list;
     }
 
-
-    public List<Map<String, Object>> TableKey_Select_PK(Integer SchemaId, Integer TableId) {
-
-        String sql = "{CALL public.TableKey_Select_PK(?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(TableId);
-        return procRunner.callProcedureR(sql, parameterList.toArray());
+    public List<TableKeyDataObject> TableKey_Select_NPK(DatabaseTableDataObject databaseTableDataObject) throws SQLException {
+        LinkedList<TableKeyDataObject> list = new LinkedList<>();
+        CallableStatement proc;
+        proc = connection.prepareCall("{CALL Public.TableKey_Select_NPK(?,?)}");
+        proc.setInt(1, databaseTableDataObject.getSchemaId());
+        proc.setInt(2, databaseTableDataObject.getTableId());
+        ResultSet rs = proc.executeQuery();
+        while (rs.next()) {
+            TableKeyDataObject tableKeyDataObject = new TableKeyDataObject();
+            tableKeyDataObject.setSchemaId(rs.getInt(1));
+            tableKeyDataObject.setTableId(rs.getInt(2));
+            tableKeyDataObject.setKeyId(rs.getInt(3));
+            tableKeyDataObject.setName(rs.getString(4));
+            tableKeyDataObject.setLabel(rs.getString(5));
+            tableKeyDataObject.setIsPK(rs.getBoolean(6));
+            tableKeyDataObject.setTypeId(rs.getInt(7));
+            tableKeyDataObject.setPrcsn(rs.getInt(8));
+            tableKeyDataObject.setScale(rs.getInt(9));
+            tableKeyDataObject.setOrden(rs.getInt(10));
+            list.add(tableKeyDataObject);
+        }
+        proc.close();
+        return list;
     }
 
-
-    public List<Map<String, Object>> TableKey_Select_NPK(Integer SchemaId, Integer TableId) {
-
-        String sql = "{CALL public.TableKey_Select_NPK(?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(TableId);
-        return procRunner.callProcedureR(sql, parameterList.toArray());
+    public List<KeyTypeDataObject> KeyType_Select_All() throws SQLException {
+        List<KeyTypeDataObject> list = new LinkedList<>();
+        CallableStatement proc;
+        proc = connection.prepareCall("{CALL Public.KeyType_Select_All()}");
+        ResultSet rs = proc.executeQuery();
+        while (rs.next()) {
+            KeyTypeDataObject keytypeDataObject = new KeyTypeDataObject();
+            keytypeDataObject.setTypeId(rs.getInt(1));
+            keytypeDataObject.setName(rs.getString(2));
+            keytypeDataObject.setPrecisionRequired(rs.getBoolean(3));
+            keytypeDataObject.setScaleRequired(rs.getBoolean(4));
+            list.add(keytypeDataObject);
+        }
+        proc.close();
+        return list;
     }
 
-
-    //KeyType Table
-
-
-    public void KeyType_Insert(Integer typeId, String Name, Boolean PrecisionRequired, Boolean ScaleRequired) {
-
-        String sql = "{CALL public.KeyType_Insert(?,?,?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(typeId);
-        parameterList.add(Name);
-        parameterList.add(PrecisionRequired);
-        parameterList.add(ScaleRequired);
-        procRunner.callProcedure(sql, parameterList.toArray());
+    public RelationshipDataObject Relationship_Insert(RelationshipDataObject relationshipDataObject) throws SQLException {
+        CallableStatement proc = connection.prepareCall("{CALL Public.Relationship_Insert( ?, ?, ?, ?, ?, ?, ?, ? )}");
+        proc.registerOutParameter(1, Types.INTEGER);
+        proc.setInt(2, relationshipDataObject.getSchemaId());
+        proc.setInt(3, relationshipDataObject.getParent_TableId());
+        proc.setInt(4, relationshipDataObject.getChild_TableId());
+        proc.setInt(5, relationshipDataObject.getRelationshipTypeId());
+        proc.setString(6, relationshipDataObject.getName());
+        proc.setString(7, relationshipDataObject.getForwardVerbPhrase());
+        proc.setString(8, relationshipDataObject.getReverseVerbPhrase());
+        proc.execute();
+        relationshipDataObject.setRelationshipId(proc.getInt(1));
+        proc.close();
+        return relationshipDataObject;
     }
 
-
-    public void KeyType_Update(Integer TypeId, String Name, Boolean PrecisionRequired) {
-
-        String sql = "{CALL public.KeyType_Update(?,?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(TypeId);
-        parameterList.add(Name);
-        parameterList.add(PrecisionRequired);
-        procRunner.callProcedure(sql, parameterList.toArray());
+    public void Relationship_Delete(RelationshipDataObject relationshipDataObject) throws SQLException {
+        CallableStatement proc = connection.prepareCall("{CALL Public.Relationship_Delete( ?, ?, ?, ? )}");
+        proc.setInt(1, relationshipDataObject.getSchemaId());
+        proc.setInt(2, relationshipDataObject.getParent_TableId());
+        proc.setInt(3, relationshipDataObject.getChild_TableId());
+        proc.setInt(4, relationshipDataObject.getRelationshipId());
+        proc.execute();
+        proc.close();
     }
 
-
-    public void KeyType_Delete(Integer TypeId) {
-
-        String sql = "{CALL public.KeyType_Delete(?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(TypeId);
-        procRunner.callProcedure(sql, parameterList.toArray());
+    public void Relationship_Update(RelationshipDataObject relationshipDataObject) throws SQLException {
+        CallableStatement proc = connection.prepareCall("{CALL Public.Relationship_Update( ?, ?, ?, ?, ?, ?, ?, ? )}");
+        proc.setInt(1, relationshipDataObject.getSchemaId());
+        proc.setInt(2, relationshipDataObject.getParent_TableId());
+        proc.setInt(3, relationshipDataObject.getChild_TableId());
+        proc.setInt(4, relationshipDataObject.getRelationshipId());
+        proc.setInt(5, relationshipDataObject.getRelationshipTypeId());
+        proc.setString(6, relationshipDataObject.getName());
+        proc.setString(7, relationshipDataObject.getForwardVerbPhrase());
+        proc.setString(8, relationshipDataObject.getReverseVerbPhrase());
+        proc.execute();
+        proc.close();
     }
 
-
-    public List<Map<String, Object>> KeyType_Select_All() {
-
-        String sql = "{CALL public.KeyType_Select_All()}";
-        return procRunner.callProcedureR(sql, new LinkedList().toArray());
+    public List<RelationshipDataObjectExtra> Relationship_Multiple_Select(DatabaseTableDataObject databaseTableDataObject) throws SQLException {
+        LinkedList<RelationshipDataObjectExtra> list = new LinkedList<>();
+        CallableStatement proc;
+        proc = connection.prepareCall("{CALL Relationship_Multiple_Select(?,?)}");
+        proc.setInt(1, databaseTableDataObject.getSchemaId());
+        proc.setInt(2, databaseTableDataObject.getTableId());
+        ResultSet rs = proc.executeQuery();
+        while (rs.next()) {
+            RelationshipDataObjectExtra relationshipDataObjectExtra = new RelationshipDataObjectExtra();
+            relationshipDataObjectExtra.setSchemaId(rs.getInt(1));
+            relationshipDataObjectExtra.setParent_TableId(rs.getInt(2));
+            relationshipDataObjectExtra.setParentName(rs.getString(3));
+            relationshipDataObjectExtra.setChild_TableId(rs.getInt(4));
+            relationshipDataObjectExtra.setChildName(rs.getString(5));
+            relationshipDataObjectExtra.setRelationshipTypeId(rs.getInt(6));
+            relationshipDataObjectExtra.setRelationshipId(rs.getInt(7));
+            relationshipDataObjectExtra.setRelationshipTypeName(rs.getString(8));
+            relationshipDataObjectExtra.setRelationshipName(rs.getString(9));
+            relationshipDataObjectExtra.setForwardVerbPhrase(rs.getString(10));
+            relationshipDataObjectExtra.setReverseVerbPhrase(rs.getString(11));
+            list.add(relationshipDataObjectExtra);
+        }
+        proc.close();
+        return list;
     }
 
-
-    //RelationshipType Table
-
-
-    public void RelationshipType_Insert(Integer relationshipTypeId, String Name) {
-
-        String sql = "{CALL public.RelationshipType_Insert(?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(relationshipTypeId);
-        parameterList.add(Name);
-        procRunner.callProcedure(sql, parameterList.toArray());
+    public void RelationshipKeyPair_Insert(TableKeyRelationshipKeyPairDataObject tableKeyRelationshipKeyPairDataObject) throws SQLException {
+        CallableStatement proc = connection.prepareCall("{CALL public.RelationshipKeyPair_Insert(?,?,?,?,?,?)}");
+        proc.setInt(1, tableKeyRelationshipKeyPairDataObject.getSchemaId());
+        proc.setInt(2, tableKeyRelationshipKeyPairDataObject.getParent_TableId());
+        proc.setInt(3, tableKeyRelationshipKeyPairDataObject.getChild_TableId());
+        proc.setInt(4, tableKeyRelationshipKeyPairDataObject.getRelationshipId());
+        proc.setInt(5, tableKeyRelationshipKeyPairDataObject.getParent_KeyId());
+        proc.setInt(6, tableKeyRelationshipKeyPairDataObject.getChild_KeyId());
+        proc.execute();
+        proc.close();
     }
 
-
-    public void RelationshipType_Update(Integer RelationshipTypeId, String Name) {
-
-        String sql = "{CALL public.RelationshipType_Update(?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(RelationshipTypeId);
-        parameterList.add(Name);
-        procRunner.callProcedure(sql, parameterList.toArray());
+    public void RelationshipKeyPair_Delete(TableKeyRelationshipKeyPairDataObject tableKeyRelationshipKeyPairDataObject) throws SQLException {
+        CallableStatement proc = connection.prepareCall("{CALL public.RelationshipKeyPair_Delete(?,?,?,?,?,?)}");
+        proc.setInt(1, tableKeyRelationshipKeyPairDataObject.getSchemaId());
+        proc.setInt(2, tableKeyRelationshipKeyPairDataObject.getParent_TableId());
+        proc.setInt(3, tableKeyRelationshipKeyPairDataObject.getChild_TableId());
+        proc.setInt(4, tableKeyRelationshipKeyPairDataObject.getRelationshipId());
+        proc.setInt(5, tableKeyRelationshipKeyPairDataObject.getParent_KeyId());
+        proc.setInt(6, tableKeyRelationshipKeyPairDataObject.getChild_KeyId());
+        proc.execute();
+        proc.close();
     }
 
-
-    public void RelationshipType_Delete(Integer RelationshipTypeId) {
-
-        String sql = "{CALL public.RelationshipType_Delete(?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(RelationshipTypeId);
-        procRunner.callProcedure(sql, parameterList.toArray());
+    public List<TableKeyKeyTypeDataObject> TableKey_KeyType_Select(DatabaseTableDataObject databaseTableDataObject) throws SQLException {
+        LinkedList<TableKeyKeyTypeDataObject> list = new LinkedList<>();
+        CallableStatement proc;
+        proc = connection.prepareCall("{CALL TableKey_KeyType_Select(?,?)}");
+        proc.setInt(1, databaseTableDataObject.getSchemaId());
+        proc.setInt(2, databaseTableDataObject.getTableId());
+        ResultSet rs = proc.executeQuery();
+        while (rs.next()) {
+            TableKeyKeyTypeDataObject tableKeyKeyTypeDataObject = new TableKeyKeyTypeDataObject();
+            tableKeyKeyTypeDataObject.setSchemaId(rs.getInt(1));
+            tableKeyKeyTypeDataObject.setTableId(rs.getInt(2));
+            tableKeyKeyTypeDataObject.setKeyId(rs.getInt(3));
+            tableKeyKeyTypeDataObject.setKeyName(rs.getString(4));
+            tableKeyKeyTypeDataObject.setLabel(rs.getString(5));
+            tableKeyKeyTypeDataObject.setIsPK(rs.getBoolean(6));
+            tableKeyKeyTypeDataObject.setTypeId(rs.getInt(7));
+            tableKeyKeyTypeDataObject.setTypeName(rs.getString(8));
+            tableKeyKeyTypeDataObject.setIdentity(rs.getBoolean(9));
+            tableKeyKeyTypeDataObject.setPrecisionRequired(rs.getBoolean(10));
+            tableKeyKeyTypeDataObject.setPrcsn(rs.getInt(11));
+            tableKeyKeyTypeDataObject.setScaleRequired(rs.getBoolean(12));
+            tableKeyKeyTypeDataObject.setScale(rs.getInt(13));
+            tableKeyKeyTypeDataObject.setOrden(rs.getInt(14));
+            list.add(tableKeyKeyTypeDataObject);
+        }
+        proc.close();
+        return list;
     }
 
-
-    public List<Map<String, Object>> RelationshipType_Select_All() {
-
-        String sql = "{CALL public.RelationshipType_Select_All()}";
-        return procRunner.callProcedureR(sql, new LinkedList().toArray());
+    public List<TableKeyRelationshipKeyPairDataObject> RelationshipKeyPair_Multiple_Select(RelationshipDataObject relationshipDataObject) throws SQLException {
+        LinkedList<TableKeyRelationshipKeyPairDataObject> list = new LinkedList<>();
+        CallableStatement proc;
+        proc = connection.prepareCall("{CALL public.RelationshipKeyPair_Multiple_Select(?,?,?,?)}");
+        proc.setInt(1, relationshipDataObject.getSchemaId());
+        proc.setInt(2, relationshipDataObject.getParent_TableId());
+        proc.setInt(3, relationshipDataObject.getChild_TableId());
+        proc.setInt(4, relationshipDataObject.getRelationshipId());
+        ResultSet rs = proc.executeQuery();
+        while (rs.next()) {
+            TableKeyRelationshipKeyPairDataObject tableKeyRelationshipKeyPairDataObject = new TableKeyRelationshipKeyPairDataObject();
+            tableKeyRelationshipKeyPairDataObject.setSchemaId(rs.getInt(1));
+            tableKeyRelationshipKeyPairDataObject.setParent_TableId(rs.getInt(2));
+            tableKeyRelationshipKeyPairDataObject.setChild_TableId(rs.getInt(3));
+            tableKeyRelationshipKeyPairDataObject.setRelationshipId(rs.getInt(4));
+            tableKeyRelationshipKeyPairDataObject.setParent_KeyId(rs.getInt(5));
+            tableKeyRelationshipKeyPairDataObject.setChild_KeyId(rs.getInt(6));
+            tableKeyRelationshipKeyPairDataObject.setParentName(rs.getString(7));
+            tableKeyRelationshipKeyPairDataObject.setChildName(rs.getString(8));
+            list.add(tableKeyRelationshipKeyPairDataObject);
+        }
+        proc.close();
+        return list;
     }
 
-
-    //Relationship Table
-    public void Relationship_Insert(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipTypeId, String relationshipName, String forwardVerbPhrase, String reverseVerbPhrase) {
-
-        String sql = "{CALL public.Relationship_Insert(?,?,?,?,?,?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(Parent_TableId);
-        parameterList.add(Child_TableId);
-        parameterList.add(RelationshipTypeId);
-        parameterList.add(relationshipName);
-        parameterList.add(forwardVerbPhrase);
-        parameterList.add(reverseVerbPhrase);
-        procRunner.callProcedure(sql, parameterList.toArray());
+    public List<TableKeyRelationshipKeyPairDataObject> Relationship_SelectOnlyNames(DatabaseSchemaDataObject databaseSchemaDataObject) throws SQLException {
+        List<TableKeyRelationshipKeyPairDataObject> list = new LinkedList<>();
+        CallableStatement proc;
+        proc = connection.prepareCall("{CALL public.Relationship_SelectOnlyNames(?)}");
+        proc.setInt(1, databaseSchemaDataObject.getSchemaId());
+        ResultSet rs = proc.executeQuery();
+        while (rs.next()) {
+            TableKeyRelationshipKeyPairDataObject tableKeyRelationshipKeyPairDataObject = new TableKeyRelationshipKeyPairDataObject();
+            tableKeyRelationshipKeyPairDataObject.setParentName(rs.getString(1));
+            tableKeyRelationshipKeyPairDataObject.setChildName(rs.getString(2));
+            tableKeyRelationshipKeyPairDataObject.setRelationshipId(rs.getInt(3));
+            tableKeyRelationshipKeyPairDataObject.setRelationshipTypeId(rs.getInt(4));
+            tableKeyRelationshipKeyPairDataObject.setParentKeyName(rs.getString(5));
+            tableKeyRelationshipKeyPairDataObject.setChildKeyName(rs.getString(6));
+            list.add(tableKeyRelationshipKeyPairDataObject);
+        }
+        proc.close();
+        return list;
     }
 
-
-    public void Relationship_Delete(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId) {
-
-        String sql = "{CALL public.Relationship_Delete(?,?,?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(Parent_TableId);
-        parameterList.add(Child_TableId);
-        parameterList.add(RelationshipId);
-        procRunner.callProcedure(sql, parameterList.toArray());
+    public void DatabaseSchema_Copy(Integer SchemaId, String SchemaName) throws SQLException {
+        CallableStatement proc = connection.prepareCall("{CALL public.DatabaseSchema_Copy(?,?)}");
+        proc.setInt(1, SchemaId);
+        proc.setString(2, SchemaName);
+        proc.execute();
+        proc.close();
     }
 
-
-    public void Relationship_Update(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId, Integer RelationshipTypeId, String relationshipName, String forwardVerbPhrase, String reverseVerbPhrase) {
-
-        String sql = "{CALL public.Relationship_Update(?,?,?,?,?,?,?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(Parent_TableId);
-        parameterList.add(Child_TableId);
-        parameterList.add(RelationshipId);
-        parameterList.add(RelationshipTypeId);
-        parameterList.add(relationshipName);
-        parameterList.add(forwardVerbPhrase);
-        parameterList.add(reverseVerbPhrase);
-        procRunner.callProcedure(sql, parameterList.toArray());
+    public void PotatoSql_Table_Copy(DatabaseTableDataObject databaseTableDataObject, String Name) throws SQLException {
+        CallableStatement proc = connection.prepareCall("{CALL public.PotatoSql_Table_Copy(?, ?, ? )}");
+        proc.setInt(1, databaseTableDataObject.getSchemaId());
+        proc.setInt(2, databaseTableDataObject.getTableId());
+        proc.setString(3, Name);
+        proc.execute();
+        proc.close();
     }
 
-
-    public List<Map<String, Object>> Relationship_Select(Integer SchemaId) {
-
-        String sql = "{CALL public.Relationship_Select(?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        return procRunner.callProcedureR(sql, parameterList.toArray());
+    public void PotatoSql_TableKey_Copy(TableKeyDataObject tableKeyDataObject, String Name) throws SQLException {
+        CallableStatement proc = connection.prepareCall("{CALL public.PotatoSql_TableKey_Copy(?, ?, ?,? )}");
+        proc.setInt(1, tableKeyDataObject.getSchemaId());
+        proc.setInt(2, tableKeyDataObject.getTableId());
+        proc.setInt(3, tableKeyDataObject.getKeyId());
+        proc.setString(4, Name);
+        proc.execute();
+        proc.close();
     }
-
-
-    public List<Map<String, Object>> Relationship_Multiple_Select(Integer SchemaId) {
-
-        String sql = "{CALL public.Relationship_Multiple_Select(?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        return procRunner.callProcedureR(sql, parameterList.toArray());
-    }
-
-    public List<Map<String, Object>> Relationship_Multiple_Select_2(Integer SchemaId, Integer TableId) {
-
-        String sql = "{CALL public.Relationship_Multiple_Select_2(?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(TableId);
-        return procRunner.callProcedureR(sql, parameterList.toArray());
-    }
-
-    public void RelationshipKeyPair_Insert(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId, Integer Parent_KeyId, Integer Child_KeyId) {
-
-        String sql = "{CALL public.RelationshipKeyPair_Insert(?,?,?,?,?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(Parent_TableId);
-        parameterList.add(Child_TableId);
-        parameterList.add(RelationshipId);
-        parameterList.add(Parent_KeyId);
-        parameterList.add(Child_KeyId);
-        procRunner.callProcedure(sql, parameterList.toArray());
-    }
-
-
-    public void RelationshipKeyPair_Delete(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId, Integer Parent_KeyId, Integer Child_KeyId) {
-
-        String sql = "{CALL public.RelationshipKeyPair_Delete(?,?,?,?,?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(Parent_TableId);
-        parameterList.add(Child_TableId);
-        parameterList.add(RelationshipId);
-        parameterList.add(Parent_KeyId);
-        parameterList.add(Child_KeyId);
-        procRunner.callProcedure(sql, parameterList.toArray());
-    }
-
-    public void RelationshipKeyPair_Delete(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId) {
-
-        String sql = "{CALL public.RelationshipKeyPair_Delete(?,?,?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(Parent_TableId);
-        parameterList.add(Child_TableId);
-        parameterList.add(RelationshipId);
-        procRunner.callProcedure(sql, parameterList.toArray());
-    }
-
-    public List<Map<String, Object>> RelationshipKeyPair_Select(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId) {
-
-        String sql = "{CALL public.RelationshipKeyPair_Select(?,?,?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(Parent_TableId);
-        parameterList.add(Child_TableId);
-        parameterList.add(RelationshipId);
-        return procRunner.callProcedureR(sql, parameterList.toArray());
-    }
-
-    //Other
-
-
-    public void resetDB() {
-
-        procRunner.resetDB();
-    }
-
-
-    //TableKey_KeyType
-    public List<Map<String, Object>> TableKey_KeyType_Select(Integer SchemaId, Integer TableId) {
-
-        String sql = "{CALL public.TableKey_KeyType_Select(?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(TableId);
-        return procRunner.callProcedureR(sql, parameterList.toArray());
-    }
-
-
-    public List<Map<String, Object>> RelationshipKeyPair_Multiple_Select(Integer SchemaId, Integer Parent_TableId, Integer Child_TableId, Integer RelationshipId) {
-
-        String sql = "{CALL public.RelationshipKeyPair_Multiple_Select(?,?,?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(Parent_TableId);
-        parameterList.add(Child_TableId);
-        parameterList.add(RelationshipId);
-        return procRunner.callProcedureR(sql, parameterList.toArray());
-    }
-
-
-    public List<Map<String, Object>> Relationship_SelectWithNames(Integer SchemaId) {
-
-        String sql = "{CALL public.Relationship_SelectWithNames(?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        return procRunner.callProcedureR(sql, parameterList.toArray());
-    }
-
-
-    public List<Map<String, Object>> Relationship_SelectOnlyNames(Integer SchemaId) {
-
-        String sql = "{CALL public.Relationship_SelectOnlyNames(?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        return procRunner.callProcedureR(sql, parameterList.toArray());
-    }
-
 
     public void Shutdown() {
-
-        procRunner.Shutdown();
+        //SHUTDOWN COMPACT
+        String sql = "SHUTDOWN COMPACT;";
+        Statement stmt;
+        try {
+            stmt = connection.createStatement();
+            stmt.executeUpdate(sql);
+            stmt.close();
+        } catch (SQLException e) {
+            Log.getLog().start("files/exception.log");
+            Log.getLog().logMessage(e.toString());
+            Log.getLog().write();
+            Log.getLog().close();
+            e.printStackTrace();
+        }
     }
 
-
-    public void DatabaseSchema_Copy(Integer SchemaId, String SchemaName) {
-
-        String sql = "{CALL public.DatabaseSchema_Copy(?,?)}";
-        LinkedList<Object> parameterList = new LinkedList<>();
-        parameterList.add(SchemaId);
-        parameterList.add(SchemaName);
-        procRunner.callProcedure(sql, parameterList.toArray());
+    public void TableKey_Renumber(TableKeyDataObject tableKeyDataObject) throws SQLException{
+        CallableStatement proc = connection.prepareCall("{CALL public.TableKey_Renumber(?, ?, ?)}");
+        proc.setInt(1, tableKeyDataObject.getSchemaId());
+        proc.setInt(2, tableKeyDataObject.getTableId());
+        proc.setInt(3, tableKeyDataObject.getKeyId());
+        proc.execute();
+        proc.close();
     }
-
-
-    public void PotatoSql_Table_Copy(Integer SchemaId, Integer TableId_Old, String Name) {
-
-        String sql = "{CALL public.PotatoSql_Table_Copy(?, ?, ? )}";
-        LinkedList parameterList = new LinkedList();
-        parameterList.add(SchemaId);
-        parameterList.add(TableId_Old);
-        parameterList.add(Name);
-        procRunner.callProcedure(sql, parameterList.toArray());
-    }
-
-    public void PotatoSql_TableKey_Copy(Integer SchemaId, Integer TableId, Integer KeyId, String Name) {
-        String sql = "{CALL public.PotatoSql_TableKey_Copy(?, ?, ?,? )}";
-        LinkedList parameterList = new LinkedList();
-        parameterList.add(SchemaId);
-        parameterList.add(TableId);
-        parameterList.add(KeyId);
-        parameterList.add(Name);
-        procRunner.callProcedure(sql, parameterList.toArray());
-    }
-
 }

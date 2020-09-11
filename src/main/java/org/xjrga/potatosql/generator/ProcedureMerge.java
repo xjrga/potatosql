@@ -1,25 +1,20 @@
 package org.xjrga.potatosql.generator;
 
 public class ProcedureMerge implements Code {
-
     private final Table table;
     private final Code statementMerge;
     private final SqlStuff sqlStuff;
     private final StringBuilder sqlbuild;
 
-
     public ProcedureMerge(Table table, SqlStuff sqlStuff) {
-
         this.table = table;
         statementMerge = new StatementMerge(table, sqlStuff);
         this.sqlStuff = sqlStuff;
         sqlbuild = new StringBuilder();
     }
 
-
     @Override
     public String getCode() {
-
         if (table.containsNonPrimaryKeys()) {
             sqlbuild.append("CREATE PROCEDURE");
             sqlbuild.append(" ");
@@ -37,9 +32,7 @@ public class ProcedureMerge implements Code {
             sqlbuild.append(statementMerge.getCode());
             sqlbuild.append("END;");
             sqlbuild.append("\n");
-
         }
         return sqlbuild.toString();
     }
-
 }

@@ -17,54 +17,36 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package org.xjrga.potatosql.model;
 
 import org.xjrga.potatosql.data.DbLink;
-import org.xjrga.potatosql.dataobject.KeyDataObject;
+import org.xjrga.potatosql.dataobject.DatabaseTableDataObject;
+import org.xjrga.potatosql.dataobject.TableKeyDataObject;
 
 import javax.swing.*;
-import java.util.HashMap;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 public class ListModelParentPK extends DefaultListModel {
-
     private final DbLink dbLink;
 
-
     public ListModelParentPK(DbLink dbLink) {
-
         this.dbLink = dbLink;
-
     }
 
-
-    public void reload(int schemaid, int tableid) {
-
+    public void reload(DatabaseTableDataObject databaseTableDataObject) {
         this.clear();
-
-        LinkedList list = (LinkedList) dbLink.TableKey_Select_PK(schemaid, tableid);
-        Iterator it = list.iterator();
-
-        while (it.hasNext()) {
-
-            HashMap row = (HashMap) it.next();
-            schemaid = (Integer) row.get("SCHEMAID");
-            tableid = (Integer) row.get("TABLEID");
-            Integer keyid = (Integer) row.get("KEYID");
-            String name = (String) row.get("NAME");
-            String label = (String) row.get("LABEL");
-            Boolean ispk = (Boolean) row.get("ISPK");
-            Integer typeid = (Integer) row.get("TYPEID");
-            Integer precision = (Integer) row.get("PRECISION");
-            Integer scale = (Integer) row.get("SCALE");
-            Integer order = (Integer) row.get("ORDEN");
-            KeyDataObject keyDataObject = new KeyDataObject(schemaid, tableid, keyid, name, label, ispk, typeid, precision, scale, order);
-
-            this.addElement(keyDataObject);
+        LinkedList list = null;
+        try {
+            list = (LinkedList) dbLink.TableKey_Select_PK(databaseTableDataObject);
+            Iterator it = list.iterator();
+            while (it.hasNext()) {
+                TableKeyDataObject tableKeyDataObject = (TableKeyDataObject) it.next();
+                this.addElement(tableKeyDataObject);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
-
     }
-
 }

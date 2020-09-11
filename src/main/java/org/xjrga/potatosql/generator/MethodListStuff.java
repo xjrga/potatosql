@@ -4,7 +4,6 @@ public class MethodListStuff {
     private final Table table;
     private final JavaStuff javaStuff;
 
-
     public MethodListStuff(Table table) {
         this.table = table;
         this.javaStuff = new JavaStuff(table);
@@ -18,5 +17,4 @@ public class MethodListStuff {
         sb.append(method);
         return sb.toString();
     }
-
 }
