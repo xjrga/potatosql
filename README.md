@@ -1,33 +1,33 @@
-[PotatoSQL](https://x-jrga.github.io/potatosql "PotatoSQL: Software for Database Design")
+[PotatoSql](https://x-jrga.github.io/potatosql "PotatoSql: Database Design and Code Generation Software")
 
-    is software for database design
+    is learning software for database design
 
 This software:
 
      • allows me to design database schemas
      • generates ddl and dml code
      • can be used as a learning/teaching tool for anyone with interest in database design
-     • allows me to build prototypes faster and less expensively    
-     • is free and open source software
+     • can be easily modified (by a programmer) to add your own custom code    
+     • is available as free software
       
 Requirements
 
-    It needs java. I used openjdk 11.
+    It needs java. I used openjdk-8-jdk (1.8.0_212)
 
 Installing
 
-    1. Download PotatoSQL-30.zip from https://sourceforge.net/projects/potatosql
-    2. unzip PotatoSQL-30.zip
-    3. cd PotatoSQL-30
-    4. java -jar PotatoSQL-30.jar (if you are on windows double click on jar file)
+    1. Download PotatoSQL-03.zip from https://sourceforge.net/projects/potatosql
+    2. unzip PotatoSQL-03.zip
+    3. cd PotatoSQL-03
+    4. java -jar PotatoSQL-03.jar (if you are on windows double click on jar file)
     
-[Download](https://sourceforge.net/projects/potatosql "PotatoSQL: Software for Database Design")
+[Download](https://sourceforge.net/projects/potatosql "PotatoSql: Database Design and Code Generation Software")
 
-[User Guide](https://x-jrga.github.io/potatosql "PotatoSQL: Software for Database Design")
+[User Guide](https://x-jrga.github.io/potatosql "PotatoSql: Database Design and Code Generation Software")
 
-Build Number
+Version
  
-    30
+    v0.04
 
 Authors
 
@@ -41,6 +41,17 @@ Acknowledgments
 
 Snack uses the following libraries:
 
-    hsqldb-2.5.1.jar
-    jgoodies-common-1.8.1.jar
+    hsqldb.jar (v2.5.0)
+    jgoodies-common-1.8.0.jar
     jgoodies-forms-1.8.0.jar
+    jgoodies-looks-2.7.0.jar   
+
+Software used:
+
+    IntelliJ IDEA (Community Edition)
+    SQL Power Architect
+    SQL Workbench
+
+Todo:
+
+     • test and find bugs    

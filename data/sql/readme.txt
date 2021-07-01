@@ -1,0 +1,9 @@
+Please load sql scripts in order:
+
+1_schema.sql
+2_procedures.sql
+3_load_keytypes.sql
+4_load_relationshiptypes.sql
+5_load_rolodex_schema_example.sql
+6_load_sales_schema_example.sql
+7_load_sales_dimensional_schema_example.sql
