@@ -5,11 +5,12 @@ import java.util.LinkedList;
 
 public class Table {
 
-    private String name;
-    private LinkedList columns;
+    private final String name;
+    private final LinkedList columns;
     private int keyCount;
     private int primaryKeyCount;
     private int nonPrimaryKeyCount;
+    private String schema_name;
 
     public Table(String name) {
 
@@ -46,7 +47,7 @@ public class Table {
 
             Column column = (Column) it.next();
             sb.append(",");
-            sb.append(column.getName());
+            sb.append(column.get_name());
         }
 
         return sb.toString();
@@ -60,7 +61,7 @@ public class Table {
         while (it.hasNext()) {
 
             Column column = (Column) it.next();
-            Integer columnNameSize = column.getName().length();
+            Integer columnNameSize = column.get_name().length();
 
             if (columnNameSize > largestColumnNameSize) {
                 largestColumnNameSize = columnNameSize;
@@ -117,19 +118,6 @@ public class Table {
         return columns.iterator();
     }
 
-    public Boolean identityExists() {
-
-        Boolean flag = false;
-        Iterator it = columns.iterator();
-        while (it.hasNext()) {
-            Column column = (Column) it.next();
-            if (column.isIdentity()) {
-                flag = true;
-            }
-        }
-        return flag;
-    }
-
     public boolean containsPrimaryKeys() {
         Boolean flag = false;
 
@@ -151,5 +139,13 @@ public class Table {
             }
         }
         return primaryKeyCount;
+    }
+
+    public String getSchema_name() {
+        return schema_name;
+    }
+
+    public void setSchema_name(String schema_name) {
+        this.schema_name = schema_name;
     }
 }

@@ -19,36 +19,35 @@
  */
 package io.github.xjrga.potatosql.model;
 
-import io.github.xjrga.potatosql.data.DbLink;
-import io.github.xjrga.potatosql.dataobject.SchemaDataObject;
-
+import io.github.xjrga.potatosql.data.Dblink;
+import io.github.xjrga.potatosql.data.dto.O_schema;
+import java.util.List;
 import javax.swing.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 public class ListModelSchema extends DefaultListModel {
 
-    private DbLink dbLink;
+    private Dblink dbLink;
 
-    public ListModelSchema(DbLink dbLink) {
+    public ListModelSchema(Dblink dbLink) {
         this.dbLink = dbLink;
     }
 
     public void reload() {
-        this.clear();
+        clear();
+        List<O_schema> list = (List<O_schema>) dbLink.schema_select_all();
+        list.forEach(element -> addElement(element));
+    }
 
-        LinkedList list = (LinkedList) dbLink.DatabaseSchema_Select_All();
-        Iterator it = list.iterator();
-
-        while (it.hasNext()) {
-
-            HashMap row = (HashMap) it.next();
-            int schemaid = (int) row.get("SCHEMAID");
-            String name = (String) row.get("NAME");
-            SchemaDataObject schema = new SchemaDataObject(schemaid, name);
-
-            this.addElement(schema);
+    public int find_by_schema_id(Integer schema_id) {
+        int index = 0;
+        int size = this.getSize();
+        for (int i = 0; i < size; i++) {
+            O_schema elementAt = (O_schema) this.getElementAt(i);
+            if (elementAt.getSchema_id().equals(schema_id)) {
+                index = i;
+                break;
+            }
         }
+        return index;
     }
 }

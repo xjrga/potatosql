@@ -19,42 +19,22 @@
  */
 package io.github.xjrga.potatosql.model;
 
-import io.github.xjrga.potatosql.data.DbLink;
-import io.github.xjrga.potatosql.dataobject.KeyTypeDataObject;
-
+import io.github.xjrga.potatosql.data.Dblink;
+import io.github.xjrga.potatosql.data.dto.O_key_type;
+import java.util.List;
 import javax.swing.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 public class ListModelKeyTypes extends DefaultListModel {
 
-    private DbLink dbLink;
+    private final Dblink dbLink;
 
-    public ListModelKeyTypes(DbLink dbLink) {
-
+    public ListModelKeyTypes(Dblink dbLink) {
         this.dbLink = dbLink;
-
     }
 
     public void reload() {
-
-        this.clear();
-
-        LinkedList list = (LinkedList) dbLink.KeyType_Select_All();
-        Iterator it = list.iterator();
-
-        while (it.hasNext()) {
-
-            HashMap row = (HashMap) it.next();
-            int schemaid = (int) row.get("TYPEID");
-            String name = (String) row.get("NAME");
-            Boolean sizerequired = (Boolean) row.get("SIZEREQUIRED");
-            KeyTypeDataObject keyTypeDataObject = new KeyTypeDataObject(schemaid, name, sizerequired);
-
-            this.addElement(keyTypeDataObject);
-        }
-
+        clear();
+        List<O_key_type> list = (List<O_key_type>) dbLink.key_type_select_all();
+        list.forEach(element -> addElement(element));
     }
-
 }

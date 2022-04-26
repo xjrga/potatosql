@@ -19,49 +19,28 @@
  */
 package io.github.xjrga.potatosql.model;
 
-import io.github.xjrga.potatosql.data.DbLink;
-import io.github.xjrga.potatosql.dataobject.KeyDataObject;
-
+import io.github.xjrga.potatosql.data.Dblink;
+import io.github.xjrga.potatosql.data.dto.O_key;
+import io.github.xjrga.potatosql.data.dto.O_table;
+import java.util.List;
 import javax.swing.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 public class ListModelChildNPK extends DefaultListModel {
 
-    private DbLink dbLink;
+    private final Dblink dbLink;
 
-    public ListModelChildNPK(DbLink dbLink) {
+    public ListModelChildNPK(Dblink dbLink) {
 
         this.dbLink = dbLink;
 
     }
 
-    public void reload(int schemaid, int tableid) {
-
-        this.clear();
-
-        LinkedList list = (LinkedList) dbLink.TableKey_Select_NPK(schemaid, tableid);
-        Iterator it = list.iterator();
-
-        while (it.hasNext()) {
-
-            HashMap row = (HashMap) it.next();
-            schemaid = (Integer) row.get("SCHEMAID");
-            tableid = (Integer) row.get("TABLEID");
-            Integer keyid = (Integer) row.get("KEYID");
-            String name = (String) row.get("NAME");
-            String label = (String) row.get("LABEL");
-            Boolean ispk = (Boolean) row.get("ISPK");
-            Integer typeid = (Integer) row.get("TYPEID");
-            Integer precision = (Integer) row.get("PRECISION");
-            Integer scale = (Integer) row.get("SCALE");
-            Integer order = (Integer) row.get("ORDERING");
-            KeyDataObject keyDataObject = new KeyDataObject(schemaid, tableid, keyid, name, label, ispk, typeid, precision, scale, order);
-
-            this.addElement(keyDataObject);
-        }
-
+    public void reload(O_table o) {
+        clear();
+        O_key input = new O_key();
+        input.setSchema_id(o.getSchema_id());
+        input.setTable_id(o.getTable_id());
+        List<O_key> list = (List<O_key>) dbLink.find_npk(input);
+        list.forEach(element -> addElement(element));
     }
-
 }

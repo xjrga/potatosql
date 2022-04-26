@@ -1,11 +1,11 @@
 package io.github.xjrga.potatosql.other;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class ImageUtilities {
 
@@ -15,22 +15,14 @@ public class ImageUtilities {
         BufferedImage subimage = image.getSubimage(0, 0, w, h);
         Graphics2D g2 = subimage.createGraphics();
         Rectangle2D tr = new Rectangle2D.Double(0, 0, w, h);
-        TexturePaint tp = new TexturePaint(subimage, tr);
         g2.setStroke(new BasicStroke(5));
         g2.setPaint(Color.BLACK);
-        //   g.fill(tr);
         g2.draw(tr);
-        //String format = "PNG";
-        //String pathname = "resources/myeditedimage.png";
-        //writeBufferedImage(subimage,format,pathname);
         g2.dispose();
         return subimage;
     }
 
     static void writeBufferedImage(BufferedImage subimage, String format, String pathname) {
-        /*String format = "PNG";
-        String pathname = "resources/myeditedimage.png";
-        writeBufferedImage(subimage,format,pathname);*/
         try {
             ImageIO.write(subimage, format, new File(pathname));
         } catch (IOException e) {

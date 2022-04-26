@@ -1,4 +1,4 @@
-[PotatoSql](https://xjrga.github.io/potatosql "PotatoSql: Learning Software for Database Design")
+[PotatoSql](https://xjrga.github.io/potatosql "Potatosql: Learning Software for Database Design")
 
 RELEASE NOTES
 
@@ -12,3 +12,8 @@ v0.04
     Fix various source code generation issues
     Add new logo
  
+50
+
+    Add data exchange functionality
+    Add dao pattern java code generation
+    

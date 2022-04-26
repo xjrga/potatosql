@@ -1,9 +1,8 @@
 package io.github.xjrga.potatosql.gui;
 
 import io.github.xjrga.potatosql.other.ImageUtilities;
-
-import javax.swing.*;
 import java.awt.image.BufferedImage;
+import javax.swing.*;
 
 public class Message {
 
@@ -66,6 +65,20 @@ public class Message {
         //0 - Ok
         //2 - Cancel
         //null - x
+        Object optionValue = optionPane.getValue();
+        int value = -1;
+        if (optionValue != null) {
+            value = (int) optionValue;
+        }
+        return value;
+    }
+
+    public static int showOptionDialogOk(JComponent[] inputs, String title) {
+        JOptionPane optionPane = new JOptionPane(inputs, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION);
+        JDialog dialog = optionPane.createDialog(title);
+        dialog.setIconImage(logo);
+        dialog.setVisible(true);
+        //0 - Ok
         Object optionValue = optionPane.getValue();
         int value = -1;
         if (optionValue != null) {

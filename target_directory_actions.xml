@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2021 Jorge R Garcia de Alba &lt;jorge.r.garciadealba@gmail.com&gt;
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+-->
+
+
+<project name="potatosql" default="unzip, run">
+    <property name="version" value="50"/>        
+    <target name="1. unzip">
+        <!-- unzip files -->
+        <unzip src="target/${ant.project.name}-${version}-app.zip" dest="target" overwrite="true"/>                                        
+    </target>
+    <target name="2. run">
+        <!-- run application -->                
+        <java jar="target/${ant.project.name}-${version}/${ant.project.name}-${version}.jar" fork="true" failonerror="true" maxmemory="128m">
+            <classpath>
+                <pathelement location="target/${ant.project.name}-${version}/${ant.project.name}-${version}.jar"/>                
+            </classpath>
+        </java>
+    </target>    
+</project>

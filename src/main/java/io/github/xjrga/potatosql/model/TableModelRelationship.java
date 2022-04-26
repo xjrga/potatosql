@@ -19,20 +19,19 @@
  */
 package io.github.xjrga.potatosql.model;
 
-import io.github.xjrga.potatosql.data.DbLink;
-
-import javax.swing.table.DefaultTableModel;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
+import io.github.xjrga.potatosql.data.Dblink;
+import io.github.xjrga.potatosql.data.dto.O_relationship_multiple_select;
+import io.github.xjrga.potatosql.data.dto.O_schema;
+import java.util.List;
 import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
 
 public class TableModelRelationship extends DefaultTableModel {
 
     private Vector columns;
-    private DbLink dbLink;
+    private final Dblink dbLink;
 
-    public TableModelRelationship(DbLink dbLink) {
+    public TableModelRelationship(Dblink dbLink) {
 
         this.setColumnIdentifiers();
         this.dbLink = dbLink;
@@ -54,6 +53,7 @@ public class TableModelRelationship extends DefaultTableModel {
         this.setColumnIdentifiers(columns);
     }
 
+    @Override
     public Class getColumnClass(int i) {
 
         Class returnValue = Object.class;
@@ -98,18 +98,11 @@ public class TableModelRelationship extends DefaultTableModel {
         return false;
     }
 
-    public void reload(int schemaid) {
+    public void reload(O_schema schema) {
 
         Vector table = new Vector();
-
-        LinkedList list = (LinkedList) dbLink.Relationship_Multiple_Select(schemaid);
-
-        Iterator it = list.iterator();
-
-        while (it.hasNext()) {
-
-            HashMap row_hashmap = (HashMap) it.next();
-
+        List<O_relationship_multiple_select> list = (List<O_relationship_multiple_select>) dbLink.relationship_multiple_select(schema);
+        for (O_relationship_multiple_select o : list) {
             //       SCHEMAID,
             //       PARENT_TABLEID,
             //       B.NAME AS PARENT,
@@ -118,14 +111,14 @@ public class TableModelRelationship extends DefaultTableModel {
             //       RELATIONSHIPTYPEID,
             //       RELATIONSHIPID,
             //       D.NAME AS RELATIONSHIPTYPENAME
-            //schemaid = (Integer)row_hashmap.get("SCHEMAID");
-            Integer parent_tableid = (Integer) row_hashmap.get("PARENT_TABLEID");
-            String parent = (String) row_hashmap.get("PARENT");
-            Integer child_tableid = (Integer) row_hashmap.get("CHILD_TABLEID");
-            String child = (String) row_hashmap.get("CHILD");
-            Integer relationshiptypeid = (Integer) row_hashmap.get("RELATIONSHIPTYPEID");
-            Integer relationshipid = (Integer) row_hashmap.get("RELATIONSHIPID");
-            String relationshiptypename = (String) row_hashmap.get("RELATIONSHIPTYPENAME");
+            Integer schemaid = o.getSchema_id();
+            Integer parent_tableid = o.getParent_table_id();
+            String parent = o.getParent();
+            Integer child_tableid = o.getChild_table_id();
+            String child = o.getChild();
+            Integer relationshiptypeid = o.getRelationship_type_id();
+            Integer relationshipid = o.getRelationship_id();
+            String relationshiptypename = o.getRelationship_type_name();
 
             Vector row_vector = new Vector();
 

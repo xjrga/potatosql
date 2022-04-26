@@ -19,42 +19,28 @@
  */
 package io.github.xjrga.potatosql.model;
 
-import io.github.xjrga.potatosql.data.DbLink;
-import io.github.xjrga.potatosql.dataobject.TableDataObject;
-
+import io.github.xjrga.potatosql.data.Dblink;
+import io.github.xjrga.potatosql.data.dto.O_schema;
+import io.github.xjrga.potatosql.data.dto.O_table;
+import java.util.List;
 import javax.swing.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 public class ListModelTable extends DefaultListModel {
 
-    private DbLink dbLink;
+    private final Dblink dbLink;
 
-    public ListModelTable(DbLink dbLink) {
+    public ListModelTable(Dblink dbLink) {
 
         this.dbLink = dbLink;
 
     }
 
-    public void reload(Integer schemaId) {
-
-        this.clear();
-
-        LinkedList list = (LinkedList) dbLink.DatabaseTable_Select(schemaId);
-        Iterator it = list.iterator();
-
-        while (it.hasNext()) {
-
-            HashMap row = (HashMap) it.next();
-            Integer schemaid = (Integer) row.get("SCHEMAID");
-            Integer tableid = (Integer) row.get("TABLEID");
-            String name = (String) row.get("NAME");
-            TableDataObject tableDataObject = new TableDataObject(schemaid, tableid, name);
-
-            this.addElement(tableDataObject);
-        }
-
+    public void reload(O_schema schema) {
+        clear();
+        O_table input = new O_table();
+        input.setSchema_id(schema.getSchema_id());
+        List<O_table> list = (List<O_table>) dbLink.table_select(input);
+        list.forEach(element -> addElement(element));
     }
 
 }

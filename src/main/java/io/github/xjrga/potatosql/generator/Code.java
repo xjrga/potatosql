@@ -2,6 +2,6 @@ package io.github.xjrga.potatosql.generator;
 
 public interface Code {
 
-    String getCode();
+    String get_code();
 
 }

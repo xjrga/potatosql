@@ -1,4 +1,4 @@
-urlid potatosql
-url jdbc:hsqldb:hsql://localhost:9001/potatosql;shutdown=true;
+urlid database
+url jdbc:hsqldb:hsql://localhost:9001/database;shutdown=true;
 username sa
 password

@@ -7,13 +7,11 @@ import java.io.IOException;
 public class Write {
 
     public Write() {
-
     }
 
     public static void writeToFile(String txt, String filename) {
-
         try {
-            BufferedWriter out = new BufferedWriter(new FileWriter("scripts/" + filename));
+            BufferedWriter out = new BufferedWriter(new FileWriter("model/" + filename));
             out.write(txt);
             out.close();
         } catch (IOException e) {

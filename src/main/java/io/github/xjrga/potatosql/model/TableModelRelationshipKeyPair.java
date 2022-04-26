@@ -19,20 +19,20 @@
  */
 package io.github.xjrga.potatosql.model;
 
-import io.github.xjrga.potatosql.data.DbLink;
-
-import javax.swing.table.DefaultTableModel;
-import java.util.HashMap;
+import io.github.xjrga.potatosql.data.Dblink;
+import io.github.xjrga.potatosql.data.dto.O_key_pair_multiple_select;
+import io.github.xjrga.potatosql.data.dto.O_relationship;
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
 
 public class TableModelRelationshipKeyPair extends DefaultTableModel {
 
     private Vector columns;
-    private DbLink dbLink;
+    private Dblink dbLink;
 
-    public TableModelRelationshipKeyPair(DbLink dbLink) {
+    public TableModelRelationshipKeyPair(Dblink dbLink) {
 
         this.setColumnIdentifiers();
         this.dbLink = dbLink;
@@ -109,36 +109,26 @@ public class TableModelRelationshipKeyPair extends DefaultTableModel {
         return false;
     }
 
-    public void reload(Integer schemaid, Integer parent_tableid, Integer child_tableid, Integer relationshipid) {
+    public void reload(O_relationship o) {
 
         Vector table = new Vector();
 
-        LinkedList list = (LinkedList) dbLink.RelationshipKeyPair_Multiple_Select(schemaid, parent_tableid, child_tableid, relationshipid);
+        //LinkedList list = (LinkedList) dbLink.RelationshipKeyPair_Multiple_Select(schemaid, parent_tableid, child_tableid, relationshipid);
+        List<O_key_pair_multiple_select> list = (List<O_key_pair_multiple_select>) dbLink.relationship_key_pair_multiple_select(o);
 
-        Iterator it = list.iterator();
+        Iterator<O_key_pair_multiple_select> it = list.iterator();
 
         while (it.hasNext()) {
 
-            HashMap row_hashmap = (HashMap) it.next();
-            /*
-                SchemaId,
-                Parent_TableId,
-                Child_TableId,
-                RelationshipTypeId,
-                RelationshipId,
-                Parent_KeyId,
-                Child_KeyId,
-                b.Name as Parent,
-                c.Name as Child
-             */
-            schemaid = (Integer) row_hashmap.get("SCHEMAID");
-            parent_tableid = (Integer) row_hashmap.get("PARENT_TABLEID");
-            child_tableid = (Integer) row_hashmap.get("CHILD_TABLEID");
-            relationshipid = (Integer) row_hashmap.get("RELATIONSHIPID");
-            Integer parent_keyid = (Integer) row_hashmap.get("PARENT_KEYID");
-            Integer child_keyid = (Integer) row_hashmap.get("CHILD_KEYID");
-            String parent_name = (String) row_hashmap.get("PARENT");
-            String child_name = (String) row_hashmap.get("CHILD");
+            O_key_pair_multiple_select next = it.next();
+            Integer schemaid = next.getSchema_id();
+            Integer parent_tableid = next.getParent_table_id();
+            Integer child_tableid = next.getChild_table_id();
+            Integer relationshipid = next.getRelationship_id();
+            Integer parent_keyid = next.getParent_key_id();
+            Integer child_keyid = next.getChild_key_id();
+            String parent_name = next.getParent();
+            String child_name = next.getChild();
 
             Vector row_vector = new Vector();
 

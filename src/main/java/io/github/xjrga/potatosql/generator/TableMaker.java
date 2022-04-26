@@ -1,59 +1,49 @@
 package io.github.xjrga.potatosql.generator;
 
-import io.github.xjrga.potatosql.data.DbLink;
-
-import java.util.HashMap;
+import io.github.xjrga.potatosql.data.Dblink;
+import io.github.xjrga.potatosql.data.dto.O_key_with_name;
+import io.github.xjrga.potatosql.data.dto.O_schema;
+import io.github.xjrga.potatosql.data.dto.O_table;
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.List;
 
 public class TableMaker {
 
-    private DbLink dbLink;
+    private final Dblink dblink;
     private Table table;
 
-    public TableMaker(DbLink dbLink) {
-
-        this.dbLink = dbLink;
+    public TableMaker(Dblink dbLink) {
+        this.dblink = dbLink;
     }
 
-    public Table getTable(Integer schemaid, Integer tableid) {
-
-        LinkedList list = (LinkedList) dbLink.DatabaseTable_Select(schemaid, tableid);
-        Iterator it = list.iterator();
-        HashMap row = (HashMap) it.next();
-        table = new Table((String) row.get("NAME"));
-        list = (LinkedList) dbLink.TableKey_KeyType_Select(schemaid, tableid);
-        it = list.iterator();
-
-        while (it.hasNext()) {
-
-            row = (HashMap) it.next();
-            schemaid = (Integer) row.get("SCHEMAID");
-            tableid = (Integer) row.get("TABLEID");
-            Integer keyid = (Integer) row.get("KEYID");
-            String name = (String) row.get("NAME");
-            String label = (String) row.get("LABEL");
-            Boolean ispk = (Boolean) row.get("ISPK");
-            Integer typeid = (Integer) row.get("TYPEID");
-            String typename = (String) row.get("TYPENAME");
-            Boolean isidentity = (Boolean) row.get("ISIDENTITY");
-            Boolean precisionrequired = (Boolean) row.get("PRECISIONREQUIRED");
-            Integer precision = (Integer) row.get("PRECISION");
-            Integer order = (Integer) row.get("ORDEN");
-
+    public Table get_table(O_schema schema, Integer tableid) {
+        O_table table_t = new O_table();
+        table_t.setSchema_id(schema.getSchema_id());
+        table_t.setTable_id(tableid);
+        List<O_table> list_t = (List<O_table>) dblink.table_select_02(table_t);
+        Iterator<O_table> it = list_t.iterator();
+        O_table row = it.next();
+        table = new Table((String) row.getTable_name());
+        table.setSchema_name(schema.getSchema_name());
+        O_key_with_name kwn = new O_key_with_name();
+        kwn.setSchema_id(schema.getSchema_id());
+        kwn.setTable_id(tableid);
+        List<O_key_with_name> list = dblink.key_type_select(kwn);
+        for (O_key_with_name next : list) {
+            String name = next.getTable_key_name();
+            String label = next.getTable_key_label();
+            Boolean ispk = next.getTable_key_is_pk();
+            Integer typeid = next.getTable_key_type_id();
+            String typename = next.getKey_type_name();
+            Integer order = next.getTable_key_order();
             Column column = new Column(name);
-            table.addColumn(column);
-
             column.setName(name);
             column.setLabel(label);
             column.setPrimaryKey(ispk);
             column.setTypeId(typeid);
             column.setTypeName(typename);
-            column.setIdentity(isidentity);
-            column.setPrecisionRequired(precisionrequired);
-            column.setPrecision(precision);
             column.setOrder(order);
-
+            table.addColumn(column);
         }
         return table;
     }

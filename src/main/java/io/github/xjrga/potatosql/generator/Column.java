@@ -7,31 +7,14 @@ public class Column {
     private boolean isPrimaryKey = false;
     private Integer typeid;
     private String typename;
-    private boolean isIdentity = false;
-    private boolean isPrecisionRequired = false;
-    private Integer precision;
-    private Integer scale;
     private Integer order;
-
-    public Column(String name, String label, boolean isPrimaryKey, Integer typeid, String typename, boolean isIdentity, boolean isPrecisionRequired, Integer precision, Integer order) {
-
-        this.name = name;
-        this.label = label;
-        this.isPrimaryKey = isPrimaryKey;
-        this.typeid = typeid;
-        this.typename = typename;
-        this.isIdentity = isIdentity;
-        this.isPrecisionRequired = isPrecisionRequired;
-        this.precision = precision;
-        this.order = order;
-    }
 
     public Column(String name) {
 
         this.name = name;
     }
 
-    public String getName() {
+    public String get_name() {
 
         return name;
     }
@@ -71,7 +54,7 @@ public class Column {
         this.typeid = typeid;
     }
 
-    public String getTypeName() {
+    public String get_type_name() {
 
         return typename;
     }
@@ -79,46 +62,6 @@ public class Column {
     public void setTypeName(String typename) {
 
         this.typename = typename;
-    }
-
-    public boolean isIdentity() {
-
-        return isIdentity;
-    }
-
-    public void setIdentity(Boolean isidentity) {
-
-        isIdentity = isidentity;
-    }
-
-    public boolean isPrecisionRequired() {
-
-        return isPrecisionRequired;
-    }
-
-    public void setPrecisionRequired(Boolean sizerequired) {
-
-        isPrecisionRequired = sizerequired;
-    }
-
-    public Integer getPrecision() {
-
-        return precision;
-    }
-
-    public void setPrecision(Integer precision) {
-
-        this.precision = precision;
-    }
-
-    public Integer getScale() {
-
-        return scale;
-    }
-
-    public void setScale(Integer scale) {
-
-        this.scale = scale;
     }
 
     public Integer getOrder() {
