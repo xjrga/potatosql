@@ -1,6 +1,6 @@
-[PotatoSql](https://xjrga.github.io/potatosql "Potatosql: Database Design and Code Generation Software")
+[Potatosql](https://xjrga.github.io/potatosql "Potatosql: Database Design and Code Generation Software")
 
-    PotatoSql is learning software for database design. 
+    Potatosql is learning software for database design. 
 
     Home page: https://xjrga.github.io/potatosql
     Download: https://xjrga.github.io/releases
@@ -20,10 +20,10 @@
 
 Installing
 
-    1. Download PotatoSQL-50-app.zip from https://xjrga.github.io/releases
-    2. unzip PotatoSQL-50-app.zip
-    3. cd PotatoSQL-50-app
-    4. java -jar PotatoSQL-50.jar (if you are on windows double click on jar file)
+    1. Download potatosql-50-app.zip from https://xjrga.github.io/releases
+    2. unzip potatosql-50-app.zip
+    3. cd potatosql-50-app
+    4. java -jar potatosql-50.jar (if you are on windows double click on jar file)
 
 [User Guide](https://xjrga.github.io/potatosql "Potatosql: Database Design and Code Generation Software")
 
