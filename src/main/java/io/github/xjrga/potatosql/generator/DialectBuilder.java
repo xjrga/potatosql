@@ -1,118 +1,150 @@
 package io.github.xjrga.potatosql.generator;
 
+import freemarker.template.Configuration;
 import io.github.xjrga.potatosql.data.Dblink;
 import io.github.xjrga.potatosql.data.dto.O_schema;
+import io.github.xjrga.potatosql.data.dto.O_select_only_names;
 import io.github.xjrga.potatosql.data.dto.O_table;
-import io.github.xjrga.potatosql.generator.hsqldb.CreateRelationship;
-import io.github.xjrga.potatosql.generator.hsqldb.CreateSchema;
-import io.github.xjrga.potatosql.generator.hsqldb.CreateTable;
-import io.github.xjrga.potatosql.generator.hsqldb.CreateTableUsingSelect;
-import io.github.xjrga.potatosql.generator.hsqldb.CreateView;
-import io.github.xjrga.potatosql.generator.hsqldb.DropSchema;
-import io.github.xjrga.potatosql.generator.hsqldb.FunctionCount;
-import io.github.xjrga.potatosql.generator.hsqldb.ProcedureDelete;
-import io.github.xjrga.potatosql.generator.hsqldb.ProcedureDeleteAll;
-import io.github.xjrga.potatosql.generator.hsqldb.ProcedureInsert;
-import io.github.xjrga.potatosql.generator.hsqldb.ProcedureMerge;
-import io.github.xjrga.potatosql.generator.hsqldb.ProcedureSelect;
-import io.github.xjrga.potatosql.generator.hsqldb.ProcedureSelectAll;
-import io.github.xjrga.potatosql.generator.hsqldb.ProcedureUpdate;
-import io.github.xjrga.potatosql.generator.hsqldb.SetSchema;
-import io.github.xjrga.potatosql.generator.hsqldb.SqlStuff;
-import io.github.xjrga.potatosql.generator.hsqldb.StatementDelete;
-import io.github.xjrga.potatosql.generator.hsqldb.StatementDeleteAll;
-import io.github.xjrga.potatosql.generator.hsqldb.StatementInsert;
-import io.github.xjrga.potatosql.generator.hsqldb.StatementInsertUsingSelect;
-import io.github.xjrga.potatosql.generator.hsqldb.StatementMerge;
-import io.github.xjrga.potatosql.generator.hsqldb.StatementSelect;
-import io.github.xjrga.potatosql.generator.hsqldb.StatementSelectAll;
-import io.github.xjrga.potatosql.generator.hsqldb.StatementSelectCount;
-import io.github.xjrga.potatosql.generator.hsqldb.StatementUpdate;
-import io.github.xjrga.potatosql.generator.hsqldb.TriggerRowAfterDelete;
-import io.github.xjrga.potatosql.generator.hsqldb.TriggerRowAfterInsert;
-import io.github.xjrga.potatosql.generator.hsqldb.TriggerRowAfterUpdate;
-import io.github.xjrga.potatosql.generator.hsqldb.TriggerRowBeforeDelete;
-import io.github.xjrga.potatosql.generator.hsqldb.TriggerRowBeforeInsert;
-import io.github.xjrga.potatosql.generator.hsqldb.TriggerRowBeforeUpdate;
-import io.github.xjrga.potatosql.generator.hsqldb.TriggerStatementAfterDelete;
-import io.github.xjrga.potatosql.generator.hsqldb.TriggerStatementAfterInsert;
-import io.github.xjrga.potatosql.generator.hsqldb.TriggerStatementAfterUpdate;
-import io.github.xjrga.potatosql.generator.hsqldb.TriggerStuff;
-import io.github.xjrga.potatosql.generator.java.CreateTestClass;
-import io.github.xjrga.potatosql.generator.java.Data_transfer_object;
-import io.github.xjrga.potatosql.generator.java.Data_transfer_object_stuff;
-import io.github.xjrga.potatosql.generator.java.Generic_dao;
-import io.github.xjrga.potatosql.generator.java.MethodFunctionCount;
-import io.github.xjrga.potatosql.generator.java.MethodFunctionCountPrint;
-import io.github.xjrga.potatosql.generator.java.MethodProcedureDelete;
-import io.github.xjrga.potatosql.generator.java.MethodProcedureDeleteAll;
-import io.github.xjrga.potatosql.generator.java.MethodProcedureInsert;
-import io.github.xjrga.potatosql.generator.java.MethodProcedureMerge;
-import io.github.xjrga.potatosql.generator.java.MethodProcedureSelect;
-import io.github.xjrga.potatosql.generator.java.MethodProcedureSelectAll;
-import io.github.xjrga.potatosql.generator.java.MethodProcedureSelectAllPrint;
-import io.github.xjrga.potatosql.generator.java.MethodProcedureSelectPrint;
-import io.github.xjrga.potatosql.generator.java.MethodProcedureUpdate;
-import io.github.xjrga.potatosql.generator.java.Typed_dao_interface;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_function_count;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_procedure_delete;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_procedure_delete_all;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_procedure_insert;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_procedure_merge;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_procedure_select;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_procedure_select_all;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_procedure_update;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_relationship;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_schema;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_statement_count;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_statement_delete;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_statement_delete_all;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_statement_insert;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_statement_insert_using_select;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_statement_merge;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_statement_select;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_statement_select_all;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_statement_update;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_table;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_table_with_select;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_trigger_row_level_after_delete_event;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_trigger_row_level_after_insert_event;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_trigger_row_level_after_update_event;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_trigger_row_level_before_delete_event;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_trigger_row_level_before_insert_event;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_trigger_row_level_before_update_event;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_trigger_statement_level_after_delete_event;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_trigger_statement_level_after_insert_event;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_trigger_statement_level_after_update_event;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_create_view;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_drop_schema;
+import io.github.xjrga.potatosql.generator.hsqldb.Hsqldb_set_schema;
+import io.github.xjrga.potatosql.generator.java.Create_data_transfer_object;
+import io.github.xjrga.potatosql.generator.java.Create_generic_dao;
+import io.github.xjrga.potatosql.generator.java.Create_method_count;
+import io.github.xjrga.potatosql.generator.java.Create_method_count_for_hsqldb;
+import io.github.xjrga.potatosql.generator.java.Create_method_delete;
+import io.github.xjrga.potatosql.generator.java.Create_method_delete_all;
+import io.github.xjrga.potatosql.generator.java.Create_method_insert;
+import io.github.xjrga.potatosql.generator.java.Create_method_merge;
+import io.github.xjrga.potatosql.generator.java.Create_method_print_count;
+import io.github.xjrga.potatosql.generator.java.Create_method_print_select;
+import io.github.xjrga.potatosql.generator.java.Create_method_print_select_all;
+import io.github.xjrga.potatosql.generator.java.Create_method_select;
+import io.github.xjrga.potatosql.generator.java.Create_method_select_all;
+import io.github.xjrga.potatosql.generator.java.Create_method_update;
+import io.github.xjrga.potatosql.generator.java.Create_test_class;
+import io.github.xjrga.potatosql.generator.java.Create_typed_dao_interface;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_function_count;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_procedure_delete;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_procedure_delete_all;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_procedure_insert;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_procedure_merge;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_procedure_select;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_procedure_select_all;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_procedure_update;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_relationship;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_schema;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_statement_count;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_statement_delete;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_statement_delete_all;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_statement_insert;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_statement_insert_using_select;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_statement_merge;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_statement_select;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_statement_select_all;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_statement_update;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_table;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_table_with_select;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_trigger_row_level_after_delete_event;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_trigger_row_level_after_insert_event;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_trigger_row_level_after_update_event;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_trigger_row_level_before_delete_event;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_trigger_row_level_before_insert_event;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_trigger_row_level_before_update_event;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_create_view;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_drop_schema;
+import io.github.xjrga.potatosql.generator.mariadb.Mariadb_set_schema;
 import java.util.List;
 
 public class DialectBuilder implements Code {
 
     private final Dblink dblink;
-    private boolean generic_data_access_object;
-    private boolean data_access_object;
-    private boolean data_transfer_object;
-    private boolean TriggerStatementAfterInsert;
-    private boolean TriggerStatementAfterUpdate;
-    private boolean TriggerStatementAfterDelete;
-    private boolean TriggerRowBeforeInsert;
-    private boolean TriggerRowBeforeUpdate;
-    private boolean TriggerRowBeforeDelete;
-    private boolean TriggerRowAfterInsert;
-    private boolean TriggerRowAfterUpdate;
-    private boolean TriggerRowAfterDelete;
-    private boolean Views;
-    private boolean TestClass;
-    private boolean Tables;
-    private boolean StmtInsert;
-    private boolean StmtUpdate;
-    private boolean StmtDelete;
-    private boolean StmtMerge;
-    private boolean StmtSelect;
-    private boolean StmtDeleteAll;
-    private boolean StmtSelectAll;
-    private boolean StmtCount;
-    private boolean StmtCreateSelect;
-    private boolean StmtInsertSelect;
-    private boolean ProcInsert;
-    private boolean ProcUpdate;
-    private boolean ProcDelete;
-    private boolean ProcMerge;
-    private boolean ProcSelect;
-    private boolean ProcDeleteAll;
-    private boolean ProcSelectAll;
-    private boolean FunctionCount;
-    private boolean MethodInsert;
-    private boolean MethodUpdate;
-    private boolean MethodDelete;
-    private boolean MethodMerge;
-    private boolean MethodSelect;
-    private boolean MethodDeleteAll;
-    private boolean MethodSelectAll;
-    private boolean MethodFunctionCount;
-    private boolean MethodSelectPrint;
-    private boolean MethodSelectAllPrint;
-    private boolean MethodFunctionCountPrint;
-    private int schema_id;
+    private boolean is_generate_generic_data_access_object_selected;
+    private boolean is_generate_data_access_object_option_selected;
+    private boolean is_generate_data_transfer_object_option_selected;
+    private boolean is_statement_level_after_insert_event_trigger_selected;
+    private boolean is_statement_level_after_update_event_trigger_selected;
+    private boolean is_statement_level_after_delete_event_trigger_selected;
+    private boolean is_row_level_before_insert_event_trigger_selected;
+    private boolean is_row_level_before_update_event_trigger_selected;
+    private boolean is_row_level_before_delete_event_trigger_selected;
+    private boolean is_row_level_after_insert_event_trigger_selected;
+    private boolean is_row_level_after_update_event_trigger_selected;
+    private boolean is_row_level_after_delete_event_trigger_selected;
+    private boolean is_view_selected;
+    private boolean is_test_class_selected;
+    private boolean is_tables_and_relationships_selected;
+    private boolean is_insert_statement_selected;
+    private boolean is_update_statement_selected;
+    private boolean is_delete_statement_selected;
+    private boolean is_merge_statement_selected;
+    private boolean is_select_statement_selected;
+    private boolean is_delete_all_statement_selected;
+    private boolean is_select_all_statement_selected;
+    private boolean is_count_statement_selected;
+    private boolean is_create_table_with_select_selected;
+    private boolean is_insert_using_select_statement_selected;
+    private boolean is_insert_procedure_selected;
+    private boolean is_update_procedure_selected;
+    private boolean is_delete_procedure_selected;
+    private boolean is_merge_procedure_selected;
+    private boolean is_select_procedure_selected;
+    private boolean is_delete_all_procedure_selected;
+    private boolean is_select_all_procedure_selected;
+    private boolean is_count_function_selected;
+    private boolean is_insert_method_selected;
+    private boolean is_update_method_selected;
+    private boolean is_delete_method_selected;
+    private boolean is_merge_method_selected;
+    private boolean is_select_method_selected;
+    private boolean is_delete_all_method_selected;
+    private boolean is_select_all_method_selected;
+    private boolean is_count_function_method_selected;
+    private boolean is_print_select_method_selected;
+    private boolean is_print_select_all_method_selected;
+    private boolean is_print_function_count_method_selected;
     private boolean is_hsqldb_selected;
-    private boolean is_mysql_selected;
-    private CreateTestClass createTestClass;
+    private boolean is_mariadb_selected;
+    private Create_test_class create_test_class;
     private String schema_name;
     private O_schema schema;
     private List<O_table> table_list;
+    private final Configuration cfg;
 
     public DialectBuilder(Dblink dbLink) {
         this.dblink = dbLink;
+        cfg = new Configuration(Configuration.VERSION_2_3_29);
+        cfg.setDefaultEncoding("UTF-8");
     }
 
     @Override
@@ -120,204 +152,203 @@ public class DialectBuilder implements Code {
         StringBuilder sb = new StringBuilder();
 
         if (is_hsqldb_selected) {
-            sb.append(get_hsqldb());
+            sb.append(get_sql_code_generated_for_hsqldb());
+            sb.append(get_java_code_generated());
 
-        } else if (is_mysql_selected) {
-            sb.append(get_mysql());
+        } else if (is_mariadb_selected) {
+            sb.append(get_sql_code_generated_for_mariadb());
+            sb.append(get_java_code_generated());
         }
         return sb.toString();
     }
 
     public void set_oschema(O_schema schema) {
         this.schema = schema;
-        this.schema_id = schema.getSchema_id();
         this.schema_name = schema.getSchema_name();
     }
 
-    public void is_triggerstatementafterupdate_selected(boolean triggerStatementAfterUpdate) {
-        TriggerStatementAfterUpdate = triggerStatementAfterUpdate;
+    public void is_statement_level_after_update_event_trigger_selected(boolean triggerStatementAfterUpdate) {
+        is_statement_level_after_update_event_trigger_selected = triggerStatementAfterUpdate;
     }
 
-    public void is_triggerstatementafterdelete_selected(boolean triggerStatementAfterDelete) {
-        TriggerStatementAfterDelete = triggerStatementAfterDelete;
+    public void is_statement_level_after_delete_event_trigger_selected(boolean triggerStatementAfterDelete) {
+        is_statement_level_after_delete_event_trigger_selected = triggerStatementAfterDelete;
     }
 
-    public void is_triggerrowbeforeinsert_selected(boolean triggerRowBeforeInsert) {
-        TriggerRowBeforeInsert = triggerRowBeforeInsert;
+    public void is_row_level_before_insert_event_trigger_selected(boolean triggerRowBeforeInsert) {
+        is_row_level_before_insert_event_trigger_selected = triggerRowBeforeInsert;
     }
 
-    public void is_triggerrowbeforeupdate_selected(boolean triggerRowBeforeUpdate) {
-        TriggerRowBeforeUpdate = triggerRowBeforeUpdate;
+    public void is_row_level_before_update_event_trigger_selected(boolean triggerRowBeforeUpdate) {
+        is_row_level_before_update_event_trigger_selected = triggerRowBeforeUpdate;
     }
 
-    public void is_triggerrowbeforedelete_selected(boolean triggerRowBeforeDelete) {
-        TriggerRowBeforeDelete = triggerRowBeforeDelete;
+    public void is_row_level_before_delete_event_trigger_selected(boolean triggerRowBeforeDelete) {
+        is_row_level_before_delete_event_trigger_selected = triggerRowBeforeDelete;
     }
 
-    public void is_triggerrowafterinsert_selected(boolean triggerRowAfterInsert) {
-        TriggerRowAfterInsert = triggerRowAfterInsert;
+    public void is_row_level_after_insert_event_trigger_selected(boolean triggerRowAfterInsert) {
+        is_row_level_after_insert_event_trigger_selected = triggerRowAfterInsert;
     }
 
-    public void is_triggerrowafterupdate_selected(boolean triggerRowAfterUpdate) {
-        TriggerRowAfterUpdate = triggerRowAfterUpdate;
+    public void is_row_level_after_update_event_trigger_selected(boolean triggerRowAfterUpdate) {
+        is_row_level_after_update_event_trigger_selected = triggerRowAfterUpdate;
     }
 
-    public void is_triggerrowafterdelete_selected(boolean triggerRowAfterDelete) {
-        TriggerRowAfterDelete = triggerRowAfterDelete;
+    public void is_row_level_after_delete_event_trigger_selected(boolean triggerRowAfterDelete) {
+        is_row_level_after_delete_event_trigger_selected = triggerRowAfterDelete;
     }
 
-    public void is_views_selected(boolean views) {
-        Views = views;
+    public void is_view_selected(boolean views) {
+        is_view_selected = views;
     }
 
-    public void is_testclass_selected(boolean testClass) {
-        TestClass = testClass;
+    public void is_test_class_selected(boolean testClass) {
+        is_test_class_selected = testClass;
     }
 
-    public void is_tables_selected(boolean tables) {
-        Tables = tables;
+    public void is_tables_and_relationships_selected(boolean tables) {
+        is_tables_and_relationships_selected = tables;
     }
 
-    public void is_stmtinsert_selected(boolean stmtInsert) {
-        StmtInsert = stmtInsert;
+    public void is_insert_statement_selected(boolean stmtInsert) {
+        is_insert_statement_selected = stmtInsert;
     }
 
-    public void is_stmtupdate_selected(boolean stmtUpdate) {
-        StmtUpdate = stmtUpdate;
+    public void is_update_statement_selected(boolean stmtUpdate) {
+        is_update_statement_selected = stmtUpdate;
     }
 
-    public void is_stmtdelete_selected(boolean stmtDelete) {
-        StmtDelete = stmtDelete;
+    public void is_delete_statement_selected(boolean stmtDelete) {
+        is_delete_statement_selected = stmtDelete;
     }
 
-    public void is_stmtmerge_selected(boolean stmtMerge) {
-        StmtMerge = stmtMerge;
+    public void is_merge_statement_selected(boolean stmtMerge) {
+        is_merge_statement_selected = stmtMerge;
     }
 
-    public void is_stmtselect_selected(boolean stmtSelect) {
-        StmtSelect = stmtSelect;
+    public void is_select_statement_selected(boolean stmtSelect) {
+        is_select_statement_selected = stmtSelect;
     }
 
-    public void is_stmtdeleteall_selected(boolean stmtDeleteAll) {
-        StmtDeleteAll = stmtDeleteAll;
+    public void is_delete_all_statement_selected(boolean stmtDeleteAll) {
+        is_delete_all_statement_selected = stmtDeleteAll;
     }
 
-    public void is_stmtselectall_selected(boolean stmtSelectAll) {
-        StmtSelectAll = stmtSelectAll;
+    public void is_select_all_statement_selected(boolean stmtSelectAll) {
+        is_select_all_statement_selected = stmtSelectAll;
     }
 
-    public void is_stmtcount_selected(boolean stmtCount) {
-        StmtCount = stmtCount;
+    public void is_count_statement_selected(boolean stmtCount) {
+        is_count_statement_selected = stmtCount;
     }
 
-    public void is_stmtcreateselect_selected(boolean stmtCreateSelect) {
-        StmtCreateSelect = stmtCreateSelect;
+    public void is_create_table_with_select_selected(boolean stmtCreateSelect) {
+        is_create_table_with_select_selected = stmtCreateSelect;
     }
 
-    public void is_procinsert_selected(boolean procInsert) {
-        ProcInsert = procInsert;
+    public void is_insert_procedure_selected(boolean procInsert) {
+        is_insert_procedure_selected = procInsert;
     }
 
-    public void is_procupdate_selected(boolean procUpdate) {
-        ProcUpdate = procUpdate;
+    public void is_update_procedure_selected(boolean procUpdate) {
+        is_update_procedure_selected = procUpdate;
     }
 
-    public void is_procdelete_selected(boolean procDelete) {
-        ProcDelete = procDelete;
+    public void is_delete_procedure_selected(boolean procDelete) {
+        is_delete_procedure_selected = procDelete;
     }
 
-    public void is_procmerge_selected(boolean procMerge) {
-        ProcMerge = procMerge;
+    public void is_merge_procedure_selected(boolean procMerge) {
+        is_merge_procedure_selected = procMerge;
     }
 
-    public void is_procselect_selected(boolean procSelect) {
-        ProcSelect = procSelect;
+    public void is_select_procedure_selected(boolean procSelect) {
+        is_select_procedure_selected = procSelect;
     }
 
-    public void is_procdeleteall_selected(boolean procDeleteAll) {
-        ProcDeleteAll = procDeleteAll;
+    public void is_delete_all_procedure_selected(boolean procDeleteAll) {
+        is_delete_all_procedure_selected = procDeleteAll;
     }
 
-    public void is_procselectall_selected(boolean procSelectAll) {
-        ProcSelectAll = procSelectAll;
+    public void is_select_all_procedure_selected(boolean procSelectAll) {
+        is_select_all_procedure_selected = procSelectAll;
     }
 
-    public void is_setfunctioncount_selected(boolean functionCount) {
-        FunctionCount = functionCount;
+    public void is_count_function_selected(boolean functionCount) {
+        is_count_function_selected = functionCount;
     }
 
-    public void is_methodinsert_selected(boolean methodInsert) {
-        MethodInsert = methodInsert;
+    public void is_insert_method_selected(boolean methodInsert) {
+        is_insert_method_selected = methodInsert;
     }
 
-    public void is_methodupdate_selected(boolean methodUpdate) {
-        MethodUpdate = methodUpdate;
+    public void is_update_method_selected(boolean methodUpdate) {
+        is_update_method_selected = methodUpdate;
     }
 
-    public void is_methoddelete_selected(boolean methodDelete) {
-        MethodDelete = methodDelete;
+    public void is_delete_method_selected(boolean methodDelete) {
+        is_delete_method_selected = methodDelete;
     }
 
-    public void is_methodmerge_selected(boolean methodMerge) {
-        MethodMerge = methodMerge;
+    public void is_merge_method_selected(boolean methodMerge) {
+        is_merge_method_selected = methodMerge;
     }
 
-    public void is_methodselect_selected(boolean methodSelect) {
-        MethodSelect = methodSelect;
+    public void is_select_method_selected(boolean methodSelect) {
+        is_select_method_selected = methodSelect;
     }
 
-    public void is_methoddeleteall_selected(boolean methodDeleteAll) {
-        MethodDeleteAll = methodDeleteAll;
+    public void is_delete_all_method_selected(boolean methodDeleteAll) {
+        is_delete_all_method_selected = methodDeleteAll;
     }
 
-    public void is_methodselectall_selected(boolean methodSelectAll) {
-        MethodSelectAll = methodSelectAll;
+    public void is_select_all_method_selected(boolean methodSelectAll) {
+        is_select_all_method_selected = methodSelectAll;
     }
 
-    public void is_methodfunctioncount_selected(boolean methodFunctionCount) {
-        MethodFunctionCount = methodFunctionCount;
+    public void is_count_function_method_selected(boolean methodFunctionCount) {
+        is_count_function_method_selected = methodFunctionCount;
     }
 
-    public void is_triggerstatementafterinsert_selected(boolean triggerStatementAfterInsert) {
-        TriggerStatementAfterInsert = triggerStatementAfterInsert;
+    public void is_statement_level_after_insert_event_trigger_selected(boolean triggerStatementAfterInsert) {
+        is_statement_level_after_insert_event_trigger_selected = triggerStatementAfterInsert;
     }
 
-    public void is_data_transfer_object_selected(boolean dataObject) {
-        data_transfer_object = dataObject;
+    public void is_generate_data_transfer_object_option_selected(boolean dataObject) {
+        is_generate_data_transfer_object_option_selected = dataObject;
     }
 
-    public void is_generic_data_access_object_selected(boolean generic_data_access_object) {
-        this.generic_data_access_object = generic_data_access_object;
+    public void is_generate_generic_data_access_object_selected(boolean generic_data_access_object) {
+        is_generate_generic_data_access_object_selected = generic_data_access_object;
     }
 
-    public void is_data_access_object_selected(boolean data_access_object) {
-        this.data_access_object = data_access_object;
+    public void is_generate_data_access_object_option_selected(boolean data_access_object) {
+        is_generate_data_access_object_option_selected = data_access_object;
     }
 
-    public void is_mysql_selected(boolean mysql) {
-
-        is_mysql_selected = mysql;
+    public void is_mariadb_selected(boolean mariadb) {
+        is_mariadb_selected = mariadb;
     }
 
     public void is_hsqldb_selected(boolean hsqldb) {
-
         is_hsqldb_selected = hsqldb;
     }
 
-    public void is_methodselectallprint_selected(boolean selected) {
-        MethodSelectAllPrint = selected;
+    public void is_print_select_all_method_selected(boolean selected) {
+        is_print_select_all_method_selected = selected;
     }
 
-    public void is_methodselectprint_selected(boolean selected) {
-        MethodSelectPrint = selected;
+    public void is_print_select_method_selected(boolean selected) {
+        is_print_select_method_selected = selected;
     }
 
-    public void is_methodfunctioncountprint_selected(boolean selected) {
-        MethodFunctionCountPrint = selected;
+    public void is_print_function_count_method_selected(boolean selected) {
+        is_print_function_count_method_selected = selected;
     }
 
-    public void is_stmtinsertselect_selected(boolean stmtInsertSelect) {
-        this.StmtInsertSelect = stmtInsertSelect;
+    public void is_insert_using_select_statement_selected(boolean stmtInsertSelect) {
+        is_insert_using_select_statement_selected = stmtInsertSelect;
     }
 
     public void setSchema_name(String schema_name) {
@@ -332,328 +363,354 @@ public class DialectBuilder implements Code {
         this.table_list = list;
     }
 
-    public String get_hsqldb() {
+    public String get_sql_code_generated_for_hsqldb() {
         StringBuilder sb = new StringBuilder();
-
         TableMaker tableMaker = new TableMaker(dblink);
-
-        if (TestClass) {
-            createTestClass = new CreateTestClass();
+        if (is_tables_and_relationships_selected) {
+            Hsqldb_drop_schema hsqldb_drop_schema = new Hsqldb_drop_schema(cfg, getSchema_name());
+            sb.append(hsqldb_drop_schema.get_code());
+            Hsqldb_create_schema hsqldb_create_schema = new Hsqldb_create_schema(cfg, getSchema_name());
+            sb.append(hsqldb_create_schema.get_code());
+            Hsqldb_set_schema hsqldb_set_schema = new Hsqldb_set_schema(cfg, getSchema_name());
+            sb.append(hsqldb_set_schema.get_code());
+            table_list.forEach(element -> {
+                Integer tableId = element.getTable_id();
+                Table table = tableMaker.get_table(schema, tableId);
+                Hsqldb_create_table hsqldb_create_table = new Hsqldb_create_table(cfg, table);
+                sb.append(hsqldb_create_table.get_code());
+            });
+            List<O_select_only_names> list = (List<O_select_only_names>) dblink.relationship_select_only_names(schema);
+            Hsqldb_create_relationship hsqldb_create_relationship = new Hsqldb_create_relationship(cfg, list);
+            sb.append(hsqldb_create_relationship.get_code());
         }
-
-        if (Tables) {
-            DropSchema dropSchema = new DropSchema(this.getSchema_name());
-            sb.append(dropSchema.get_code());
-            sb.setLength(sb.length() - 1);
-            sb.append("/\n\n");
-            CreateSchema createSchema = new CreateSchema(this.getSchema_name());
-            sb.append(createSchema.get_code());
-            sb.setLength(sb.length() - 1);
-            sb.append("/\n\n");
-            SetSchema setSchema = new SetSchema(this.getSchema_name());
-            sb.append(setSchema.get_code());
-            sb.setLength(sb.length() - 1);
-            sb.append("/\n\n");
-        }
-
-        for (int i = 0; i < table_list.size(); i++) {
-            O_table otable = table_list.get(i);
-            Integer tableId = otable.getTable_id();
+        table_list.forEach(element -> {
+            Integer tableId = element.getTable_id();
             Table table = tableMaker.get_table(schema, tableId);
-            SqlStuff sqlStuff = new SqlStuff(table);
-
-            if (Tables) {
-                CreateTable createTable = new CreateTable(table, sqlStuff);
-                sb.append(createTable.get_code());
-                sb.setLength(sb.length() - 1);
-                sb.append("/\n\n");
+            if (is_view_selected) {
+                Hsqldb_create_view hsqldb_create_view = new Hsqldb_create_view(cfg, table);
+                sb.append(hsqldb_create_view.get_code());
             }
-        }
-
-        if (Tables) {
-            CreateRelationship createRelationship = new CreateRelationship(dblink, schema_id);
-            sb.append(createRelationship.get_code());
-
-        }
-
-        if (Views | StmtCreateSelect) {
-            SetSchema setSchema = new SetSchema(this.getSchema_name());
-            sb.append(setSchema.get_code());
-            sb.setLength(sb.length() - 1);
-            sb.append("/\n\n");
-        }
-
-        for (int i = 0; i < table_list.size(); i++) {
-            O_table otable = table_list.get(i);
-            Integer tableId = otable.getTable_id();
-            Table table = tableMaker.get_table(schema, tableId);
-            SqlStuff sqlStuff = new SqlStuff(table);
-
-            if (Views) {
-                CreateView createView = new CreateView(table, sqlStuff);
-                sb.append(createView.get_code());
-                sb.setLength(sb.length() - 1);
-                sb.append("/\n\n");
+            if (is_create_table_with_select_selected) {
+                Hsqldb_create_table_with_select hsqldb_create_table_with_select = new Hsqldb_create_table_with_select(cfg, table);
+                sb.append(hsqldb_create_table_with_select.get_code());
             }
-
-            if (StmtCreateSelect) {
-                CreateTableUsingSelect createTableUsingSelect = new CreateTableUsingSelect(table, sqlStuff);
-                sb.append(createTableUsingSelect.get_code());
-                sb.setLength(sb.length() - 1);
-                sb.append("/\n\n");
+            if (is_insert_procedure_selected) {
+                Hsqldb_create_procedure_insert hsqldb_create_procedure_insert = new Hsqldb_create_procedure_insert(cfg, table);
+                sb.append(hsqldb_create_procedure_insert.get_code());
             }
-
-        }
-
-        if (ProcInsert | ProcUpdate | ProcDelete | ProcMerge | ProcSelect | ProcDeleteAll | ProcSelectAll | FunctionCount | TriggerRowBeforeInsert | TriggerRowBeforeUpdate | TriggerRowBeforeDelete | TriggerRowAfterInsert | TriggerRowAfterUpdate | TriggerRowAfterDelete | TriggerStatementAfterInsert | TriggerStatementAfterUpdate | TriggerStatementAfterDelete) {
-            SetSchema setSchema = new SetSchema(this.getSchema_name());
-            sb.append(setSchema.get_code());
-            sb.setLength(sb.length() - 1);
-            sb.append("/\n\n");
-        }
-
-        for (int i = 0; i < table_list.size(); i++) {
-            O_table otable = table_list.get(i);
-            Integer tableId = otable.getTable_id();
-            Table table = tableMaker.get_table(schema, tableId);
-            SqlStuff sqlStuff = new SqlStuff(table);
-            TriggerStuff triggerStuff = new TriggerStuff(table);
-
-            if (ProcInsert) {
-                ProcedureInsert procedureInsert = new ProcedureInsert(table, sqlStuff);
-                sb.append(procedureInsert.get_code());
+            if (is_update_procedure_selected && table.containsPrimaryKeys() && table.containsNonPrimaryKeys()) {
+                Hsqldb_create_procedure_update hsqldb_create_procedure_update = new Hsqldb_create_procedure_update(cfg, table);
+                sb.append(hsqldb_create_procedure_update.get_code());
             }
-
-            if (ProcUpdate) {
-                ProcedureUpdate procedureUpdate = new ProcedureUpdate(table, sqlStuff);
-                sb.append(procedureUpdate.get_code());
+            if (is_delete_procedure_selected && table.containsPrimaryKeys()) {
+                Hsqldb_create_procedure_delete hsqldb_create_procedure_delete = new Hsqldb_create_procedure_delete(cfg, table);
+                sb.append(hsqldb_create_procedure_delete.get_code());
             }
-
-            if (ProcDelete) {
-                ProcedureDelete procedureDelete = new ProcedureDelete(table, sqlStuff);
-                sb.append(procedureDelete.get_code());
+            if (is_merge_procedure_selected && table.containsPrimaryKeys() && table.containsNonPrimaryKeys()) {
+                Hsqldb_create_procedure_merge hsqldb_create_procedure_merge = new Hsqldb_create_procedure_merge(cfg, table);
+                sb.append(hsqldb_create_procedure_merge.get_code());
             }
-
-            if (ProcMerge) {
-                ProcedureMerge procedureMerge = new ProcedureMerge(table, sqlStuff);
-                sb.append(procedureMerge.get_code());
+            if (is_select_procedure_selected && table.containsPrimaryKeys()) {
+                Hsqldb_create_procedure_select hsqldb_create_procedure_select = new Hsqldb_create_procedure_select(cfg, table);
+                sb.append(hsqldb_create_procedure_select.get_code());
             }
-
-            if (ProcSelect) {
-                ProcedureSelect procedureSelect = new ProcedureSelect(table, sqlStuff);
-                sb.append(procedureSelect.get_code());
+            if (is_delete_all_procedure_selected) {
+                Hsqldb_create_procedure_delete_all hsqldb_create_procedure_delete_all = new Hsqldb_create_procedure_delete_all(cfg, table);
+                sb.append(hsqldb_create_procedure_delete_all.get_code());
             }
-
-            if (ProcDeleteAll) {
-                ProcedureDeleteAll procedureDeleteAll = new ProcedureDeleteAll(table);
-                sb.append(procedureDeleteAll.get_code());
+            if (is_select_all_procedure_selected) {
+                Hsqldb_create_procedure_select_all hsqldb_create_procedure_select_all = new Hsqldb_create_procedure_select_all(cfg, table);
+                sb.append(hsqldb_create_procedure_select_all.get_code());
             }
-
-            if (ProcSelectAll) {
-                ProcedureSelectAll procedureSelectAll = new ProcedureSelectAll(table, sqlStuff);
-                sb.append(procedureSelectAll.get_code());
+            if (is_count_function_selected) {
+                Hsqldb_create_function_count hsqldb_create_function_count = new Hsqldb_create_function_count(cfg, table);
+                sb.append(hsqldb_create_function_count.get_code());
             }
-
-            if (FunctionCount) {
-                FunctionCount functionCount = new FunctionCount(table);
-                sb.append(functionCount.get_code());
+            if (is_insert_using_select_statement_selected) {
+                Hsqldb_create_statement_insert_using_select hsqldb_create_statement_insert_using_select = new Hsqldb_create_statement_insert_using_select(cfg, table);
+                sb.append(hsqldb_create_statement_insert_using_select.get_code());
             }
-
-            if (TriggerRowBeforeInsert) {
-                TriggerRowBeforeInsert triggerRowBeforeInsert = new TriggerRowBeforeInsert(table);
-                sb.append(triggerRowBeforeInsert.get_code());
+            if (is_row_level_before_insert_event_trigger_selected) {
+                Hsqldb_create_trigger_row_level_before_insert_event hsqldb_create_trigger_row_level_before_insert_event = new Hsqldb_create_trigger_row_level_before_insert_event(cfg, table);
+                sb.append(hsqldb_create_trigger_row_level_before_insert_event.get_code());
             }
-
-            if (TriggerRowBeforeUpdate) {
-                TriggerRowBeforeUpdate triggerRowBeforeUpdate = new TriggerRowBeforeUpdate(table, triggerStuff);
-                sb.append(triggerRowBeforeUpdate.get_code());
+            if (is_row_level_before_update_event_trigger_selected) {
+                Hsqldb_create_trigger_row_level_before_update_event hsqldb_create_trigger_row_level_before_update_event = new Hsqldb_create_trigger_row_level_before_update_event(cfg, table);
+                sb.append(hsqldb_create_trigger_row_level_before_update_event.get_code());
             }
-
-            if (TriggerRowBeforeDelete) {
-                TriggerRowBeforeDelete triggerRowBeforeDelete = new TriggerRowBeforeDelete(table);
-                sb.append(triggerRowBeforeDelete.get_code());
+            if (is_row_level_before_delete_event_trigger_selected) {
+                Hsqldb_create_trigger_row_level_before_delete_event hsqldb_create_trigger_row_level_before_delete_event = new Hsqldb_create_trigger_row_level_before_delete_event(cfg, table);
+                sb.append(hsqldb_create_trigger_row_level_before_delete_event.get_code());
             }
-
-            if (TriggerRowAfterInsert) {
-                TriggerRowAfterInsert triggerRowAfterInsert = new TriggerRowAfterInsert(table, triggerStuff);
-                sb.append(triggerRowAfterInsert.get_code());
+            if (is_row_level_after_insert_event_trigger_selected) {
+                Hsqldb_create_trigger_row_level_after_insert_event hsqldb_create_trigger_row_level_after_insert_event = new Hsqldb_create_trigger_row_level_after_insert_event(cfg, table);
+                sb.append(hsqldb_create_trigger_row_level_after_insert_event.get_code());
             }
-
-            if (TriggerRowAfterUpdate) {
-                TriggerRowAfterUpdate triggerRowAfterUpdate = new TriggerRowAfterUpdate(table, triggerStuff);
-                sb.append(triggerRowAfterUpdate.get_code());
+            if (is_row_level_after_update_event_trigger_selected) {
+                Hsqldb_create_trigger_row_level_after_update_event hsqldb_create_trigger_row_level_after_update_event = new Hsqldb_create_trigger_row_level_after_update_event(cfg, table);
+                sb.append(hsqldb_create_trigger_row_level_after_update_event.get_code());
             }
-
-            if (TriggerRowAfterDelete) {
-                TriggerRowAfterDelete triggerRowAfterDelete = new TriggerRowAfterDelete(table, triggerStuff);
-                sb.append(triggerRowAfterDelete.get_code());
+            if (is_row_level_after_delete_event_trigger_selected) {
+                Hsqldb_create_trigger_row_level_after_delete_event hsqldb_create_trigger_row_level_after_delete_event = new Hsqldb_create_trigger_row_level_after_delete_event(cfg, table);
+                sb.append(hsqldb_create_trigger_row_level_after_delete_event.get_code());
             }
-
-            if (TriggerStatementAfterInsert) {
-                TriggerStatementAfterInsert triggerStatementAfterInsert = new TriggerStatementAfterInsert(table);
-                sb.append(triggerStatementAfterInsert.get_code());
+            if (is_statement_level_after_insert_event_trigger_selected) {
+                Hsqldb_create_trigger_statement_level_after_insert_event hsqldb_create_trigger_statement_level_after_insert_event = new Hsqldb_create_trigger_statement_level_after_insert_event(cfg, table);
+                sb.append(hsqldb_create_trigger_statement_level_after_insert_event.get_code());
             }
-
-            if (TriggerStatementAfterUpdate) {
-                TriggerStatementAfterUpdate triggerStatementAfterUpdate = new TriggerStatementAfterUpdate(table);
-                sb.append(triggerStatementAfterUpdate.get_code());
+            if (is_statement_level_after_update_event_trigger_selected) {
+                Hsqldb_create_trigger_statement_level_after_update_event hsqldb_create_trigger_statement_level_after_update_event = new Hsqldb_create_trigger_statement_level_after_update_event(cfg, table);
+                sb.append(hsqldb_create_trigger_statement_level_after_update_event.get_code());
             }
-
-            if (TriggerStatementAfterDelete) {
-                TriggerStatementAfterDelete triggerStatementAfterDelete = new TriggerStatementAfterDelete(table);
-                sb.append(triggerStatementAfterDelete.get_code());
+            if (is_statement_level_after_delete_event_trigger_selected) {
+                Hsqldb_create_trigger_statement_level_after_delete_event hsqldb_create_trigger_statement_level_after_delete_event = new Hsqldb_create_trigger_statement_level_after_delete_event(cfg, table);
+                sb.append(hsqldb_create_trigger_statement_level_after_delete_event.get_code());
             }
-
-        }
-
-        if (TestClass) {
-            sb.append(createTestClass.get_code());
-        }
-
-        for (int i = 0; i < table_list.size(); i++) {
-            O_table otable = table_list.get(i);
-            Integer tableId = otable.getTable_id();
-            Table table = tableMaker.get_table(schema, tableId);
-            SqlStuff sqlStuff = new SqlStuff(table);
-            Data_transfer_object_stuff dataObjectStuff = new Data_transfer_object_stuff(table);
-
-            if (StmtInsert) {
-                StatementInsert statementInsert = new StatementInsert(table, sqlStuff);
-                sb.append(statementInsert.get_code());
+            if (is_insert_statement_selected) {
+                Hsqldb_create_statement_insert hsqldb_create_statement_insert = new Hsqldb_create_statement_insert(cfg, table);
+                sb.append(hsqldb_create_statement_insert.get_code());
             }
-
-            if (StmtUpdate) {
-                StatementUpdate statementUpdate = new StatementUpdate(table, sqlStuff);
-                sb.append(statementUpdate.get_code());
+            if (is_update_statement_selected && table.containsPrimaryKeys() && table.containsNonPrimaryKeys()) {
+                Hsqldb_create_statement_update hsqldb_create_statement_update = new Hsqldb_create_statement_update(cfg, table);
+                sb.append(hsqldb_create_statement_update.get_code());
             }
-
-            if (StmtDelete) {
-                StatementDelete statementDelete = new StatementDelete(table, sqlStuff);
-                sb.append(statementDelete.get_code());
+            if (is_delete_statement_selected && table.containsPrimaryKeys()) {
+                Hsqldb_create_statement_delete hsqldb_create_statement_delete = new Hsqldb_create_statement_delete(cfg, table);
+                sb.append(hsqldb_create_statement_delete.get_code());
             }
-
-            if (StmtMerge) {
-                StatementMerge statementMerge = new StatementMerge(table, sqlStuff);
-                sb.append(statementMerge.get_code());
+            if (is_merge_statement_selected && table.containsPrimaryKeys() && table.containsNonPrimaryKeys()) {
+                Hsqldb_create_statement_merge hsqldb_create_statement_merge = new Hsqldb_create_statement_merge(cfg, table);
+                sb.append(hsqldb_create_statement_merge.get_code());
             }
-
-            if (StmtSelect) {
-                StatementSelect statementSelect = new StatementSelect(table, sqlStuff);
-                sb.append(statementSelect.get_code());
+            if (is_select_statement_selected && table.containsPrimaryKeys()) {
+                Hsqldb_create_statement_select hsqldb_create_statement_select = new Hsqldb_create_statement_select(cfg, table);
+                sb.append(hsqldb_create_statement_select.get_code());
             }
-
-            if (StmtDeleteAll) {
-                StatementDeleteAll statementDeleteAll = new StatementDeleteAll(table);
-                sb.append(statementDeleteAll.get_code());
+            if (is_delete_all_statement_selected) {
+                Hsqldb_create_statement_delete_all hsqldb_create_statement_delete_all = new Hsqldb_create_statement_delete_all(cfg, table);
+                sb.append(hsqldb_create_statement_delete_all.get_code());
             }
-
-            if (StmtSelectAll) {
-                StatementSelectAll statementSelectAll = new StatementSelectAll(table, sqlStuff);
-                sb.append(statementSelectAll.get_code());
+            if (is_select_all_statement_selected) {
+                Hsqldb_create_statement_select_all hsqldb_create_statement_select_all = new Hsqldb_create_statement_select_all(cfg, table);
+                sb.append(hsqldb_create_statement_select_all.get_code());
             }
-
-            if (StmtCount) {
-                StatementSelectCount statementSelectCount = new StatementSelectCount(table);
-                sb.append(statementSelectCount.get_code());
+            if (is_count_statement_selected) {
+                Hsqldb_create_statement_count hsqldb_create_statement_count = new Hsqldb_create_statement_count(cfg, table);
+                sb.append(hsqldb_create_statement_count.get_code());
             }
-
-            if (StmtInsertSelect) {
-                StatementInsertUsingSelect statementInsertUsingSelect = new StatementInsertUsingSelect(table, sqlStuff);
-                sb.append(statementInsertUsingSelect.get_code());
-                sb.setLength(sb.length() - 1);
-                sb.append("/\n\n");
-            }
-
-            if (MethodInsert) {
-                MethodProcedureInsert methodProcedureInsert = new MethodProcedureInsert(table);
-                String code = methodProcedureInsert.get_code();
-                sb.append(code);
-            }
-
-            if (MethodUpdate) {
-                MethodProcedureUpdate methodProcedureUpdate = new MethodProcedureUpdate(table);
-                String code = methodProcedureUpdate.get_code();
-                sb.append(code);
-            }
-
-            if (MethodDelete) {
-                MethodProcedureDelete methodProcedureDelete = new MethodProcedureDelete(table);
-                String code = methodProcedureDelete.get_code();
-                sb.append(code);
-            }
-
-            if (MethodMerge) {
-                MethodProcedureMerge methodProcedureMerge = new MethodProcedureMerge(table);
-                String code = methodProcedureMerge.get_code();
-                sb.append(code);
-            }
-
-            if (MethodSelect) {
-                MethodProcedureSelect methodProcedureSelect = new MethodProcedureSelect(table);
-                String code = methodProcedureSelect.get_code();
-                sb.append(code);
-            }
-
-            if (MethodSelectPrint) {
-                MethodProcedureSelectPrint methodProcedureSelectPrint = new MethodProcedureSelectPrint(table);
-                String code = methodProcedureSelectPrint.get_code();
-                sb.append(code);
-            }
-
-            if (MethodDeleteAll) {
-                MethodProcedureDeleteAll methodProcedureDeleteAll = new MethodProcedureDeleteAll(table);
-                String code = methodProcedureDeleteAll.get_code();
-                sb.append(code);
-            }
-
-            if (MethodSelectAll) {
-                MethodProcedureSelectAll methodProcedureSelectAll = new MethodProcedureSelectAll(table);
-                String code = methodProcedureSelectAll.get_code();
-                sb.append(code);
-            }
-
-            if (MethodSelectAllPrint) {
-                MethodProcedureSelectAllPrint methodProcedureSelectAllPrint = new MethodProcedureSelectAllPrint(table);
-                String code = methodProcedureSelectAllPrint.get_code();
-                sb.append(code);
-            }
-
-            if (MethodFunctionCount) {
-                MethodFunctionCount methodFunctionCount = new MethodFunctionCount(table);
-                String code = methodFunctionCount.get_code();
-                sb.append(code);
-            }
-
-            if (MethodFunctionCountPrint) {
-                MethodFunctionCountPrint methodFunctionCountPrint = new MethodFunctionCountPrint(table);
-                String code = methodFunctionCountPrint.get_code();
-                sb.append(code);
-            }
-
-            if (data_transfer_object) {
-                Data_transfer_object dataObject = new Data_transfer_object(table, dataObjectStuff);
-                sb.append(dataObject.get_code());
-            }
-
-            if (data_access_object) {
-                Typed_dao_interface dao = new Typed_dao_interface(table);
-                sb.append(dao.get_code());
-            }
-
-        }
-
-        if (generic_data_access_object) {
-            Generic_dao dao = new Generic_dao();
-            sb.append(dao.get_code());
-        }
-
+        });
         return sb.toString();
     }
 
-    public String get_mysql() {
-
+    public String get_sql_code_generated_for_mariadb() {
         StringBuilder sb = new StringBuilder();
-        sb.append("This functionality has not been implemented yet. You are invited to improve it. All suggestions and comments are welcome.");
+        TableMaker tableMaker = new TableMaker(dblink);
+        if (is_tables_and_relationships_selected) {
+            Mariadb_drop_schema mariadb_drop_schema = new Mariadb_drop_schema(cfg, getSchema_name());
+            sb.append(mariadb_drop_schema.get_code());
+            Mariadb_create_schema mariadb_create_schema = new Mariadb_create_schema(cfg, getSchema_name());
+            sb.append(mariadb_create_schema.get_code());
+            Mariadb_set_schema mariadb_set_schema = new Mariadb_set_schema(cfg, getSchema_name());
+            sb.append(mariadb_set_schema.get_code());
+            table_list.forEach(element -> {
+                Integer tableId = element.getTable_id();
+                Table table = tableMaker.get_table(schema, tableId);
+                Mariadb_create_table mariadb_create_table = new Mariadb_create_table(cfg, table);
+                sb.append(mariadb_create_table.get_code());
+            });
+            List<O_select_only_names> list = (List<O_select_only_names>) dblink.relationship_select_only_names(schema);
+            Mariadb_create_relationship mariadb_create_relationship = new Mariadb_create_relationship(cfg, list);
+            sb.append(mariadb_create_relationship.get_code());
+        }
+        table_list.forEach(element -> {
+            Integer tableId = element.getTable_id();
+            Table table = tableMaker.get_table(schema, tableId);
+            if (is_view_selected) {
+                Mariadb_create_view mariadb_create_view = new Mariadb_create_view(cfg, table);
+                sb.append(mariadb_create_view.get_code());
+            }
+            if (is_create_table_with_select_selected) {
+                Mariadb_create_table_with_select mariadb_create_table_with_select = new Mariadb_create_table_with_select(cfg, table);
+                sb.append(mariadb_create_table_with_select.get_code());
+            }
+            if (is_insert_procedure_selected) {
+                Mariadb_create_procedure_insert mariadb_create_insert_procedure = new Mariadb_create_procedure_insert(cfg, table);
+                sb.append(mariadb_create_insert_procedure.get_code());
+            }
+            if (is_update_procedure_selected && table.containsPrimaryKeys() && table.containsNonPrimaryKeys()) {
+                Mariadb_create_procedure_update mariadb_create_update_procedure = new Mariadb_create_procedure_update(cfg, table);
+                sb.append(mariadb_create_update_procedure.get_code());
+            }
+            if (is_delete_procedure_selected && table.containsPrimaryKeys()) {
+                Mariadb_create_procedure_delete mariadb_create_delete_procedure = new Mariadb_create_procedure_delete(cfg, table);
+                sb.append(mariadb_create_delete_procedure.get_code());
+            }
+            if (is_merge_procedure_selected && table.containsPrimaryKeys() && table.containsNonPrimaryKeys()) {
+                Mariadb_create_procedure_merge mariadb_create_merge_procedure = new Mariadb_create_procedure_merge(cfg, table);
+                sb.append(mariadb_create_merge_procedure.get_code());
+            }
+            if (is_select_procedure_selected && table.containsPrimaryKeys()) {
+                Mariadb_create_procedure_select mariadb_create_select_procedure = new Mariadb_create_procedure_select(cfg, table);
+                sb.append(mariadb_create_select_procedure.get_code());
+            }
+            if (is_delete_all_procedure_selected) {
+                Mariadb_create_procedure_delete_all mariadb_create_delete_all_procedure = new Mariadb_create_procedure_delete_all(cfg, table);
+                sb.append(mariadb_create_delete_all_procedure.get_code());
+            }
+            if (is_select_all_procedure_selected) {
+                Mariadb_create_procedure_select_all mariadb_create_select_all_procedure = new Mariadb_create_procedure_select_all(cfg, table);
+                sb.append(mariadb_create_select_all_procedure.get_code());
+            }
+            if (is_count_function_selected) {
+                Mariadb_create_function_count mariadb_create_count_function = new Mariadb_create_function_count(cfg, table);
+                sb.append(mariadb_create_count_function.get_code());
+            }
+            if (is_insert_using_select_statement_selected) {
+                Mariadb_create_statement_insert_using_select mariadb_create_statement_insert_using_select = new Mariadb_create_statement_insert_using_select(cfg, table);
+                sb.append(mariadb_create_statement_insert_using_select.get_code());
+            }
+            if (is_statement_level_after_insert_event_trigger_selected) {
+                sb.append("Mariadb does not support triggers using FOR EACH STATEMENT\n");
+            }
+            if (is_statement_level_after_update_event_trigger_selected) {
+                sb.append("Mariadb does not support triggers using FOR EACH STATEMENT\n");
+            }
+            if (is_statement_level_after_delete_event_trigger_selected) {
+                sb.append("Mariadb does not support triggers using FOR EACH STATEMENT\n");
+            }
+            if (is_row_level_before_insert_event_trigger_selected) {
+                Mariadb_create_trigger_row_level_before_insert_event mariadb_create_row_level_before_insert_event_trigger = new Mariadb_create_trigger_row_level_before_insert_event(cfg, table);
+                sb.append(mariadb_create_row_level_before_insert_event_trigger.get_code());
+            }
+            if (is_row_level_before_update_event_trigger_selected) {
+                Mariadb_create_trigger_row_level_before_update_event mariadb_create_row_level_before_update_event_trigger = new Mariadb_create_trigger_row_level_before_update_event(cfg, table);
+                sb.append(mariadb_create_row_level_before_update_event_trigger.get_code());
+            }
+            if (is_row_level_before_delete_event_trigger_selected) {
+                Mariadb_create_trigger_row_level_before_delete_event mariadb_create_row_level_before_delete_event_trigger = new Mariadb_create_trigger_row_level_before_delete_event(cfg, table);
+                sb.append(mariadb_create_row_level_before_delete_event_trigger.get_code());
+            }
+            if (is_row_level_after_insert_event_trigger_selected) {
+                Mariadb_create_trigger_row_level_after_insert_event mariadb_create_row_level_after_insert_event_trigger = new Mariadb_create_trigger_row_level_after_insert_event(cfg, table);
+                sb.append(mariadb_create_row_level_after_insert_event_trigger.get_code());
+            }
+            if (is_row_level_after_update_event_trigger_selected) {
+                Mariadb_create_trigger_row_level_after_update_event mariadb_create_row_level_after_update_event_trigger = new Mariadb_create_trigger_row_level_after_update_event(cfg, table);
+                sb.append(mariadb_create_row_level_after_update_event_trigger.get_code());
+            }
+            if (is_row_level_after_delete_event_trigger_selected) {
+                Mariadb_create_trigger_row_level_after_delete_event mariadb_create_row_level_after_delete_event_trigger = new Mariadb_create_trigger_row_level_after_delete_event(cfg, table);
+                sb.append(mariadb_create_row_level_after_delete_event_trigger.get_code());
+            }
+            if (is_insert_statement_selected) {
+                Mariadb_create_statement_insert mariadb_create_statement_insert = new Mariadb_create_statement_insert(cfg, table);
+                sb.append(mariadb_create_statement_insert.get_code());
+            }
+            if (is_update_statement_selected && table.containsPrimaryKeys() && table.containsNonPrimaryKeys()) {
+                Mariadb_create_statement_update mariadb_create_statement_update = new Mariadb_create_statement_update(cfg, table);
+                sb.append(mariadb_create_statement_update.get_code());
+            }
+            if (is_delete_statement_selected && table.containsPrimaryKeys()) {
+                Mariadb_create_statement_delete mariadb_create_statement_delete = new Mariadb_create_statement_delete(cfg, table);
+                sb.append(mariadb_create_statement_delete.get_code());
+            }
+            if (is_merge_statement_selected && table.containsPrimaryKeys() && table.containsNonPrimaryKeys()) {
+                Mariadb_create_statement_merge mariadb_create_statement_merge = new Mariadb_create_statement_merge(cfg, table);
+                sb.append(mariadb_create_statement_merge.get_code());
+            }
+            if (is_select_statement_selected && table.containsPrimaryKeys()) {
+                Mariadb_create_statement_select mariadb_create_statement_select = new Mariadb_create_statement_select(cfg, table);
+                sb.append(mariadb_create_statement_select.get_code());
+            }
+            if (is_delete_all_statement_selected) {
+                Mariadb_create_statement_delete_all mariadb_create_statement_delete_all = new Mariadb_create_statement_delete_all(cfg, table);
+                sb.append(mariadb_create_statement_delete_all.get_code());
+            }
+            if (is_select_all_statement_selected) {
+                Mariadb_create_statement_select_all mariadb_create_statement_select_all = new Mariadb_create_statement_select_all(cfg, table);
+                sb.append(mariadb_create_statement_select_all.get_code());
+            }
+            if (is_count_statement_selected) {
+                Mariadb_create_statement_count mariadb_create_statement_count = new Mariadb_create_statement_count(cfg, table);
+                sb.append(mariadb_create_statement_count.get_code());
+            }
+        });
+        return sb.toString();
+    }
+
+    private String get_java_code_generated() {
+        StringBuilder sb = new StringBuilder();
+        TableMaker tableMaker = new TableMaker(dblink);
+        if (is_test_class_selected) {
+            create_test_class = new Create_test_class(cfg);
+            sb.append(create_test_class.get_code());
+        }
+        table_list.forEach(element -> {
+            Integer tableId = element.getTable_id();
+            Table table = tableMaker.get_table(schema, tableId);
+            if (is_insert_method_selected) {
+                Create_method_insert create_method_insert = new Create_method_insert(cfg, table);
+                sb.append(create_method_insert.get_code());
+            }
+            if (is_update_method_selected) {
+                Create_method_update create_method_update = new Create_method_update(cfg, table);
+                sb.append(create_method_update.get_code());
+            }
+            if (is_delete_method_selected) {
+                Create_method_delete create_method_delete = new Create_method_delete(cfg, table);
+                sb.append(create_method_delete.get_code());
+            }
+            if (is_merge_method_selected) {
+                Create_method_merge create_method_merge = new Create_method_merge(cfg, table);
+                sb.append(create_method_merge.get_code());
+            }
+            if (is_select_method_selected) {
+                Create_method_select create_method_select = new Create_method_select(cfg, table);
+                sb.append(create_method_select.get_code());
+            }
+            if (is_print_select_method_selected) {
+                Create_method_print_select create_method_print_select = new Create_method_print_select(cfg, table);
+                sb.append(create_method_print_select.get_code());
+            }
+            if (is_delete_all_method_selected) {
+                Create_method_delete_all create_method_delete_all = new Create_method_delete_all(cfg, table);
+                sb.append(create_method_delete_all.get_code());
+            }
+            if (is_select_all_method_selected) {
+                Create_method_select_all create_method_select_all = new Create_method_select_all(cfg, table);
+                sb.append(create_method_select_all.get_code());
+            }
+            if (is_print_select_all_method_selected) {
+                Create_method_print_select_all create_method_print_select_all = new Create_method_print_select_all(cfg, table);
+                sb.append(create_method_print_select_all.get_code());
+            }
+            if (is_count_function_method_selected) {
+                if (!is_hsqldb_selected) {
+                    Create_method_count create_method_count = new Create_method_count(cfg, table);
+                    sb.append(create_method_count.get_code());
+                } else {
+                    Create_method_count_for_hsqldb create_method_count_for_hsqldb = new Create_method_count_for_hsqldb(cfg, table);
+                    sb.append(create_method_count_for_hsqldb.get_code());
+                }
+
+            }
+            if (is_print_function_count_method_selected) {
+                Create_method_print_count create_method_print_count = new Create_method_print_count(cfg, table);
+                sb.append(create_method_print_count.get_code());
+            }
+            if (is_generate_data_transfer_object_option_selected) {
+                Create_data_transfer_object create_data_transfer_object = new Create_data_transfer_object(cfg, table);
+                sb.append(create_data_transfer_object.get_code());
+            }
+            if (is_generate_data_access_object_option_selected) {
+                Create_typed_dao_interface dao = new Create_typed_dao_interface(cfg, table);
+                sb.append(dao.get_code());
+            }
+        });
+        if (is_generate_generic_data_access_object_selected) {
+            Create_generic_dao dao = new Create_generic_dao(cfg);
+            sb.append(dao.get_code());
+        }
         return sb.toString();
     }
 

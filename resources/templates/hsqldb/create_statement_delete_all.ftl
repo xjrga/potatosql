@@ -1,0 +1,2 @@
+DELETE FROM ${table.name};
+/

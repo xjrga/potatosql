@@ -17,3 +17,7 @@ v0.04
     Add data exchange functionality
     Add dao pattern java code generation
     
+60
+
+    Add mariadb sql code generation
+    

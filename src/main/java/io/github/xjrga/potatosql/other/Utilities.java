@@ -116,7 +116,7 @@ public class Utilities {
     public static String capitalize(String word) {
         StringBuilder sb = new StringBuilder();
         sb.append(word.substring(0, 1).toUpperCase());
-        sb.append(word.substring(1));
+        sb.append(word.substring(1).toLowerCase());
         return sb.toString();
     }
 

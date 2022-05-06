@@ -1,0 +1,7 @@
+CREATE FUNCTION ${table.name}_count() RETURNS INTEGER
+READS SQL DATA BEGIN ATOMIC
+DECLARE v_count INTEGER;
+SELECT COUNT(*) INTO v_count FROM ${table.name};
+RETURN v_count;
+END;
+/

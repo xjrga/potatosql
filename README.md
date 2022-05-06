@@ -20,16 +20,16 @@
 
 Installing
 
-    1. Download potatosql-50-app.zip from https://xjrga.github.io/releases
-    2. unzip potatosql-50-app.zip
-    3. cd potatosql-50-app
-    4. java -jar potatosql-50.jar (if you are on windows double click on jar file)
+    1. Download potatosql-60-app.zip from https://xjrga.github.io/releases
+    2. unzip potatosql-60-app.zip
+    3. cd potatosql-60-app
+    4. java -jar potatosql-60.jar (if you are on windows double click on jar file)
 
 [User Guide](https://xjrga.github.io/potatosql "Potatosql: Database Design and Code Generation Software")
 
 Version
  
-    50
+    60
 
 Authors
 

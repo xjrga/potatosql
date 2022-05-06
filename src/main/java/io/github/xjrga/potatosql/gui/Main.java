@@ -25,6 +25,7 @@ import io.github.xjrga.potatosql.model.TableModelRelationship;
 import io.github.xjrga.potatosql.model.TableModelRelationshipKeyPair;
 import io.github.xjrga.potatosql.model.Unselectable_selection_model;
 import io.github.xjrga.potatosql.other.ImageUtilities;
+import io.github.xjrga.potatosql.other.String_check;
 import io.github.xjrga.potatosql.other.Write;
 import io.github.xjrga.potatosql.other.Xml_receive;
 import io.github.xjrga.potatosql.other.Xml_send;
@@ -50,6 +51,7 @@ public class Main {
 
     private CellConstraints cc;
     private Dblink dblink;
+    private JButton reset;
     private JButton clear;
     private JCheckBox cboxStmtCreateSelect;
     private JCheckBox cboxStmtInsertSelect;
@@ -126,7 +128,7 @@ public class Main {
     private TableModelRelationshipKeyPair tableModelRelationshipKeyPair;
     private TableModelRelationship tableModelRelationship;
     private JRadioButtonMenuItem mnuiDialectHsqldb;
-    private JRadioButtonMenuItem mnuiDialectMysql;
+    private JRadioButtonMenuItem mnuiDialectMariadb;
     private ListModelKeyTypes listModelKeyTypes;
     private final BufferedImage logo = ImageUtilities.readImage("resources/logo.png");
     private Color desktop_color;
@@ -209,6 +211,7 @@ public class Main {
         cboxMethodFunctionCountPrint = new JCheckBox("");
         cc = new CellConstraints();
         dblink = new Dblink();
+        reset = new JButton("Reset");
         clear = new JButton("Clear");
         keyName = new JTextField();
         listKeyTypes = new JList<>();
@@ -224,7 +227,7 @@ public class Main {
         listChildPK = new JList<>();
         listChildNPK = new JList<>();
         mnuiDialectHsqldb = new JRadioButtonMenuItem();
-        mnuiDialectMysql = new JRadioButtonMenuItem();
+        mnuiDialectMariadb = new JRadioButtonMenuItem();
         listModelParentPK = new ListModelParentPK(dblink);
         listModelParentNPK = new ListModelParentNPK(dblink);
         listModelChildPK = new ListModelChildPK(dblink);
@@ -262,52 +265,18 @@ public class Main {
         frame.setSize(new Dimension(1138, 751));
         frame.setVisible(true);
         frame.setIconImage(logo);
+        reset.addActionListener((ActionEvent e) -> {
+            clear_options();
+            set_default_options();
+        });
         clear.addActionListener((ActionEvent e) -> {
-            Boolean flag = false;
-            cboxTriggerStatementAfterInsert.setSelected(flag);
-            cboxTriggerStatementAfterUpdate.setSelected(flag);
-            cboxTriggerStatementAfterDelete.setSelected(flag);
-            cboxTriggerRowBeforeInsert.setSelected(flag);
-            cboxTriggerRowBeforeUpdate.setSelected(flag);
-            cboxTriggerRowBeforeDelete.setSelected(flag);
-            cboxTriggerRowAfterInsert.setSelected(flag);
-            cboxTriggerRowAfterUpdate.setSelected(flag);
-            cboxTriggerRowAfterDelete.setSelected(flag);
-            cboxViews.setSelected(flag);
-            cboxTestClass.setSelected(flag);
-            cbox_generic_data_access_object.setSelected(flag);
-            cbox_data_transfer_object.setSelected(flag);
-            cbox_data_access_object_interface.setSelected(flag);
-            cboxTables.setSelected(flag);
-            cboxStmtInsert.setSelected(flag);
-            cboxStmtUpdate.setSelected(flag);
-            cboxStmtDelete.setSelected(flag);
-            cboxStmtMerge.setSelected(flag);
-            cboxStmtSelect.setSelected(flag);
-            cboxStmtDeleteAll.setSelected(flag);
-            cboxStmtSelectAll.setSelected(flag);
-            cboxStmtCount.setSelected(flag);
-            cboxStmtCreateSelect.setSelected(flag);
-            cboxStmtInsertSelect.setSelected(flag);
-            cboxProcInsert.setSelected(flag);
-            cboxProcUpdate.setSelected(flag);
-            cboxProcDelete.setSelected(flag);
-            cboxProcMerge.setSelected(flag);
-            cboxProcSelect.setSelected(flag);
-            cboxProcDeleteAll.setSelected(flag);
-            cboxProcSelectAll.setSelected(flag);
-            cboxFunctionCount.setSelected(flag);
-            cboxMethodInsert.setSelected(flag);
-            cboxMethodUpdate.setSelected(flag);
-            cboxMethodDelete.setSelected(flag);
-            cboxMethodMerge.setSelected(flag);
-            cboxMethodSelect.setSelected(flag);
-            cboxMethodDeleteAll.setSelected(flag);
-            cboxMethodSelectAll.setSelected(flag);
-            cboxMethodFunctionCount.setSelected(flag);
-            cboxMethodSelectPrint.setSelected(flag);
-            cboxMethodSelectAllPrint.setSelected(flag);
-            cboxMethodFunctionCountPrint.setSelected(flag);
+            clear_options();
+        });
+        mnuiDialectMariadb.addActionListener((ActionEvent e) -> {
+            disable_trigger_statement_options();
+        });
+        mnuiDialectHsqldb.addActionListener((ActionEvent e) -> {
+            enable_trigger_statements_options();
         });
     }
 
@@ -322,14 +291,7 @@ public class Main {
         local_frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                local_frame.dispose();
-                dblink.shutdown();
-            }
-        });
-        local_frame.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                Dimension size = local_frame.getSize();
+                eventActionPerformed_mnuiExit();
             }
         });
         return local_frame;
@@ -369,51 +331,51 @@ public class Main {
             dialectBuilder.set_oschema(schema);
             dialectBuilder.set_otables(table_list);
             dialectBuilder.is_hsqldb_selected(mnuiDialectHsqldb.isSelected());
-            dialectBuilder.is_mysql_selected(mnuiDialectMysql.isSelected());
-            dialectBuilder.is_stmtcreateselect_selected(cboxStmtCreateSelect.isSelected());
-            dialectBuilder.is_stmtinsertselect_selected(cboxStmtInsertSelect.isSelected());
-            dialectBuilder.is_stmtcount_selected(cboxStmtCount.isSelected());
-            dialectBuilder.is_setfunctioncount_selected(cboxFunctionCount.isSelected());
-            dialectBuilder.is_methodfunctioncount_selected(cboxMethodFunctionCount.isSelected());
-            dialectBuilder.is_triggerstatementafterinsert_selected(cboxTriggerStatementAfterInsert.isSelected());
-            dialectBuilder.is_triggerstatementafterupdate_selected(cboxTriggerStatementAfterUpdate.isSelected());
-            dialectBuilder.is_triggerstatementafterdelete_selected(cboxTriggerStatementAfterDelete.isSelected());
-            dialectBuilder.is_triggerrowbeforeinsert_selected(cboxTriggerRowBeforeInsert.isSelected());
-            dialectBuilder.is_triggerrowbeforeupdate_selected(cboxTriggerRowBeforeUpdate.isSelected());
-            dialectBuilder.is_triggerrowbeforedelete_selected(cboxTriggerRowBeforeDelete.isSelected());
-            dialectBuilder.is_triggerrowafterinsert_selected(cboxTriggerRowAfterInsert.isSelected());
-            dialectBuilder.is_triggerrowafterupdate_selected(cboxTriggerRowAfterUpdate.isSelected());
-            dialectBuilder.is_triggerrowafterdelete_selected(cboxTriggerRowAfterDelete.isSelected());
-            dialectBuilder.is_views_selected(cboxViews.isSelected());
-            dialectBuilder.is_testclass_selected(cboxTestClass.isSelected());
-            dialectBuilder.is_tables_selected(cboxTables.isSelected());
-            dialectBuilder.is_stmtinsert_selected(cboxStmtInsert.isSelected());
-            dialectBuilder.is_stmtupdate_selected(cboxStmtUpdate.isSelected());
-            dialectBuilder.is_stmtdelete_selected(cboxStmtDelete.isSelected());
-            dialectBuilder.is_stmtmerge_selected(cboxStmtMerge.isSelected());
-            dialectBuilder.is_stmtselect_selected(cboxStmtSelect.isSelected());
-            dialectBuilder.is_stmtdeleteall_selected(cboxStmtDeleteAll.isSelected());
-            dialectBuilder.is_stmtselectall_selected(cboxStmtSelectAll.isSelected());
-            dialectBuilder.is_procinsert_selected(cboxProcInsert.isSelected());
-            dialectBuilder.is_procupdate_selected(cboxProcUpdate.isSelected());
-            dialectBuilder.is_procdelete_selected(cboxProcDelete.isSelected());
-            dialectBuilder.is_procmerge_selected(cboxProcMerge.isSelected());
-            dialectBuilder.is_procselect_selected(cboxProcSelect.isSelected());
-            dialectBuilder.is_procdeleteall_selected(cboxProcDeleteAll.isSelected());
-            dialectBuilder.is_procselectall_selected(cboxProcSelectAll.isSelected());
-            dialectBuilder.is_methodinsert_selected(cboxMethodInsert.isSelected());
-            dialectBuilder.is_methodupdate_selected(cboxMethodUpdate.isSelected());
-            dialectBuilder.is_methoddelete_selected(cboxMethodDelete.isSelected());
-            dialectBuilder.is_methodmerge_selected(cboxMethodMerge.isSelected());
-            dialectBuilder.is_methodselect_selected(cboxMethodSelect.isSelected());
-            dialectBuilder.is_methoddeleteall_selected(cboxMethodDeleteAll.isSelected());
-            dialectBuilder.is_methodselectall_selected(cboxMethodSelectAll.isSelected());
-            dialectBuilder.is_generic_data_access_object_selected(cbox_generic_data_access_object.isSelected());
-            dialectBuilder.is_data_transfer_object_selected(cbox_data_transfer_object.isSelected());
-            dialectBuilder.is_data_access_object_selected(cbox_data_access_object_interface.isSelected());
-            dialectBuilder.is_methodselectprint_selected(cboxMethodSelectPrint.isSelected());
-            dialectBuilder.is_methodselectallprint_selected(cboxMethodSelectAllPrint.isSelected());
-            dialectBuilder.is_methodfunctioncountprint_selected(cboxMethodFunctionCountPrint.isSelected());
+            dialectBuilder.is_mariadb_selected(mnuiDialectMariadb.isSelected());
+            dialectBuilder.is_create_table_with_select_selected(cboxStmtCreateSelect.isSelected());
+            dialectBuilder.is_insert_using_select_statement_selected(cboxStmtInsertSelect.isSelected());
+            dialectBuilder.is_count_statement_selected(cboxStmtCount.isSelected());
+            dialectBuilder.is_count_function_selected(cboxFunctionCount.isSelected());
+            dialectBuilder.is_count_function_method_selected(cboxMethodFunctionCount.isSelected());
+            dialectBuilder.is_statement_level_after_insert_event_trigger_selected(cboxTriggerStatementAfterInsert.isSelected());
+            dialectBuilder.is_statement_level_after_update_event_trigger_selected(cboxTriggerStatementAfterUpdate.isSelected());
+            dialectBuilder.is_statement_level_after_delete_event_trigger_selected(cboxTriggerStatementAfterDelete.isSelected());
+            dialectBuilder.is_row_level_before_insert_event_trigger_selected(cboxTriggerRowBeforeInsert.isSelected());
+            dialectBuilder.is_row_level_before_update_event_trigger_selected(cboxTriggerRowBeforeUpdate.isSelected());
+            dialectBuilder.is_row_level_before_delete_event_trigger_selected(cboxTriggerRowBeforeDelete.isSelected());
+            dialectBuilder.is_row_level_after_insert_event_trigger_selected(cboxTriggerRowAfterInsert.isSelected());
+            dialectBuilder.is_row_level_after_update_event_trigger_selected(cboxTriggerRowAfterUpdate.isSelected());
+            dialectBuilder.is_row_level_after_delete_event_trigger_selected(cboxTriggerRowAfterDelete.isSelected());
+            dialectBuilder.is_view_selected(cboxViews.isSelected());
+            dialectBuilder.is_test_class_selected(cboxTestClass.isSelected());
+            dialectBuilder.is_tables_and_relationships_selected(cboxTables.isSelected());
+            dialectBuilder.is_insert_statement_selected(cboxStmtInsert.isSelected());
+            dialectBuilder.is_update_statement_selected(cboxStmtUpdate.isSelected());
+            dialectBuilder.is_delete_statement_selected(cboxStmtDelete.isSelected());
+            dialectBuilder.is_merge_statement_selected(cboxStmtMerge.isSelected());
+            dialectBuilder.is_select_statement_selected(cboxStmtSelect.isSelected());
+            dialectBuilder.is_delete_all_statement_selected(cboxStmtDeleteAll.isSelected());
+            dialectBuilder.is_select_all_statement_selected(cboxStmtSelectAll.isSelected());
+            dialectBuilder.is_insert_procedure_selected(cboxProcInsert.isSelected());
+            dialectBuilder.is_update_procedure_selected(cboxProcUpdate.isSelected());
+            dialectBuilder.is_delete_procedure_selected(cboxProcDelete.isSelected());
+            dialectBuilder.is_merge_procedure_selected(cboxProcMerge.isSelected());
+            dialectBuilder.is_select_procedure_selected(cboxProcSelect.isSelected());
+            dialectBuilder.is_delete_all_procedure_selected(cboxProcDeleteAll.isSelected());
+            dialectBuilder.is_select_all_procedure_selected(cboxProcSelectAll.isSelected());
+            dialectBuilder.is_insert_method_selected(cboxMethodInsert.isSelected());
+            dialectBuilder.is_update_method_selected(cboxMethodUpdate.isSelected());
+            dialectBuilder.is_delete_method_selected(cboxMethodDelete.isSelected());
+            dialectBuilder.is_merge_method_selected(cboxMethodMerge.isSelected());
+            dialectBuilder.is_select_method_selected(cboxMethodSelect.isSelected());
+            dialectBuilder.is_delete_all_method_selected(cboxMethodDeleteAll.isSelected());
+            dialectBuilder.is_select_all_method_selected(cboxMethodSelectAll.isSelected());
+            dialectBuilder.is_generate_generic_data_access_object_selected(cbox_generic_data_access_object.isSelected());
+            dialectBuilder.is_generate_data_transfer_object_option_selected(cbox_data_transfer_object.isSelected());
+            dialectBuilder.is_generate_data_access_object_option_selected(cbox_data_access_object_interface.isSelected());
+            dialectBuilder.is_print_select_method_selected(cboxMethodSelectPrint.isSelected());
+            dialectBuilder.is_print_select_all_method_selected(cboxMethodSelectAllPrint.isSelected());
+            dialectBuilder.is_print_function_count_method_selected(cboxMethodFunctionCountPrint.isSelected());
             sb.append(dialectBuilder.get_code());
             String toString = sb.toString();
             textArea.setText(toString);
@@ -444,7 +406,7 @@ public class Main {
         JMenuItem menui_export_message = new JMenuItem();
         JMenuItem menui_import_message = new JMenuItem();
         dialectGroup.add(mnuiDialectHsqldb);
-        dialectGroup.add(mnuiDialectMysql);
+        dialectGroup.add(mnuiDialectMariadb);
         menuBar.add(mnuProgram);
         menuBar.add(menu_exchange);
         menuBar.add(mnuOutput);
@@ -453,7 +415,7 @@ public class Main {
         mnuProgram.add(mnuiExit);
         mnuOutput.add(mnuiOptions);
         mnuDialect.add(mnuiDialectHsqldb);
-        mnuDialect.add(mnuiDialectMysql);
+        mnuDialect.add(mnuiDialectMariadb);
         mnuHelp.add(mnuItemProject);
         mnuHelp.add(mnuItemQuickStart);
         mnuHelp.add(mnuItemCredits);
@@ -469,7 +431,7 @@ public class Main {
         mnuiExit.setText("Exit");
         mnuiOptions.setText("Options");
         mnuiDialectHsqldb.setText("Hsqldb");
-        mnuiDialectMysql.setText("Mysql");
+        mnuiDialectMariadb.setText("Mariadb");
         mnuItemProject.setText("Project");
         mnuItemQuickStart.setText("Quick Start");
         mnuItemCredits.setText("Credits");
@@ -481,7 +443,7 @@ public class Main {
             select_options();
         });
         mnuiExit.addActionListener((ActionEvent e) -> {
-            eventActionPerformed_mnuiExit(e);
+            eventActionPerformed_mnuiExit();
         });
         mnuItemProject.addActionListener((ActionEvent e) -> {
             eventActionPerformed_menuItemProject();
@@ -504,7 +466,7 @@ public class Main {
         return menuBar;
     }
 
-    private void eventActionPerformed_mnuiSchemaCopy(ActionEvent e) {
+    private void eventActionPerformed_mnuiSchemaCopy() {
         if (has_schema_list_been_selected()) {
             O_schema o_schema = (O_schema) listSchema.getSelectedValue();
             StringBuilder sb = new StringBuilder();
@@ -518,7 +480,7 @@ public class Main {
         }
     }
 
-    private void eventActionPerformed_mnuiTableCopy(ActionEvent e) {
+    private void eventActionPerformed_mnuiTableCopy() {
         if (has_schema_list_been_selected()) {
             if (has_table_list_been_selected()) {
                 O_schema o_schema = (O_schema) listSchema.getSelectedValue();
@@ -646,12 +608,12 @@ public class Main {
         panel.add(scrollTable, cc.xy(1, 1));
         panel.add(get_panel_table_buttons(), cc.xy(1, 2));
         listTable.addListSelectionListener((ListSelectionEvent e) -> {
-            eventListSelection_listTable(e);
+            eventListSelection_listTable();
         });
         return panel;
     }
 
-    private void eventListSelection_listTable(ListSelectionEvent e) {
+    private void eventListSelection_listTable() {
         if (has_table_list_been_selected()) {
             O_table table = (O_table) listTable.getSelectedValue();
             O_key_with_name key = new O_key_with_name();
@@ -765,10 +727,10 @@ public class Main {
             eventListSelection_tableRelationship(e);
         });
         btnRelationshipAdd.addActionListener((ActionEvent e) -> {
-            eventActionPerformed_btnRelationshipAdd(e);
+            eventActionPerformed_btnRelationshipAdd();
         });
         btnRelationshipDelete.addActionListener((ActionEvent e) -> {
-            eventActionPerformed_btnRelationshipDelete(e);
+            eventActionPerformed_btnRelationshipDelete();
         });
         return panel;
     }
@@ -793,7 +755,7 @@ public class Main {
         }
     }
 
-    private void eventActionPerformed_btnRelationshipAdd(ActionEvent e) {
+    private void eventActionPerformed_btnRelationshipAdd() {
         clearPanelRelationshipInput();
         JPanel panelRelationshipInput = get_panel_relationship_input();
         panelRelationshipInput.setPreferredSize(new Dimension(700, 433));
@@ -835,7 +797,7 @@ public class Main {
         btnNonIdentifying.setSelected(false);
     }
 
-    private void eventActionPerformed_btnRelationshipDelete(ActionEvent e) {
+    private void eventActionPerformed_btnRelationshipDelete() {
         Integer selectedRow = tableRelationshipFacts.getSelectedRow();
         if (selectedRow != -1) {
             Integer relationshipid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 0);
@@ -910,15 +872,15 @@ public class Main {
         btnPanel.add(btnRelationshipKeyDelete);
         hideTableRelationshipKeyPairColumns();
         btnRelationshipKeyAdd.addActionListener((ActionEvent e) -> {
-            eventActionPerformed_btnRelationshipKeyAdd(e);
+            eventActionPerformed_btnRelationshipKeyAdd();
         });
         btnRelationshipKeyDelete.addActionListener((ActionEvent e) -> {
-            eventActionPerformed_btnRelationshipKeyDelete(e);
+            eventActionPerformed_btnRelationshipKeyDelete();
         });
         return panel;
     }
 
-    private void eventActionPerformed_btnRelationshipKeyAdd(ActionEvent e) {
+    private void eventActionPerformed_btnRelationshipKeyAdd() {
         Integer selectedRow = tableRelationshipFacts.getSelectedRow();
         if (selectedRow != -1) {
             Integer relationshipid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 0);
@@ -1030,22 +992,18 @@ public class Main {
         return !listChildPK.isSelectionEmpty();
     }
 
-    private boolean has_listParentNPK_been_selected() {
-        return !listParentNPK.isSelectionEmpty();
-    }
-
     private boolean has_listChildNPK_been_selected() {
         return !listChildNPK.isSelectionEmpty();
     }
 
-    private void eventActionPerformed_btnRelationshipKeyDelete(ActionEvent e) {
+    private void eventActionPerformed_btnRelationshipKeyDelete() {
         Integer selectedRow = tableRelationshipFacts.getSelectedRow();
         if (selectedRow != -1) {
             Integer relationshipid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 0);
             Integer schemaid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 1);
             Integer parent_tableid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 2);
             Integer child_tableid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 4);
-            Integer relationshiptypeid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 6);
+            //Integer relationshiptypeid = (Integer) tableRelationshipFacts.getValueAt(selectedRow, 6);
             selectedRow = tableRelationshipPairKeys.getSelectedRow();
             if (selectedRow != -1) {
                 Integer parent_keyid = (Integer) tableRelationshipPairKeys.getValueAt(selectedRow, 0);
@@ -1080,12 +1038,12 @@ public class Main {
         panel.add(new JScrollPane(listSchema), cc.xy(1, 1));
         panel.add(get_panel_schema_buttons(), cc.xy(1, 2));
         listSchema.addListSelectionListener((ListSelectionEvent e) -> {
-            eventListSelection_listSchema(e);
+            eventListSelection_listSchema();
         });
         return panel;
     }
 
-    private void eventListSelection_listSchema(ListSelectionEvent e) {
+    private void eventListSelection_listSchema() {
         if (has_schema_list_been_selected()) {
             O_schema schema = (O_schema) listSchema.getSelectedValue();
             listModelTable.reload(schema);
@@ -1117,21 +1075,21 @@ public class Main {
         panel.add(btnSchemaUpdate, cc.xy(4, 1));
         panel.add(btnSchemaDuplicate, cc.xy(5, 1));
         btnSchemaAdd.addActionListener((ActionEvent e) -> {
-            eventActionPerformed_btnSchemaAdd(e);
+            eventActionPerformed_btnSchemaAdd();
         });
         btnSchemaDelete.addActionListener((ActionEvent e) -> {
-            eventActionPerformed_btnSchemaDelete(e);
+            eventActionPerformed_btnSchemaDelete();
         });
         btnSchemaUpdate.addActionListener((ActionEvent e) -> {
-            eventActionPerformed_btnSchemaUpdate(e);
+            eventActionPerformed_btnSchemaUpdate();
         });
         btnSchemaDuplicate.addActionListener((ActionEvent e) -> {
-            eventActionPerformed_mnuiSchemaCopy(e);
+            eventActionPerformed_mnuiSchemaCopy();
         });
         return panel;
     }
 
-    private void eventActionPerformed_btnSchemaAdd(ActionEvent e) {
+    private void eventActionPerformed_btnSchemaAdd() {
         JLabel question = new JLabel();
         JTextField field = new JTextField();
         JComponent[] inputs = new JComponent[]{
@@ -1148,11 +1106,13 @@ public class Main {
                 schema.setSchema_name(s);
                 dblink.schema_insert(schema);
                 listModelSchema.reload();
+            } else {
+                Message.showMessage("Please use alphanumeric or underscore characters: " + s);
             }
         }
     }
 
-    private void eventActionPerformed_btnSchemaUpdate(ActionEvent e) {
+    private void eventActionPerformed_btnSchemaUpdate() {
         if (has_schema_list_been_selected()) {
             O_schema schema = (O_schema) listSchema.getSelectedValue();
             JLabel question = new JLabel();
@@ -1170,6 +1130,8 @@ public class Main {
                     schema.setSchema_name(s);
                     dblink.schema_update(schema);
                     listModelSchema.reload();
+                } else {
+                    Message.showMessage("Please use alphanumeric or underscore characters: " + s);
                 }
             }
         } else {
@@ -1177,7 +1139,7 @@ public class Main {
         }
     }
 
-    private void eventActionPerformed_btnSchemaDelete(ActionEvent e) {
+    private void eventActionPerformed_btnSchemaDelete() {
         if (has_schema_list_been_selected()) {
             O_schema schema = (O_schema) listSchema.getSelectedValue();
             dblink.schema_delete(schema);
@@ -1213,21 +1175,21 @@ public class Main {
         panel.add(btnTableUpdate, cc.xy(4, 1));
         panel.add(btnTableDuplicate, cc.xy(5, 1));
         btnTableAdd.addActionListener((ActionEvent e) -> {
-            eventActionPerformed_btnTableAdd(e);
+            eventActionPerformed_btnTableAdd();
         });
         btnTableDelete.addActionListener((ActionEvent e) -> {
-            eventActionPerformed_btnTableDelete(e);
+            eventActionPerformed_btnTableDelete();
         });
         btnTableUpdate.addActionListener((ActionEvent e) -> {
-            eventActionPerformed_btnTableUpdate(e);
+            eventActionPerformed_btnTableUpdate();
         });
         btnTableDuplicate.addActionListener((ActionEvent e) -> {
-            eventActionPerformed_mnuiTableCopy(e);
+            eventActionPerformed_mnuiTableCopy();
         });
         return panel;
     }
 
-    private void eventActionPerformed_btnTableUpdate(ActionEvent e) {
+    private void eventActionPerformed_btnTableUpdate() {
         if (has_schema_list_been_selected()) {
             O_table t = (O_table) listTable.getSelectedValue();
             JLabel question = new JLabel();
@@ -1250,6 +1212,8 @@ public class Main {
                     listModelTable.reload(schema);
                     tableModelRelationship.reload(schema);
                     hideTableRelationshipColumns();
+                } else {
+                    Message.showMessage("Please use alphanumeric or underscore characters: " + s);
                 }
             }
         } else {
@@ -1257,7 +1221,7 @@ public class Main {
         }
     }
 
-    private void eventActionPerformed_btnTableDelete(ActionEvent e) {
+    private void eventActionPerformed_btnTableDelete() {
         if (has_schema_list_been_selected()) {
             O_table t = (O_table) listTable.getSelectedValue();
             dblink.table_delete(t);
@@ -1275,7 +1239,7 @@ public class Main {
         }
     }
 
-    private void eventActionPerformed_btnTableAdd(ActionEvent e) {
+    private void eventActionPerformed_btnTableAdd() {
         if (has_schema_list_been_selected()) {
             JLabel question = new JLabel();
             JTextField field = new JTextField();
@@ -1298,6 +1262,8 @@ public class Main {
                     listModelTable.reload(schema);
                     tableModelKeys.clear();
                     hideTableKeysColumns();
+                } else {
+                    Message.showMessage("Please use alphanumeric or underscore characters: " + s);
                 }
             }
         } else {
@@ -1306,7 +1272,9 @@ public class Main {
     }
 
     private boolean containsText(String s) {
-        return s != null && s.length() > 0;
+        String_check check = new String_check();
+        check.add(s);
+        return check.pass();
     }
 
     private JPanel get_panel_table_key_buttons() {
@@ -1325,18 +1293,18 @@ public class Main {
         buttonPanel.add(btnKeyDelete, cc.xy(3, 1));
         buttonPanel.add(btnKeyUpdate, cc.xy(4, 1));
         btnKeyAdd.addActionListener((ActionEvent e) -> {
-            eventActionPerformed_btnKeyAdd(e);
+            eventActionPerformed_btnKeyAdd();
         });
         btnKeyDelete.addActionListener((ActionEvent e) -> {
-            eventActionPerformed_btnKeyDelete(e);
+            eventActionPerformed_btnKeyDelete();
         });
         btnKeyUpdate.addActionListener((ActionEvent e) -> {
-            eventActionPerformed_btnKeyUpdate(e);
+            eventActionPerformed_btnKeyUpdate();
         });
         return buttonPanel;
     }
 
-    private void eventActionPerformed_btnKeyAdd(ActionEvent e) {
+    private void eventActionPerformed_btnKeyAdd() {
         if (has_table_list_been_selected()) {
             clearPanelTableKeyInput();
             JPanel panelTableKeyInput = get_panel_table_key_input();
@@ -1391,13 +1359,13 @@ public class Main {
         return tableKeys.getSelectedRow() != -1;
     }
 
-    private void eventActionPerformed_btnKeyUpdate(ActionEvent e) {
+    private void eventActionPerformed_btnKeyUpdate() {
         if (has_table_list_been_selected()) {
             if (has_table_keys_been_selected()) {
                 Integer selectedRow = tableKeys.convertRowIndexToModel(tableKeys.getSelectedRow());
                 Integer keyid = (Integer) tableModelKeys.getValueAt(selectedRow, 2);
                 String keyname = (String) tableModelKeys.getValueAt(selectedRow, 3);
-                String keylabel = (String) tableModelKeys.getValueAt(selectedRow, 4);
+                //String keylabel = (String) tableModelKeys.getValueAt(selectedRow, 4);
                 Boolean keyispk = (Boolean) tableModelKeys.getValueAt(selectedRow, 5);
                 Integer keytypeid = (Integer) tableModelKeys.getValueAt(selectedRow, 6);
                 String typename = (String) tableModelKeys.getValueAt(selectedRow, 7);
@@ -1452,7 +1420,7 @@ public class Main {
         return !listKeyTypes.isSelectionEmpty();
     }
 
-    private void eventActionPerformed_btnKeyDelete(ActionEvent e) {
+    private void eventActionPerformed_btnKeyDelete() {
         if (has_table_list_been_selected()) {
             O_table o_table = (O_table) listTable.getSelectedValue();
             Integer schemaid = o_table.getSchema_id();
@@ -1474,9 +1442,10 @@ public class Main {
         }
     }
 
-    private void eventActionPerformed_mnuiExit(ActionEvent e) {
-        frame.dispose();
+    private void eventActionPerformed_mnuiExit() {
         dblink.shutdown();
+        //frame.dispose();
+        System.exit(0);
     }
 
     private void hideTableKeysColumns() {
@@ -1544,7 +1513,7 @@ public class Main {
         FormLayout layoutSql = new FormLayout("20dlu,min:grow,20dlu", //columns
                 "20dlu,min,5dlu,min,20dlu" //rows
         );
-        FormLayout layout = new FormLayout("min:grow,min", //columns
+        FormLayout layout = new FormLayout("min:grow,min,min", //columns
                 "min,min" //rows
         );
         JPanel paneJava01 = new JPanel();
@@ -1568,8 +1537,10 @@ public class Main {
         paneSql.add(paneSql02, cc.xy(2, 4));
         tabbedPane.add(paneSql, "Pl/Sql");
         tabbedPane.add(paneJava, "Java");
-        panel.add(tabbedPane, cc.xyw(1, 1, 2));
-        panel.add(clear, cc.xy(2, 2));
+        panel.add(tabbedPane, cc.xyw(1, 1, 3));
+        panel.add(reset, cc.xy(2, 2));
+        panel.add(clear, cc.xy(3, 2));
+        layout.setColumnGroup(2, 3);
         JLabel label_Insert = new JLabel("Insert");
         JLabel label_Update = new JLabel("Update");
         JLabel label_Delete = new JLabel("Delete");
@@ -1730,7 +1701,7 @@ public class Main {
                 + "       - Java 11";
         sb.append(txt);
         sb.append("\n\n");
-        sb.append("This is build 50");
+        sb.append("This is build 60");
         sb.append("\n\n");
         sb.append("Please send your comments and suggestions to jorge.r.garciadealba+snack@gmail.com");
         JTextArea about = new JTextArea();
@@ -1819,6 +1790,9 @@ public class Main {
                 + "//https://commons.apache.org/proper/commons-dbutils";
         sb.append(txt);
         sb.append("\n\n");
+        sb.append("Generated sql and java code was tested on: \n");
+        sb.append("* hsqldb 2.6.1\n");
+        sb.append("* mariadb 10.5.15\n");
         JTextArea quick_start_text_area = new JTextArea();
         quick_start_text_area.setText(sb.toString());
         quick_start_text_area.setEditable(false);
@@ -1830,4 +1804,84 @@ public class Main {
         };
         Message.showOptionDialog(inputs, "Quick Start");
     }
+
+    private void enable_trigger_statements_options() {
+        cboxTriggerStatementAfterInsert.setSelected(false);
+        cboxTriggerStatementAfterUpdate.setSelected(false);
+        cboxTriggerStatementAfterDelete.setSelected(false);
+        cboxTriggerStatementAfterInsert.setEnabled(true);
+        cboxTriggerStatementAfterUpdate.setEnabled(true);
+        cboxTriggerStatementAfterDelete.setEnabled(true);
+    }
+
+    private void disable_trigger_statement_options() {
+        cboxTriggerStatementAfterInsert.setSelected(false);
+        cboxTriggerStatementAfterUpdate.setSelected(false);
+        cboxTriggerStatementAfterDelete.setSelected(false);
+        cboxTriggerStatementAfterInsert.setEnabled(false);
+        cboxTriggerStatementAfterUpdate.setEnabled(false);
+        cboxTriggerStatementAfterDelete.setEnabled(false);
+    }
+
+    private void clear_options() {
+        Boolean flag = false;
+        cboxTriggerStatementAfterInsert.setSelected(flag);
+        cboxTriggerStatementAfterUpdate.setSelected(flag);
+        cboxTriggerStatementAfterDelete.setSelected(flag);
+        cboxTriggerRowBeforeInsert.setSelected(flag);
+        cboxTriggerRowBeforeUpdate.setSelected(flag);
+        cboxTriggerRowBeforeDelete.setSelected(flag);
+        cboxTriggerRowAfterInsert.setSelected(flag);
+        cboxTriggerRowAfterUpdate.setSelected(flag);
+        cboxTriggerRowAfterDelete.setSelected(flag);
+        cboxViews.setSelected(flag);
+        cboxTestClass.setSelected(flag);
+        cbox_generic_data_access_object.setSelected(flag);
+        cbox_data_transfer_object.setSelected(flag);
+        cbox_data_access_object_interface.setSelected(flag);
+        cboxTables.setSelected(flag);
+        cboxStmtInsert.setSelected(flag);
+        cboxStmtUpdate.setSelected(flag);
+        cboxStmtDelete.setSelected(flag);
+        cboxStmtMerge.setSelected(flag);
+        cboxStmtSelect.setSelected(flag);
+        cboxStmtDeleteAll.setSelected(flag);
+        cboxStmtSelectAll.setSelected(flag);
+        cboxStmtCount.setSelected(flag);
+        cboxStmtCreateSelect.setSelected(flag);
+        cboxStmtInsertSelect.setSelected(flag);
+        cboxProcInsert.setSelected(flag);
+        cboxProcUpdate.setSelected(flag);
+        cboxProcDelete.setSelected(flag);
+        cboxProcMerge.setSelected(flag);
+        cboxProcSelect.setSelected(flag);
+        cboxProcDeleteAll.setSelected(flag);
+        cboxProcSelectAll.setSelected(flag);
+        cboxFunctionCount.setSelected(flag);
+        cboxMethodInsert.setSelected(flag);
+        cboxMethodUpdate.setSelected(flag);
+        cboxMethodDelete.setSelected(flag);
+        cboxMethodMerge.setSelected(flag);
+        cboxMethodSelect.setSelected(flag);
+        cboxMethodDeleteAll.setSelected(flag);
+        cboxMethodSelectAll.setSelected(flag);
+        cboxMethodFunctionCount.setSelected(flag);
+        cboxMethodSelectPrint.setSelected(flag);
+        cboxMethodSelectAllPrint.setSelected(flag);
+        cboxMethodFunctionCountPrint.setSelected(flag);
+    }
+
+    private void set_default_options() {
+        Boolean flag = true;
+        cboxTables.setSelected(flag);
+        cboxProcInsert.setSelected(flag);
+        cboxProcUpdate.setSelected(flag);
+        cboxProcDelete.setSelected(flag);
+        cboxProcMerge.setSelected(flag);
+        cboxProcSelect.setSelected(flag);
+        cboxProcDeleteAll.setSelected(flag);
+        cboxProcSelectAll.setSelected(flag);
+        cboxFunctionCount.setSelected(flag);
+    }
+
 }

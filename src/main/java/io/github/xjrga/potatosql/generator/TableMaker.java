@@ -40,8 +40,8 @@ public class TableMaker {
             column.setName(name);
             column.setLabel(label);
             column.setPrimaryKey(ispk);
-            column.setTypeId(typeid);
-            column.setTypeName(typename);
+            column.setTypeid(typeid);
+            column.setTypename(typename);
             column.setOrder(order);
             table.addColumn(column);
         }

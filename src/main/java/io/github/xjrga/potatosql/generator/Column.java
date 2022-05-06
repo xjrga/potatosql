@@ -14,7 +14,7 @@ public class Column {
         this.name = name;
     }
 
-    public String get_name() {
+    public String getName() {
 
         return name;
     }
@@ -49,17 +49,17 @@ public class Column {
         return typeid;
     }
 
-    public void setTypeId(Integer typeid) {
+    public void setTypeid(Integer typeid) {
 
         this.typeid = typeid;
     }
 
-    public String get_type_name() {
+    public String getTypename() {
 
         return typename;
     }
 
-    public void setTypeName(String typename) {
+    public void setTypename(String typename) {
 
         this.typename = typename;
     }

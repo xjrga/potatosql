@@ -1,2 +1,1 @@
 file:Project/Public/schemas/potatosql.xsd
-- test generated code
