@@ -1701,7 +1701,7 @@ public class Main {
                 + "       - Java 11";
         sb.append(txt);
         sb.append("\n\n");
-        sb.append("This is build 60");
+        sb.append("This is build 70");
         sb.append("\n\n");
         sb.append("Please send your comments and suggestions to jorge.r.garciadealba+snack@gmail.com");
         JTextArea about = new JTextArea();
@@ -1885,3 +1885,7 @@ public class Main {
     }
 
 }
+
+//todo - fix constraint creating when compound key
+//ALTER TABLE cart ADD CONSTRAINT R2_cart_aisle FOREIGN KEY (store_id, product_id) REFERENCES aisle (store_id, product_id) ON DELETE CASCADE;
+

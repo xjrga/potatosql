@@ -6,7 +6,7 @@
 
     <groupId>io.github.xjrga</groupId>
     <artifactId>potatosql</artifactId>
-    <version>60</version>
+    <version>70</version>
 
     <name>potatosql</name>
     <url>https://xjrga.github.io/potatosql</url>

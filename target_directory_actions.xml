@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 <project name="potatosql" default="unzip, run">
-    <property name="version" value="60"/>        
+    <property name="version" value="70"/>        
     <target name="1. unzip">
         <!-- unzip files -->
         <unzip src="target/${ant.project.name}-${version}-app.zip" dest="target" overwrite="true"/>                                        

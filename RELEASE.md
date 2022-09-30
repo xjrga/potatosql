@@ -21,3 +21,6 @@ v0.04
 
     Add mariadb sql code generation
     
+70
+
+    Fix referential integrity constraint generation when using composite primary keys
