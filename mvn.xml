@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2021 Jorge R Garcia de Alba &lt;jorge.r.garciadealba@gmail.com&gt;
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+-->
+<project default="">
+    <xmlproperty file="pom.xml" prefix="pom" />
+    <tstamp>
+        <!--        <format property="timestamp" pattern="yyyy-MM-dd HH:mm:ss"/>-->
+        <format property="time.stamp" pattern="yyyyMMdd_HHmm"/>
+    </tstamp>
+    <target name="compile">
+        <exec executable="mvn">
+            <env key="JAVA_HOME" value="/usr/lib/jvm/default-java"/>
+            <arg line="compile"/>
+        </exec>
+    </target>
+    <target name="install">
+        <exec executable="mvn">
+            <env key="JAVA_HOME" value="/usr/lib/jvm/default-java"/>
+            <arg line="install"/>
+        </exec>
+    </target>
+    <target name="deploy">
+        <exec executable="mvn">
+            <env key="JAVA_HOME" value="/usr/lib/jvm/default-java"/>
+            <arg line="deploy"/>
+        </exec>
+    </target>
+    <target name="package" depends="clean">
+        <exec executable="mvn">
+            <env key="JAVA_HOME" value="/usr/lib/jvm/default-java"/>
+            <arg line="package"/>
+        </exec>
+    </target>
+    <target name="clean">
+        <exec executable="mvn">
+            <env key="JAVA_HOME" value="/usr/lib/jvm/default-java"/>
+            <arg line="clean"/>
+        </exec>
+    </target>
+    <target name="verify">
+        <exec executable="mvn">
+            <env key="JAVA_HOME" value="/usr/lib/jvm/default-java"/>
+            <arg line="verify"/>
+        </exec>
+    </target>
+    <target name="test">
+        <exec executable="mvn">
+            <env key="JAVA_HOME" value="/usr/lib/jvm/default-java"/>
+            <arg line="test"/>
+        </exec>
+    </target>
+    <target name="resolve">
+        <exec executable="mvn">
+            <env key="JAVA_HOME" value="/usr/lib/jvm/default-java"/>
+            <arg line="dependency:resolve"/>
+        </exec>
+    </target>
+    <target name="dependency tree">
+        <exec executable="mvn">
+            <env key="JAVA_HOME" value="/usr/lib/jvm/default-java"/>
+            <arg line="dependency:tree"/>
+        </exec>
+    </target>
+    <target name="0. show system values">
+        <echo message="This is the user home: ${user.home}"/>
+        <!--echo message="This is the user directory: ${user.dir}"/-->
+        <echo message="This is the base directory: ${basedir}"/>
+        <echo message="This is the java home: ${java.home}"/>
+        <echo message="This is the java class path: ${java.class.path}"/>
+        <echo message="This is the timestamp: ${time.stamp}"/>
+        <echo>The maven project name is ${pom.project.name}</echo>
+        <echo>The maven project group id is ${pom.project.groupId}</echo>
+        <echo>The maven project artifact id is ${pom.project.artifactId}</echo>
+        <echo>The maven project version is ${pom.project.version}</echo>
+    </target>
+</project>

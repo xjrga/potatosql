@@ -1,3 +1,88 @@
+DROP SCHEMA Public IF EXISTS CASCADE;
+/
+CREATE TABLE Database_schema
+(
+Schema_id INTEGER,
+Schema_name LONGVARCHAR,
+CONSTRAINT Database_schema_primaryKey PRIMARY KEY (Schema_id)
+);
+/
+CREATE TABLE Database_table
+(
+Schema_id INTEGER,
+Table_id INTEGER,
+Table_name LONGVARCHAR,
+CONSTRAINT Database_table_primaryKey PRIMARY KEY (Schema_id, Table_id)
+);
+/
+CREATE TABLE Table_key
+(
+Schema_id INTEGER,
+Table_id INTEGER,
+Table_key_id INTEGER,
+Table_key_name LONGVARCHAR,
+Table_key_label LONGVARCHAR,
+Table_key_is_pk BOOLEAN,
+Table_key_type_id INTEGER,
+Table_key_order INTEGER,
+CONSTRAINT Table_key_primaryKey PRIMARY KEY (Schema_id, Table_id, Table_key_id)
+);
+/
+CREATE TABLE Key_type
+(
+Key_type_id INTEGER,
+Key_type_name LONGVARCHAR,
+CONSTRAINT Key_type_primaryKey PRIMARY KEY (Key_type_id)
+);
+/
+CREATE TABLE Relationship_type
+(
+Relationship_type_id INTEGER,
+Relationship_type_name LONGVARCHAR,
+CONSTRAINT Relationship_type_primaryKey PRIMARY KEY (Relationship_type_id)
+);
+/
+CREATE TABLE Relationship
+(
+Schema_id INTEGER,
+Parent_table_id INTEGER,
+Child_table_id INTEGER,
+Relationship_id INTEGER,
+Relationship_type_id INTEGER,
+CONSTRAINT Relationship_primaryKey PRIMARY KEY (Schema_id, Parent_table_id, Child_table_id, Relationship_id)
+);
+/
+CREATE TABLE Relationship_key_pair
+(
+Schema_id INTEGER,
+Parent_table_id INTEGER,
+Child_table_id INTEGER,
+Relationship_id INTEGER,
+Parent_key_id INTEGER,
+Child_key_id INTEGER,
+CONSTRAINT Relationship_key_pair_primaryKey PRIMARY KEY (Schema_id, Parent_table_id, Child_table_id, Relationship_id, Parent_key_id, Child_key_id)
+);
+/
+ALTER TABLE Database_table ADD CONSTRAINT R0_Database_schema_Database_table FOREIGN KEY ( Schema_id ) REFERENCES Database_schema ( Schema_id ) ON DELETE CASCADE;
+/
+ALTER TABLE Table_key ADD CONSTRAINT R1_Database_table_Table_key FOREIGN KEY ( Schema_id,Table_id ) REFERENCES Database_table ( Schema_id,Table_id ) ON DELETE CASCADE;
+/
+ALTER TABLE Relationship ADD CONSTRAINT R2_Database_table_Relationship FOREIGN KEY ( Schema_id,Parent_table_id ) REFERENCES Database_table ( Schema_id,Table_id ) ON DELETE CASCADE;
+/
+ALTER TABLE Relationship ADD CONSTRAINT R3_Database_table_Relationship FOREIGN KEY ( Schema_id,Child_table_id ) REFERENCES Database_table ( Schema_id,Table_id ) ON DELETE CASCADE;
+/
+ALTER TABLE Relationship_key_pair ADD CONSTRAINT R4_Table_key_Relationship_key_pair FOREIGN KEY ( Schema_id,Parent_table_id,Parent_key_id ) REFERENCES Table_key ( Schema_id,Table_id,Table_key_id ) ON DELETE CASCADE;
+/
+ALTER TABLE Relationship_key_pair ADD CONSTRAINT R5_Table_key_Relationship_key_pair FOREIGN KEY ( Schema_id,Child_table_id,Child_key_id ) REFERENCES Table_key ( Schema_id,Table_id,Table_key_id ) ON DELETE CASCADE;
+/
+ALTER TABLE Table_key ADD CONSTRAINT R6_Key_type_Table_key FOREIGN KEY ( Table_key_type_id ) REFERENCES Key_type ( Key_type_id ) ON DELETE SET NULL;
+/
+ALTER TABLE Relationship ADD CONSTRAINT R7_Relationship_type_Relationship FOREIGN KEY ( Relationship_type_id ) REFERENCES Relationship_type ( Relationship_type_id ) ON DELETE SET NULL;
+/
+ALTER TABLE Relationship_key_pair ADD CONSTRAINT R8_Relationship_Relationship_key_pair FOREIGN KEY ( Schema_id,Parent_table_id,Child_table_id,Relationship_id ) REFERENCES Relationship ( Schema_id,Parent_table_id,Child_table_id,Relationship_id ) ON DELETE CASCADE;
+/
+
+
 CREATE PROCEDURE database_schema_insert (
 IN v_Schema_id INTEGER,
 IN v_Schema_name LONGVARCHAR
@@ -930,3 +1015,297 @@ RETURN V_Is_dependent;
 --
 END;
 /
+
+
+call key_type_insert(0,'INTEGER');
+call key_type_insert(1,'DOUBLE');
+call key_type_insert(2,'STRING');
+call key_type_insert(3,'DATE');
+call key_type_insert(4,'BOOLEAN');
+call key_type_insert(5,'TIME');
+call key_type_insert(6,'TIMESTAMP');
+
+call relationship_type_insert(0,'Identifying');
+call relationship_type_insert(1,'Nonidentifying');
+
+
+CREATE PROCEDURE select_schema_as_xml (
+--
+OUT v_doc LONGVARCHAR,
+--
+IN v_schema_id INTEGER
+--
+)
+--
+MODIFIES SQL DATA
+--
+BEGIN ATOMIC
+--
+DECLARE doc LONGVARCHAR;
+--
+SET doc = '';
+--
+SELECT
+'<schema>' +CHAR(10)
++ '<schema_id>' + schema_id + '</schema_id>' + CHAR(10)
++ '<schema_name>' + schema_name + '</schema_name>' + CHAR(10)
++ '</schema>'
+INTO doc FROM database_schema WHERE schema_id = v_schema_id;
+--
+SET v_doc = doc + CHAR (10);
+--
+END
+/
+
+CREATE PROCEDURE select_table_list_as_xml (
+--
+OUT v_doc LONGVARCHAR,
+--
+IN v_schema_id INTEGER
+--
+)
+--
+MODIFIES SQL DATA DYNAMIC RESULT SETS 1
+--
+BEGIN ATOMIC
+--
+DECLARE doc LONGVARCHAR;
+DECLARE doc2 LONGVARCHAR;
+--
+SET doc = '';
+SET doc2 = '';
+--
+SELECT '<table_list>' INTO doc FROM (VALUES (0));
+--
+SET doc2 = doc2 + doc + CHAR(10) ;
+--
+SET doc = '';
+------------------------------------------------------------
+FOR SELECT
+schema_id,
+table_id,
+table_name
+FROM database_table WHERE schema_id = v_schema_id DO
+--
+SET doc = doc
++ '<table>' + CHAR(10)
++ '<schema_id>' + schema_id + '</schema_id>' + CHAR(10)
++ '<table_id>' + table_id + '</table_id>' + CHAR(10)
++ '<table_name>' + table_name + '</table_name>' + CHAR (10)
++ '</table>' + CHAR(10);
+--
+SET doc2 = doc2 + doc;
+--
+SET doc = '';
+--
+END FOR;
+--
+SET doc = '</table_list>';
+--
+SET v_doc = doc2 + doc + CHAR(10);
+--
+END
+/
+
+
+CREATE PROCEDURE select_key_list_as_xml (
+--
+OUT v_doc LONGVARCHAR,
+--
+IN v_schema_id INTEGER
+--
+)
+--
+MODIFIES SQL DATA DYNAMIC RESULT SETS 1
+--
+BEGIN ATOMIC
+--
+DECLARE doc LONGVARCHAR;
+DECLARE doc2 LONGVARCHAR;
+--
+SET doc = '';
+SET doc2 = '';
+--
+SELECT '<key_list>' INTO doc FROM (VALUES (0));
+--
+SET doc2 = doc2 + doc + CHAR(10) ;
+--
+SET doc = '';
+------------------------------------------------------------
+FOR SELECT
+    schema_id,
+    table_id,
+    table_key_id,
+    table_key_name,
+    table_key_label,
+    lcase(cast(table_key_is_pk as LONGVARCHAR)) as table_key_is_pk,
+    table_key_type_id,
+    table_key_order
+FROM table_key WHERE schema_id = v_schema_id DO
+--
+SET doc = doc
+ + '<key>' + CHAR(10)
+ + '<schema_id>' + schema_id + '</schema_id>' + CHAR(10)
+ + '<table_id>' + table_id + '</table_id>' + CHAR(10)
+ + '<key_id>' + table_key_id + '</key_id>' + CHAR(10)
+ + '<key_name>' + table_key_name + '</key_name>' + CHAR(10)
+ + '<key_label>' + table_key_label + '</key_label>' + CHAR(10)
+ + '<key_is_pk>' + table_key_is_pk + '</key_is_pk>' + CHAR(10)
+ + '<key_type_id>' + table_key_type_id + '</key_type_id>' + CHAR(10)
+ + '<key_order>' + table_key_order + '</key_order>' + CHAR(10)
+ + '</key>' + CHAR(10);
+--
+SET doc2 = doc2 + doc;
+--
+SET doc = '';
+--
+END FOR;
+--
+SET doc = '</key_list>';
+--
+SET v_doc = doc2 + doc + CHAR(10);
+--
+END
+/
+
+
+CREATE PROCEDURE select_relationship_list_as_xml (
+--
+OUT v_doc LONGVARCHAR,
+--
+IN v_schema_id INTEGER
+--
+)
+--
+MODIFIES SQL DATA DYNAMIC RESULT SETS 1
+--
+BEGIN ATOMIC
+--
+DECLARE doc LONGVARCHAR;
+DECLARE doc2 LONGVARCHAR;
+--
+SET doc2 = '<relationship_list>' + CHAR(10) ;
+SET doc = '';
+------------------------------------------------------------
+FOR SELECT
+schema_id,
+parent_table_id,
+child_table_id,
+relationship_id,
+relationship_type_id
+FROM relationship WHERE schema_id = v_schema_id DO
+--
+SET doc = '<relationship>' + CHAR(10)
++ '<schema_id>' + schema_id + '</schema_id>' + CHAR(10)
++ '<parent_table_id>' + parent_table_id + '</parent_table_id>' + CHAR(10)
++ '<child_table_id>' + child_table_id + '</child_table_id>' + CHAR (10)
++ '<relationship_id>' + relationship_id + '</relationship_id>' + CHAR (10)
++ '<relationship_type_id>' + relationship_type_id + '</relationship_type_id>' + CHAR (10)
++ '</relationship>' + CHAR(10);
+--
+SET doc2 = doc2 + doc;
+--
+END FOR;
+--
+SET v_doc = doc2 + '</relationship_list>' + CHAR(10);
+--
+END
+/
+
+
+CREATE PROCEDURE select_key_pair_list_as_xml (
+--
+OUT v_doc LONGVARCHAR,
+--
+IN v_schema_id INTEGER
+--
+)
+--
+MODIFIES SQL DATA DYNAMIC RESULT SETS 1
+--
+BEGIN ATOMIC
+--
+DECLARE doc LONGVARCHAR;
+DECLARE doc2 LONGVARCHAR;
+--
+SET doc2 = '<key_pair_list>' + CHAR(10);
+SET doc = '';
+------------------------------------------------------------
+FOR SELECT
+schema_id,
+parent_table_id,
+child_table_id,
+relationship_id,
+parent_key_id,
+child_key_id
+FROM relationship_key_pair WHERE schema_id = v_schema_id DO
+--
+SET doc = '<key_pair>' + CHAR(10)
+ + '<schema_id>' + schema_id + '</schema_id>' + CHAR(10)
+ + '<parent_table_id>' + parent_table_id + '</parent_table_id>' + CHAR(10)
+ + '<child_table_id>' + child_table_id + '</child_table_id>' + CHAR(10)
+ + '<relationship_id>' + relationship_id + '</relationship_id>' + CHAR(10)
+ + '<parent_key_id>' + parent_key_id + '</parent_key_id>' + CHAR(10)
+ + '<child_key_id>' + child_key_id + '</child_key_id>' + CHAR(10)
+ + '</key_pair>' + CHAR(10);
+--
+SET doc2 = doc2 + doc;
+--
+END FOR;
+--
+SET v_doc = doc2 + '</key_pair_list>' + CHAR(10);
+--
+END
+/
+
+
+CREATE PROCEDURE export_xml (IN v_schema_id INTEGER)
+--
+MODIFIES SQL DATA DYNAMIC RESULT SETS 1
+--
+BEGIN ATOMIC
+--
+DECLARE TABLE temp ( txt LONGVARCHAR);
+DECLARE doc LONGVARCHAR;
+DECLARE doc2 LONGVARCHAR;
+--
+SET doc2 = '<potatosql' + CHAR(10) + 'xmlns:xsi=''http://www.w3.org/2001/XMLSchema-instance''' + CHAR(10) + 'xsi:noNamespaceSchemaLocation=''https://xjrga.github.io/schemas/potatosql.xsd''>' + CHAR (10);
+SET doc = '';
+--
+call select_schema_as_xml (doc,v_schema_id);
+--
+SET doc2 = doc2 + doc;
+--
+call select_table_list_as_xml (doc,v_schema_id);
+--
+SET doc2 = doc2 + doc;
+--
+call select_key_list_as_xml (doc,v_schema_id);
+--
+SET doc2 = doc2 + doc;
+--
+call select_relationship_list_as_xml (doc,v_schema_id);
+--
+SET doc2 = doc2 + doc;
+--
+call select_key_pair_list_as_xml (doc,v_schema_id);
+--
+SET doc2 = doc2 + doc + '</potatosql>';
+--
+INSERT INTO temp (txt) VALUES (doc2);
+--
+BEGIN ATOMIC
+--
+DECLARE result CURSOR
+FOR
+SELECT *
+FROM temp;
+--
+OPEN result;
+--
+END;
+--
+END
+/
+
+

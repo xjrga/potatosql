@@ -5,41 +5,46 @@ import java.util.LinkedList;
 
 public class Table {
 
-    private final String name;
+    private String name;
     private final LinkedList columns;
     private int keyCount;
     private int primaryKeyCount;
     private int nonPrimaryKeyCount;
     private String schema_name;
+    private boolean is_dependent;
 
-    public Table(String name) {
+    public Table( String name ) {
         this.name = name;
         columns = new LinkedList();
     }
 
-    public void addColumn(Column column) {
-        columns.add(column);
+    public void addColumn( Column column ) {
+        columns.add( column );
     }
 
-    public Column getColumn(int position) {
-        return (Column) columns.get(position);
+    public Column getColumn( int position ) {
+        return ( Column ) columns.get( position );
     }
 
     public String getName() {
         return name;
     }
 
+    public void set_name( String name ) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(name);
-        sb.append(" ");
+        sb.append( name );
+        sb.append( " " );
         LinkedList list = columns;
         Iterator it = list.iterator();
-        while (it.hasNext()) {
-            Column column = (Column) it.next();
-            sb.append(",");
-            sb.append(column.getName());
+        while ( it.hasNext() ) {
+            Column column = ( Column ) it.next();
+            sb.append( "," );
+            sb.append( column.getName() );
         }
         return sb.toString();
     }
@@ -47,10 +52,10 @@ public class Table {
     public Integer getLargestColumnSize() {
         Integer largestColumnNameSize = 0;
         Iterator it = columns.listIterator();
-        while (it.hasNext()) {
-            Column column = (Column) it.next();
+        while ( it.hasNext() ) {
+            Column column = ( Column ) it.next();
             Integer columnNameSize = column.getName().length();
-            if (columnNameSize > largestColumnNameSize) {
+            if ( columnNameSize > largestColumnNameSize ) {
                 largestColumnNameSize = columnNameSize;
             }
         }
@@ -59,7 +64,7 @@ public class Table {
 
     public Boolean isEmpty() {
         Boolean flag = false;
-        if (getCountKey() == 0) {
+        if ( getCountKey() == 0 ) {
             flag = true;
         }
         return flag;
@@ -72,7 +77,7 @@ public class Table {
 
     public Boolean containsNonPrimaryKeys() {
         Boolean flag = false;
-        if (getCountNonPrimaryKey() > 0) {
+        if ( getCountNonPrimaryKey() > 0 ) {
             flag = true;
         }
         return flag;
@@ -81,9 +86,9 @@ public class Table {
     private int getCountNonPrimaryKey() {
         nonPrimaryKeyCount = 0;
         Iterator it = columns.iterator();
-        while (it.hasNext()) {
-            Column column = (Column) it.next();
-            if (!column.isPrimaryKey()) {
+        while ( it.hasNext() ) {
+            Column column = ( Column ) it.next();
+            if ( !column.isPrimaryKey() ) {
                 nonPrimaryKeyCount++;
             }
         }
@@ -96,7 +101,7 @@ public class Table {
 
     public boolean containsPrimaryKeys() {
         Boolean flag = false;
-        if (getCountPrimaryKey() > 0) {
+        if ( getCountPrimaryKey() > 0 ) {
             flag = true;
         }
         return flag;
@@ -105,9 +110,9 @@ public class Table {
     private int getCountPrimaryKey() {
         primaryKeyCount = 0;
         Iterator it = columns.iterator();
-        while (it.hasNext()) {
-            Column column = (Column) it.next();
-            if (column.isPrimaryKey()) {
+        while ( it.hasNext() ) {
+            Column column = ( Column ) it.next();
+            if ( column.isPrimaryKey() ) {
                 primaryKeyCount++;
             }
         }
@@ -118,7 +123,15 @@ public class Table {
         return schema_name;
     }
 
-    public void setSchema_name(String schema_name) {
+    public void setSchema_name( String schema_name ) {
         this.schema_name = schema_name;
+    }
+
+    public void set_as_dependent() {
+        this.is_dependent = true;
+    }
+
+    public boolean is_dependent() {
+        return is_dependent;
     }
 }

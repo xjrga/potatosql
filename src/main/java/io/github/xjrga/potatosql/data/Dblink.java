@@ -56,109 +56,109 @@ public class Dblink {
         connection = Connections.PRODUCTION.get_connection();
         //connection = Connections.TESTING.get_connection();
         //connection = Connections.LOCALHOST.get_connection();
-        schema_dao = new Schema_dao_impl(connection);
-        table_dao = new Table_dao_impl(connection);
-        relationship_dao = new Relationship_dao_impl(connection);
-        key_dao = new Key_dao_impl(connection);
-        key_pair_dao = new Relationship_key_pair_dao_impl(connection);
-        other_dao = new Other_dao_impl(connection);
-        key_type_dao = new Key_type_dao_impl(connection);
+        schema_dao = new Schema_dao_impl( connection );
+        table_dao = new Table_dao_impl( connection );
+        relationship_dao = new Relationship_dao_impl( connection );
+        key_dao = new Key_dao_impl( connection );
+        key_pair_dao = new Relationship_key_pair_dao_impl( connection );
+        other_dao = new Other_dao_impl( connection );
+        key_type_dao = new Key_type_dao_impl( connection );
     }
 
     public List<O_schema> schema_select_all() {
-        return schema_dao.find_all(new O_schema());
+        return schema_dao.find_all( new O_schema() );
     }
 
     public List<O_key_type> key_type_select_all() {
-        return key_type_dao.find_all(new O_key_type());
+        return key_type_dao.find_all( new O_key_type() );
     }
 
-    public List<O_table> table_select(O_table table) {
-        return table_dao.find_all(table);
+    public List<O_table> table_select( O_table table ) {
+        return table_dao.find_all( table );
     }
 
-    public List<O_table> table_select_02(O_table table) {
-        return table_dao.find_02(table);
+    public List<O_table> table_select_02( O_table table ) {
+        return table_dao.find_02( table );
     }
 
-    public List<O_key_with_name> key_type_select(O_key_with_name key) {
-        return other_dao.table_key_select_with_name(key);
+    public List<O_key_with_name> key_type_select( O_key_with_name key ) {
+        return other_dao.table_key_select_with_name( key );
     }
 
-    public List<O_select_only_names> relationship_select_only_names(O_schema schema) {
-        return other_dao.relationship_select_only_names(schema);
+    public List<O_select_only_names> relationship_select_only_names( O_schema schema ) {
+        return other_dao.relationship_select_only_names( schema );
     }
 
-    public void schema_insert(O_schema schema) {
-        schema_dao.insert(schema);
+    public void schema_insert( O_schema schema ) {
+        schema_dao.insert( schema );
     }
 
     public Integer generate_id() {
         return other_dao.generate_id();
     }
 
-    public void schema_delete(O_schema schema) {
-        schema_dao.delete(schema);
+    public void schema_delete( O_schema schema ) {
+        schema_dao.delete( schema );
     }
 
-    public void schema_update(O_schema schema) {
-        schema_dao.update(schema);
+    public void schema_update( O_schema schema ) {
+        schema_dao.update( schema );
     }
 
-    public void table_insert(O_table table) {
-        table_dao.insert(table);
+    public void table_insert( O_table table ) {
+        table_dao.insert( table );
     }
 
-    public void table_delete(O_table t) {
-        table_dao.delete(t);
+    public void table_delete( O_table t ) {
+        table_dao.delete( t );
     }
 
-    public List<O_relationship_multiple_select> relationship_multiple_select(O_schema schema) {
-        return other_dao.relationship_multiple_select(schema);
+    public List<O_relationship_multiple_select> relationship_multiple_select( O_schema schema ) {
+        return other_dao.relationship_multiple_select( schema );
     }
 
-    public void table_update(O_table t) {
-        table_dao.update(t);
+    public void table_update( O_table t ) {
+        table_dao.update( t );
     }
 
-    public void key_insert(O_key key) {
-        key_dao.insert(key);
+    public void key_insert( O_key key ) {
+        key_dao.insert( key );
     }
 
-    public void key_update(O_key key) {
-        key_dao.update(key);
+    public void key_update( O_key key ) {
+        key_dao.update( key );
     }
 
-    public void key_delete(O_key key) {
-        key_dao.delete(key);
+    public void key_delete( O_key key ) {
+        key_dao.delete( key );
     }
 
-    public List<O_key_pair_multiple_select> relationship_key_pair_multiple_select(O_relationship o) {
-        return other_dao.relationship_key_pair_multiple_select(o);
+    public List<O_key_pair_multiple_select> relationship_key_pair_multiple_select( O_relationship o ) {
+        return other_dao.relationship_key_pair_multiple_select( o );
     }
 
-    public void relationship_insert(O_relationship relationship) {
-        relationship_dao.insert(relationship);
+    public void relationship_insert( O_relationship relationship ) {
+        relationship_dao.insert( relationship );
     }
 
-    public void relationship_delete(O_relationship relationship) {
-        relationship_dao.delete(relationship);
+    public void relationship_delete( O_relationship relationship ) {
+        relationship_dao.delete( relationship );
     }
 
-    public List<O_key> find_pk(O_key o) {
-        return key_dao.find_pk(o);
+    public List<O_key> find_pk( O_key o ) {
+        return key_dao.find_pk( o );
     }
 
-    public List<O_key> find_npk(O_key o) {
-        return key_dao.find_npk(o);
+    public List<O_key> find_npk( O_key o ) {
+        return key_dao.find_npk( o );
     }
 
-    public void relationship_key_pair_insert(O_relationship_key_pair pair) {
-        key_pair_dao.insert(pair);
+    public void relationship_key_pair_insert( O_relationship_key_pair pair ) {
+        key_pair_dao.insert( pair );
     }
 
-    public void relationship_key_pair_delete(O_relationship_key_pair pair) {
-        key_pair_dao.delete(pair);
+    public void relationship_key_pair_delete( O_relationship_key_pair pair ) {
+        key_pair_dao.delete( pair );
     }
 
     public void shutdown() {
@@ -166,29 +166,32 @@ public class Dblink {
         Statement stmt;
         try {
             stmt = connection.createStatement();
-            stmt.executeUpdate(sql);
+            stmt.executeUpdate( sql );
             stmt.close();
-        } catch (SQLException e) {
+        } catch ( SQLException e ) {
         }
     }
 
-    public void schema_copy(O_schema schema) {
+    public void schema_copy( O_schema schema ) {
         O_schema newer = new O_schema();
-        newer.setSchema_id(other_dao.generate_id());
-        newer.setSchema_name(schema.getSchema_name());
-        other_dao.schema_copy(schema, newer);
+        newer.setSchema_id( other_dao.generate_id() );
+        newer.setSchema_name( schema.getSchema_name() );
+        other_dao.schema_copy( schema, newer );
     }
 
-    public void table_copy(O_table table) {
+    public void table_copy( O_table table ) {
         O_table newer = new O_table();
-        newer.setSchema_id(table.getSchema_id());
-        newer.setTable_id(other_dao.generate_id());
-        newer.setTable_name(table.getTable_name());
-        other_dao.table_copy(table, newer);
+        newer.setSchema_id( table.getSchema_id() );
+        newer.setTable_id( other_dao.generate_id() );
+        newer.setTable_name( table.getTable_name() );
+        other_dao.table_copy( table, newer );
     }
 
-    public String export_schema(O_schema schema) {
-        return other_dao.export_schema(schema);
+    public String export_schema( O_schema schema ) {
+        return other_dao.export_schema( schema );
     }
 
+    public Boolean is_it_a_dependent_table( Integer schema_id, Integer table_id ) {
+        return other_dao.is_it_a_dependent_table( schema_id, table_id );
+    }
 }

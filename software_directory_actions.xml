@@ -16,16 +16,33 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 -->
-<project name="potatosql" default="">     
-    <property name="version" value="70"/>   
+
+
+<project default="">
+    <xmlproperty file="pom.xml" prefix="pom" />
+    <tstamp>
+        <!--        <format property="timestamp" pattern="yyyy-MM-dd HH:mm:ss"/>-->
+        <format property="timestamp" pattern="yyyyMMdd_HHmm"/>
+    </tstamp>
+    <!-- make project backup -->
+    <target name="0. make backup" >
+        <echo>Backup files to ../${pom.project.name}_${timestamp}.tgz</echo>
+        <exec executable="tar">
+            <arg line="czfv"/>
+            <arg line="../'${pom.project.name}'_'${timestamp}'.tgz"/>
+            <arg line="."/>
+        </exec>
+    </target>
     <!-- unzip app in software dir -->
-    <target name="copy to software">
-        <delete dir="/home/jr/Software/${ant.project.name}-${version}/"/>
-        <unzip src="target/${ant.project.name}-${version}-app.zip" dest="/home/jr/Software/" overwrite="true"/>                                        
+    <target name="1. unzip to software">
+        <delete dir="${user.dir}/Software/${pom.project.artifactId}-${pom.project.version}/"/>
+        <unzip src="target/${pom.project.artifactId}-${pom.project.version}-app.zip" dest="${user.dir}/Software/" overwrite="true"/>
+        <echo message="Unzipped to software directory on ${time.stamp}"/>
     </target>
     <!-- copy to releases -->
-    <target name="copy to releases">
-        <copy file="target/${ant.project.name}-${version}-app.zip" tofile="/home/jr/Project/Public/xjrga.github.io/releases/${ant.project.name}-${version}-app.zip"/>
-        <copy file="target/${ant.project.name}-${version}-app.zip.asc" tofile="/home/jr/Project/Public/xjrga.github.io/releases/${ant.project.name}-${version}-app.zip.asc"/>       
+    <target name="2. copy to releases">
+        <copy file="target/${pom.project.artifactId}-${pom.project.version}-app.zip" tofile="${user.dir}/Project/Public/xjrga.github.io/docs/releases/${pom.project.artifactId}-${pom.project.version}-app.zip"/>
+        <copy file="target/${pom.project.artifactId}-${pom.project.version}-app.zip.asc" tofile="${user.dir}/Project/Public/xjrga.github.io/docs/releases/${pom.project.artifactId}-${pom.project.version}-app.zip.asc"/>
+        <echo message="Copied to releases directory on ${timestamp}"/>
     </target>
 </project>
