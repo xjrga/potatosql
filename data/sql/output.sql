@@ -1015,7 +1015,69 @@ RETURN V_Is_dependent;
 --
 END;
 /
-
+CREATE PROCEDURE show_relationship (IN V_Schema_id INTEGER)
+LANGUAGE SQL
+MODIFIES SQL DATA
+DYNAMIC RESULT SETS 1
+BEGIN ATOMIC
+DECLARE RESULT CURSOR
+FOR
+SELECT DISTINCT
+       A.Parent,
+       A.Child,
+       A.Relationship_id,
+       A.Relationship_type_id
+FROM (SELECT A.Schema_id,
+             A.Parent_Table_id,
+             A.Child_Table_id,
+             A.Relationship_id,
+             A.Relationship_type_id,
+             A.Parent,
+             A.Child,
+             A.Parent_key_id,
+             A.Child_key_id,
+             B.Table_key_name AS Parent_key_name,
+             C.Table_key_name AS Child_key_name
+      FROM (SELECT A.Schema_id,
+                   A.Parent_Table_id,
+                   A.Child_Table_id,
+                   A.Relationship_id,
+                   A.Relationship_type_id,
+                   A.Parent,
+                   A.Child,
+                   B.Parent_key_id,
+                   B.Child_key_id
+            FROM (SELECT A.Schema_id,
+                         A.Parent_Table_id,
+                         A.Child_Table_id,
+                         A.Relationship_id,
+                         A.Relationship_type_id,
+                         B.Table_name AS Parent,
+                         C.Table_name AS Child
+                  FROM Relationship A,
+                       Database_table B,
+                       Database_table C
+                  WHERE A.Schema_id = B.Schema_id
+                  AND   A.Parent_Table_id = B.Table_id
+                  AND   A.Schema_id = C.Schema_id
+                  AND   A.Child_Table_id = C.Table_id
+                  AND   A.Schema_id = V_Schema_id) A,
+                 Relationship_key_pair B
+            WHERE A.Schema_id = B.Schema_id
+            AND   A.Parent_Table_id = B.Parent_Table_id
+            AND   A.Child_Table_id = B.Child_Table_id
+            AND   A.Relationship_id = B.Relationship_id) A,
+           Table_key B,
+           Table_key C
+      WHERE A.Schema_id = B.Schema_id
+      AND   A.Parent_Table_id = B.Table_id
+      AND   A.Parent_key_id = B.Table_key_id
+      AND   A.Schema_id = C.Schema_id
+      AND   A.Child_Table_id = C.Table_id
+      AND   A.Child_key_id = C.Table_key_id) A;
+OPEN RESULT;
+END
+/
 
 call key_type_insert(0,'INTEGER');
 call key_type_insert(1,'DOUBLE');

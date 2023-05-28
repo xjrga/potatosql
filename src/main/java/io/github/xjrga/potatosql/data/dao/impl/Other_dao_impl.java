@@ -36,6 +36,20 @@ public class Other_dao_impl {
         return list;
     }
 
+    public List<O_select_only_names> show_relationship( O_schema schema ) {
+        List<O_select_only_names> list = null;
+        BeanListHandler<O_select_only_names> beanListHandler = new BeanListHandler<>( O_select_only_names.class );
+        try {
+            CallableStatement proc = connection.prepareCall( "{call show_relationship(?)}" );
+            proc.setInt( 1, schema.getSchema_id() );
+            ResultSet rs = proc.executeQuery();
+            proc.close();
+            list = beanListHandler.handle( rs );
+        } catch ( SQLException ex ) {
+        }
+        return list;
+    }
+
     public List<O_select_only_names> relationship_select_only_names( O_schema schema ) {
         List<O_select_only_names> list = null;
         BeanListHandler<O_select_only_names> beanListHandler = new BeanListHandler<>( O_select_only_names.class );

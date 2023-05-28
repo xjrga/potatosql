@@ -748,7 +748,7 @@ public class DialectBuilder
         StringBuilder sb = new StringBuilder();
         TableMaker tableMaker = new TableMaker( dblink );
         List<Table> tables = new ArrayList();
-        List<O_select_only_names> relationships = ( List<O_select_only_names> ) dblink.relationship_select_only_names( schema );
+        List<O_select_only_names> relationships = ( List<O_select_only_names> ) dblink.show_relationship( schema );
         table_list.forEach( element ->
         {
             Integer tableId = element.getTable_id();

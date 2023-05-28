@@ -27,4 +27,8 @@ v0.04
 
 80
 
-    Add entity relationship diagram code generation for graphviz
+    Add entity relationship diagram (erd) code generation for graphviz
+
+81
+
+    Fix relationship count in erd diagram

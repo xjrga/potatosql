@@ -89,6 +89,10 @@ public class Dblink {
         return other_dao.relationship_select_only_names( schema );
     }
 
+    public List<O_select_only_names> show_relationship( O_schema schema ) {
+        return other_dao.show_relationship( schema );
+    }
+
     public void schema_insert( O_schema schema ) {
         schema_dao.insert( schema );
     }
