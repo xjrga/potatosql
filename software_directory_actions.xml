@@ -37,7 +37,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <target name="1. unzip to software">
         <delete dir="${user.dir}/Software/${pom.project.artifactId}-${pom.project.version}/"/>
         <unzip src="target/${pom.project.artifactId}-${pom.project.version}-app.zip" dest="${user.dir}/Software/" overwrite="true"/>
-        <echo message="Unzipped to software directory on ${time.stamp}"/>
+        <echo message="Unzipped to software directory on ${timestamp}"/>
     </target>
     <!-- copy to releases -->
     <target name="2. copy to releases">

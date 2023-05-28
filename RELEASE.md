@@ -32,3 +32,7 @@ v0.04
 81
 
     Fix relationship count in erd diagram
+
+82
+
+    Fix pom.xml - upgrade org.hsqldb:hsqldb to version 2.7.1
