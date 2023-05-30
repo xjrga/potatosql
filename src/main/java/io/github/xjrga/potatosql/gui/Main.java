@@ -646,7 +646,7 @@ public class Main {
         }
     }
 
-    private JPanel get_panel_table_key_input() {
+    private JPanel get_panel_table_key_input_add() {
         FormLayout layout = new FormLayout( "min,min:grow", //columns
                                             "min,min,min,min,4dlu,min" //rows
         );
@@ -681,6 +681,34 @@ public class Main {
         panel.add( panelForPrimaryKey, cc.xy( 2, 3 ) );
         panel.add( labelOrder, cc.xy( 1, 4 ) );
         panel.add( keyOrder, cc.xy( 2, 4 ) );
+        return panel;
+    }
+
+    private JPanel get_panel_table_key_input_update() {
+        FormLayout layout = new FormLayout( "min,min:grow", //columns
+                                            "min,2dlu,min,2dlu,min,2dlu" //rows
+        );
+        JPanel panel = new JPanel();
+        Label labelName = new Label( "Name: " );
+        Label labelType = new Label( "Type: " );
+        Label labelOrder = new Label( "Order: " );
+        JScrollPane scrollPaneForListAttributeTypes = new JScrollPane( listKeyTypes );
+        panel.setLayout( layout );
+        panel.setBorder( new TitledBorder( "Definition" ) );
+        labelName.setAlignment( Label.RIGHT );
+        labelType.setAlignment( Label.RIGHT );
+        labelOrder.setAlignment( Label.RIGHT );
+        keyName.setMinimumSize( new Dimension( 100, 26 ) );
+        scrollPaneForListAttributeTypes.setMinimumSize( new Dimension( 0, 100 ) );
+        keyOrder.setMinimumSize( new Dimension( 100, 26 ) );
+        btnPK_Yes.setText( "Yes" );
+        btnPK_No.setText( "No" );
+        panel.add( labelName, cc.xy( 1, 1 ) );
+        panel.add( keyName, cc.xy( 2, 1 ) );
+        panel.add( labelType, cc.xy( 1, 3 ) );
+        panel.add( scrollPaneForListAttributeTypes, cc.xy( 2, 3 ) );
+        panel.add( labelOrder, cc.xy( 1, 5 ) );
+        panel.add( keyOrder, cc.xy( 2, 5 ) );
         return panel;
     }
 
@@ -1347,8 +1375,8 @@ public class Main {
     private void eventActionPerformed_btnKeyAdd() {
         if ( has_table_list_been_selected() ) {
             clearPanelTableKeyInput();
-            JPanel panelTableKeyInput = get_panel_table_key_input();
-            panelTableKeyInput.setPreferredSize( new Dimension( 404, 250 ) );
+            JPanel panelTableKeyInput = get_panel_table_key_input_add();
+            panelTableKeyInput.setPreferredSize( new Dimension( 400, 210 ) );
             JComponent[] inputs = new JComponent[] {
                 panelTableKeyInput
             };
@@ -1420,8 +1448,8 @@ public class Main {
                 btnPK_No.setSelected( !keyispk );
                 keyOrder.setText( keyOrderInText );
                 //
-                JPanel panelTableKeyInput = get_panel_table_key_input();
-                panelTableKeyInput.setPreferredSize( new Dimension( 404, 250 ) );
+                JPanel panelTableKeyInput = get_panel_table_key_input_update();
+                panelTableKeyInput.setPreferredSize( new Dimension( 400, 180 ) );
                 JComponent[] inputs = new JComponent[] {
                     panelTableKeyInput
                 };
@@ -1742,7 +1770,7 @@ public class Main {
                 + "       - Java 11";
         sb.append( txt );
         sb.append( "\n\n" );
-        sb.append( "This is build 82" );
+        sb.append( "This is build 90" );
         sb.append( "\n\n" );
         sb.append( "Please send your comments and suggestions to jorge.r.garciadealba+snack@gmail.com" );
         JTextArea about = new JTextArea();

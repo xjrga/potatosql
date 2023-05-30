@@ -36,3 +36,7 @@ v0.04
 82
 
     Fix pom.xml - upgrade org.hsqldb:hsqldb to version 2.7.1
+
+90
+
+    Fix update table key input panel

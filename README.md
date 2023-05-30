@@ -21,16 +21,16 @@
 
 Installing
 
-    1. Download potatosql-82-app.zip from https://xjrga.github.io/main/#potatosql-learning-software-for-database-design
-    2. unzip potatosql-82-app.zip
-    3. cd potatosql-82-app
-    4. java -jar potatosql-82.jar (if you are on windows double click on jar file)
+    1. Download potatosql-90-app.zip from https://xjrga.github.io/main/#potatosql-learning-software-for-database-design
+    2. unzip potatosql-90-app.zip
+    3. cd potatosql-90-app
+    4. java -jar potatosql-90.jar (if you are on windows double click on jar file)
 
 [User Guide](https://xjrga.github.io/main/#potatosql-learning-software-for-database-design "Potatosql: Database Design and Code Generation Software")
 
 Version
 
-    82
+    90
 
 Authors
 
