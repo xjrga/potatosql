@@ -1,0 +1,46 @@
+<xsd:schema version="1.0"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:element name="configuration">
+        <!-- ************************************************************************************************ -->
+        <xsd:annotation>
+            <xsd:documentation>
+                Configuration Document Schema For Potatosql Software
+                Potatosql: Learning Software For Database Design
+                Author: Jorge Rolando Garcia de Alba
+                Version: 01
+            </xsd:documentation>
+        </xsd:annotation>
+        <!-- ************************************************************************************************ -->
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="code_list" type="code_list" minOccurs="1" maxOccurs="1"/>
+            </xsd:sequence>
+        </xsd:complexType>
+        <!-- ************************************************************************************************ -->
+        <!-- unique table key -->
+        <xsd:unique name="unique_code">
+            <xsd:selector xpath="code_list/code"/>
+            <xsd:field xpath="path"/>
+        </xsd:unique>
+    </xsd:element>
+    <!-- ************************************************************************************************ -->
+    <!-- table key list -->
+    <xsd:complexType name="code_list">
+        <xsd:sequence>
+            <xsd:element name="code" type="code" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- ************************************************************************************************ -->
+    <!-- code -->
+    <xsd:complexType name="code">
+        <xsd:sequence>
+            <xsd:element name="dialect" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="category" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="action" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="path" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="order" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- ************************************************************************************************ -->
+</xsd:schema>

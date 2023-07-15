@@ -1,2 +1,0 @@
-USE ${schema_name};
-/

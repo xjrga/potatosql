@@ -40,3 +40,8 @@ v0.04
 90
 
     Fix update table key input panel
+
+100
+
+    Add new graphical user interface
+    Add postgresql sql code generation

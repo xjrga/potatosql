@@ -1,0 +1,1311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xsi:noNamespaceSchemaLocation='../schema/config.xsd'>
+    <code_list>
+        <code>
+            <dialect>dot</dialect>
+            <category>diagram</category>
+            <action>erd</action>
+            <name>dot, diagram, erd</name>
+            <path>template/dot/diagram/erd.ftl</path>
+            <order>1</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>admin</category>
+            <action>jdbc</action>
+            <name>hsqldb jdbc</name>
+            <path>template/hsqldb/admin/jdbc.ftl</path>
+            <order>2</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>function</category>
+            <action>count</action>
+            <name>hsqldb, function, count</name>
+            <path>template/hsqldb/function/count.ftl</path>
+            <order>3</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>function</category>
+            <action>select</action>
+            <name>hsqldb, function, select</name>
+            <path>template/hsqldb/function/table_select.ftl</path>
+            <order>4</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>function</category>
+            <action>select all</action>
+            <name>hsqldb, function, select all</name>
+            <path>template/hsqldb/function/table_select_all.ftl</path>
+            <order>5</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>function</category>
+            <action>timestamp</action>
+            <name>hsqldb, function, timestamp</name>
+            <path>template/hsqldb/function/timestamp.ftl</path>
+            <order>6</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>procedure</category>
+            <action>delete</action>
+            <name>hsqldb, procedure, delete</name>
+            <path>template/hsqldb/procedure/delete.ftl</path>
+            <order>7</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>procedure</category>
+            <action>delete all</action>
+            <name>hsqldb, procedure, delete all</name>
+            <path>template/hsqldb/procedure/delete_all.ftl</path>
+            <order>8</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>procedure</category>
+            <action>insert</action>
+            <name>hsqldb, procedure, insert</name>
+            <path>template/hsqldb/procedure/insert.ftl</path>
+            <order>9</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>procedure</category>
+            <action>merge</action>
+            <name>hsqldb, procedure, merge</name>
+            <path>template/hsqldb/procedure/merge.ftl</path>
+            <order>10</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>procedure</category>
+            <action>select</action>
+            <name>hsqldb, procedure, select</name>
+            <path>template/hsqldb/procedure/select.ftl</path>
+            <order>11</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>procedure</category>
+            <action>select all</action>
+            <name>hsqldb, procedure, select all</name>
+            <path>template/hsqldb/procedure/select_all.ftl</path>
+            <order>12</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>procedure</category>
+            <action>update</action>
+            <name>hsqldb, procedure, update</name>
+            <path>template/hsqldb/procedure/update.ftl</path>
+            <order>13</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>savepoint</category>
+            <action>create</action>
+            <name>hsqldb, savepoint, create</name>
+            <path>template/hsqldb/savepoint/savepoint.ftl</path>
+            <order>14</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>savepoint</category>
+            <action>release</action>
+            <name>hsqldb, savepoint, release</name>
+            <path>template/hsqldb/savepoint/savepoint_release.ftl</path>
+            <order>15</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>savepoint</category>
+            <action>rollback</action>
+            <name>hsqldb, savepoint, rollback</name>
+            <path>template/hsqldb/savepoint/savepoint_rollback.ftl</path>
+            <order>16</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>schema</category>
+            <action>create</action>
+            <name>hsqldb, schema, create</name>
+            <path>template/hsqldb/schema/schema.ftl</path>
+            <order>17</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>schema</category>
+            <action>drop</action>
+            <name>hsqldb, schema, drop</name>
+            <path>template/hsqldb/schema/schema_drop.ftl</path>
+            <order>18</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>schema</category>
+            <action>set</action>
+            <name>hsqldb, schema, set</name>
+            <path>template/hsqldb/schema/schema_set.ftl</path>
+            <order>19</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>sequence</category>
+            <action>alter</action>
+            <name>hsqldb, sequence, alter</name>
+            <path>template/hsqldb/sequence/sequence_alter.ftl</path>
+            <order>20</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>sequence</category>
+            <action>create</action>
+            <name>hsqldb, sequence, create</name>
+            <path>template/hsqldb/sequence/sequence.ftl</path>
+            <order>21</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>sequence</category>
+            <action>value</action>
+            <name>hsqldb, sequence, value</name>
+            <path>template/hsqldb/sequence/sequence_value.ftl</path>
+            <order>22</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>statement</category>
+            <action>count</action>
+            <name>hsqldb, statement, count</name>
+            <path>template/hsqldb/statement/count.ftl</path>
+            <order>23</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>statement</category>
+            <action>delete</action>
+            <name>hsqldb, statement, delete</name>
+            <path>template/hsqldb/statement/delete.ftl</path>
+            <order>24</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>statement</category>
+            <action>delete all</action>
+            <name>hsqldb, statement, delete all</name>
+            <path>template/hsqldb/statement/delete_all.ftl</path>
+            <order>25</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>statement</category>
+            <action>insert</action>
+            <name>hsqldb, statement, insert</name>
+            <path>template/hsqldb/statement/insert.ftl</path>
+            <order>26</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>statement</category>
+            <action>insert using select</action>
+            <name>hsqldb, statement, insert using select</name>
+            <path>template/hsqldb/statement/insert_using_select.ftl</path>
+            <order>27</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>statement</category>
+            <action>merge</action>
+            <name>hsqldb, statement, merge</name>
+            <path>template/hsqldb/statement/merge.ftl</path>
+            <order>28</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>statement</category>
+            <action>select</action>
+            <name>hsqldb, statement, select</name>
+            <path>template/hsqldb/statement/select.ftl</path>
+            <order>29</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>statement</category>
+            <action>select all</action>
+            <name>hsqldb, statement, select all</name>
+            <path>template/hsqldb/statement/select_all.ftl</path>
+            <order>30</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>statement</category>
+            <action>update</action>
+            <name>hsqldb, statement, update</name>
+            <path>template/hsqldb/statement/update.ftl</path>
+            <order>31</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>table</category>
+            <action>audit</action>
+            <name>hsqldb, table, audit</name>
+            <path>template/hsqldb/table/audit.ftl</path>
+            <order>32</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>table</category>
+            <action>relationship</action>
+            <name>hsqldb, table, relationship</name>
+            <path>template/hsqldb/table/relationship.ftl</path>
+            <order>33</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>table</category>
+            <action>table</action>
+            <name>hsqldb, table, table</name>
+            <path>template/hsqldb/table/table.ftl</path>
+            <order>34</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>table</category>
+            <action>with select</action>
+            <name>hsqldb, table, with select</name>
+            <path>template/hsqldb/table/table_with_select.ftl</path>
+            <order>37</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>transaction</category>
+            <action>autocommit disable</action>
+            <name>hsqldb, transaction, autocommit, disable</name>
+            <path>template/hsqldb/transaction/autocommit_disable.ftl</path>
+            <order>38</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>transaction</category>
+            <action>autocommit enable</action>
+            <name>hsqldb, transaction, autocommit, enable</name>
+            <path>template/hsqldb/transaction/autocommit_enable.ftl</path>
+            <order>39</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>transaction</category>
+            <action>commit</action>
+            <name>hsqldb, transaction, commit</name>
+            <path>template/hsqldb/transaction/commit.ftl</path>
+            <order>40</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>trigger, row</category>
+            <action>after delete</action>
+            <name>hsqldb, trigger, row, after, delete</name>
+            <path>template/hsqldb/trigger/row/after/delete.ftl</path>
+            <order>41</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>trigger, row</category>
+            <action>after insert</action>
+            <name>hsqldb, trigger, row, after, insert</name>
+            <path>template/hsqldb/trigger/row/after/insert.ftl</path>
+            <order>42</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>trigger, row</category>
+            <action>after update</action>
+            <name>hsqldb, trigger, row, after, update</name>
+            <path>template/hsqldb/trigger/row/after/update.ftl</path>
+            <order>43</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>trigger, row</category>
+            <action>before delete</action>
+            <name>hsqldb, trigger, row, before, delete</name>
+            <path>template/hsqldb/trigger/row/before/delete.ftl</path>
+            <order>44</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>trigger, row</category>
+            <action>before insert</action>
+            <name>hsqldb, trigger, row, before, insert</name>
+            <path>template/hsqldb/trigger/row/before/insert.ftl</path>
+            <order>45</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>trigger, row</category>
+            <action>before update</action>
+            <name>hsqldb, trigger, row, before, update</name>
+            <path>template/hsqldb/trigger/row/before/update.ftl</path>
+            <order>46</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>trigger, statement</category>
+            <action>after delete</action>
+            <name>hsqldb, trigger, statement, after, delete</name>
+            <path>template/hsqldb/trigger/statement/after/delete.ftl</path>
+            <order>47</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>trigger, statement</category>
+            <action>after insert</action>
+            <name>hsqldb, trigger, statement, after, insert</name>
+            <path>template/hsqldb/trigger/statement/after/insert.ftl</path>
+            <order>48</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>trigger, statement</category>
+            <action>after update</action>
+            <name>hsqldb, trigger, statement, after, update</name>
+            <path>template/hsqldb/trigger/statement/after/update.ftl</path>
+            <order>49</order>
+        </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>view</category>
+            <action>create</action>
+            <name>hsqldb, view, create</name>
+            <path>template/hsqldb/view/view.ftl</path>
+            <order>50</order>
+        </code>
+        <code>
+            <dialect>java</dialect>
+            <category>data</category>
+            <action>key</action>
+            <name>java, data object key, class</name>
+            <path>template/java/data/key.ftl</path>
+            <order>51</order>
+        </code>
+        <code>
+            <dialect>java</dialect>
+            <category>data</category>
+            <action>object</action>
+            <name>java, data object, class</name>
+            <path>template/java/data/object.ftl</path>
+            <order>52</order>
+        </code>
+        <code>
+            <dialect>java</dialect>
+            <category>function</category>
+            <action>delete</action>
+            <name>java, function, delete</name>
+            <path>template/java/function/delete.ftl</path>
+            <order>53</order>
+        </code>
+        <code>
+            <dialect>java</dialect>
+            <category>function</category>
+            <action>insert</action>
+            <name>java, function, insert</name>
+            <path>template/java/function/insert.ftl</path>
+            <order>54</order>
+        </code>
+        <code>
+            <dialect>java</dialect>
+            <category>function</category>
+            <action>model_cb</action>
+            <name>java, function, model, JCombobox</name>
+            <path>template/java/function/model_cb.ftl</path>
+            <order>55</order>
+        </code>
+        <code>
+            <dialect>java</dialect>
+            <category>function</category>
+            <action>model_lst</action>
+            <name>java, function, model, JList</name>
+            <path>template/java/function/model_lst.ftl</path>
+            <order>56</order>
+        </code>
+        <code>
+            <dialect>java</dialect>
+            <category>function</category>
+            <action>model_tbl</action>
+            <name>java, function, model, JTable</name>
+            <path>template/java/function/model_tbl.ftl</path>
+            <order>57</order>
+        </code>
+        <code>
+            <dialect>java</dialect>
+            <category>function</category>
+            <action>select</action>
+            <name>java, function, select</name>
+            <path>template/java/function/select.ftl</path>
+            <order>58</order>
+        </code>
+        <code>
+            <dialect>java</dialect>
+            <category>function</category>
+            <action>update</action>
+            <name>java, function, update</name>
+            <path>template/java/function/update.ftl</path>
+            <order>59</order>
+        </code>
+        <code>
+            <dialect>java</dialect>
+            <category>interface</category>
+            <action>dao, generic</action>
+            <name>java, interface, dao, generic</name>
+            <path>template/java/interface/generic_dao.ftl</path>
+            <order>60</order>
+        </code>
+        <code>
+            <dialect>java</dialect>
+            <category>interface</category>
+            <action>dao, typed</action>
+            <name>java, interface, dao, typed</name>
+            <path>template/java/interface/typed_dao.ftl</path>
+            <order>61</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>admin</category>
+            <action>jdbc</action>
+            <name>mariadb, jdbc</name>
+            <path>template/mariadb/admin/jdbc.ftl</path>
+            <order>62</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>function</category>
+            <action>count</action>
+            <name>mariadb, function, count</name>
+            <path>template/mariadb/function/count.ftl</path>
+            <order>63</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>function</category>
+            <action>timestamp</action>
+            <name>mariadb, function, timestamp</name>
+            <path>template/mariadb/function/timestamp.ftl</path>
+            <order>64</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>procedure</category>
+            <action>delete</action>
+            <name>mariadb, procedure, delete</name>
+            <path>template/mariadb/procedure/delete.ftl</path>
+            <order>65</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>procedure</category>
+            <action>delete all</action>
+            <name>mariadb, procedure, delete all</name>
+            <path>template/mariadb/procedure/delete_all.ftl</path>
+            <order>66</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>procedure</category>
+            <action>insert</action>
+            <name>mariadb, procedure, insert</name>
+            <path>template/mariadb/procedure/insert.ftl</path>
+            <order>67</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>procedure</category>
+            <action>merge</action>
+            <name>mariadb, procedure, merge</name>
+            <path>template/mariadb/procedure/merge.ftl</path>
+            <order>68</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>procedure</category>
+            <action>select</action>
+            <name>mariadb, procedure, select</name>
+            <path>template/mariadb/procedure/select.ftl</path>
+            <order>69</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>procedure</category>
+            <action>select all</action>
+            <name>mariadb, procedure, select all</name>
+            <path>template/mariadb/procedure/select_all.ftl</path>
+            <order>70</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>procedure</category>
+            <action>update</action>
+            <name>mariadb, procedure, update</name>
+            <path>template/mariadb/procedure/update.ftl</path>
+            <order>71</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>savepoint</category>
+            <action>create</action>
+            <name>mariadb, savepoint, create</name>
+            <path>template/mariadb/savepoint/savepoint.ftl</path>
+            <order>72</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>savepoint</category>
+            <action>release</action>
+            <name>mariadb, savepoint, release</name>
+            <path>template/mariadb/savepoint/savepoint_release.ftl</path>
+            <order>73</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>savepoint</category>
+            <action>rollback</action>
+            <name>mariadb, savepoint, rollback</name>
+            <path>template/mariadb/savepoint/savepoint_rollback.ftl</path>
+            <order>74</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>schema</category>
+            <action>create</action>
+            <name>mariadb, schema, create</name>
+            <path>template/mariadb/schema/schema.ftl</path>
+            <order>75</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>schema</category>
+            <action>drop</action>
+            <name>mariadb, schema, drop</name>
+            <path>template/mariadb/schema/schema_drop.ftl</path>
+            <order>76</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>schema</category>
+            <action>set</action>
+            <name>mariadb, schema, use</name>
+            <path>template/mariadb/schema/schema_use.ftl</path>
+            <order>77</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>sequence</category>
+            <action>alter</action>
+            <name>mariadb, sequence, alter</name>
+            <path>template/mariadb/sequence/sequence_alter.ftl</path>
+            <order>78</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>sequence</category>
+            <action>create</action>
+            <name>mariadb, sequence, create</name>
+            <path>template/mariadb/sequence/sequence.ftl</path>
+            <order>79</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>sequence</category>
+            <action>value</action>
+            <name>mariadb, sequence, value</name>
+            <path>template/mariadb/sequence/sequence_value.ftl</path>
+            <order>80</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>statement</category>
+            <action>count</action>
+            <name>mariadb, statement, count</name>
+            <path>template/mariadb/statement/count.ftl</path>
+            <order>81</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>statement</category>
+            <action>delete</action>
+            <name>mariadb, statement, delete</name>
+            <path>template/mariadb/statement/delete.ftl</path>
+            <order>82</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>statement</category>
+            <action>delete all</action>
+            <name>mariadb, statement, delete all</name>
+            <path>template/mariadb/statement/delete_all.ftl</path>
+            <order>83</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>statement</category>
+            <action>insert</action>
+            <name>mariadb, statement, insert</name>
+            <path>template/mariadb/statement/insert.ftl</path>
+            <order>84</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>statement</category>
+            <action>insert using select</action>
+            <name>mariadb, statement, insert using select</name>
+            <path>template/mariadb/statement/insert_using_select.ftl</path>
+            <order>85</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>statement</category>
+            <action>merge</action>
+            <name>mariadb, statement, merge</name>
+            <path>template/mariadb/statement/merge.ftl</path>
+            <order>86</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>statement</category>
+            <action>select</action>
+            <name>mariadb, statement, select</name>
+            <path>template/mariadb/statement/select.ftl</path>
+            <order>87</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>statement</category>
+            <action>select all</action>
+            <name>mariadb, statement, select all</name>
+            <path>template/mariadb/statement/select_all.ftl</path>
+            <order>88</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>statement</category>
+            <action>update</action>
+            <name>mariadb, statement, update</name>
+            <path>template/mariadb/statement/update.ftl</path>
+            <order>89</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>table</category>
+            <action>audit</action>
+            <name>mariadb, table, audit</name>
+            <path>template/mariadb/table/audit.ftl</path>
+            <order>90</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>table</category>
+            <action>like</action>
+            <name>mariadb, table, like</name>
+            <path>template/mariadb/table/table_like.ftl</path>
+            <order>91</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>table</category>
+            <action>relationship</action>
+            <name>mariadb, table, relationship</name>
+            <path>template/mariadb/table/relationship.ftl</path>
+            <order>92</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>table</category>
+            <action>table</action>
+            <name>mariadb, table, table</name>
+            <path>template/mariadb/table/table.ftl</path>
+            <order>93</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>table</category>
+            <action>with select</action>
+            <name>mariadb, table, with select</name>
+            <path>template/mariadb/table/table_with_select.ftl</path>
+            <order>95</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>transaction</category>
+            <action>autocommit disable</action>
+            <name>mariadb, transaction, autocommit, disable</name>
+            <path>template/mariadb/transaction/autocommit_disable.ftl</path>
+            <order>96</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>transaction</category>
+            <action>autocommit enable</action>
+            <name>mariadb, transaction, autocommit, enable</name>
+            <path>template/mariadb/transaction/autocommit_enable.ftl</path>
+            <order>97</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>transaction</category>
+            <action>commit</action>
+            <name>mariadb, transaction, commit</name>
+            <path>template/mariadb/transaction/commit.ftl</path>
+            <order>98</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>trigger, row</category>
+            <action>after delete</action>
+            <name>mariadb, trigger, row, after, delete</name>
+            <path>template/mariadb/trigger/row/after/delete.ftl</path>
+            <order>99</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>trigger, row</category>
+            <action>after insert</action>
+            <name>mariadb, trigger, row, after, insert</name>
+            <path>template/mariadb/trigger/row/after/insert.ftl</path>
+            <order>100</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>trigger, row</category>
+            <action>after update</action>
+            <name>mariadb, trigger, row, after, update</name>
+            <path>template/mariadb/trigger/row/after/update.ftl</path>
+            <order>101</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>trigger, row</category>
+            <action>before delete</action>
+            <name>mariadb, trigger, row, before, delete</name>
+            <path>template/mariadb/trigger/row/before/delete.ftl</path>
+            <order>102</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>trigger, row</category>
+            <action>before insert</action>
+            <name>mariadb, trigger, row, before, insert</name>
+            <path>template/mariadb/trigger/row/before/insert.ftl</path>
+            <order>103</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>trigger, row</category>
+            <action>before update</action>
+            <name>mariadb, trigger, row, before, update</name>
+            <path>template/mariadb/trigger/row/before/update.ftl</path>
+            <order>104</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>view</category>
+            <action>create</action>
+            <name>mariadb, view, create</name>
+            <path>template/mariadb/view/view.ftl</path>
+            <order>105</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>admin</category>
+            <action>jdbc</action>
+            <name>postgresql, jdbc</name>
+            <path>template/postgresql/admin/jdbc.ftl</path>
+            <order>106</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>function</category>
+            <action>count</action>
+            <name>postgresql, function, count</name>
+            <path>template/postgresql/function/count.ftl</path>
+            <order>107</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>function</category>
+            <action>select</action>
+            <name>postgresql, function, select</name>
+            <path>template/postgresql/function/table_select.ftl</path>
+            <order>108</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>function</category>
+            <action>select all</action>
+            <name>postgresql, function, select all</name>
+            <path>template/postgresql/function/table_select_all.ftl</path>
+            <order>109</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>function</category>
+            <action>timestamp</action>
+            <name>postgresql, function, timestamp</name>
+            <path>template/postgresql/function/timestamp.ftl</path>
+            <order>110</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>procedure</category>
+            <action>delete</action>
+            <name>postgresql, procedure, delete</name>
+            <path>template/postgresql/procedure/delete.ftl</path>
+            <order>111</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>procedure</category>
+            <action>delete all</action>
+            <name>postgresql, procedure, delete all</name>
+            <path>template/postgresql/procedure/delete_all.ftl</path>
+            <order>112</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>procedure</category>
+            <action>insert</action>
+            <name>postgresql, procedure, insert</name>
+            <path>template/postgresql/procedure/insert.ftl</path>
+            <order>113</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>procedure</category>
+            <action>merge</action>
+            <name>postgresql, procedure, merge</name>
+            <path>template/postgresql/procedure/merge.ftl</path>
+            <order>114</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>procedure</category>
+            <action>update</action>
+            <name>postgresql, procedure, update</name>
+            <path>template/postgresql/procedure/update.ftl</path>
+            <order>115</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>savepoint</category>
+            <action>create</action>
+            <name>postgresql, savepoint, create</name>
+            <path>template/postgresql/savepoint/savepoint.ftl</path>
+            <order>116</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>savepoint</category>
+            <action>release</action>
+            <name>postgresql, savepoint, release</name>
+            <path>template/postgresql/savepoint/savepoint_release.ftl</path>
+            <order>117</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>savepoint</category>
+            <action>rollback</action>
+            <name>postgresql, savepoint, rollback</name>
+            <path>template/postgresql/savepoint/savepoint_rollback.ftl</path>
+            <order>118</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>schema</category>
+            <action>create</action>
+            <name>postgresql, schema, create</name>
+            <path>template/postgresql/schema/schema.ftl</path>
+            <order>119</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>schema</category>
+            <action>drop</action>
+            <name>postgresql, schema, drop</name>
+            <path>template/postgresql/schema/schema_drop.ftl</path>
+            <order>120</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>schema</category>
+            <action>set</action>
+            <name>postgresql, schema, set</name>
+            <path>template/postgresql/schema/schema_set.ftl</path>
+            <order>121</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>sequence</category>
+            <action>alter</action>
+            <name>postgresql, sequence, alter</name>
+            <path>template/postgresql/sequence/sequence_alter.ftl</path>
+            <order>122</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>sequence</category>
+            <action>create</action>
+            <name>postgresql, sequence, create</name>
+            <path>template/postgresql/sequence/sequence.ftl</path>
+            <order>123</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>sequence</category>
+            <action>value</action>
+            <name>postgresql, sequence, value</name>
+            <path>template/postgresql/sequence/sequence_value.ftl</path>
+            <order>124</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>statement</category>
+            <action>count</action>
+            <name>postgresql, statement, count</name>
+            <path>template/postgresql/statement/count.ftl</path>
+            <order>125</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>statement</category>
+            <action>delete</action>
+            <name>postgresql, statement, delete</name>
+            <path>template/postgresql/statement/delete.ftl</path>
+            <order>126</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>statement</category>
+            <action>delete all</action>
+            <name>postgresql, statement, delete all</name>
+            <path>template/postgresql/statement/delete_all.ftl</path>
+            <order>127</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>statement</category>
+            <action>insert</action>
+            <name>postgresql, statement, insert</name>
+            <path>template/postgresql/statement/insert.ftl</path>
+            <order>128</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>statement</category>
+            <action>insert using select</action>
+            <name>postgresql, statement, insert using select</name>
+            <path>template/postgresql/statement/insert_using_select.ftl</path>
+            <order>129</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>statement</category>
+            <action>merge</action>
+            <name>postgresql, statement, merge</name>
+            <path>template/postgresql/statement/merge.ftl</path>
+            <order>130</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>statement</category>
+            <action>select</action>
+            <name>postgresql, statement, select</name>
+            <path>template/postgresql/statement/select.ftl</path>
+            <order>131</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>statement</category>
+            <action>select all</action>
+            <name>postgresql, statement, select all</name>
+            <path>template/postgresql/statement/select_all.ftl</path>
+            <order>132</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>statement</category>
+            <action>update</action>
+            <name>postgresql, statement, update</name>
+            <path>template/postgresql/statement/update.ftl</path>
+            <order>133</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>table</category>
+            <action>audit</action>
+            <name>postgresql, table, audit</name>
+            <path>template/postgresql/table/audit.ftl</path>
+            <order>134</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>table</category>
+            <action>relationship</action>
+            <name>postgresql, table, relationship</name>
+            <path>template/postgresql/table/relationship.ftl</path>
+            <order>135</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>table</category>
+            <action>table</action>
+            <name>postgresql, table, table</name>
+            <path>template/postgresql/table/table.ftl</path>
+            <order>136</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>table</category>
+            <action>with select</action>
+            <name>postgresql, table, with select</name>
+            <path>template/postgresql/table/table_with_select.ftl</path>
+            <order>138</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>transaction</category>
+            <action>autocommit disable</action>
+            <name>postgresql, transaction, autocommit, disable</name>
+            <path>template/postgresql/transaction/autocommit_disable.ftl</path>
+            <order>139</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>transaction</category>
+            <action>autocommit enable</action>
+            <name>postgresql, transaction, autocommit, enable</name>
+            <path>template/postgresql/transaction/autocommit_enable.ftl</path>
+            <order>140</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>transaction</category>
+            <action>commit</action>
+            <name>postgresql, transaction, commit</name>
+            <path>template/postgresql/transaction/commit.ftl</path>
+            <order>141</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, row</category>
+            <action>after delete</action>
+            <name>postgresql, trigger, row, after, delete, trigger</name>
+            <path>template/postgresql/trigger/row/after/delete.ftl</path>
+            <order>142</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, row</category>
+            <action>after delete, function</action>
+            <name>postgresql, trigger, row, after, delete, function</name>
+            <path>template/postgresql/trigger/row/after/delete_function.ftl</path>
+            <order>143</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, row</category>
+            <action>after insert</action>
+            <name>postgresql, trigger, row, after, insert, trigger</name>
+            <path>template/postgresql/trigger/row/after/insert.ftl</path>
+            <order>144</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, row</category>
+            <action>after insert, function</action>
+            <name>postgresql, trigger, row, after, insert, function</name>
+            <path>template/postgresql/trigger/row/after/insert_function.ftl</path>
+            <order>145</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, row</category>
+            <action>after update</action>
+            <name>postgresql, trigger, row, after, update, trigger</name>
+            <path>template/postgresql/trigger/row/after/update.ftl</path>
+            <order>146</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, row</category>
+            <action>after update, function</action>
+            <name>postgresql, trigger, row, after, update, function</name>
+            <path>template/postgresql/trigger/row/after/update_function.ftl</path>
+            <order>147</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, row</category>
+            <action>before delete</action>
+            <name>postgresql, trigger, row, before, delete, trigger</name>
+            <path>template/postgresql/trigger/row/before/delete.ftl</path>
+            <order>148</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, row</category>
+            <action>before delete, function</action>
+            <name>postgresql, trigger, row, before, delete, function</name>
+            <path>template/postgresql/trigger/row/before/delete_function.ftl</path>
+            <order>149</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, row</category>
+            <action>before insert</action>
+            <name>postgresql, trigger, row, before, insert, trigger</name>
+            <path>template/postgresql/trigger/row/before/insert.ftl</path>
+            <order>150</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, row</category>
+            <action>before insert, function</action>
+            <name>postgresql, trigger, row, before, insert, function</name>
+            <path>template/postgresql/trigger/row/before/insert_function.ftl</path>
+            <order>151</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, row</category>
+            <action>before update</action>
+            <name>postgresql, trigger, row, before, update, trigger</name>
+            <path>template/postgresql/trigger/row/before/update.ftl</path>
+            <order>152</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, row</category>
+            <action>before update, function</action>
+            <name>postgresql, trigger, row, before, update, function</name>
+            <path>template/postgresql/trigger/row/before/update_function.ftl</path>
+            <order>153</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, statement</category>
+            <action>after delete</action>
+            <name>postgresql, trigger, statement, after, delete, trigger</name>
+            <path>template/postgresql/trigger/statement/after/delete.ftl</path>
+            <order>154</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, statement</category>
+            <action>after delete, function</action>
+            <name>postgresql, trigger, statement, after, delete, trigger, function</name>
+            <path>template/postgresql/trigger/statement/after/delete_function.ftl</path>
+            <order>155</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, statement</category>
+            <action>after insert</action>
+            <name>postgresql, trigger, statement, after, insert, trigger</name>
+            <path>template/postgresql/trigger/statement/after/insert.ftl</path>
+            <order>156</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, statement</category>
+            <action>after insert, function</action>
+            <name>postgresql, trigger, statement, after, insert, trigger, function</name>
+            <path>template/postgresql/trigger/statement/after/insert_function.ftl</path>
+            <order>157</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, statement</category>
+            <action>after update</action>
+            <name>postgresql, trigger, statement, after, update, trigger</name>
+            <path>template/postgresql/trigger/statement/after/update.ftl</path>
+            <order>158</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, statement</category>
+            <action>after update, function</action>
+            <name>postgresql, trigger, statement, after, update, trigger, function</name>
+            <path>template/postgresql/trigger/statement/after/update_function.ftl</path>
+            <order>159</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, statement</category>
+            <action>before delete</action>
+            <name>postgresql, trigger, statement, before, delete, trigger</name>
+            <path>template/postgresql/trigger/statement/before/delete.ftl</path>
+            <order>160</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, statement</category>
+            <action>before delete, function</action>
+            <name>postgresql, trigger, statement, before, delete, trigger, function</name>
+            <path>template/postgresql/trigger/statement/before/delete_function.ftl</path>
+            <order>161</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, statement</category>
+            <action>before insert</action>
+            <name>postgresql, trigger, statement, before, insert, trigger</name>
+            <path>template/postgresql/trigger/statement/before/insert.ftl</path>
+            <order>162</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, statement</category>
+            <action>before insert, function</action>
+            <name>postgresql, trigger, statement, before, insert, trigger, function</name>
+            <path>template/postgresql/trigger/statement/before/insert_function.ftl</path>
+            <order>163</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, statement</category>
+            <action>before update</action>
+            <name>postgresql, trigger, statement, before, update, trigger</name>
+            <path>template/postgresql/trigger/statement/before/update.ftl</path>
+            <order>164</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>trigger, statement</category>
+            <action>before update, function</action>
+            <name>postgresql, trigger, statement, before, update, trigger, function</name>
+            <path>template/postgresql/trigger/statement/before/update_function.ftl</path>
+            <order>165</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>view</category>
+            <action>create</action>
+            <name>postgresql, view, create</name>
+            <path>template/postgresql/view/view.ftl</path>
+            <order>166</order>
+        </code>
+        <code>
+            <dialect>test</dialect>
+            <category>data</category>
+            <action>variables</action>
+            <name>test, data, variables</name>
+            <path>template/test/data/variables.ftl</path>
+            <order>167</order>
+        </code>
+    </code_list>
+</configuration>

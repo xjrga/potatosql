@@ -1,0 +1,2 @@
+RELEASE SAVEPOINT databaseat00;
+/

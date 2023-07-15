@@ -1,0 +1,12 @@
+s/schema_name/data\.schema_name/g
+s/column/key/g
+s/key\.name/key\.key_name/g
+s/table\.name/table\.table_name/g
+s/tables/data\.table_iterator/g
+s/table\.getIterator()/table\.key_iterator/g
+s/p -> p/o -> o/g
+s/isPrimaryKey()/is_primary_key/g
+s/java_data_type\.get_hsqldb_data_type(column\.typename)/dtype\.getHsqldb(key\.datatype)/g
+s/java_data_type\.get_mariadb_data_type(key\.typename)/dtype\.getMariadb(key\.datatype)/g
+s/table.containsPrimaryKeys()/table.contains_primary_keys()/g
+

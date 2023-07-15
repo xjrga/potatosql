@@ -76,6 +76,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <arg line="dependency:tree"/>
         </exec>
     </target>
+    <target name="run">
+        <exec executable="mvn">
+            <env key="JAVA_HOME" value="/usr/lib/jvm/default-java"/>
+            <arg line="exec:java"/>
+        </exec>
+    </target>
     <target name="0. show system values">
         <echo message="This is the user home: ${user.home}"/>
         <!--echo message="This is the user directory: ${user.dir}"/-->

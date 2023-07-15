@@ -1,2 +1,0 @@
-DROP SCHEMA ${schema_name} IF EXISTS CASCADE;
-/

@@ -5,18 +5,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Write {
-
     public Write() {
     }
-
-    public static void writeToFile(String txt, String filename) {
+    public static void writeToFile( String txt, String filename ) {
         try {
-            BufferedWriter out = new BufferedWriter(new FileWriter("model/" + filename));
-            out.write(txt);
+            BufferedWriter out = new BufferedWriter( new FileWriter( "model/" + filename ) );
+            out.write( txt );
             out.close();
-        } catch (IOException e) {
+        } catch ( IOException e ) {
             e.printStackTrace();
         }
     }
-
 }

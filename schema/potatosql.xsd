@@ -1,0 +1,271 @@
+<xsd:schema version="1.0"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:element name="potatosql">
+        <!-- ************************************************************************************************ -->
+        <xsd:annotation>
+            <xsd:documentation>
+                Data Exchange Document Schema For Potatosql Software
+                Potatosql: Learning Software For Database Design
+                Author: Jorge Rolando Garcia de Alba
+                Version: 03
+            </xsd:documentation>
+        </xsd:annotation>
+        <!-- ************************************************************************************************ -->
+        <xsd:complexType>
+            <xsd:sequence>
+                <!-- schema -->
+                <xsd:element name="database_schema" type="database_schema" minOccurs="1" maxOccurs="1"/>
+                <!-- database table list -->
+                <xsd:element name="database_table_list" type="database_table_list" minOccurs="1" maxOccurs="1"/>
+                <!-- table key list -->
+                <xsd:element name="table_key_list" type="table_key_list" minOccurs="1" maxOccurs="1"/>
+                <!-- primary key list -->
+                <xsd:element name="primary_key_list" type="primary_key_list" minOccurs="1" maxOccurs="1"/>
+                <!-- data key list -->
+                <xsd:element name="data_key_list" type="data_key_list" minOccurs="1" maxOccurs="1"/>
+                <!-- relationship list -->
+                <xsd:element name="relationship_list" type="relationship_list" minOccurs="1" maxOccurs="1"/>
+                <!-- identifying relationship list -->
+                <xsd:element name="identifying_relationship_list" type="identifying_relationship_list" minOccurs="1" maxOccurs="1"/>
+                <!-- nonidentifying relationship list -->
+                <xsd:element name="nonidentifying_relationship_list" type="nonidentifying_relationship_list" minOccurs="1" maxOccurs="1"/>
+                <!-- identifying key pair list -->
+                <xsd:element name="identifying_relationship_key_pair_list" type="identifying_relationship_key_pair_list" minOccurs="1" maxOccurs="1"/>
+                <!-- nonidentifying key pair list -->
+                <xsd:element name="nonidentifying_relationship_key_pair_list" type="nonidentifying_relationship_key_pair_list" minOccurs="1" maxOccurs="1"/>
+            </xsd:sequence>
+        </xsd:complexType>
+        <!-- ************************************************************************************************ -->
+        <!-- unique table -->
+        <xsd:unique name="unique_database_table">
+            <xsd:selector xpath="database_table_list/database_table"/>
+            <xsd:field xpath="schema_id"/>
+            <xsd:field xpath="table_id"/>
+        </xsd:unique>
+        <!-- unique table key -->
+        <xsd:unique name="unique_table_key">
+            <xsd:selector xpath="table_key_list/table_key"/>
+            <xsd:field xpath="schema_id"/>
+            <xsd:field xpath="table_id"/>
+            <xsd:field xpath="key_id"/>
+        </xsd:unique>
+        <!-- unique primary key -->
+        <xsd:unique name="unique_primary_key">
+            <xsd:selector xpath="primary_key_list/primary_key"/>
+            <xsd:field xpath="schema_id"/>
+            <xsd:field xpath="table_id"/>
+            <xsd:field xpath="key_id"/>
+        </xsd:unique>
+        <!-- unique data key -->
+        <xsd:unique name="unique_data_key">
+            <xsd:selector xpath="data_key_list/data_key"/>
+            <xsd:field xpath="schema_id"/>
+            <xsd:field xpath="table_id"/>
+            <xsd:field xpath="key_id"/>
+        </xsd:unique>
+        <!-- unique relationship -->
+        <xsd:unique name="unique_relationship">
+            <xsd:selector xpath="relationship_list/relationship"/>
+            <xsd:field xpath="schema_id"/>
+            <xsd:field xpath="relationship_id"/>
+            <xsd:field xpath="table_id_parent"/>
+            <xsd:field xpath="table_id_child"/>
+        </xsd:unique>
+        <!-- unique identifying relationship -->
+        <xsd:unique name="unique_identifying_relationship">
+            <xsd:selector xpath="identifying_relationship_list/identifying_relationship"/>
+            <xsd:field xpath="schema_id"/>
+            <xsd:field xpath="relationship_id"/>
+            <xsd:field xpath="table_id_parent"/>
+            <xsd:field xpath="table_id_child"/>
+        </xsd:unique>
+        <!-- unique nonidentifying relationship -->
+        <xsd:unique name="unique_nonidentifying_relationship">
+            <xsd:selector xpath="nonidentifying_relationship_list/nonidentifying_relationship"/>
+            <xsd:field xpath="schema_id"/>
+            <xsd:field xpath="relationship_id"/>
+            <xsd:field xpath="table_id_parent"/>
+            <xsd:field xpath="table_id_child"/>
+        </xsd:unique>
+        <!-- unique identifying relationship key pair -->
+        <xsd:unique name="unique_identifying_relationship_key_pair">
+            <xsd:selector xpath="identifying_relationship_key_pair_list/identifying_relationship_key_pair"/>
+            <xsd:field xpath="schema_id"/>
+            <xsd:field xpath="relationship_id"/>
+            <xsd:field xpath="table_id_parent"/>
+            <xsd:field xpath="key_id_parent"/>
+            <xsd:field xpath="table_id_child"/>
+            <xsd:field xpath="key_id_child"/>
+        </xsd:unique>
+        <!-- unique nonidentifying relationship key pair -->
+        <xsd:unique name="nonidentifying_relationship_key_pair">
+            <xsd:selector xpath="nonidentifying_relationship_key_pair_list/nonidentifying_relationship_key_pair"/>
+            <xsd:field xpath="schema_id"/>
+            <xsd:field xpath="relationship_id"/>
+            <xsd:field xpath="table_id_parent"/>
+            <xsd:field xpath="key_id_parent"/>
+            <xsd:field xpath="table_id_child"/>
+            <xsd:field xpath="key_id_child"/>
+        </xsd:unique>
+    </xsd:element>
+    <!-- ************************************************************************************************ -->
+    <!-- database schema -->
+    <xsd:complexType name="database_schema">
+        <xsd:sequence>
+            <xsd:element name="schema_id" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="schema_name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- database table list -->
+    <xsd:complexType name="database_table_list">
+        <xsd:sequence>
+            <xsd:element name="database_table" type="database_table" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- table key list -->
+    <xsd:complexType name="table_key_list">
+        <xsd:sequence>
+            <xsd:element name="table_key" type="table_key" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- primary key list -->
+    <xsd:complexType name="primary_key_list">
+        <xsd:sequence>
+            <xsd:element name="primary_key" type="key" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- data key list -->
+    <xsd:complexType name="data_key_list">
+        <xsd:sequence>
+            <xsd:element name="data_key" type="key" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- relationship list -->
+    <xsd:complexType name="relationship_list">
+        <xsd:sequence>
+            <xsd:element name="relationship" type="relationship" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- identifying relationship list -->
+    <xsd:complexType name="identifying_relationship_list">
+        <xsd:sequence>
+            <xsd:element name="identifying_relationship" type="relationship_pk" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- nonidentifying relationship list -->
+    <xsd:complexType name="nonidentifying_relationship_list">
+        <xsd:sequence>
+            <xsd:element name="nonidentifying_relationship" type="relationship_pk" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- identifying key pair list -->
+    <xsd:complexType name="identifying_relationship_key_pair_list">
+        <xsd:sequence>
+            <xsd:element name="identifying_relationship_key_pair" type="key_pair_pk" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- nonidentifying key pair list -->
+    <xsd:complexType name="nonidentifying_relationship_key_pair_list">
+        <xsd:sequence>
+            <xsd:element name="nonidentifying_relationship_key_pair" type="key_pair_pk" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- ************************************************************************************************ -->
+    <!-- database table -->
+    <xsd:complexType name="database_table">
+        <xsd:sequence>
+            <xsd:element name="schema_id" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="table_id" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="table_name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="is_dependent" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- table key -->
+    <xsd:complexType name="table_key">
+        <xsd:sequence>
+            <xsd:element name="schema_id" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="table_id" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="key_id" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="key_name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="datatype_id" type="datatype" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="key_order" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="is_primary_key" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="is_foreign_key" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- key -->
+    <xsd:complexType name="key">
+        <xsd:sequence>
+            <xsd:element name="schema_id" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="table_id" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="key_id" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- relationship -->
+    <xsd:complexType name="relationship">
+        <xsd:sequence>
+            <xsd:element name="schema_id" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="relationship_id" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="table_id_parent" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="table_id_child" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="is_identifying" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- relationship primary key -->
+    <xsd:complexType name="relationship_pk">
+        <xsd:sequence>
+            <xsd:element name="schema_id" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="relationship_id" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="table_id_parent" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="table_id_child" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- key pair primary key -->
+    <xsd:complexType name="key_pair_pk">
+        <xsd:sequence>
+            <xsd:element name="schema_id" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="relationship_id" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="table_id_parent" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="key_id_parent" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="table_id_child" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="key_id_child" type="xsd:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- ************************************************************************************************ -->
+    <!-- datatype -->
+    <xsd:simpleType name="datatype">
+        <xsd:restriction base="xsd:nonNegativeInteger">
+            <!--SMALLINT-->
+            <xsd:enumeration value = "1"/>
+            <!--INTEGER-->
+            <xsd:enumeration value = "2"/>
+            <!--BIGINT-->
+            <xsd:enumeration value = "3"/>
+            <!--DECIMAL-->
+            <xsd:enumeration value = "4"/>
+            <!--REAL-->
+            <xsd:enumeration value = "5"/>
+            <!--DOUBLE PRECISION-->
+            <xsd:enumeration value = "6"/>
+            <!--CHAR-->
+            <xsd:enumeration value = "7"/>
+            <!--VARCHAR-->
+            <xsd:enumeration value = "8"/>
+            <!--LONG VARCHAR-->
+            <xsd:enumeration value = "9"/>
+            <!--DATE-->
+            <xsd:enumeration value = "10"/>
+            <!--TIME-->
+            <xsd:enumeration value = "11"/>
+            <!--TIMESTAMP-->
+            <xsd:enumeration value = "12"/>
+            <!--CLOB-->
+            <xsd:enumeration value = "13"/>
+            <!--BLOB-->
+            <xsd:enumeration value = "14"/>
+            <!--BOOLEAN-->
+            <xsd:enumeration value = "15"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <!-- ************************************************************************************************ -->
+</xsd:schema>

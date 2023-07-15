@@ -1,38 +1,40 @@
 [Potatosql](https://xjrga.github.io/main/#potatosql-learning-software-for-database-design "Potatosql: Database Design and Code Generation Software")
 
-    Potatosql is learning software for database design.
+This is build 100 of Potatosql.
 
-    Home page: https://xjrga.github.io/main/#potatosql-learning-software-for-database-design
-    Download: https://xjrga.github.io/main/#potatosql-learning-software-for-database-design
+Features:
 
-    Features:
-        - Create database schema designs
-        - Build database schema design repository
-        - Share your favorite schema designs easily
-        - Create java database applications
-        - Build prototypes faster and less expensively
-        - Accelerate database and java learning
-        - Generate ddl, dml and java code
-        - Generate entity relationship diagram in dot code (graphviz)
-        - Is free and open source software
+    Create database schemas
+    Share database schemas easily
+    Create database schema repository
+    Build database applications faster and inexpensively
+    Generate java code
+    Generate sql code for hsqldb
+    Generate sql code for mariadb
+    Generate sql code for postgresql
+    Generate dot code for graphviz (entity relationship diagram)
+    Add and modify your own source code templates
+    It is free.
 
-    Requirements:
-       - Java 11
+Requirements:
+    Java 11 or higher
+
+Please send your comments and suggestions to potatosql@googlegroups.com
 
 Installing
 
-    1. Download potatosql-90-app.zip from https://xjrga.github.io/main/#potatosql-learning-software-for-database-design
-    2. unzip potatosql-90-app.zip
-    3. cd potatosql-90-app
-    4. java -jar potatosql-90.jar (if you are on windows double click on jar file)
+    1. Download potatosql-100-app.zip from https://xjrga.github.io/main/#potatosql-learning-software-for-database-design
+    2. unzip potatosql-100-app.zip
+    3. cd potatosql-100-app
+    4. java -jar potatosql-100.jar (if you are on windows double click on jar file)
 
 [User Guide](https://xjrga.github.io/main/#potatosql-learning-software-for-database-design "Potatosql: Database Design and Code Generation Software")
 
 Version
 
-    90
+    100
 
-Authors
+Author
 
 [Jorge R Garcia de Alba](https://xjrga.github.io "Jorge R Garcia de Alba")
 

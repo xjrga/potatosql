@@ -1,3 +1,3 @@
 #!/bin/bash
 
-java -jar ../lib/sqltool-2.7.1.jar --rcFile=sqlTool.rc --sql 'SHUTDOWN COMPACT;' database
+java -jar ../lib/sqltool-2.7.2.jar --rcFile=sqlTool.rc --sql 'SHUTDOWN COMPACT;' database

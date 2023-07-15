@@ -1,0 +1,2 @@
+SET autocommit=1;
+/
