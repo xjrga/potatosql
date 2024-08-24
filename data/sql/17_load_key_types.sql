@@ -25,3 +25,4 @@ call datatype_insert(12,'TIMESTAMP');
 --BOOLEAN
 call datatype_insert(15,'BOOLEAN');
 /
+

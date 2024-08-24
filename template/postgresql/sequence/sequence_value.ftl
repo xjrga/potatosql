@@ -2,5 +2,5 @@ SELECT nextval('seq');
 /
 SELECT currval('seq');
 /
-SELECT setval('seq', 19);
+SELECT setval('seq', 10000);
 /

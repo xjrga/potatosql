@@ -1,2 +1,0 @@
-SAVEPOINT a_savepoint;
-/

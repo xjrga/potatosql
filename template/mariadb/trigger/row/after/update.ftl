@@ -1,7 +1,10 @@
 <#list data.table_iterator as table>
 CREATE TRIGGER ${table.table_name}_rlau_trigger
-AFTER UPDATE ON ${table.table_name} FOR EACH ROW
+AFTER UPDATE ON ${table.table_name}
+FOR EACH ROW
+--
 BEGIN
+--
 INSERT INTO ${table.table_name}_audit (
 timing,
 statement,
@@ -36,6 +39,7 @@ new.${key.key_name},
 </#list>
 now()
 );
+--
 END;
 /
 </#list>

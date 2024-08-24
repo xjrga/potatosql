@@ -5,7 +5,9 @@ CREATE TABLE ${table.table_name}
         <#list table.key_iterator as key>
         ${key.key_name} ${dtype.getPostgresql(key.datatype)},
         </#list>
-        PRIMARY KEY (<#list table.key_iterator?filter(o -> o.is_primary_key) as key>${key.key_name}<#if key?has_next>,</#if></#list>)
+        PRIMARY KEY (<#list table.key_iterator?filter(o -> o.is_primary_key) as key>
+        ${key.key_name}<#if key?has_next>,</#if></#list>
+        )
     <#else>
         <#list table.key_iterator as key>
         ${key.key_name} ${dtype.getPostgresql(key.datatype)}<#if key?has_next>,</#if>

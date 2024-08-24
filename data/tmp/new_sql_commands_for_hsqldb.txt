@@ -1,0 +1,8 @@
+CREATE FUNCTION recent_customers(IN since_date DATE) 
+    RETURNS TABLE(id INT, first VARCHAR(50), last VARCHAR(50))
+     READS SQL DATA
+   BEGIN ATOMIC
+   RETURN TABLE (SELECT id, firstname, lastname FROM CUSTOMERS WHERE added > since_date);
+END
+ 
+SELECT * FROM TABLE(recent_customers(CURRENT_DATE - 2 DAY)) 

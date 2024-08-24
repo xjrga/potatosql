@@ -28,41 +28,43 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class Connect {
-    private static final Connect instance = new Connect();
-    private static String JDBC_DRIVER = "";
-    private static String DB_URL = "";
-    private static String DB_USER = "";
-    private static String DB_PASS = "";
-    private static Properties prop = null;
-    private static InputStream input = null;
-    private static Connection connection = null;
-    private Connect() {
+  private static final Connect instance = new Connect();
+  private static String JDBC_DRIVER = "";
+  private static String DB_URL = "";
+  private static String DB_USER = "";
+  private static String DB_PASS = "";
+  private static Properties prop = null;
+  private static InputStream input = null;
+  private static Connection connection = null;
+
+  private Connect() {}
+
+  public static Connect getInstance() {
+    return instance;
+  }
+
+  public Connection getConnection() {
+    prop = new Properties();
+    try {
+      input = new FileInputStream("resources/connection.properties");
+    } catch (FileNotFoundException e) {
     }
-    public static Connect getInstance() {
-        return instance;
+    try {
+      prop.load(input);
+      JDBC_DRIVER = prop.getProperty("jdbc.driver");
+      DB_URL = prop.getProperty("jdbc.url");
+      DB_USER = prop.getProperty("jdbc.username");
+      DB_PASS = prop.getProperty("jdbc.password");
+    } catch (IOException e) {
     }
-    public Connection getConnection() {
-        prop = new Properties();
-        try {
-            input = new FileInputStream( "resources/connection.properties" );
-        } catch ( FileNotFoundException e ) {
-        }
-        try {
-            prop.load( input );
-            JDBC_DRIVER = prop.getProperty( "jdbc.driver" );
-            DB_URL = prop.getProperty( "jdbc.url" );
-            DB_USER = prop.getProperty( "jdbc.username" );
-            DB_PASS = prop.getProperty( "jdbc.password" );
-        } catch ( IOException e ) {
-        }
-        try {
-            Class.forName( JDBC_DRIVER );
-        } catch ( ClassNotFoundException e ) {
-        }
-        try {
-            connection = DriverManager.getConnection( DB_URL, DB_USER, DB_PASS );
-        } catch ( SQLException e ) {
-        }
-        return connection;
+    try {
+      Class.forName(JDBC_DRIVER);
+    } catch (ClassNotFoundException e) {
     }
+    try {
+      connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+    } catch (SQLException e) {
+    }
+    return connection;
+  }
 }

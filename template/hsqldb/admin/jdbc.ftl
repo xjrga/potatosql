@@ -1,13 +1,13 @@
-Hsqldb Jdbc driver
+Hsqldb Jdbc Driver
 ---------------------------
 org.hsqldb.jdbc.JDBCDriver
 
-Jdbc user
---------------
+Jdbc User
+---------
 SA
 
-Jdbc url
-------------
+Jdbc Url
+--------
 jdbc:hsqldb:hsql//localhost:9001/ (server)
 jdbc:hsqldb:file:<database path> (file)
 jdbc:hsqldb:mem:. (memory)

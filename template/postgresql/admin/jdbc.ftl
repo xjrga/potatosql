@@ -1,5 +1,5 @@
 Postgresql Jdbc driver
-----------------------------------
+----------------------
 org.postgresql.Driver
 
 Jdbc user

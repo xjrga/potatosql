@@ -109,30 +109,6 @@
         </code>
         <code>
             <dialect>hsqldb</dialect>
-            <category>savepoint</category>
-            <action>create</action>
-            <name>hsqldb, savepoint, create</name>
-            <path>template/hsqldb/savepoint/savepoint.ftl</path>
-            <order>14</order>
-        </code>
-        <code>
-            <dialect>hsqldb</dialect>
-            <category>savepoint</category>
-            <action>release</action>
-            <name>hsqldb, savepoint, release</name>
-            <path>template/hsqldb/savepoint/savepoint_release.ftl</path>
-            <order>15</order>
-        </code>
-        <code>
-            <dialect>hsqldb</dialect>
-            <category>savepoint</category>
-            <action>rollback</action>
-            <name>hsqldb, savepoint, rollback</name>
-            <path>template/hsqldb/savepoint/savepoint_rollback.ftl</path>
-            <order>16</order>
-        </code>
-        <code>
-            <dialect>hsqldb</dialect>
             <category>schema</category>
             <action>create</action>
             <name>hsqldb, schema, create</name>
@@ -168,7 +144,7 @@
             <category>sequence</category>
             <action>create</action>
             <name>hsqldb, sequence, create</name>
-            <path>template/hsqldb/sequence/sequence.ftl</path>
+            <path>template/hsqldb/sequence/sequence_create.ftl</path>
             <order>21</order>
         </code>
         <code>
@@ -285,30 +261,6 @@
         </code>
         <code>
             <dialect>hsqldb</dialect>
-            <category>transaction</category>
-            <action>autocommit disable</action>
-            <name>hsqldb, transaction, autocommit, disable</name>
-            <path>template/hsqldb/transaction/autocommit_disable.ftl</path>
-            <order>38</order>
-        </code>
-        <code>
-            <dialect>hsqldb</dialect>
-            <category>transaction</category>
-            <action>autocommit enable</action>
-            <name>hsqldb, transaction, autocommit, enable</name>
-            <path>template/hsqldb/transaction/autocommit_enable.ftl</path>
-            <order>39</order>
-        </code>
-        <code>
-            <dialect>hsqldb</dialect>
-            <category>transaction</category>
-            <action>commit</action>
-            <name>hsqldb, transaction, commit</name>
-            <path>template/hsqldb/transaction/commit.ftl</path>
-            <order>40</order>
-        </code>
-        <code>
-            <dialect>hsqldb</dialect>
             <category>trigger, row</category>
             <action>after delete</action>
             <name>hsqldb, trigger, row, after, delete</name>
@@ -386,14 +338,6 @@
             <name>hsqldb, view, create</name>
             <path>template/hsqldb/view/view.ftl</path>
             <order>50</order>
-        </code>
-        <code>
-            <dialect>java</dialect>
-            <category>data</category>
-            <action>key</action>
-            <name>java, data object key, class</name>
-            <path>template/java/data/key.ftl</path>
-            <order>51</order>
         </code>
         <code>
             <dialect>java</dialect>
@@ -557,30 +501,6 @@
         </code>
         <code>
             <dialect>mariadb</dialect>
-            <category>savepoint</category>
-            <action>create</action>
-            <name>mariadb, savepoint, create</name>
-            <path>template/mariadb/savepoint/savepoint.ftl</path>
-            <order>72</order>
-        </code>
-        <code>
-            <dialect>mariadb</dialect>
-            <category>savepoint</category>
-            <action>release</action>
-            <name>mariadb, savepoint, release</name>
-            <path>template/mariadb/savepoint/savepoint_release.ftl</path>
-            <order>73</order>
-        </code>
-        <code>
-            <dialect>mariadb</dialect>
-            <category>savepoint</category>
-            <action>rollback</action>
-            <name>mariadb, savepoint, rollback</name>
-            <path>template/mariadb/savepoint/savepoint_rollback.ftl</path>
-            <order>74</order>
-        </code>
-        <code>
-            <dialect>mariadb</dialect>
             <category>schema</category>
             <action>create</action>
             <name>mariadb, schema, create</name>
@@ -741,30 +661,6 @@
         </code>
         <code>
             <dialect>mariadb</dialect>
-            <category>transaction</category>
-            <action>autocommit disable</action>
-            <name>mariadb, transaction, autocommit, disable</name>
-            <path>template/mariadb/transaction/autocommit_disable.ftl</path>
-            <order>96</order>
-        </code>
-        <code>
-            <dialect>mariadb</dialect>
-            <category>transaction</category>
-            <action>autocommit enable</action>
-            <name>mariadb, transaction, autocommit, enable</name>
-            <path>template/mariadb/transaction/autocommit_enable.ftl</path>
-            <order>97</order>
-        </code>
-        <code>
-            <dialect>mariadb</dialect>
-            <category>transaction</category>
-            <action>commit</action>
-            <name>mariadb, transaction, commit</name>
-            <path>template/mariadb/transaction/commit.ftl</path>
-            <order>98</order>
-        </code>
-        <code>
-            <dialect>mariadb</dialect>
             <category>trigger, row</category>
             <action>after delete</action>
             <name>mariadb, trigger, row, after, delete</name>
@@ -898,30 +794,6 @@
             <name>postgresql, procedure, update</name>
             <path>template/postgresql/procedure/update.ftl</path>
             <order>115</order>
-        </code>
-        <code>
-            <dialect>postgresql</dialect>
-            <category>savepoint</category>
-            <action>create</action>
-            <name>postgresql, savepoint, create</name>
-            <path>template/postgresql/savepoint/savepoint.ftl</path>
-            <order>116</order>
-        </code>
-        <code>
-            <dialect>postgresql</dialect>
-            <category>savepoint</category>
-            <action>release</action>
-            <name>postgresql, savepoint, release</name>
-            <path>template/postgresql/savepoint/savepoint_release.ftl</path>
-            <order>117</order>
-        </code>
-        <code>
-            <dialect>postgresql</dialect>
-            <category>savepoint</category>
-            <action>rollback</action>
-            <name>postgresql, savepoint, rollback</name>
-            <path>template/postgresql/savepoint/savepoint_rollback.ftl</path>
-            <order>118</order>
         </code>
         <code>
             <dialect>postgresql</dialect>
@@ -1074,30 +946,6 @@
             <name>postgresql, table, with select</name>
             <path>template/postgresql/table/table_with_select.ftl</path>
             <order>138</order>
-        </code>
-        <code>
-            <dialect>postgresql</dialect>
-            <category>transaction</category>
-            <action>autocommit disable</action>
-            <name>postgresql, transaction, autocommit, disable</name>
-            <path>template/postgresql/transaction/autocommit_disable.ftl</path>
-            <order>139</order>
-        </code>
-        <code>
-            <dialect>postgresql</dialect>
-            <category>transaction</category>
-            <action>autocommit enable</action>
-            <name>postgresql, transaction, autocommit, enable</name>
-            <path>template/postgresql/transaction/autocommit_enable.ftl</path>
-            <order>140</order>
-        </code>
-        <code>
-            <dialect>postgresql</dialect>
-            <category>transaction</category>
-            <action>commit</action>
-            <name>postgresql, transaction, commit</name>
-            <path>template/postgresql/transaction/commit.ftl</path>
-            <order>141</order>
         </code>
         <code>
             <dialect>postgresql</dialect>
@@ -1307,5 +1155,54 @@
             <path>template/test/data/variables.ftl</path>
             <order>167</order>
         </code>
+        <code>
+            <dialect>hsqldb</dialect>
+            <category>sequence</category>
+            <action>drop</action>
+            <name>hsqldb, sequence, drop</name>
+            <path>template/hsqldb/sequence/sequence_drop.ftl</path>
+            <order>168</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>admin</category>
+            <action>service</action>
+            <name>mariadb, admin, service</name>
+            <path>template/mariadb/admin/linux.ftl</path>
+            <order>169</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>admin</category>
+            <action>service</action>
+            <name>postgresql, admin, service</name>
+            <path>template/postgresql/admin/linux.ftl</path>
+            <order>170</order>
+        </code>
+        <code>
+            <dialect>mariadb</dialect>
+            <category>admin</category>
+            <action>quick</action>
+            <name>mariadb, admin, quick start</name>
+            <path>template/mariadb/admin/quick_start.ftl</path>
+            <order>171</order>
+        </code>
+        <code>
+            <dialect>postgresql</dialect>
+            <category>admin</category>
+            <action>quick</action>
+            <name>postgresql, admin, quick start</name>
+            <path>template/postgresql/admin/quick_start.ftl</path>
+            <order>172</order>
+        </code>
+        <code>
+            <dialect>java</dialect>
+            <category>admin</category>
+            <action>quick</action>
+            <name>java, admin, quick</name>
+            <path>template/java/admin/quick.ftl</path>
+            <order>52</order>
+        </code>
+
     </code_list>
 </configuration>

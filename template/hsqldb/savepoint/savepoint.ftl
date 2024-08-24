@@ -1,2 +1,0 @@
-SAVEPOINT databaseat00;
-/

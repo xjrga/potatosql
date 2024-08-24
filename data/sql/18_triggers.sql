@@ -8,7 +8,7 @@ END IF;
 CREATE TRIGGER Relationship_rlad_trigger AFTER DELETE ON Relationship REFERENCING OLD ROW as oldrow FOR EACH ROW
 BEGIN ATOMIC
 DECLARE v_count INTEGER;
-SELECT COUNT(*) INTO v_count FROM Relationship WHERE table_id_child = oldrow.table_id_child;
+SELECT COUNT(*) INTO v_count FROM Relationship WHERE table_id_child = oldrow.table_id_child AND Is_identifying = TRUE;
 IF (v_count = 0) THEN
 CALL SET_DEPENDENT_ENTITY_FALSE(oldrow.schema_id,oldrow.table_id_child);
 END IF;

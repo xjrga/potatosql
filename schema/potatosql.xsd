@@ -235,20 +235,12 @@
     <!-- datatype -->
     <xsd:simpleType name="datatype">
         <xsd:restriction base="xsd:nonNegativeInteger">
-            <!--SMALLINT-->
-            <xsd:enumeration value = "1"/>
             <!--INTEGER-->
             <xsd:enumeration value = "2"/>
-            <!--BIGINT-->
-            <xsd:enumeration value = "3"/>
             <!--DECIMAL-->
             <xsd:enumeration value = "4"/>
-            <!--REAL-->
-            <xsd:enumeration value = "5"/>
             <!--DOUBLE PRECISION-->
             <xsd:enumeration value = "6"/>
-            <!--CHAR-->
-            <xsd:enumeration value = "7"/>
             <!--VARCHAR-->
             <xsd:enumeration value = "8"/>
             <!--LONG VARCHAR-->
@@ -259,10 +251,6 @@
             <xsd:enumeration value = "11"/>
             <!--TIMESTAMP-->
             <xsd:enumeration value = "12"/>
-            <!--CLOB-->
-            <xsd:enumeration value = "13"/>
-            <!--BLOB-->
-            <xsd:enumeration value = "14"/>
             <!--BOOLEAN-->
             <xsd:enumeration value = "15"/>
         </xsd:restriction>

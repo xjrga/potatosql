@@ -7,21 +7,22 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class Tablekeys_upd
-        implements V1<Key> {
-    private final Connection connection = Connect.getInstance().getConnection();
-    @Override
-    public void apply( Key key ) {
-        try ( CallableStatement proc = connection.prepareCall( "{CALL potatosql.Table_key_update(?,?,?,?,?,?)}" ) ) {
-            proc.setInt( 1, key.getSchema_id() );
-            proc.setInt( 2, key.getTable_id() );
-            proc.setInt( 3, key.getKey_id() );
-            proc.setInt( 4, key.getDatatype_id() );
-            proc.setString( 5, key.getKey_name() );
-            proc.setInt( 6, key.getKey_order() );
-            proc.execute();
-        } catch ( SQLException ex ) {
-            System.out.println( ex.getMessage() );
-        }
+public class Tablekeys_upd implements V1<Key> {
+  private final Connection connection = Connect.getInstance().getConnection();
+
+  @Override
+  public void apply(Key key) {
+    try (CallableStatement proc =
+        connection.prepareCall("{CALL potatosql.Table_key_update(?,?,?,?,?,?)}")) {
+      proc.setInt(1, key.getSchema_id());
+      proc.setInt(2, key.getTable_id());
+      proc.setInt(3, key.getKey_id());
+      proc.setInt(4, key.getDatatype_id());
+      proc.setString(5, key.getKey_name());
+      proc.setInt(6, key.getKey_order());
+      proc.execute();
+    } catch (SQLException ex) {
+      System.out.println(ex.getMessage());
     }
+  }
 }

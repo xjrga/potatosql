@@ -6,6 +6,7 @@ data.table_iterator
 Table variables
 ------------------------
 table.table_name: ${table.table_name}
+table.table_name: ${table.table_name?c_lower_case}
 table.table_name?cap_first: ${table.table_name?cap_first}
 table.is_dependent: ${table.is_dependent?string('true','false')}
 table.contains_primary_keys(): ${table.contains_primary_keys()?string('true','false')}
@@ -62,3 +63,5 @@ relationship.child: ${relationship.child}
 relationship.is_identifying: ${relationship.is_identifying?string('true','false')}
 
 </#list>
+
+https://freemarker.apache.org/docs/ref.html

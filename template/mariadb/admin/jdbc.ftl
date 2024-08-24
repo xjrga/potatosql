@@ -1,12 +1,11 @@
-Mariadb Jdbc driver
------------------------------
+Mariadb Jdbc Driver
+-------------------
 org.mariadb.jdbc.Driver
 
-Jdbc user
---------------
+Jdbc User
+---------
 admin
 
-Jdbc url
-------------
+Jdbc Url
+--------
 jdbc:mariadb://localhost:3306
-

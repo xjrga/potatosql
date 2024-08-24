@@ -1577,14 +1577,45 @@ AND table_id = v_table_id;
 SET newid = v_table_id_new;
 END;
 /
---//todo: delete
-CREATE FUNCTION Relationship_count_for_dependent_entity(
-IN v_table_id_child INTEGER
-) RETURNS INTEGER
-READS SQL DATA BEGIN ATOMIC
-DECLARE v_count INTEGER;
-SELECT COUNT(*) INTO v_count FROM Relationship WHERE table_id_child = v_table_id_child;
-RETURN v_count;
+CREATE FUNCTION find_empty_relationships (
+--
+IN v_schema_id INTEGER
+--
+)
+RETURNS TABLE (
+--
+relationship_id INTEGER
+--
+)
+--
+READS SQL DATA
+--
+BEGIN ATOMIC
+--
+RETURN TABLE (
+--
+SELECT a.relationship_id
+FROM identifying_relationship a
+  LEFT JOIN identifying_relationship_key_pair b
+         ON a.schema_id = b.schema_id
+        AND a.relationship_id = b.relationship_id
+        AND a.table_id_parent = b.table_id_parent
+        AND a.table_id_child = b.table_id_child
+        AND schema_id = v_schema_id
+WHERE b.key_id_parent IS NULL
+UNION
+SELECT a.relationship_id
+FROM nonidentifying_relationship a
+  LEFT JOIN nonidentifying_relationship_key_pair b
+         ON a.schema_id = b.schema_id
+        AND a.relationship_id = b.relationship_id
+        AND a.table_id_parent = b.table_id_parent
+        AND a.table_id_child = b.table_id_child
+        AND schema_id = v_schema_id
+WHERE b.key_id_parent IS NULL
+--
+);
+--
 END;
 /
 --
@@ -1615,6 +1646,7 @@ call datatype_insert(12,'TIMESTAMP');
 --BOOLEAN
 call datatype_insert(15,'BOOLEAN');
 /
+
 --
 SET SCHEMA potatosql;
 /
@@ -1626,7 +1658,7 @@ END IF;
 CREATE TRIGGER Relationship_rlad_trigger AFTER DELETE ON Relationship REFERENCING OLD ROW as oldrow FOR EACH ROW
 BEGIN ATOMIC
 DECLARE v_count INTEGER;
-SELECT COUNT(*) INTO v_count FROM Relationship WHERE table_id_child = oldrow.table_id_child;
+SELECT COUNT(*) INTO v_count FROM Relationship WHERE table_id_child = oldrow.table_id_child AND Is_identifying = TRUE;
 IF (v_count = 0) THEN
 CALL SET_DEPENDENT_ENTITY_FALSE(oldrow.schema_id,oldrow.table_id_child);
 END IF;
